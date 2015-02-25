@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;def</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{006b1547-77ba-4f3e-8899-17edd014e3b0}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{77c9bd3c-0a1e-4792-8e29-3e139d1e0c7e}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_inssidious.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\TamperWidgets\tamperwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_tamperwidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_tamperwidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\DeviceWidgets\devicewidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_devicewidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_devicewidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\inssidious.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_inssidious.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_inssidious.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\core.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_core.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_core.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Device\device.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_device.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_device.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Router\router.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_router.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_router.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="inssidious.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\TamperWidgets\tamperwidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\DeviceWidgets\devicewidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\inssidious.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\inssidious.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Core\core.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Core\Device\device.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Core\Router\router.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GeneratedFiles\ui_inssidious.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\DeviceWidget\TamperStatus\1active.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\1static.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\2active.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\2static.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\3active.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\3static.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\4active.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\4static.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\5active.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\5static.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\6active.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\6static.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\7active.png" />
+    <Image Include="Resources\DeviceWidget\TamperStatus\7static.png" />
+    <Image Include="Resources\TamperWidget\DropAllTrafficActive.png" />
+    <Image Include="Resources\TamperWidget\DropAllTrafficInactive.png" />
+    <Image Include="Resources\TamperWidget\DropNonHTTPTrafficActive.png" />
+    <Image Include="Resources\TamperWidget\DropNonHTTPTrafficInactive.png" />
+    <Image Include="Resources\TamperWidget\NetworkLagActive.png" />
+    <Image Include="Resources\TamperWidget\NetworkLagInactive.png" />
+    <Image Include="Resources\TamperWidget\RedirectToPortalActive.png" />
+    <Image Include="Resources\TamperWidget\RedirectToPortalInactive.png" />
+    <Image Include="Resources\TamperWidget\TamperWidgetActive.png" />
+    <Image Include="Resources\TamperWidget\TamperWidgetActiveHover.png" />
+    <Image Include="Resources\TamperWidget\TamperWidgetActivePressed.png" />
+    <Image Include="Resources\TamperWidget\TamperWidgetInactive.png" />
+    <Image Include="Resources\TamperWidget\TamperWidgetInactiveHover.png" />
+    <Image Include="Resources\TamperWidget\TamperWidgetInactivePressed.png" />
+    <Image Include="Resources\TamperWidget\WebServiceEmptyResponsesActive.png" />
+    <Image Include="Resources\TamperWidget\WebServiceEmptyResponsesInactive.png" />
+    <Image Include="Resources\TamperWidget\WebServiceErrorsActive.png" />
+    <Image Include="Resources\TamperWidget\WebServiceErrorsInactive.png" />
+    <Image Include="Resources\TamperWidget\WebServiceTimeoutsActive.png" />
+    <Image Include="Resources\TamperWidget\WebServiceTimeoutsInactive.png" />
+    <Image Include="Resources\HeaderWidget\AppIconActive.png" />
+    <Image Include="Resources\HeaderWidget\AppIconInactive.png" />
+    <Image Include="Resources\HeaderWidget\AppName.png" />
+    <Image Include="Resources\AppIcon.ico" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\AndroidActive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\AndroidInactive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\iPhoneActive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\iPhoneInactive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\MacLaptopActive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\MacLaptopInactive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\UnknownDeviceActive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\UnknownDeviceInactive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\WindowsLaptopActive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\WindowsLaptopInactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources\AppIcon.rc" />
+  </ItemGroup>
+</Project>
