@@ -10,3 +10,18 @@ Inssidious::~Inssidious()
 {
 
 }
+
+void Inssidious::showDeviceWidget()
+{
+
+}
+
+void Inssidious::deviceConnected()
+{
+
+}
+
+void Inssidious::deviceDisconnected()
+{
+
+}

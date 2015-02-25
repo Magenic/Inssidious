@@ -38,9 +38,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_inssidious.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="Widgets\TamperWidgets\tamperwidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -95,11 +92,11 @@
     <ClCompile Include="GeneratedFiles\Release\moc_router.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_inssidious.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="inssidious.qrc">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="Widgets\TamperWidgets\tamperwidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -120,6 +117,9 @@
     </CustomBuild>
     <CustomBuild Include="Core\Router\router.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\inssidious.qrc">
+      <Filter>Resource Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
