@@ -9,7 +9,6 @@ class TamperWidget : public QWidget
 
 public:
 	TamperWidget(QWidget *parent);
-	~TamperWidget();
 
 signals: 
 	void activateTamperWidget();

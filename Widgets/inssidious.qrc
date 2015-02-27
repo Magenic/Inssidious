@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="Inssidious">
+    <qresource prefix="StartupWidget">
+      <file alias="AppLogo.png">../Resources/StartupWidget/AppLogo.png</file>
     </qresource>
 </RCC>

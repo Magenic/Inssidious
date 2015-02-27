@@ -6,11 +6,6 @@ DeviceWidget::DeviceWidget(QWidget *parent)
 
 }
 
-DeviceWidget::~DeviceWidget()
-{
-
-}
-
 void DeviceWidget::hideDeviceWidget()
 {
 

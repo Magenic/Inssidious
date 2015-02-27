@@ -95,6 +95,15 @@
     <ClCompile Include="GeneratedFiles\qrc_inssidious.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="Widgets\StartupWidget\startupwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_startupwidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_startupwidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Widgets\TamperWidgets\tamperwidget.h">
@@ -121,6 +130,9 @@
     <CustomBuild Include="Widgets\inssidious.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="Widgets\StartupWidget\startupwidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_inssidious.h">
@@ -128,6 +140,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\DeviceWidget\DeviceIcons\AndroidActive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\AndroidInactive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\iPhoneActive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\iPhoneInactive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\MacLaptopActive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\MacLaptopInactive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\UnknownDeviceActive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\UnknownDeviceInactive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\WindowsLaptopActive.png" />
+    <Image Include="Resources\DeviceWidget\DeviceIcons\WindowsLaptopInactive.png" />
     <Image Include="Resources\DeviceWidget\TamperStatus\1active.png" />
     <Image Include="Resources\DeviceWidget\TamperStatus\1static.png" />
     <Image Include="Resources\DeviceWidget\TamperStatus\2active.png" />
@@ -142,6 +164,10 @@
     <Image Include="Resources\DeviceWidget\TamperStatus\6static.png" />
     <Image Include="Resources\DeviceWidget\TamperStatus\7active.png" />
     <Image Include="Resources\DeviceWidget\TamperStatus\7static.png" />
+    <Image Include="Resources\HeaderWidget\AppIconActive.png" />
+    <Image Include="Resources\HeaderWidget\AppIconInactive.png" />
+    <Image Include="Resources\HeaderWidget\AppName.png" />
+    <Image Include="Resources\StartupWidget\AppLogo.png" />
     <Image Include="Resources\TamperWidget\DropAllTrafficActive.png" />
     <Image Include="Resources\TamperWidget\DropAllTrafficInactive.png" />
     <Image Include="Resources\TamperWidget\DropNonHTTPTrafficActive.png" />
@@ -162,20 +188,7 @@
     <Image Include="Resources\TamperWidget\WebServiceErrorsInactive.png" />
     <Image Include="Resources\TamperWidget\WebServiceTimeoutsActive.png" />
     <Image Include="Resources\TamperWidget\WebServiceTimeoutsInactive.png" />
-    <Image Include="Resources\HeaderWidget\AppIconActive.png" />
-    <Image Include="Resources\HeaderWidget\AppIconInactive.png" />
-    <Image Include="Resources\HeaderWidget\AppName.png" />
     <Image Include="Resources\AppIcon.ico" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\AndroidActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\AndroidInactive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\iPhoneActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\iPhoneInactive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\MacLaptopActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\MacLaptopInactive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\UnknownDeviceActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\UnknownDeviceInactive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\WindowsLaptopActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\WindowsLaptopInactive.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources\AppIcon.rc" />

@@ -6,11 +6,6 @@ TamperWidget::TamperWidget(QWidget *parent)
 
 }
 
-TamperWidget::~TamperWidget()
-{
-
-}
-
 void TamperWidget::tamperWidgetActivated()
 {
 

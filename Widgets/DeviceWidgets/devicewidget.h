@@ -9,7 +9,6 @@ class DeviceWidget : public QWidget
 
 public:
 	DeviceWidget(QWidget *parent);
-	~DeviceWidget();
 	void hideDeviceWidget();					//Hide device widget
 	void showDeviceWidget();					//Show device widget
 

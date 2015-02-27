@@ -2,7 +2,10 @@
 #define INSSIDIOUS_H
 
 #include <QWidget>
+#include <QThread>
 #include "ui_inssidious.h"
+#include "StartupWidget\startupwidget.h"
+#include "Core\core.h"
 
 class Inssidious : public QWidget
 {
@@ -11,6 +14,7 @@ class Inssidious : public QWidget
 public:
 	Inssidious(QWidget *parent = 0);
 	~Inssidious();
+
 
 
 signals:
@@ -24,6 +28,10 @@ public slots:
 
 private:
 	Ui::Inssidious ui;
+	StartupWidget* startupWidget;						//Pointer to an instance of the Startup Widget
+	Core* core;
+	QThread* coreThread;
+
 };
 
 #endif // INSSIDIOUS_H

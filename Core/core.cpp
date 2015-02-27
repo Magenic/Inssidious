@@ -1,7 +1,6 @@
 #include "core.h"
 
-Core::Core(QObject *parent)
-	: QObject(parent)
+Core::Core()
 {
 
 }
@@ -9,4 +8,19 @@ Core::Core(QObject *parent)
 Core::~Core()
 {
 
+}
+
+void Core::start()
+{
+	//Do initialization work
+
+	if (true)
+	{
+		//Emit coreStarted 
+		emit coreStarted();
+	}
+	else
+	{
+		emit coreStartFailed("Error message");
+	}
 }
