@@ -14,6 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QWidget>
 
@@ -28,7 +29,11 @@ public:
     QWidget *scrollAreaWidgetContents;
     QWidget *TamperAreaWidget;
     QWidget *HeaderWidget;
-    QWidget *StartupWidget;
+    QLabel *AppLogo;
+    QLabel *WirelessNetworkNameText;
+    QLabel *WirelessNetworkPasswordText;
+    QLabel *WirelessNetworkPasswordIcon;
+    QLabel *WirelessNetworkNameIcon;
 
     void setupUi(QWidget *Inssidious)
     {
@@ -130,12 +135,6 @@ public:
         TamperAreaWidget->setObjectName(QStringLiteral("TamperAreaWidget"));
         TamperAreaWidget->setGeometry(QRect(225, 0, 537, 584));
         TamperAreaWidget->setMinimumSize(QSize(375, 0));
-        TamperAreaWidget->setAutoFillBackground(true);
-        HeaderWidget = new QWidget(Inssidious);
-        HeaderWidget->setObjectName(QStringLiteral("HeaderWidget"));
-        HeaderWidget->setGeometry(QRect(0, 0, 762, 60));
-        HeaderWidget->setMinimumSize(QSize(0, 60));
-        HeaderWidget->setAutoFillBackground(true);
         QPalette palette1;
         palette1.setBrush(QPalette::Active, QPalette::WindowText, brush);
         palette1.setBrush(QPalette::Active, QPalette::Button, brush1);
@@ -146,10 +145,11 @@ public:
         palette1.setBrush(QPalette::Active, QPalette::Text, brush);
         palette1.setBrush(QPalette::Active, QPalette::BrightText, brush);
         palette1.setBrush(QPalette::Active, QPalette::ButtonText, brush);
-        palette1.setBrush(QPalette::Active, QPalette::Base, brush7);
-        palette1.setBrush(QPalette::Active, QPalette::Window, brush1);
+        palette1.setBrush(QPalette::Active, QPalette::Base, brush6);
+        palette1.setBrush(QPalette::Active, QPalette::Window, brush6);
         palette1.setBrush(QPalette::Active, QPalette::Shadow, brush7);
         palette1.setBrush(QPalette::Active, QPalette::AlternateBase, brush4);
+        palette1.setBrush(QPalette::Active, QPalette::NoRole, brush1);
         palette1.setBrush(QPalette::Active, QPalette::ToolTipBase, brush8);
         palette1.setBrush(QPalette::Active, QPalette::ToolTipText, brush7);
         palette1.setBrush(QPalette::Inactive, QPalette::WindowText, brush);
@@ -161,10 +161,11 @@ public:
         palette1.setBrush(QPalette::Inactive, QPalette::Text, brush);
         palette1.setBrush(QPalette::Inactive, QPalette::BrightText, brush);
         palette1.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
-        palette1.setBrush(QPalette::Inactive, QPalette::Base, brush7);
-        palette1.setBrush(QPalette::Inactive, QPalette::Window, brush1);
+        palette1.setBrush(QPalette::Inactive, QPalette::Base, brush6);
+        palette1.setBrush(QPalette::Inactive, QPalette::Window, brush6);
         palette1.setBrush(QPalette::Inactive, QPalette::Shadow, brush7);
         palette1.setBrush(QPalette::Inactive, QPalette::AlternateBase, brush4);
+        palette1.setBrush(QPalette::Inactive, QPalette::NoRole, brush1);
         palette1.setBrush(QPalette::Inactive, QPalette::ToolTipBase, brush8);
         palette1.setBrush(QPalette::Inactive, QPalette::ToolTipText, brush7);
         palette1.setBrush(QPalette::Disabled, QPalette::WindowText, brush4);
@@ -176,17 +177,85 @@ public:
         palette1.setBrush(QPalette::Disabled, QPalette::Text, brush4);
         palette1.setBrush(QPalette::Disabled, QPalette::BrightText, brush);
         palette1.setBrush(QPalette::Disabled, QPalette::ButtonText, brush4);
-        palette1.setBrush(QPalette::Disabled, QPalette::Base, brush1);
-        palette1.setBrush(QPalette::Disabled, QPalette::Window, brush1);
+        palette1.setBrush(QPalette::Disabled, QPalette::Base, brush6);
+        palette1.setBrush(QPalette::Disabled, QPalette::Window, brush6);
         palette1.setBrush(QPalette::Disabled, QPalette::Shadow, brush7);
         palette1.setBrush(QPalette::Disabled, QPalette::AlternateBase, brush1);
+        palette1.setBrush(QPalette::Disabled, QPalette::NoRole, brush1);
         palette1.setBrush(QPalette::Disabled, QPalette::ToolTipBase, brush8);
         palette1.setBrush(QPalette::Disabled, QPalette::ToolTipText, brush7);
-        HeaderWidget->setPalette(palette1);
-        StartupWidget = new QWidget(Inssidious);
-        StartupWidget->setObjectName(QStringLiteral("StartupWidget"));
-        StartupWidget->setEnabled(true);
-        StartupWidget->setGeometry(QRect(0, 60, 762, 584));
+        TamperAreaWidget->setPalette(palette1);
+        TamperAreaWidget->setAutoFillBackground(true);
+        HeaderWidget = new QWidget(Inssidious);
+        HeaderWidget->setObjectName(QStringLiteral("HeaderWidget"));
+        HeaderWidget->setGeometry(QRect(0, 0, 762, 60));
+        HeaderWidget->setMinimumSize(QSize(0, 60));
+        QPalette palette2;
+        palette2.setBrush(QPalette::Active, QPalette::WindowText, brush);
+        palette2.setBrush(QPalette::Active, QPalette::Button, brush1);
+        palette2.setBrush(QPalette::Active, QPalette::Light, brush2);
+        palette2.setBrush(QPalette::Active, QPalette::Midlight, brush3);
+        palette2.setBrush(QPalette::Active, QPalette::Dark, brush4);
+        palette2.setBrush(QPalette::Active, QPalette::Mid, brush5);
+        palette2.setBrush(QPalette::Active, QPalette::Text, brush);
+        palette2.setBrush(QPalette::Active, QPalette::BrightText, brush);
+        palette2.setBrush(QPalette::Active, QPalette::ButtonText, brush);
+        palette2.setBrush(QPalette::Active, QPalette::Base, brush7);
+        palette2.setBrush(QPalette::Active, QPalette::Window, brush1);
+        palette2.setBrush(QPalette::Active, QPalette::Shadow, brush7);
+        palette2.setBrush(QPalette::Active, QPalette::AlternateBase, brush4);
+        palette2.setBrush(QPalette::Active, QPalette::ToolTipBase, brush8);
+        palette2.setBrush(QPalette::Active, QPalette::ToolTipText, brush7);
+        palette2.setBrush(QPalette::Inactive, QPalette::WindowText, brush);
+        palette2.setBrush(QPalette::Inactive, QPalette::Button, brush1);
+        palette2.setBrush(QPalette::Inactive, QPalette::Light, brush2);
+        palette2.setBrush(QPalette::Inactive, QPalette::Midlight, brush3);
+        palette2.setBrush(QPalette::Inactive, QPalette::Dark, brush4);
+        palette2.setBrush(QPalette::Inactive, QPalette::Mid, brush5);
+        palette2.setBrush(QPalette::Inactive, QPalette::Text, brush);
+        palette2.setBrush(QPalette::Inactive, QPalette::BrightText, brush);
+        palette2.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
+        palette2.setBrush(QPalette::Inactive, QPalette::Base, brush7);
+        palette2.setBrush(QPalette::Inactive, QPalette::Window, brush1);
+        palette2.setBrush(QPalette::Inactive, QPalette::Shadow, brush7);
+        palette2.setBrush(QPalette::Inactive, QPalette::AlternateBase, brush4);
+        palette2.setBrush(QPalette::Inactive, QPalette::ToolTipBase, brush8);
+        palette2.setBrush(QPalette::Inactive, QPalette::ToolTipText, brush7);
+        palette2.setBrush(QPalette::Disabled, QPalette::WindowText, brush4);
+        palette2.setBrush(QPalette::Disabled, QPalette::Button, brush1);
+        palette2.setBrush(QPalette::Disabled, QPalette::Light, brush2);
+        palette2.setBrush(QPalette::Disabled, QPalette::Midlight, brush3);
+        palette2.setBrush(QPalette::Disabled, QPalette::Dark, brush4);
+        palette2.setBrush(QPalette::Disabled, QPalette::Mid, brush5);
+        palette2.setBrush(QPalette::Disabled, QPalette::Text, brush4);
+        palette2.setBrush(QPalette::Disabled, QPalette::BrightText, brush);
+        palette2.setBrush(QPalette::Disabled, QPalette::ButtonText, brush4);
+        palette2.setBrush(QPalette::Disabled, QPalette::Base, brush1);
+        palette2.setBrush(QPalette::Disabled, QPalette::Window, brush1);
+        palette2.setBrush(QPalette::Disabled, QPalette::Shadow, brush7);
+        palette2.setBrush(QPalette::Disabled, QPalette::AlternateBase, brush1);
+        palette2.setBrush(QPalette::Disabled, QPalette::ToolTipBase, brush8);
+        palette2.setBrush(QPalette::Disabled, QPalette::ToolTipText, brush7);
+        HeaderWidget->setPalette(palette2);
+        HeaderWidget->setAutoFillBackground(true);
+        AppLogo = new QLabel(HeaderWidget);
+        AppLogo->setObjectName(QStringLiteral("AppLogo"));
+        AppLogo->setGeometry(QRect(10, 10, 200, 40));
+        WirelessNetworkNameText = new QLabel(HeaderWidget);
+        WirelessNetworkNameText->setObjectName(QStringLiteral("WirelessNetworkNameText"));
+        WirelessNetworkNameText->setGeometry(QRect(662, 10, 100, 16));
+        WirelessNetworkPasswordText = new QLabel(HeaderWidget);
+        WirelessNetworkPasswordText->setObjectName(QStringLiteral("WirelessNetworkPasswordText"));
+        WirelessNetworkPasswordText->setGeometry(QRect(662, 34, 100, 16));
+        QFont font;
+        font.setItalic(true);
+        WirelessNetworkPasswordText->setFont(font);
+        WirelessNetworkPasswordIcon = new QLabel(HeaderWidget);
+        WirelessNetworkPasswordIcon->setObjectName(QStringLiteral("WirelessNetworkPasswordIcon"));
+        WirelessNetworkPasswordIcon->setGeometry(QRect(640, 34, 16, 16));
+        WirelessNetworkNameIcon = new QLabel(HeaderWidget);
+        WirelessNetworkNameIcon->setObjectName(QStringLiteral("WirelessNetworkNameIcon"));
+        WirelessNetworkNameIcon->setGeometry(QRect(640, 10, 16, 16));
 
         retranslateUi(Inssidious);
 
@@ -196,6 +265,9 @@ public:
     void retranslateUi(QWidget *Inssidious)
     {
         Inssidious->setWindowTitle(QApplication::translate("Inssidious", "Inssidious", 0));
+        AppLogo->setText(QString());
+        WirelessNetworkPasswordIcon->setText(QString());
+        WirelessNetworkNameIcon->setText(QString());
     } // retranslateUi
 
 };

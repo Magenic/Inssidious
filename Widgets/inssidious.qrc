@@ -1,5 +1,14 @@
 <RCC>
+    <qresource prefix="HeaderWidget">
+      <file alias="AppLogo.png">../Resources/HeaderWidget/AppLogo.png</file>
+      <file alias="WirelessNetworkNameIcon.png">../Resources/HeaderWidget/WirelessNetworkNameIcon.png</file>
+      <file alias="WirelessNetworkPasswordIcon.png">../Resources/HeaderWidget/WirelessNetworkPasswordIcon.png</file>
+    </qresource>
     <qresource prefix="StartupWidget">
       <file alias="AppLogo.png">../Resources/StartupWidget/AppLogo.png</file>
+      <file alias="AppTagLine.png">../Resources/StartupWidget/AppTagLine.png</file>
+    </qresource>
+    <qresource prefix="DeviceWidget">
+      <file alias="WaitingForDevices.png">../Resources/DeviceWidget/WaitingForDevices.png</file>
     </qresource>
 </RCC>

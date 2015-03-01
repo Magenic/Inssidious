@@ -20,7 +20,8 @@ public:
 signals:
 
 
-public slots:
+public slots :
+	void onInssidiousStarted();
 	void showDeviceWidget();					//Hide all device widgets and then show device widget
 	void deviceConnected();						//Add a device widget to sidebar
 	void deviceDisconnected();					//Remove device widget from sidebar

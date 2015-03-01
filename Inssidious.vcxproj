@@ -391,9 +391,11 @@
     <Image Include="Resources\DeviceWidget\TamperStatus\6static.png" />
     <Image Include="Resources\DeviceWidget\TamperStatus\7active.png" />
     <Image Include="Resources\DeviceWidget\TamperStatus\7static.png" />
-    <Image Include="Resources\HeaderWidget\AppIconActive.png" />
-    <Image Include="Resources\HeaderWidget\AppIconInactive.png" />
-    <Image Include="Resources\HeaderWidget\AppName.png" />
+    <Image Include="Resources\DeviceWidget\WaitingForDevices.png" />
+    <Image Include="Resources\HeaderWidget\WirelessNetworkNameIcon.png" />
+    <Image Include="Resources\HeaderWidget\WirelessNetworkPasswordIcon.png" />
+    <Image Include="Resources\StartupWidget\AppTagLine.png" />
+    <Image Include="Resources\HeaderWidget\AppLogo.png" />
     <Image Include="Resources\StartupWidget\AppLogo.png" />
     <Image Include="Resources\TamperWidget\DropAllTrafficActive.png" />
     <Image Include="Resources\TamperWidget\DropAllTrafficInactive.png" />

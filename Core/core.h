@@ -13,11 +13,16 @@ public:
 	~Core();
 
 public slots:
-	void start();
+	void onThreadStart();
+	void onInssidiousStart();
 
 signals:
+	void coreInitialized();
+	void coreInitializeFailed(QString string);
 	void coreStarted();
 	void coreStartFailed(QString string);
+	void inssidiousStarted();
+	void inssidiousStartFailed(QString string);
 
 private:
 
