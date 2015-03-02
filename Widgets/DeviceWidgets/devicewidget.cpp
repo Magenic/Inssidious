@@ -16,12 +16,12 @@ void DeviceWidget::showDeviceWidget()
 
 }
 
-void DeviceWidget::showTamperActivity()
+void DeviceWidget::onShowTamperActivity()
 {
 
 }
 
-void DeviceWidget::updateTamperCounts()
+void DeviceWidget::onUpdateTamperCounts()
 {
 
 }

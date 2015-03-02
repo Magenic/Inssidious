@@ -19,9 +19,6 @@ StartupWidget::StartupWidget(QWidget *parent)
 	this->setAutoFillBackground(true);
 	this->setPalette(startupWidgetPalette);
 
-	//Enable mouse tracking for hover highlighting
-	this->setMouseTracking(true);
-
 	//Draw the Inssidious logo and add it to the layout
 	inssidiousLogo = new QLabel();
 	inssidiousLogo->setPixmap(QPixmap(":/StartupWidget/AppLogo.png"));
@@ -35,81 +32,136 @@ StartupWidget::StartupWidget(QWidget *parent)
 	//Set the description text palette to a light grey 
 	descriptionTextPalette.setColor(QPalette::WindowText, QColor("lightGray"));
 
+	//Set the error text palette to red 
+	errorTextPalette.setColor(QPalette::WindowText, QColor(255, 150, 0, 255));
+
+	/* No further drawing performed until Core emits Started or StartFailed */
+	
+}
+
+void StartupWidget::onCoreStarted()
+{
 	//Draw the Internet Connection description field
 	internetConnectionText = new QLabel();
 	internetConnectionText->setText("Select an internet connection:");
 	internetConnectionText->setPalette(descriptionTextPalette);
 	internetConnectionText->setContentsMargins(0, 20, 0, 0); /* padding to push away from logo and tag line */
 	startupWidgetLayout->addWidget(internetConnectionText, 0, Qt::AlignTop);
-
+	
 	//Draw the Internet Connection combo box
 	internetConnectionComboBox = new QComboBox();
 	startupWidgetLayout->addWidget(internetConnectionComboBox, 0, Qt::AlignTop);
-
+	
 	//Draw the Wireless Adapter description field
 	wirelessAdapterText = new QLabel();
 	wirelessAdapterText->setText("Select a wireless adapter:");
 	wirelessAdapterText->setPalette(descriptionTextPalette);
 	wirelessAdapterText->setContentsMargins(0, 10, 0, 0); /* padding from combo box above */
 	startupWidgetLayout->addWidget(wirelessAdapterText, 0, Qt::AlignTop);
-
+	
 	//Draw the Wireless Adapter combo box
 	wirelessAdapterComboBox = new QComboBox();
 	startupWidgetLayout->addWidget(wirelessAdapterComboBox, 0, Qt::AlignTop);
-
+	
 	//Draw the Wireless Network Name description field
 	wirelessNetworkNameText = new QLabel();
 	wirelessNetworkNameText->setText("Specify the name of the Inssidious wireless network:");
 	wirelessNetworkNameText->setPalette(descriptionTextPalette);
 	wirelessNetworkNameText->setContentsMargins(0, 10, 0, 0); /* padding from combo box above */
 	startupWidgetLayout->addWidget(wirelessNetworkNameText, 0, Qt::AlignTop);
-
+	
 	//Draw the Wireless Network Name line edit field
 	wirelessNetworkNameLineEdit = new QLineEdit();
 	wirelessNetworkNameLineEdit->setText("Inssidious - Ian");
 	startupWidgetLayout->addWidget(wirelessNetworkNameLineEdit, 0, Qt::AlignTop);
-
+	
 	//Draw the Wireless Network Password description field
 	wirelessNetworkPasswordText = new QLabel();
 	wirelessNetworkPasswordText->setText("Specify the password for the Inssidious wireless network:");
 	wirelessNetworkPasswordText->setPalette(descriptionTextPalette);
 	wirelessNetworkPasswordText->setContentsMargins(0, 10, 0, 0); /* padding from line edit above */
 	startupWidgetLayout->addWidget(wirelessNetworkPasswordText, 0, Qt::AlignTop);
-
+	
 	//Draw the Wireless Network Password line edit field
 	wirelessNetworkPasswordLineEdit = new QLineEdit();
 	wirelessNetworkPasswordLineEdit->setText("inssidious");
 	startupWidgetLayout->addWidget(wirelessNetworkPasswordLineEdit, 0, Qt::AlignTop);
-
+	
 	//Draw the Start button
 	inssidiousStartButton = new QPushButton();
-	inssidiousStartButton->setText("Start");
-	startupWidgetLayout->addSpacing(10); /* padding from line edit above */
+	inssidiousStartButton->setMinimumSize(QSize(104, 30));
+	inssidiousStartButton->setStyleSheet("QPushButton{ border: none; background-image: url(\":/StartupWidget/StartButtonActive.png\"); }QPushButton:!enabled{background-image: url(\":/StartupWidget/StartButtonInactive.png\");}QPushButton:hover{ background-image: url(\":/StartupWidget/StartButtonHover.png\");}QPushButton:pressed{ background-image: url(\":/StartupWidget/StartButtonPressed.png\");}QPushButton:focus { outline: none;}");
+	startupWidgetLayout->addSpacing(15); /* padding from line edit above */
 	startupWidgetLayout->addWidget(inssidiousStartButton, 0, Qt::AlignCenter);
-
+	
 	//Pad the remaining layout space at the bottom to push content up
 	startupWidgetLayout->addStretch();
-
+	
 	//Connect the start button signal & slot
 	connect(inssidiousStartButton, SIGNAL(clicked()), this, SLOT(onStartButtonClicked()));
 	
-}
+	//Get the names of all network adapters. Core::getAllNetworkInterfaces returns true on success or false on error
+	fullNetworkAdapterList.clear();
+	if (Core::getAllNetworkInterfaces(&fullNetworkAdapterList))
+	{
+		//Add the strings to the combo box
+		internetConnectionComboBox->addItems(fullNetworkAdapterList);
+	}
+	else //Core::getAllNetworkInterfaces encountered an error
+	{
+		//Display the error text in red in place of the description
+		internetConnectionText->setText(fullNetworkAdapterList.first());
+		internetConnectionText->setPalette(errorTextPalette);
 
-void StartupWidget::onCoreStarted()
-{
-	//Get network adapter info
+		//Disable the combo box
+		internetConnectionComboBox->setDisabled(true);
 
-	//Fill in text
+		//Disable the start button
+		inssidiousStartButton->setDisabled(true);
+	}
 
+	//Get the names of the wireless adapters. Core::getWirelessInterfaces returns true on success or false on error
+	wirelessAdapterList.clear();
+	if (Core::getWirelessInterfaces(&wirelessAdapterList))
+	{
+		//Add the strings to the combo box
+		wirelessAdapterComboBox->addItems(wirelessAdapterList);
+	}
+	else //Core::getWirelessInterfaces encountered an error
+	{
+		//Display the error text in red in place of the description
+		wirelessAdapterText->setText(wirelessAdapterList.first());
+		wirelessAdapterText->setPalette(errorTextPalette);
+
+		//Disable the combo box
+		wirelessAdapterComboBox->setDisabled(true);
+
+		//Disable the start button
+		inssidiousStartButton->setDisabled(true);
+	}
+	
+	
+	
+	
+	
 	//Un-grey items
 
 }
 
 void StartupWidget::onCoreStartFailed(QString errorMessage)
 {
-	//Hide or grey normal widgets
+	//Draw the Error Starting Core field
+	coreStartFailedText = new QLabel();
+	coreStartFailedText->setText(errorMessage);
+	coreStartFailedText->setPalette(errorTextPalette);
+	coreStartFailedText->setContentsMargins(0, 80, 0, 0); /* padding to push away from logo and tag line */
+	startupWidgetLayout->addWidget(coreStartFailedText, 0, Qt::AlignTop | Qt::AlignHCenter);
 
-	//Show error
+	//Pad the remaining layout space at the bottom to push content up
+	startupWidgetLayout->addStretch();
+
+	/* Inssidious can take no further action until user resolves cause of error */
+	/* Inssidious must be restarted to continue */
 }
 
 void StartupWidget::onInssidiousStartFailed(QString errorMessage)
@@ -125,35 +177,5 @@ void StartupWidget::onStartButtonClicked()
 	//Check fields for validity
 
 	//Signal to core to start Inssidious
-	emit inssidiousStart(/* put info here */);
-}
-
-void StartupWidget::mouseReleaseEvent(QMouseEvent *e)
-{
-
-}
-
-void StartupWidget::mousePressEvent(QMouseEvent *e)
-{
-
-}
-
-void StartupWidget::mouseDoubleClickEvent(QMouseEvent *e)
-{
-
-}
-
-void StartupWidget::contextMenuEvent(QContextMenuEvent *e)
-{
-
-}
-
-void StartupWidget::enterEvent(QEvent *e)
-{
-
-}
-
-void StartupWidget::leaveEvent(QEvent *e)
-{
-
+	emit coreStartInssidious(/* put info here */);
 }

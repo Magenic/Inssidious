@@ -16,8 +16,8 @@ signals:
 	void deviceWidgetSelected();				//Notify parent of widget selection
 
 public slots:
-	void showTamperActivity();					//Draw outer circle to indicate tamper activity
-	void updateTamperCounts();					//Increment or decrement tamper count
+	void onShowTamperActivity();				//Draw outer circle to indicate tamper activity
+	void onUpdateTamperCounts();				//Increment or decrement tamper count
 
 private:
 	void mousePressEvent(QMouseEvent *e);

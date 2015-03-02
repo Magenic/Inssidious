@@ -397,6 +397,10 @@
     <Image Include="Resources\StartupWidget\AppTagLine.png" />
     <Image Include="Resources\HeaderWidget\AppLogo.png" />
     <Image Include="Resources\StartupWidget\AppLogo.png" />
+    <Image Include="Resources\StartupWidget\StartButtonActive.png" />
+    <Image Include="Resources\StartupWidget\StartButtonHover.png" />
+    <Image Include="Resources\StartupWidget\StartButtonInactive.png" />
+    <Image Include="Resources\StartupWidget\StartButtonPressed.png" />
     <Image Include="Resources\TamperWidget\DropAllTrafficActive.png" />
     <Image Include="Resources\TamperWidget\DropAllTrafficInactive.png" />
     <Image Include="Resources\TamperWidget\DropNonHTTPTrafficActive.png" />

@@ -19,7 +19,7 @@ Inssidious::Inssidious(QWidget *parent)
 	ui.WirelessNetworkNameText->setPalette(headerTextPalette);
 	ui.WirelessNetworkPasswordText->setPalette(headerTextPalette);
 
-	//Initialize the device list widget sidebar
+	//Initialize the device list sidebar widget 
 	QWidget* scrollAreaWidgetContents = new QWidget();
 	scrollAreaWidgetContents->setLayout(new QVBoxLayout());
 	scrollAreaWidgetContents->layout()->setSpacing(0);
@@ -43,7 +43,7 @@ Inssidious::Inssidious(QWidget *parent)
 	connect(core, &Core::coreStartFailed, startupWidget, &StartupWidget::onCoreStartFailed);				//Notify Startup Widget that core has failed to start
 	connect(core, &Core::inssidiousStartFailed, startupWidget, &StartupWidget::onInssidiousStartFailed);	//Notify Startup Widget that core has failed to start Inssidious
 	connect(coreThread, &QThread::started, core, &Core::onThreadStart);										//Notify Core that it is on it's own thread	and that thread has started
-	connect(startupWidget, &StartupWidget::inssidiousStart, core, &Core::onInssidiousStart);				//Notify Core that Startup Widget requests to start Inssidious 
+	connect(startupWidget, &StartupWidget::coreStartInssidious, core, &Core::onInssidiousStart);				//Notify Core that Startup Widget requests to start Inssidious 
 	connect(core, &Core::inssidiousStarted, this, &Inssidious::onInssidiousStarted);						//Notify Inssidious (main) that Core has successfully started Inssidious
 	
 	//Start the core thread
@@ -66,26 +66,27 @@ void Inssidious::onInssidiousStarted(/* wireless network name and password */)
 	//Hide the Startup Widget
 	startupWidget->hide();
 
-	//Add waiting for devices image
-	QVBoxLayout* tamperAreaWidgetLayout = new QVBoxLayout();
-	tamperAreaWidgetLayout->addSpacing(200); /* padding from the top */
-	QLabel* waitingForDevicesMessage = new QLabel();
+	//Display waiting for devices text
+	tamperAreaNoDevicesLayout = new QVBoxLayout();
+	tamperAreaNoDevicesLayout->addSpacing(220); /* padding from the top */
+	waitingForDevicesMessage = new QLabel();
 	waitingForDevicesMessage->setPixmap(QPixmap(":/DeviceWidget/WaitingForDevices.png"));
-	tamperAreaWidgetLayout->addWidget(waitingForDevicesMessage, 0, Qt::AlignLeft | Qt::AlignTop);
-	ui.TamperAreaWidget->setLayout(tamperAreaWidgetLayout);
+	tamperAreaNoDevicesLayout->addWidget(waitingForDevicesMessage, 0, Qt::AlignLeft | Qt::AlignTop);
+	ui.TamperAreaWidget->setLayout(tamperAreaNoDevicesLayout);
 }
 
-void Inssidious::showDeviceWidget()
+void Inssidious::onShowDeviceWidget()
 {
 
 }
 
-void Inssidious::deviceConnected()
+void Inssidious::onDeviceConnected()
 {
 
 }
 
-void Inssidious::deviceDisconnected()
+void Inssidious::onDeviceDisconnected()
 {
 
+	//If there are now no devices connected, set layout to tamperAreaNoDevicesLayout
 }

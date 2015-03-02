@@ -8,7 +8,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 
-#include "core.h"			//Core signals and network adapter information
+#include "core.h"			//Core network adapter information
 
 class StartupWidget : public QWidget
 {
@@ -18,35 +18,34 @@ public:
 	StartupWidget(QWidget *parent);
 
 signals:
-	void inssidiousStart();
+	void coreStartInssidious();									//Signal to Core to start Inssidious
 
 public slots:
-	void onCoreStarted();
-	void onCoreStartFailed(QString errorMessage);
-	void onInssidiousStartFailed(QString errorMessage);
-	void onStartButtonClicked();
+	void onCoreStarted();									//Triggered by Core's successful start, can now ask for network adapters and similar
+	void onCoreStartFailed(QString errorMessage);			//Display an error message
+	void onInssidiousStartFailed(QString errorMessage);		//Display an error message
+	
+private slots:
+	void onStartButtonClicked();							//Triggered by QPushButton's clicked signal, emits info to Core to start Inssidious
 
 private:
-	void mousePressEvent(QMouseEvent *e);
-	void mouseReleaseEvent(QMouseEvent *e);
-	void mouseDoubleClickEvent(QMouseEvent *e);
-	void contextMenuEvent(QContextMenuEvent *e);
-	void enterEvent(QEvent *e);
-	void leaveEvent(QEvent *e);
-
-	QVBoxLayout* startupWidgetLayout;
-	QLabel* inssidiousLogo;
-	QLabel* inssidiousTagLine;
-	QPalette descriptionTextPalette;
-	QLabel* internetConnectionText;
-	QComboBox* internetConnectionComboBox;
-	QLabel* wirelessAdapterText;
-	QComboBox* wirelessAdapterComboBox;
-	QLabel* wirelessNetworkNameText;
-	QLineEdit* wirelessNetworkNameLineEdit;
-	QLabel* wirelessNetworkPasswordText;
-	QLineEdit* wirelessNetworkPasswordLineEdit;
-	QPushButton* inssidiousStartButton;
+	QVBoxLayout* startupWidgetLayout;						//Layout for the Startup Widget
+	QLabel* inssidiousLogo;									//Logo image
+	QLabel* inssidiousTagLine;								//Tag line image
+	QLabel* coreStartFailedText;							//Error text
+	QPalette descriptionTextPalette;						//Palette for grey description text
+	QPalette errorTextPalette;								//Palette for red error text
+	QList<QString> fullNetworkAdapterList;					//QList to store adapter names in
+	QLabel* internetConnectionText;							//Description text
+	QComboBox* internetConnectionComboBox;					//Combo box populated by a call to core
+	QList<QString> wirelessAdapterList;						//QList to store adapter names in
+	QLabel* wirelessAdapterText;							//Description text
+	QComboBox* wirelessAdapterComboBox;						//Combo box popluated by a call to core
+	QLabel* wirelessNetworkNameText;						//Description text
+	QLineEdit* wirelessNetworkNameLineEdit;					//Editable field to specify the wireless network name
+	QLabel* wirelessNetworkPasswordText;					//Description text
+	QLineEdit* wirelessNetworkPasswordLineEdit;				//Editable field to specify the wireless network password
+	QPushButton* inssidiousStartButton;						//Start button
 };
 
 #endif // STARTUPWIDGET_H

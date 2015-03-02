@@ -22,16 +22,19 @@ signals:
 
 public slots :
 	void onInssidiousStarted();
-	void showDeviceWidget();					//Hide all device widgets and then show device widget
-	void deviceConnected();						//Add a device widget to sidebar
-	void deviceDisconnected();					//Remove device widget from sidebar
-
+	void onDeviceConnected();					//A device connected. Add a device widget to sidebar
+	void onDeviceDisconnected();				//A device disconnected. Remove device widget from sidebar
+	void onShowDeviceWidget();					//A device widget was clicked. Hide all device widgets and then show that device widget
 
 private:
-	Ui::Inssidious ui;
-	StartupWidget* startupWidget;						//Pointer to an instance of the Startup Widget
-	Core* core;
-	QThread* coreThread;
+	Ui::Inssidious ui;							
+	StartupWidget* startupWidget;				//Pointer to an instance of Startup Widget
+	Core* core;									//Pointer to an instance of Core
+	QThread* coreThread;						//Pointer to the QThread to move Core to
+
+
+	QVBoxLayout* tamperAreaNoDevicesLayout;		//Layout for Tamper Area Widget when no devices are connected
+	QLabel* waitingForDevicesMessage;			//Message to display while waiting for devices to connect
 
 };
 
