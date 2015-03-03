@@ -7,7 +7,6 @@
     <qresource prefix="StartupWidget">
       <file alias="AppLogo.png">../Resources/StartupWidget/AppLogo.png</file>
       <file alias="AppTagLine.png">../Resources/StartupWidget/AppTagLine.png</file>
-      <file alias="StartButton.css">../Resources/StartupWidget/StartButton.css</file>
       <file alias="StartButtonActive.png">../Resources/StartupWidget/StartButtonActive.png</file>
       <file alias="StartButtonInactive.png">../Resources/StartupWidget/StartButtonInactive.png</file>
       <file alias="StartButtonHover.png">../Resources/StartupWidget/StartButtonHover.png</file>
@@ -15,5 +14,11 @@
     </qresource>
     <qresource prefix="DeviceWidget">
       <file alias="WaitingForDevices.png">../Resources/DeviceWidget/WaitingForDevices.png</file>
+    </qresource>
+    <qresource prefix="CriticalErrorWidget">
+      <file alias="AppSadLogo.png">../Resources/CriticalErrorWidget/AppSadLogo.png</file>
+      <file alias="QuitButtonActive.png">../Resources/CriticalErrorWidget/QuitButtonActive.png</file>
+      <file alias="QuitButtonHover.png">../Resources/CriticalErrorWidget/QuitButtonHover.png</file>
+      <file alias="QuitButtonPressed.png">../Resources/CriticalErrorWidget/QuitButtonPressed.png</file>
     </qresource>
 </RCC>

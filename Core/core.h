@@ -16,6 +16,8 @@
 #define MALLOC(x) HeapAlloc(GetProcessHeap(), 0, (x)) 
 #define FREE(x) HeapFree(GetProcessHeap(), 0, (x))
 
+
+
 class Core : public QObject
 {
 	Q_OBJECT
@@ -23,23 +25,34 @@ class Core : public QObject
 public:
 	Core();
 	~Core();
-	static bool getWirelessInterfaces(QList<QString>* foundWirelessInterfaces);
-	static bool getAllNetworkInterfaces(QList<QString>* foundNetworkInterfaces);
+	
+	
+	static enum AdapterPhysTypes{ ETHERNET, WIRELESS, ERRORMESSAGE };	//Adapter types
+	struct NetworkAdapter												//Network Adapter information
+	{
+		QString AdapterName;
+		QString AdapterDescription;
+		AdapterPhysTypes AdapterPhysType;
+	};
+	
+	static QList<NetworkAdapter> Core::getNetworkAdapters();	//Store all ethernet & wireless interfaces in QList
 
 public slots:
-	void onThreadStart();
-	void onInssidiousStart();
+	void onThreadStarted();
+	void onCoreStartInssidious();
 
 signals:
-	void coreInitialized();
-	void coreInitializeFailed(QString string);
-	void coreStarted();
-	void coreStartFailed(QString string);
+	void coreThreadReady();
 	void inssidiousStarted();
-	void inssidiousStartFailed(QString string);
+
+	void inssidiousCriticalError(QString string);		//Critical error signal should block further action
 
 private:
-
+	
 };
+
+
+
+
 
 #endif // CORE_H

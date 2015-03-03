@@ -21,10 +21,12 @@ signals:
 
 
 public slots :
-	void onInssidiousStarted();
+	void onInssidiousStarted();					//Hide Startup Widget and show waiting for devices message
 	void onDeviceConnected();					//A device connected. Add a device widget to sidebar
 	void onDeviceDisconnected();				//A device disconnected. Remove device widget from sidebar
 	void onShowDeviceWidget();					//A device widget was clicked. Hide all device widgets and then show that device widget
+
+	void onInssidiousCriticalError(QString errorMessage);		//A critical error has occured. Display an error message asking to restart Inssidious.
 
 private:
 	Ui::Inssidious ui;							
@@ -33,9 +35,14 @@ private:
 	QThread* coreThread;						//Pointer to the QThread to move Core to
 
 
-	QVBoxLayout* tamperAreaNoDevicesLayout;		//Layout for Tamper Area Widget when no devices are connected
-	QLabel* waitingForDevicesMessage;			//Message to display while waiting for devices to connect
+	QVBoxLayout* tamperAreaNoDevicesLayout;		//Layout for Tamper Area Widget when Inssidious first starts
+	QLabel* noDevicesMessage;					//Message to display when no devices are connected
+	
 
+	QVBoxLayout* criticalErrorLayout;			//Layout for errors that require restarting Inssidious
+	QLabel* criticalErrorSadLogo;				//Sad version of the Inssidious logo to display when there is a critical error
+	QLabel* criticalErrorMessage;				//Message to display when there is a critical error
+	QPushButton* criticalErrorQuitButton;		//Button to quit Inssidious after a critical error
 };
 
 #endif // INSSIDIOUS_H

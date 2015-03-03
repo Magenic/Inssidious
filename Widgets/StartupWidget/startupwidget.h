@@ -21,9 +21,7 @@ signals:
 	void coreStartInssidious();									//Signal to Core to start Inssidious
 
 public slots:
-	void onCoreStarted();									//Triggered by Core's successful start, can now ask for network adapters and similar
-	void onCoreStartFailed(QString errorMessage);			//Display an error message
-	void onInssidiousStartFailed(QString errorMessage);		//Display an error message
+	void onCoreThreadReady();								//Triggered by Core's successful start, can now ask for network adapters and similar
 	
 private slots:
 	void onStartButtonClicked();							//Triggered by QPushButton's clicked signal, emits info to Core to start Inssidious
@@ -35,10 +33,9 @@ private:
 	QLabel* coreStartFailedText;							//Error text
 	QPalette descriptionTextPalette;						//Palette for grey description text
 	QPalette errorTextPalette;								//Palette for red error text
-	QList<QString> fullNetworkAdapterList;					//QList to store adapter names in
+	QList<Core::NetworkAdapter> lNetworkAdapters;			//QList of all network adapters
 	QLabel* internetConnectionText;							//Description text
 	QComboBox* internetConnectionComboBox;					//Combo box populated by a call to core
-	QList<QString> wirelessAdapterList;						//QList to store adapter names in
 	QLabel* wirelessAdapterText;							//Description text
 	QComboBox* wirelessAdapterComboBox;						//Combo box popluated by a call to core
 	QLabel* wirelessNetworkNameText;						//Description text

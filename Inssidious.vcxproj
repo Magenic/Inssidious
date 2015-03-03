@@ -367,6 +367,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\AppIcon.ico" />
+    <Image Include="Resources\CriticalErrorWidget\AppSadLogo.png" />
+    <Image Include="Resources\CriticalErrorWidget\QuitButtonActive.png" />
+    <Image Include="Resources\CriticalErrorWidget\QuitButtonHover.png" />
+    <Image Include="Resources\CriticalErrorWidget\QuitButtonPressed.png" />
     <Image Include="Resources\DeviceWidget\DeviceIcons\AndroidActive.png" />
     <Image Include="Resources\DeviceWidget\DeviceIcons\AndroidInactive.png" />
     <Image Include="Resources\DeviceWidget\DeviceIcons\iPhoneActive.png" />

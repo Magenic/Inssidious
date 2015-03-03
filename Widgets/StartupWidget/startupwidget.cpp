@@ -39,13 +39,13 @@ StartupWidget::StartupWidget(QWidget *parent)
 	
 }
 
-void StartupWidget::onCoreStarted()
+void StartupWidget::onCoreThreadReady()
 {
 	//Draw the Internet Connection description field
 	internetConnectionText = new QLabel();
 	internetConnectionText->setText("Select an internet connection:");
 	internetConnectionText->setPalette(descriptionTextPalette);
-	internetConnectionText->setContentsMargins(0, 20, 0, 0); /* padding to push away from logo and tag line */
+	internetConnectionText->setContentsMargins(0, 20, 0, 2); /* padding to push away from logo and tag line */
 	startupWidgetLayout->addWidget(internetConnectionText, 0, Qt::AlignTop);
 	
 	//Draw the Internet Connection combo box
@@ -56,7 +56,7 @@ void StartupWidget::onCoreStarted()
 	wirelessAdapterText = new QLabel();
 	wirelessAdapterText->setText("Select a wireless adapter:");
 	wirelessAdapterText->setPalette(descriptionTextPalette);
-	wirelessAdapterText->setContentsMargins(0, 10, 0, 0); /* padding from combo box above */
+	wirelessAdapterText->setContentsMargins(0, 10, 0, 2); /* padding from combo box above */
 	startupWidgetLayout->addWidget(wirelessAdapterText, 0, Qt::AlignTop);
 	
 	//Draw the Wireless Adapter combo box
@@ -67,7 +67,7 @@ void StartupWidget::onCoreStarted()
 	wirelessNetworkNameText = new QLabel();
 	wirelessNetworkNameText->setText("Specify the name of the Inssidious wireless network:");
 	wirelessNetworkNameText->setPalette(descriptionTextPalette);
-	wirelessNetworkNameText->setContentsMargins(0, 10, 0, 0); /* padding from combo box above */
+	wirelessNetworkNameText->setContentsMargins(0, 10, 0, 2); /* padding from combo box above */
 	startupWidgetLayout->addWidget(wirelessNetworkNameText, 0, Qt::AlignTop);
 	
 	//Draw the Wireless Network Name line edit field
@@ -79,7 +79,7 @@ void StartupWidget::onCoreStarted()
 	wirelessNetworkPasswordText = new QLabel();
 	wirelessNetworkPasswordText->setText("Specify the password for the Inssidious wireless network:");
 	wirelessNetworkPasswordText->setPalette(descriptionTextPalette);
-	wirelessNetworkPasswordText->setContentsMargins(0, 10, 0, 0); /* padding from line edit above */
+	wirelessNetworkPasswordText->setContentsMargins(0, 10, 0, 2); /* padding from line edit above */
 	startupWidgetLayout->addWidget(wirelessNetworkPasswordText, 0, Qt::AlignTop);
 	
 	//Draw the Wireless Network Password line edit field
@@ -100,77 +100,44 @@ void StartupWidget::onCoreStarted()
 	//Connect the start button signal & slot
 	connect(inssidiousStartButton, SIGNAL(clicked()), this, SLOT(onStartButtonClicked()));
 	
-	//Get the names of all network adapters. Core::getAllNetworkInterfaces returns true on success or false on error
-	fullNetworkAdapterList.clear();
-	if (Core::getAllNetworkInterfaces(&fullNetworkAdapterList))
-	{
-		//Add the strings to the combo box
-		internetConnectionComboBox->addItems(fullNetworkAdapterList);
-	}
-	else //Core::getAllNetworkInterfaces encountered an error
+	//Get the names of all network adapters from Core
+	lNetworkAdapters = Core::getNetworkAdapters();
+	
+	//Check if the first entry is an error, condition if so
+	if (lNetworkAdapters.first().AdapterPhysType == 2 /* error message */ )
 	{
 		//Display the error text in red in place of the description
-		internetConnectionText->setText(fullNetworkAdapterList.first());
+		internetConnectionText->setText(lNetworkAdapters.first().AdapterDescription);
 		internetConnectionText->setPalette(errorTextPalette);
 
-		//Disable the combo box
+		//Clear the wireless description text
+		wirelessAdapterText->setText("");
+
+		//Disable the combo boxes
 		internetConnectionComboBox->setDisabled(true);
-
-		//Disable the start button
-		inssidiousStartButton->setDisabled(true);
-	}
-
-	//Get the names of the wireless adapters. Core::getWirelessInterfaces returns true on success or false on error
-	wirelessAdapterList.clear();
-	if (Core::getWirelessInterfaces(&wirelessAdapterList))
-	{
-		//Add the strings to the combo box
-		wirelessAdapterComboBox->addItems(wirelessAdapterList);
-	}
-	else //Core::getWirelessInterfaces encountered an error
-	{
-		//Display the error text in red in place of the description
-		wirelessAdapterText->setText(wirelessAdapterList.first());
-		wirelessAdapterText->setPalette(errorTextPalette);
-
-		//Disable the combo box
 		wirelessAdapterComboBox->setDisabled(true);
 
 		//Disable the start button
 		inssidiousStartButton->setDisabled(true);
+
+		//No further work can be done, return.
+		return;
 	}
-	
-	
-	
-	
-	
-	//Un-grey items
+	else //We have a valid list of network adapters
+	{
+		for (Core::NetworkAdapter networkAdapter : lNetworkAdapters)
+		{
+			//Add each of them to the Internet Connection combo box
+			internetConnectionComboBox->addItem(networkAdapter.AdapterDescription);
 
+			//Add wireless ones to the wireless adapter combo box
+			if (networkAdapter.AdapterPhysType == 1 /* wireless adapter */)
+			{
+				wirelessAdapterComboBox->addItem(networkAdapter.AdapterDescription);
+			}
+		}
+	}
 }
-
-void StartupWidget::onCoreStartFailed(QString errorMessage)
-{
-	//Draw the Error Starting Core field
-	coreStartFailedText = new QLabel();
-	coreStartFailedText->setText(errorMessage);
-	coreStartFailedText->setPalette(errorTextPalette);
-	coreStartFailedText->setContentsMargins(0, 80, 0, 0); /* padding to push away from logo and tag line */
-	startupWidgetLayout->addWidget(coreStartFailedText, 0, Qt::AlignTop | Qt::AlignHCenter);
-
-	//Pad the remaining layout space at the bottom to push content up
-	startupWidgetLayout->addStretch();
-
-	/* Inssidious can take no further action until user resolves cause of error */
-	/* Inssidious must be restarted to continue */
-}
-
-void StartupWidget::onInssidiousStartFailed(QString errorMessage)
-{
-	//Hide or grey normal widgets
-
-	//Show error
-}
-
 
 void StartupWidget::onStartButtonClicked()
 {
