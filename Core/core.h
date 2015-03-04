@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QUuid>
 #include <WinSock2.h>
 #include <Windows.h>						//Windows types
 #include <Wlanapi.h>						//Wlan functions 
@@ -27,7 +28,14 @@ public:
 	~Core();
 	
 	
-	static enum AdapterPhysTypes{ ETHERNET, WIRELESS, ERRORMESSAGE };	//Adapter types
+	static enum AdapterPhysTypes										//Adapter types
+	{ 
+		ERROR_QUERYING_ADAPTERS, 
+		ETHERNET, 
+		WIRELESS, 
+		WIRELESS_HOSTED_NETWORK_CAPABLE 
+	};	
+
 	struct NetworkAdapter												//Network Adapter information
 	{
 		QString AdapterName;

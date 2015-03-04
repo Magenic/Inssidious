@@ -35,6 +35,7 @@ StartupWidget::StartupWidget(QWidget *parent)
 	//Set the error text palette to red 
 	errorTextPalette.setColor(QPalette::WindowText, QColor(255, 150, 0, 255));
 
+
 	/* No further drawing performed until Core emits Started or StartFailed */
 	
 }
@@ -42,33 +43,33 @@ StartupWidget::StartupWidget(QWidget *parent)
 void StartupWidget::onCoreThreadReady()
 {
 	//Draw the Internet Connection description field
-	internetConnectionText = new QLabel();
-	internetConnectionText->setText("Select an internet connection:");
-	internetConnectionText->setPalette(descriptionTextPalette);
-	internetConnectionText->setContentsMargins(0, 20, 0, 2); /* padding to push away from logo and tag line */
-	startupWidgetLayout->addWidget(internetConnectionText, 0, Qt::AlignTop);
+	internetConnectionTextLabel = new QLabel();
+	internetConnectionTextLabel->setText(internetConnectionText);
+	internetConnectionTextLabel->setPalette(descriptionTextPalette);
+	internetConnectionTextLabel->setContentsMargins(0, 20, 0, 2); /* padding to push away from logo and tag line */
+	startupWidgetLayout->addWidget(internetConnectionTextLabel, 0, Qt::AlignTop);
 	
 	//Draw the Internet Connection combo box
 	internetConnectionComboBox = new QComboBox();
 	startupWidgetLayout->addWidget(internetConnectionComboBox, 0, Qt::AlignTop);
 	
 	//Draw the Wireless Adapter description field
-	wirelessAdapterText = new QLabel();
-	wirelessAdapterText->setText("Select a wireless adapter:");
-	wirelessAdapterText->setPalette(descriptionTextPalette);
-	wirelessAdapterText->setContentsMargins(0, 10, 0, 2); /* padding from combo box above */
-	startupWidgetLayout->addWidget(wirelessAdapterText, 0, Qt::AlignTop);
+	wirelessAdapterTextLabel = new QLabel();
+	wirelessAdapterTextLabel->setText(wirelessAdapterText);
+	wirelessAdapterTextLabel->setPalette(descriptionTextPalette);
+	wirelessAdapterTextLabel->setContentsMargins(0, 10, 0, 2); /* padding from combo box above */
+	startupWidgetLayout->addWidget(wirelessAdapterTextLabel, 0, Qt::AlignTop);
 	
 	//Draw the Wireless Adapter combo box
 	wirelessAdapterComboBox = new QComboBox();
 	startupWidgetLayout->addWidget(wirelessAdapterComboBox, 0, Qt::AlignTop);
 	
 	//Draw the Wireless Network Name description field
-	wirelessNetworkNameText = new QLabel();
-	wirelessNetworkNameText->setText("Specify the name of the Inssidious wireless network:");
-	wirelessNetworkNameText->setPalette(descriptionTextPalette);
-	wirelessNetworkNameText->setContentsMargins(0, 10, 0, 2); /* padding from combo box above */
-	startupWidgetLayout->addWidget(wirelessNetworkNameText, 0, Qt::AlignTop);
+	wirelessNetworkNameTextLabel = new QLabel();
+	wirelessNetworkNameTextLabel->setText(wirelessNetworkNameText);
+	wirelessNetworkNameTextLabel->setPalette(descriptionTextPalette);
+	wirelessNetworkNameTextLabel->setContentsMargins(0, 10, 0, 2); /* padding from combo box above */
+	startupWidgetLayout->addWidget(wirelessNetworkNameTextLabel, 0, Qt::AlignTop);
 	
 	//Draw the Wireless Network Name line edit field
 	wirelessNetworkNameLineEdit = new QLineEdit();
@@ -76,11 +77,11 @@ void StartupWidget::onCoreThreadReady()
 	startupWidgetLayout->addWidget(wirelessNetworkNameLineEdit, 0, Qt::AlignTop);
 	
 	//Draw the Wireless Network Password description field
-	wirelessNetworkPasswordText = new QLabel();
-	wirelessNetworkPasswordText->setText("Specify the password for the Inssidious wireless network:");
-	wirelessNetworkPasswordText->setPalette(descriptionTextPalette);
-	wirelessNetworkPasswordText->setContentsMargins(0, 10, 0, 2); /* padding from line edit above */
-	startupWidgetLayout->addWidget(wirelessNetworkPasswordText, 0, Qt::AlignTop);
+	wirelessNetworkPasswordTextLabel = new QLabel();
+	wirelessNetworkPasswordTextLabel->setText(wirelessNetworkPasswordText);
+	wirelessNetworkPasswordTextLabel->setPalette(descriptionTextPalette);
+	wirelessNetworkPasswordTextLabel->setContentsMargins(0, 10, 0, 2); /* padding from line edit above */
+	startupWidgetLayout->addWidget(wirelessNetworkPasswordTextLabel, 0, Qt::AlignTop);
 	
 	//Draw the Wireless Network Password line edit field
 	wirelessNetworkPasswordLineEdit = new QLineEdit();
@@ -104,14 +105,14 @@ void StartupWidget::onCoreThreadReady()
 	lNetworkAdapters = Core::getNetworkAdapters();
 	
 	//Check if the first entry is an error, condition if so
-	if (lNetworkAdapters.first().AdapterPhysType == 2 /* error message */ )
+	if (lNetworkAdapters.first().AdapterPhysType == Core::ERROR_QUERYING_ADAPTERS)
 	{
 		//Display the error text in red in place of the description
-		internetConnectionText->setText(lNetworkAdapters.first().AdapterDescription);
-		internetConnectionText->setPalette(errorTextPalette);
+		internetConnectionTextLabel->setText(lNetworkAdapters.first().AdapterDescription);
+		internetConnectionTextLabel->setPalette(errorTextPalette);
 
 		//Clear the wireless description text
-		wirelessAdapterText->setText("");
+		wirelessAdapterTextLabel->setText("");
 
 		//Disable the combo boxes
 		internetConnectionComboBox->setDisabled(true);
@@ -131,7 +132,7 @@ void StartupWidget::onCoreThreadReady()
 			internetConnectionComboBox->addItem(networkAdapter.AdapterDescription);
 
 			//Add wireless ones to the wireless adapter combo box
-			if (networkAdapter.AdapterPhysType == 1 /* wireless adapter */)
+			if (networkAdapter.AdapterPhysType == Core::WIRELESS || networkAdapter.AdapterPhysType == Core::WIRELESS_HOSTED_NETWORK_CAPABLE)
 			{
 				wirelessAdapterComboBox->addItem(networkAdapter.AdapterDescription);
 			}
@@ -141,8 +142,83 @@ void StartupWidget::onCoreThreadReady()
 
 void StartupWidget::onStartButtonClicked()
 {
-	//Check fields for validity
+	//Bool to abort signaling core if any data is invalid
+	bool dataIsValid = true;
 
-	//Signal to core to start Inssidious
-	emit coreStartInssidious(/* put info here */);
+	//Reset description texts & palettes
+	internetConnectionTextLabel->setText(internetConnectionText);
+	internetConnectionTextLabel->setPalette(descriptionTextPalette);
+	wirelessAdapterTextLabel->setText(wirelessAdapterText);
+	wirelessAdapterTextLabel->setPalette(descriptionTextPalette);
+	wirelessNetworkNameTextLabel->setText(wirelessNetworkNameText);
+	wirelessNetworkNameTextLabel->setPalette(descriptionTextPalette);
+	wirelessNetworkPasswordTextLabel->setText(wirelessNetworkPasswordText);
+	wirelessNetworkPasswordTextLabel->setPalette(descriptionTextPalette);
+
+	//Check whether both Internet Connection and Wireless Adapter combo boxes are set to the same adapter
+	if (internetConnectionComboBox->currentText() == wirelessAdapterComboBox->currentText())
+	{
+		internetConnectionTextLabel->setText("The selected adapter doesn't support Wireless Hosted Networks.\nPlease select another wireless adapter:");
+		internetConnectionTextLabel->setText("The selected Internet Connection and Wireless Adapter cannot\nbe the same. Please select another internet connection:");
+		internetConnectionTextLabel->setPalette(errorTextPalette);
+		dataIsValid = false;
+	}
+
+	//Check whether the selected wireless adapter supports Hosted Network functionality
+	for (Core::NetworkAdapter networkAdapter : lNetworkAdapters)
+	{
+		if (wirelessAdapterComboBox->currentText() == networkAdapter.AdapterDescription)
+		{
+			if (networkAdapter.AdapterPhysType != Core::WIRELESS_HOSTED_NETWORK_CAPABLE)
+			{
+				wirelessAdapterTextLabel->setText("The selected adapter doesn't support Wireless Hosted Networks.\nPlease select another wireless adapter:");
+				wirelessAdapterTextLabel->setPalette(errorTextPalette);
+				dataIsValid = false;
+			}
+		}
+	}
+	
+	//Check whether the Inssidious Wireless Network Name is of appropriate length
+	if (wirelessNetworkNameLineEdit->text().count() < 1 || wirelessNetworkNameLineEdit->text().count() > 32) //1 - 32 is the valid SSID key length range
+	{
+		wirelessNetworkNameTextLabel->setText("The wireless network name must be between 1-32 characters:");
+		wirelessNetworkNameTextLabel->setPalette(errorTextPalette);
+		dataIsValid = false;
+	}
+
+	//Check whether the Inssidious Wireless Network Name uses only simple ASCII characters 
+	for (QChar c : wirelessNetworkNameLineEdit->text())
+	{
+		if (c.unicode() < 20 || c.unicode() > 126) //20 - 126 are simple ascii characters
+		{
+			wirelessNetworkNameTextLabel->setText("Please only use ASCII characters:");
+			wirelessNetworkNameTextLabel->setPalette(errorTextPalette);
+			dataIsValid = false;
+		}
+	}
+	
+	//Check whether the Inssidious Wireless Network Password is of appropriate length
+	if (wirelessNetworkPasswordLineEdit->text().count() < 8 || wirelessNetworkPasswordLineEdit->text().count() > 63) //8 - 63 is the valid SSID key length range
+	{
+		wirelessNetworkPasswordTextLabel->setText("The wireless password must be between 8-63 characters:");
+		wirelessNetworkPasswordTextLabel->setPalette(errorTextPalette);
+		dataIsValid = false;
+	}
+
+	//Check whether the Inssidious Wireless Network Password uses only simple ASCII characters 
+	for (QChar c : wirelessNetworkPasswordLineEdit->text())
+	{
+		if (c.unicode() < 20 || c.unicode() > 126) //20 - 126 are simple ascii characters
+		{
+			wirelessNetworkPasswordTextLabel->setText("Please only use ASCII characters:");
+			wirelessNetworkPasswordTextLabel->setPalette(errorTextPalette);
+			dataIsValid = false;
+		}
+	}
+
+	//Signal to core to start Inssidious if data was valid
+	if (dataIsValid)
+	{
+		emit coreStartInssidious(/* put info here */);
+	}
 }
