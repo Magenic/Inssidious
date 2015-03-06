@@ -52,6 +52,8 @@ public slots:
 signals:
 	void coreThreadReady();
 	void inssidiousStarted();
+	void deviceConnected();
+	void deviceDisconnected();
 
 	void inssidiousCriticalError(QString string);		//Critical error signal should block further action
 

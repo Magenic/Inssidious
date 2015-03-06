@@ -74,15 +74,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_core.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Device\device.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_device.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_device.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Router\router.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -104,6 +95,24 @@
     <ClCompile Include="GeneratedFiles\Release\moc_startupwidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Device\device.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_device.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_device.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_deviceobject.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_deviceobject.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\deviceobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Widgets\TamperWidgets\tamperwidget.h">
@@ -121,9 +130,6 @@
     <CustomBuild Include="Core\core.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Core\Device\device.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="Core\Router\router.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -131,6 +137,12 @@
       <Filter>Resource Files</Filter>
     </CustomBuild>
     <CustomBuild Include="Widgets\StartupWidget\startupwidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Core\Device\device.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\deviceobject.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

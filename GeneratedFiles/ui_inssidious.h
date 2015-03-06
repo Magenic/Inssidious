@@ -27,7 +27,7 @@ public:
     QWidget *DeviceSidebarListWidget;
     QScrollArea *DeviceSidebarListWidgetScrollArea;
     QWidget *scrollAreaWidgetContents;
-    QWidget *TamperAreaWidget;
+    QWidget *WaitingForDevicesWidget;
     QWidget *HeaderWidget;
     QLabel *AppLogo;
     QLabel *WirelessNetworkNameText;
@@ -132,10 +132,9 @@ public:
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
         scrollAreaWidgetContents->setGeometry(QRect(0, 0, 225, 584));
         DeviceSidebarListWidgetScrollArea->setWidget(scrollAreaWidgetContents);
-        TamperAreaWidget = new QWidget(MainAreaWidget);
-        TamperAreaWidget->setObjectName(QStringLiteral("TamperAreaWidget"));
-        TamperAreaWidget->setGeometry(QRect(225, 0, 537, 584));
-        TamperAreaWidget->setMinimumSize(QSize(375, 0));
+        WaitingForDevicesWidget = new QWidget(MainAreaWidget);
+        WaitingForDevicesWidget->setObjectName(QStringLiteral("WaitingForDevicesWidget"));
+        WaitingForDevicesWidget->setGeometry(QRect(225, 0, 537, 584));
         QPalette palette1;
         palette1.setBrush(QPalette::Active, QPalette::WindowText, brush);
         palette1.setBrush(QPalette::Active, QPalette::Button, brush1);
@@ -185,8 +184,8 @@ public:
         palette1.setBrush(QPalette::Disabled, QPalette::NoRole, brush1);
         palette1.setBrush(QPalette::Disabled, QPalette::ToolTipBase, brush8);
         palette1.setBrush(QPalette::Disabled, QPalette::ToolTipText, brush7);
-        TamperAreaWidget->setPalette(palette1);
-        TamperAreaWidget->setAutoFillBackground(true);
+        WaitingForDevicesWidget->setPalette(palette1);
+        WaitingForDevicesWidget->setAutoFillBackground(true);
         HeaderWidget = new QWidget(Inssidious);
         HeaderWidget->setObjectName(QStringLiteral("HeaderWidget"));
         HeaderWidget->setGeometry(QRect(0, 0, 762, 60));

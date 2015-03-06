@@ -536,7 +536,7 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="TamperAreaWidget" native="true">
+   <widget class="QWidget" name="WaitingForDevicesWidget" native="true">
     <property name="geometry">
      <rect>
       <x>225</x>
@@ -544,12 +544,6 @@
       <width>537</width>
       <height>584</height>
      </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>375</width>
-      <height>0</height>
-     </size>
     </property>
     <property name="palette">
      <palette>

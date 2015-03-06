@@ -31,6 +31,9 @@ void Core::onCoreStartInssidious()
 	if (true)
 	{
 		emit inssidiousStarted();
+		emit deviceConnected();
+		emit deviceConnected();
+		emit deviceConnected();
 	}
 	else
 	{
