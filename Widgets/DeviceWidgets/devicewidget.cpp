@@ -1,7 +1,10 @@
 #include "devicewidget.h"
 
-DeviceWidget::DeviceWidget(DeviceType)
+DeviceWidget::DeviceWidget(QString m)
 {
+	//Initialize the device name and icon text from the MAC address
+	initializeNameAndIcons(m);
+
 	//Enable mouse tracking for hover highlighting on the sidebar
 	this->setMouseTracking(true);
 
@@ -35,13 +38,13 @@ DeviceWidget::DeviceWidget(DeviceType)
 
 	//Initialize the Device icon 
 	deviceIcon.setFixedSize(44,44);
-	deviceIcon.setPixmap(QPixmap(":/DeviceWidget/iPhoneInactive.png"));
+	deviceIcon.setPixmap(iconInactive);
 
 	//Initialize the Device name
 	deviceName.setFont(deviceNameFont);
 	deviceName.setPalette(textColorInactive);
 	deviceName.setContentsMargins(10, 0, 0, 0); /*indent text from device avatar*/
-	deviceName.setText("iPhone 6");
+	deviceName.setText(deviceNameString);
 
 	//Add the objects to the device widget
 	deviceWidgetLayout.addSpacing(5);
@@ -50,39 +53,41 @@ DeviceWidget::DeviceWidget(DeviceType)
 	deviceWidgetLayout.addWidget(&deviceName);
 	deviceWidgetLayout.addStretch();
 	deviceWidgetLayout.addSpacing(5);
-	deviceWidgetLayout.addWidget(&deviceTamperStatusIcon);
+	deviceWidgetLayout.addWidget(&tamperCount);
 	deviceWidgetLayout.addSpacing(12);
 
 
 }
 
-void DeviceWidget::showAsInactive()
+void DeviceWidget::unselect()
 {
 	this->setPalette(backgroundColorInactive);
-	deviceName.setPalette(textColorInactive);
-	deviceIcon.setPixmap(QPixmap(":/DeviceWidget/iPhoneInactive.png"));
+	this->deviceName.setPalette(textColorInactive);
+	this->deviceIcon.setPixmap(iconInactive);
 }
 
-void DeviceWidget::showAsActive()
+void DeviceWidget::select()
 {
 	this->setPalette(backgroundColorActive);
-	deviceName.setPalette(textColorActive);
-	deviceIcon.setPixmap(QPixmap(":/DeviceWidget/iPhoneActive.png"));
-}
-
-void DeviceWidget::onShowTamperActivity()
-{
-
-}
-
-void DeviceWidget::onUpdateTamperCounts()
-{
-
+	this->deviceName.setPalette(textColorActive);
+	this->deviceIcon.setPixmap(iconActive);
 }
 
 void DeviceWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-	emit setActiveDeviceWidget();
+	if ((e->buttons() & Qt::LeftButton) == Qt::LeftButton)
+	{
+		if (this->palette().background().color() == backgroundColorActivePressed)
+		{
+			this->setPalette(backgroundColorActive);
+		}
+		else if (this->palette().background().color() == backgroundColorInactivePressed)
+		{
+			this->setPalette(backgroundColorInactive);
+		}
+	}
+
+	emit deviceWidgetClicked(this);
 }
 
 void DeviceWidget::mousePressEvent(QMouseEvent *e)
@@ -132,4 +137,11 @@ void DeviceWidget::leaveEvent(QEvent *e)
 	{
 		this->setPalette(backgroundColorInactive);
 	}
+}
+
+void DeviceWidget::initializeNameAndIcons(QString m)
+{
+	deviceNameString = "iPhone 6";
+	iconActive = QPixmap(":/DeviceWidget/iPhoneActive.png");
+	iconInactive = QPixmap(":/DeviceWidget/iPhoneInactive.png");
 }

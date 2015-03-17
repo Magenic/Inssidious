@@ -20,7 +20,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_Inssidious
+class Ui_Template
 {
 public:
     QWidget *MainAreaWidget;
@@ -36,14 +36,14 @@ public:
     QLabel *WirelessNetworkNameIcon;
     QWidget *CriticalErrorWidget;
 
-    void setupUi(QWidget *Inssidious)
+    void setupUi(QWidget *InssidiousUi)
     {
-        if (Inssidious->objectName().isEmpty())
-            Inssidious->setObjectName(QStringLiteral("Inssidious"));
-        Inssidious->resize(762, 644);
-        Inssidious->setMinimumSize(QSize(762, 644));
-        Inssidious->setMaximumSize(QSize(762, 644));
-        MainAreaWidget = new QWidget(Inssidious);
+        if (InssidiousUi->objectName().isEmpty())
+            InssidiousUi->setObjectName(QStringLiteral("InssidiousUi"));
+        InssidiousUi->resize(762, 644);
+        InssidiousUi->setMinimumSize(QSize(762, 644));
+        InssidiousUi->setMaximumSize(QSize(762, 644));
+        MainAreaWidget = new QWidget(InssidiousUi);
         MainAreaWidget->setObjectName(QStringLiteral("MainAreaWidget"));
         MainAreaWidget->setEnabled(true);
         MainAreaWidget->setGeometry(QRect(0, 60, 762, 584));
@@ -186,7 +186,7 @@ public:
         palette1.setBrush(QPalette::Disabled, QPalette::ToolTipText, brush7);
         WaitingForDevicesWidget->setPalette(palette1);
         WaitingForDevicesWidget->setAutoFillBackground(true);
-        HeaderWidget = new QWidget(Inssidious);
+        HeaderWidget = new QWidget(InssidiousUi);
         HeaderWidget->setObjectName(QStringLiteral("HeaderWidget"));
         HeaderWidget->setGeometry(QRect(0, 0, 762, 60));
         HeaderWidget->setMinimumSize(QSize(0, 60));
@@ -256,7 +256,7 @@ public:
         WirelessNetworkNameIcon = new QLabel(HeaderWidget);
         WirelessNetworkNameIcon->setObjectName(QStringLiteral("WirelessNetworkNameIcon"));
         WirelessNetworkNameIcon->setGeometry(QRect(640, 10, 16, 16));
-        CriticalErrorWidget = new QWidget(Inssidious);
+        CriticalErrorWidget = new QWidget(InssidiousUi);
         CriticalErrorWidget->setObjectName(QStringLiteral("CriticalErrorWidget"));
         CriticalErrorWidget->setEnabled(true);
         CriticalErrorWidget->setGeometry(QRect(0, 0, 762, 644));
@@ -317,14 +317,14 @@ public:
         CriticalErrorWidget->setPalette(palette3);
         CriticalErrorWidget->setAutoFillBackground(true);
 
-        retranslateUi(Inssidious);
+        retranslateUi(InssidiousUi);
 
-        QMetaObject::connectSlotsByName(Inssidious);
+        QMetaObject::connectSlotsByName(InssidiousUi);
     } // setupUi
 
-    void retranslateUi(QWidget *Inssidious)
+    void retranslateUi(QWidget *InssidiousUi)
     {
-        Inssidious->setWindowTitle(QApplication::translate("Inssidious", "Inssidious", 0));
+        InssidiousUi->setWindowTitle(QApplication::translate("Template", "Inssidious", 0));
         AppLogo->setText(QString());
         WirelessNetworkPasswordIcon->setText(QString());
         WirelessNetworkNameIcon->setText(QString());
@@ -333,7 +333,7 @@ public:
 };
 
 namespace Ui {
-    class Inssidious: public Ui_Inssidious {};
+    class Template: public Ui_Template {};
 } // namespace Ui
 
 QT_END_NAMESPACE

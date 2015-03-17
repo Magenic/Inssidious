@@ -7,9 +7,12 @@
 #include <WinSock2.h>
 #include <Windows.h>						//Windows types
 #include <Wlanapi.h>						//Wlan functions 
-#include <wtypes.h>							//Wlan types
+#include <wtypes.h>						//Wlan types
 #include <iphlpapi.h>						//IP Helper APIs
 #include <comdef.h>							//Easy HRESULT conversion
+
+#include "Core\types.h"						//Network Adapter and AdapterPhysType types
+#include "Router\router.h"					//Router class to call when InssidiousUi asks to start
 
 #pragma comment(lib, "iphlpapi.lib")		//Link against iphlpapi.lib for IP Helper APIs
 #pragma comment(lib, "wlanapi.lib")			//Link against wlanapi.lib for the wlan APIs
@@ -28,37 +31,30 @@ public:
 	~Core();
 	
 	
-	static enum AdapterPhysTypes										//Adapter types
-	{ 
-		ERROR_QUERYING_ADAPTERS, 
-		ETHERNET, 
-		WIRELESS, 
-		WIRELESS_HOSTED_NETWORK_CAPABLE 
-	};	
-
-	struct NetworkAdapter												//Network Adapter information
-	{
-		QString AdapterName;
-		QString AdapterDescription;
-		AdapterPhysTypes AdapterPhysType;
-	};
+	static QList<NetworkAdapter> NetworkAdapterList;
 	
-	static QList<NetworkAdapter> Core::getNetworkAdapters();	//Store all ethernet & wireless interfaces in QList
 
 public slots:
 	void onThreadStarted();
-	void onCoreStartInssidious();
+	void onCoreStartInssidious(int, int, QString, QString);
+	void onRouterFailed(QString);
+	//void onRouterDeviceConnected(QString);
+	//void onRouterDeviceDisconnected(QString);
 
 signals:
-	void coreThreadReady();
-	void inssidiousStarted();
-	void deviceConnected();
-	void deviceDisconnected();
+	void coreReadyToStart();
 
-	void inssidiousCriticalError(QString string);		//Critical error signal should block further action
+	void coreStarted(QString networkName, QString networkPassword);
+	void coreFailed(QString errorMessage);			
+
+	void coreDeviceConnected(QString);
+	void coreDeviceDisconnected(QString);
 
 private:
-	
+	bool runningAsAdmin();
+	bool runningOnWindows7OrNewer();
+	bool getNetworkAdapters();
+
 };
 
 

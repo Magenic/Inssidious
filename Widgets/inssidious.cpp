@@ -1,6 +1,6 @@
 #include "inssidious.h"
 
-Inssidious::Inssidious(QWidget *parent)
+InssidiousUi::InssidiousUi(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
@@ -80,14 +80,15 @@ Inssidious::Inssidious(QWidget *parent)
 
 	//Connect initial signals and slots
 	connect(coreThread, &QThread::started, core, &Core::onThreadStarted);									//Notify Core that it is on it's own thread	and that thread has started
-	connect(core, &Core::coreThreadReady, startupWidget, &StartupWidget::onCoreThreadReady);				//Notify Startup Widget that core is ready to go
+	connect(core, &Core::coreReadyToStart, startupWidget, &StartupWidget::onCoreReadyToStart);				//Notify Startup Widget that core is ready to go
 	connect(startupWidget, &StartupWidget::coreStartInssidious, core, &Core::onCoreStartInssidious);		//Notify Core that Startup Widget requests to start Inssidious 
+	connect(core, &Core::coreStarted, this, &InssidiousUi::onCoreStarted);									//Notify Inssidious (main) that Core has successfully started Inssidious
+	connect(core, &Core::coreFailed, this, &InssidiousUi::onCoreFailed);									//Notify Startup Widget that core has failed to start Inssidious
+	connect(core, &Core::coreDeviceConnected, this, &InssidiousUi::onDeviceConnected);
+	connect(core, &Core::coreDeviceDisconnected, this, &InssidiousUi::onDeviceDisconnected);
 
-	connect(core, &Core::inssidiousStarted, this, &Inssidious::onInssidiousStarted);						//Notify Inssidious (main) that Core has successfully started Inssidious
-	connect(core, &Core::inssidiousCriticalError, this, &Inssidious::onInssidiousCriticalError);			//Notify Startup Widget that core has failed to start Inssidious
-
-	connect(core, &Core::deviceConnected, this, &Inssidious::onDeviceConnected);							//Notify Inssidious (main) that Core has had a device connect to the network
-	connect(core, &Core::deviceDisconnected, this, &Inssidious::onDeviceDisconnected);						//Notify Inssidious (main) that Core has had a device disconnect from the network
+	//connect(core, &Core::addDeviceWidget, this, &InssidiousUi::onDeviceConnected);							//Notify Inssidious (main) that a device has connected to the network
+	//connect(core, &Core::removeDeviceWidget, this, &InssidiousUi::onDeviceDisconnected);					//Notify Inssidious (main) that a device has disconnected from the network
 
 	//Start the core thread
 	coreThread->start();
@@ -95,16 +96,11 @@ Inssidious::Inssidious(QWidget *parent)
 	/* Core will emit a signal for StartupWidget to indicate it successfully started or failed */
 }
 
-Inssidious::~Inssidious()
-{
-
-}
-
-void Inssidious::onInssidiousStarted(/* wireless network name and password */)
+void InssidiousUi::onCoreStarted(QString networkName, QString networkPassword)
 {	
 	//Set the wireless network name and password
-	ui.WirelessNetworkNameText->setText("Inssidious - Ian");
-	ui.WirelessNetworkPasswordText->setText("inssidious");
+	ui.WirelessNetworkNameText->setText(networkName);
+	ui.WirelessNetworkPasswordText->setText(networkPassword);
 
 	//Hide & delete the Startup Widget
 	startupWidget->hide();
@@ -117,10 +113,10 @@ void Inssidious::onInssidiousStarted(/* wireless network name and password */)
 	/* Core will emit a signal for Inssidious when a device connects to the wireless network */
 }
 
-void Inssidious::onInssidiousCriticalError(QString errorMessage)
+void InssidiousUi::onCoreFailed(QString errorMessage)
 {	
 	//Add the errorMessage to the error text
-	criticalErrorMessage->setText(errorMessage + "\nPlease restart Inssidious.");
+	criticalErrorMessage->setText(errorMessage + "\n\nPlease restart Inssidious.");
 
 	//Set the layout to the critical error layout
 	ui.CriticalErrorWidget->setLayout(criticalErrorLayout);
@@ -132,51 +128,78 @@ void Inssidious::onInssidiousCriticalError(QString errorMessage)
 	/* No further action can be taken without restarting Inssidious */
 }
 
-void Inssidious::onSwitchDeviceWidgets(DeviceObject* deviceObject)
+void InssidiousUi::onDeviceConnected(QString MACAddress)
 {
-	//For each device object in the list
-	for (DeviceObject* deviceObject : deviceObjectList)
-	{
-		//If it is active, set it as inactive
-		if (deviceObject->isActive())
-		{
-			deviceObject->setInactive();
-		}
-	}
+	//Create a new Device 
+	Device* device = new Device(MACAddress, ui.MainAreaWidget);
 
-	//Set the device object that signaled to active
-	deviceObject->setActive();
-}
+	//Add the device to the list
+	DeviceList.append(device);
 
-void Inssidious::onDeviceConnected(/* unique id, name, type */)
-{
-	//Create a new Device Object and add it to the Device Object List
-	DeviceObject* deviceObject = new DeviceObject(ui.DeviceSidebarListWidgetScrollArea->widget(), ui.MainAreaWidget);
-	deviceObjectList.append(deviceObject);
+	//Add the device widget to the sidebar
+	ui.DeviceSidebarListWidgetScrollArea->widget()->layout()->addWidget(device->widget);
 
-	//Connect the device object switch signal to Inssidious' switch device widgets slot
-	connect(deviceObject, &DeviceObject::switchDeviceWidgets, this, &Inssidious::onSwitchDeviceWidgets);
+	//Connect the device widget clicked signal to Inssidious's on device widget clicked slot
+	connect(device->widget, &DeviceWidget::deviceWidgetClicked, this, &InssidiousUi::onDeviceWidgetClicked);
 
 	//Check if we need to hide the Waiting for Devices widget
-	if (deviceObjectList.count() == 1) //this is the first device
+	if (DeviceList.count() == 1) //this is the first device
 	{
 		//Hide the Waiting for Devices widget
 		ui.WaitingForDevicesWidget->hide();
 
-		//Show the device Object
-		deviceObject->setActive();
+		//Tell the new Device Widget to show as active
+		device->widget->select();
+
+		//Show the tamper widgets container
+		device->tamperWidgetsContainer->show();
 	}
 }
 
-void Inssidious::onDeviceDisconnected(/* unique id */)
+void InssidiousUi::onDeviceDisconnected(QString MACAddress)
 {
-	//deviceObjectList.removeOne(DeviceObject* thisguy);
-	//delete ~DeviceObject()
-
-	if (deviceObjectList.count() == 0) //there are no other devices connected
+	for (Device* device : DeviceList)
 	{
-		//Show & raise the Waiting for Devices widget
-		ui.WaitingForDevicesWidget->show();
-		ui.WaitingForDevicesWidget->raise();
+		if (device->MACAddress == MACAddress)
+		{
+			//Remove the device from the list
+			DeviceList.removeOne(device);
+
+			//If this device's device widget was active, select another widget to be active instead
+			if (device->isActive && DeviceList.count() != 0)
+			{
+				DeviceList.first()->select();
+			}
+
+			//Delete the device
+			delete device;
+
+			//If there are no other devices connected, show the Waiting for Devices widget
+			if (DeviceList.count() == 0)
+			{
+				ui.WaitingForDevicesWidget->show();
+				ui.WaitingForDevicesWidget->raise();
+			}
+
+		}
+	}
+}
+
+void InssidiousUi::onDeviceWidgetClicked(DeviceWidget* deviceWidget)
+{
+	//For each device in the list
+	for (Device* device : DeviceList)
+	{
+		//If it is active, set it as inactive
+		if (device->isActive)
+		{
+			device->unselect();
+		}
+
+		//If it is the owner of the widget that signaled, set it as active 
+		if (device->widget == deviceWidget)
+		{
+			device->select();
+		}
 	}
 }

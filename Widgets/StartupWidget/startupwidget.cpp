@@ -40,7 +40,7 @@ StartupWidget::StartupWidget(QWidget *parent)
 	
 }
 
-void StartupWidget::onCoreThreadReady()
+void StartupWidget::onCoreReadyToStart()
 {
 	//Draw the Internet Connection description field
 	internetConnectionTextLabel = new QLabel();
@@ -101,44 +101,19 @@ void StartupWidget::onCoreThreadReady()
 	//Connect the start button signal & slot
 	connect(inssidiousStartButton, SIGNAL(clicked()), this, SLOT(onStartButtonClicked()));
 	
-	//Get the names of all network adapters from Core
-	lNetworkAdapters = Core::getNetworkAdapters();
-	
-	//Check if the first entry is an error, condition if so
-	if (lNetworkAdapters.first().AdapterPhysType == Core::ERROR_QUERYING_ADAPTERS)
+	for (NetworkAdapter networkAdapter : Core::NetworkAdapterList)
 	{
-		//Display the error text in red in place of the description
-		internetConnectionTextLabel->setText(lNetworkAdapters.first().AdapterDescription);
-		internetConnectionTextLabel->setPalette(errorTextPalette);
+		//Add each of them to the Internet Connection combo box
+		internetConnectionComboBox->addItem(networkAdapter.AdapterDescription);
 
-		//Clear the wireless description text
-		wirelessAdapterTextLabel->setText("");
-
-		//Disable the combo boxes
-		internetConnectionComboBox->setDisabled(true);
-		wirelessAdapterComboBox->setDisabled(true);
-
-		//Disable the start button
-		inssidiousStartButton->setDisabled(true);
-
-		//No further work can be done, return.
-		return;
-	}
-	else //We have a valid list of network adapters
-	{
-		for (Core::NetworkAdapter networkAdapter : lNetworkAdapters)
+		//Add wireless ones to the wireless adapter combo box
+		if (networkAdapter.AdapterType == WIRELESS || networkAdapter.AdapterType == WIRELESS_HOSTED_NETWORK_CAPABLE)
 		{
-			//Add each of them to the Internet Connection combo box
-			internetConnectionComboBox->addItem(networkAdapter.AdapterDescription);
-
-			//Add wireless ones to the wireless adapter combo box
-			if (networkAdapter.AdapterPhysType == Core::WIRELESS || networkAdapter.AdapterPhysType == Core::WIRELESS_HOSTED_NETWORK_CAPABLE)
-			{
-				wirelessAdapterComboBox->addItem(networkAdapter.AdapterDescription);
-			}
+			wirelessAdapterComboBox->addItem(networkAdapter.AdapterDescription);
 		}
 	}
 }
+
 
 void StartupWidget::onStartButtonClicked()
 {
@@ -155,6 +130,22 @@ void StartupWidget::onStartButtonClicked()
 	wirelessNetworkPasswordTextLabel->setText(wirelessNetworkPasswordText);
 	wirelessNetworkPasswordTextLabel->setPalette(descriptionTextPalette);
 
+	int internetConnectionIndex;
+	int wirelessAdapterIndex;
+
+	//Find the index of our selected adapters to emit to core later
+	for (int i = 0; i < Core::NetworkAdapterList.count(); i++)
+	{
+		if (internetConnectionComboBox->currentText() == Core::NetworkAdapterList[i].AdapterDescription)
+		{
+			internetConnectionIndex = i;
+		}
+		if (wirelessAdapterComboBox->currentText() == Core::NetworkAdapterList[i].AdapterDescription)
+		{
+			wirelessAdapterIndex = i;
+		}
+	}
+
 	//Check whether both Internet Connection and Wireless Adapter combo boxes are set to the same adapter
 	if (internetConnectionComboBox->currentText() == wirelessAdapterComboBox->currentText())
 	{
@@ -165,18 +156,13 @@ void StartupWidget::onStartButtonClicked()
 	}
 
 	//Check whether the selected wireless adapter supports Hosted Network functionality
-	for (Core::NetworkAdapter networkAdapter : lNetworkAdapters)
+	if (Core::NetworkAdapterList[wirelessAdapterIndex].AdapterType != WIRELESS_HOSTED_NETWORK_CAPABLE)
 	{
-		if (wirelessAdapterComboBox->currentText() == networkAdapter.AdapterDescription)
-		{
-			if (networkAdapter.AdapterPhysType != Core::WIRELESS_HOSTED_NETWORK_CAPABLE)
-			{
-				wirelessAdapterTextLabel->setText("The selected adapter doesn't support Wireless Hosted Networks.\nPlease select another wireless adapter:");
-				wirelessAdapterTextLabel->setPalette(errorTextPalette);
-				dataIsValid = false;
-			}
-		}
+		wirelessAdapterTextLabel->setText("The selected adapter doesn't support Wireless Hosted Networks.\nPlease select another wireless adapter:");
+		wirelessAdapterTextLabel->setPalette(errorTextPalette);
+		dataIsValid = false;
 	}
+
 	
 	//Check whether the Inssidious Wireless Network Name is of appropriate length
 	if (wirelessNetworkNameLineEdit->text().count() < 1 || wirelessNetworkNameLineEdit->text().count() > 32) //1 - 32 is the valid SSID key length range
@@ -216,9 +202,15 @@ void StartupWidget::onStartButtonClicked()
 		}
 	}
 
+
 	//Signal to core to start Inssidious if data was valid
 	if (dataIsValid)
 	{
-		emit coreStartInssidious(/* put info here */);
+		emit coreStartInssidious(
+			internetConnectionIndex, 
+			wirelessAdapterIndex, 
+			wirelessNetworkNameLineEdit->text(), 
+			wirelessNetworkPasswordLineEdit->text()
+			);
 	}
 }

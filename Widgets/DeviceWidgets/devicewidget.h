@@ -12,41 +12,40 @@ class DeviceWidget : public QWidget
 	Q_OBJECT
 
 public:
-	typedef struct DeviceType {
-		QString deviceName;
-		QPixmap deviceIconActive;
-		QPixmap deviceIconInactive;
-		int deviceActiveTamperCount;
-	} DeviceType;
+	DeviceWidget(QString m);					//MAC Address
 
-	DeviceWidget(DeviceType);
-	void showAsInactive();						//Hide device widget
-	void showAsActive();						//Show device widget
+	void unselect();							//Show as an unselected device widget
+	void select();								//Show as the selected device widget
+
 
 signals:
-	void setActiveDeviceWidget();	//Notify Device Object of widget selection
+	void deviceWidgetClicked(DeviceWidget*);	//Signal this device widget was clicked
 
-public slots:
-	void onShowTamperActivity();				//Draw outer circle to indicate tamper activity
-	void onUpdateTamperCounts();				//Increment or decrement tamper count
 
 private:
-	void mousePressEvent(QMouseEvent *e);
+	void mousePressEvent(QMouseEvent *e);		//Catch mouse click events
 	void mouseReleaseEvent(QMouseEvent *e);
 	void mouseDoubleClickEvent(QMouseEvent *e);
 	void contextMenuEvent(QContextMenuEvent *e);
 	void enterEvent(QEvent *e);
 	void leaveEvent(QEvent *e);
 
-	QHBoxLayout deviceWidgetLayout;
+	void initializeNameAndIcons(QString m);		//Fill in deviceNameString, iconActive, and iconInactive from MAC Address
+
+	QHBoxLayout deviceWidgetLayout;				//Layout for the device widget
 	
 	QLabel deviceIcon;
 	QLabel deviceName;
-	QLabel deviceTamperStatusIcon;
 
-	QFont deviceNameFont;
+	QString deviceNameString;					//QString for device name
+	QPixmap iconActive;							//QPixmap for active icon
+	QPixmap iconInactive;						//QPixmap for inactive icon
 
-	QColor textColorActive;
+	QFont deviceNameFont;						//Name text font
+
+	QLabel tamperCount;							//Count of active tamper items
+
+	QColor textColorActive;						//QColors for different mouse states
 	QColor textColorInactive;
 	QColor backgroundColorActive;
 	QColor backgroundColorActiveHover;

@@ -4,45 +4,50 @@
 #include <QWidget>
 #include <QThread>
 #include "ui_inssidious.h"
+#include "Core\types.h"
 #include "Core\core.h"
+#include "Device\device.h"
+#include "DeviceWidgets\devicewidget.h"
 #include "StartupWidget\startupwidget.h"
-#include "deviceobject.h"
+#include "TamperWidgets\tamperwidget.h"
 
 
-class Inssidious : public QWidget
+class InssidiousUi : public QWidget
 {
 	Q_OBJECT
 
 public:
-	Inssidious(QWidget *parent = 0);
-	~Inssidious();
-
-signals:
+	InssidiousUi(QWidget *parent = 0);
 
 
 public slots :
-	void onInssidiousStarted();					//Hide Startup Widget and show waiting for devices message
-	void onDeviceConnected();					//A device connected. Add a device widget to sidebar
-	void onDeviceDisconnected();				//A device disconnected. Remove device widget from sidebar
-	void onSwitchDeviceWidgets(DeviceObject*);	//A device widget was clicked. Hide all device widgets and then show that device widget
+	void onCoreStarted(QString, QString);					//Core has started Inssidious. Hide the Startup Widget and show Waiting for Devices message
+	void onCoreFailed(QString);								//Core has hit a critical error. Display an error message asking to restart Inssidious.
 
-	void onInssidiousCriticalError(QString);	//A critical error has occured. Display an error message asking to restart Inssidious.
+	void onDeviceConnected(QString MACAddress);				//A device connected. Add a device widget to sidebar & device to device list
+	void onDeviceDisconnected(QString MACAddress);			//A device disconnected. Remove device widget from sidebar & device from device list
+
 
 private:
-	Ui::Inssidious ui;							
-	StartupWidget* startupWidget;				//Pointer to an instance of Startup Widget
-	Core* core;									//Pointer to an instance of Core
-	QThread* coreThread;						//Pointer to the QThread to move Core to
+	Ui::Template ui;										//Instance of the ui template from file ./Widgets/inssidious.ui
+	Core* core;												//Pointer to an instance of Core
+	QThread* coreThread;									//Pointer to the QThread to move Core to
 
-	QVBoxLayout* waitingForDevicesLayout;		//Layout for Waiting For Devices Widget when Inssidious first starts
-	QLabel* waitingForDevicesMessage;			//Message to display when no devices are connected	
+	StartupWidget* startupWidget;							//Pointer to an instance of Startup Widget
 
-	QVBoxLayout* criticalErrorLayout;			//Layout for errors that require restarting Inssidious
-	QLabel* criticalErrorSadLogo;				//Sad version of the Inssidious logo to display when there is a critical error
-	QLabel* criticalErrorMessage;				//Message to display when there is a critical error
-	QPushButton* criticalErrorQuitButton;		//Button to quit Inssidious after a critical error
+	QVBoxLayout* waitingForDevicesLayout;					//Layout for Waiting For Devices Widget when Inssidious first starts
+	QLabel* waitingForDevicesMessage;						//Message to display when no devices are connected	
 
-	QList<DeviceObject*> deviceObjectList;		//List of all device objects
+	QVBoxLayout* criticalErrorLayout;						//Layout for errors that require restarting Inssidious
+	QLabel* criticalErrorSadLogo;							//Sad version of the Inssidious logo to display when there is a critical error
+	QLabel* criticalErrorMessage;							//Message to display when there is a critical error
+	QPushButton* criticalErrorQuitButton;					//Button to quit Inssidious after a critical error
+
+	QList<Device*> DeviceList;								//List of all device objects
+
+
+private slots:
+	void onDeviceWidgetClicked(DeviceWidget*);				//A device widget was clicked. Hide all device widgets and then show that device widget
 };
 
 #endif // INSSIDIOUS_H

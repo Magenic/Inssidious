@@ -4,57 +4,55 @@
 #include <QWidget>
 #include <QLabel>
 #include <QLayout>
+#include <QMouseEvent>
+#include "Core\types.h"
 
 class TamperWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
+	TamperWidget(TamperType);							//Tamper type from types.h
+	void select();										//Show as a selected tamper widget
+	void unselect();									//Show as an unselected tamper widget
 
-	typedef struct TamperType {
-		QString Name;
-		QString Description;
-		QPixmap activeIcon;
-		QPixmap inactiveIcon;
-	} TamperType;
-
-	TamperWidget(TamperType);
-	~TamperWidget();
 
 signals: 
-	void activateTamperWidget();
-	void deactivateTamperWidget();
-
-public slots: 
-	void tamperWidgetActivated();
-	void tamperWidgetDeactivated();
+	void tamperWidgetClicked(TamperType);				//Signal this tamper widget was clicked
 
 private:
-	void mousePressEvent(QMouseEvent *e);
+	void mousePressEvent(QMouseEvent *e);				//Mouse events for hover and select updates
 	void mouseReleaseEvent(QMouseEvent *e);
 	void mouseDoubleClickEvent(QMouseEvent *e);
 	void contextMenuEvent(QContextMenuEvent *e);
 	void enterEvent(QEvent *e);
 	void leaveEvent(QEvent *e);
 
-	QHBoxLayout* tamperWidgetLayout;
-	QVBoxLayout* textContainerLayout;
-	QVBoxLayout* descriptionChildLayout;
+	TamperType tamperType;								//Tamper Type from types.h
 
-	QLabel* tamperName;
-	QLabel* tamperIconActive;
-	QLabel* tamperIconInactive;
-	QLabel* tamperDescription;
+	QHBoxLayout* tamperWidgetLayout;					//Layout for the tamper widget
+	QVBoxLayout* textContainerLayout;					//Nested layout for the Name and Description
+	QVBoxLayout* descriptionChildLayout;				//So much nesting
+
+	QLabel* tamperName;									//Tamper Name label
+	QLabel* tamperIcon;									//Tamper Icon label
+	QLabel* tamperDescription;							//Tamper Description label
 	
-	QFont tamperNameFont;
-	QFont tamperDescriptionFont;
+	QPixmap tamperIconActive;							//Active icon from switch in constructor
+	QPixmap tamperIconInactive;							//Inactive icon from switch in constructor
 
-	QPalette tamperTextsPaletteActive;
-	QPalette tamperTextsPaletteInactive;
+	QFont tamperNameFont;								//Large font size for Name
+	QFont tamperDescriptionFont;						//Small font fize for description
 
-	QPalette tamperWidgetPaletteActive;
+	QPalette tamperTextsPaletteActive;					//Dark black text when selected
+	QPalette tamperTextsPaletteInactive;				//Light grey text when unselected
+
+	QPalette tamperWidgetPaletteActive;					//Palettes for different hover and select states
+	QPalette tamperWidgetPaletteActiveHover;
+	QPalette tamperWidgetPaletteActivePressed;
 	QPalette tamperWidgetPaletteInactive;
-
+	QPalette tamperWidgetPaletteInactiveHover;
+	QPalette tamperWidgetPaletteInactivePressed;
 };
 
 #endif // TAMPERWIDGET_H

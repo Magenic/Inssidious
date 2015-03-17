@@ -95,30 +95,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_startupwidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Device\device.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_device.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_device.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_deviceobject.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_deviceobject.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\deviceobject.cpp">
+    <ClCompile Include="Device\device.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Widgets\TamperWidgets\tamperwidget.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Widgets\DeviceWidgets\devicewidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="Widgets\inssidious.h">
@@ -139,16 +127,19 @@
     <CustomBuild Include="Widgets\StartupWidget\startupwidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Core\Device\device.h">
+    <CustomBuild Include="Widgets\DeviceWidgets\devicewidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Widgets\deviceobject.h">
+    <CustomBuild Include="Device\device.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_inssidious.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\types.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

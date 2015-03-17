@@ -7,8 +7,10 @@
 #include <QComboBox>
 #include <QLineEdit>
 #include <QPushButton>
+#include "Core\core.h"			//Core's NetworkAdapterList 
+#include "Core\types.h"			//NetworkAdapter type and AdapterPhysType type
 
-#include "core.h"			//Core network adapter information
+
 
 class StartupWidget : public QWidget
 {
@@ -18,30 +20,35 @@ public:
 	StartupWidget(QWidget *parent);
 
 signals:
-	void coreStartInssidious();								//Signal to Core to start Inssidious
+	void coreStartInssidious(int, int, QString, QString);	//Signal to Core to start Inssidious 
 
 public slots:
-	void onCoreThreadReady();								//Triggered by Core's successful start, can now ask for network adapters and similar
+	void onCoreReadyToStart();								//Triggered by Core's successful start, now have a list of network adapters 
 	
 private slots:
 	void onStartButtonClicked();							//Triggered by QPushButton's clicked signal, emits info to Core to start Inssidious
 
 private:
 	QVBoxLayout* startupWidgetLayout;						//Layout for the Startup Widget
+
 	QLabel* inssidiousLogo;									//Logo image
 	QLabel* inssidiousTagLine;								//Tag line image
-	QLabel* coreStartFailedText;							//Error text
+
 	QPalette descriptionTextPalette;						//Palette for grey description text
 	QPalette errorTextPalette;								//Palette for red error text
-	QList<Core::NetworkAdapter> lNetworkAdapters;			//QList of all network adapters
+
 	QLabel* internetConnectionTextLabel;					//Description text label
+	QComboBox* internetConnectionComboBox;					//Combo box for all network adapters
+
 	QLabel* wirelessAdapterTextLabel;						//Description text label
+	QComboBox* wirelessAdapterComboBox;						//Combo box for all wireless network adapters
+
 	QLabel* wirelessNetworkNameTextLabel;					//Description text label
-	QComboBox* internetConnectionComboBox;					//Combo box populated by a call to core
-	QLabel* wirelessNetworkPasswordTextLabel;				//Description text label
-	QComboBox* wirelessAdapterComboBox;						//Combo box popluated by a call to core
 	QLineEdit* wirelessNetworkNameLineEdit;					//Editable field to specify the wireless network name
+
+	QLabel* wirelessNetworkPasswordTextLabel;				//Description text label
 	QLineEdit* wirelessNetworkPasswordLineEdit;				//Editable field to specify the wireless network password
+	
 	QPushButton* inssidiousStartButton;						//Start button
 
 	//Description text strings to set the labels to
