@@ -18,7 +18,7 @@ class Router : public QObject
 public:
 	Router();
 	~Router();
-	bool start(QUuid, QUuid, QString, QString);
+	bool start(QString, QString);
 
 	static void __stdcall WlanNotificationCallback(PWLAN_NOTIFICATION_DATA, PVOID);
 

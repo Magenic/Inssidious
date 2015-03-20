@@ -60,6 +60,7 @@
       <file alias="WebServiceErrorsInactive.png">../Resources/TamperWidget/WebServiceErrorsInactive.png</file>
       <file alias="WebServiceTimeoutsActive.png">../Resources/TamperWidget/WebServiceTimeoutsActive.png</file>
       <file alias="WebServiceTimeoutsInactive.png">../Resources/TamperWidget/WebServiceTimeoutsInactive.png</file>
+      <file alias="TamperActivity.gif">../Resources/TamperWidget/TamperActivity.gif</file>
     </qresource>
     <qresource prefix="CriticalErrorWidget">
       <file alias="AppSadLogo.png">../Resources/CriticalErrorWidget/AppSadLogo.png</file>

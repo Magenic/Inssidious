@@ -1,6 +1,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <QSettings>
 
 static enum DeviceType					//Device Types
 {

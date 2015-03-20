@@ -137,10 +137,10 @@ void InssidiousUi::onDeviceConnected(QString MACAddress)
 	DeviceList.append(device);
 
 	//Add the device widget to the sidebar
-	ui.DeviceSidebarListWidgetScrollArea->widget()->layout()->addWidget(device->widget);
+	ui.DeviceSidebarListWidgetScrollArea->widget()->layout()->addWidget(device->deviceWidget);
 
 	//Connect the device widget clicked signal to Inssidious's on device widget clicked slot
-	connect(device->widget, &DeviceWidget::deviceWidgetClicked, this, &InssidiousUi::onDeviceWidgetClicked);
+	connect(device->deviceWidget, &DeviceWidget::deviceWidgetClicked, this, &InssidiousUi::onDeviceWidgetClicked);
 
 	//Check if we need to hide the Waiting for Devices widget
 	if (DeviceList.count() == 1) //this is the first device
@@ -149,7 +149,7 @@ void InssidiousUi::onDeviceConnected(QString MACAddress)
 		ui.WaitingForDevicesWidget->hide();
 
 		//Tell the new Device Widget to show as active
-		device->widget->select();
+		device->deviceWidget->select();
 
 		//Show the tamper widgets container
 		device->tamperWidgetsContainer->show();
@@ -197,7 +197,7 @@ void InssidiousUi::onDeviceWidgetClicked(DeviceWidget* deviceWidget)
 		}
 
 		//If it is the owner of the widget that signaled, set it as active 
-		if (device->widget == deviceWidget)
+		if (device->deviceWidget == deviceWidget)
 		{
 			device->select();
 		}

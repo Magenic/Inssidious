@@ -19,7 +19,7 @@ void Core::onThreadStarted()
 	if (!runningAsAdmin())
 	{
 		//We are not running as an Administrator. Notify InssidiousUI and return
-		emit coreFailed("Inssidious needs to elevated Administrator rights. Please restart Inssidious as an Administrator.");
+		emit coreFailed("Inssidious must be run as Administrator.");
 		return;
 	}
 	
@@ -44,7 +44,7 @@ void Core::onThreadStarted()
 	/* No further action taken until StartupWidget emits coreStartInssidiou */
 }
 
-void Core::onCoreStartInssidious(int internetConnectionAdapterIndex, int wirelessAdapterIndex, QString networkName, QString networkPassword)
+void Core::onCoreStartInssidious(QString networkName, QString networkPassword)
 {
 	
 	Router* router = new Router();
@@ -52,7 +52,7 @@ void Core::onCoreStartInssidious(int internetConnectionAdapterIndex, int wireles
 	connect(router, &Router::deviceConnected, this, &Core::coreDeviceConnected);
 	connect(router, &Router::deviceDisconnected, this, &Core::coreDeviceDisconnected);
 
-	if (!router->start(QUuid(NetworkAdapterList[internetConnectionAdapterIndex].AdapterName), QUuid(NetworkAdapterList[wirelessAdapterIndex].AdapterName), networkName, networkPassword))
+	if (!router->start(networkName, networkPassword))
 	{
 		//Router failed to start and emitted a signal that Core passed on to InssidiousUi
 		return;

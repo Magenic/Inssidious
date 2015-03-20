@@ -7,7 +7,7 @@
 #include <WinSock2.h>
 #include <Windows.h>						//Windows types
 #include <Wlanapi.h>						//Wlan functions 
-#include <wtypes.h>						//Wlan types
+#include <wtypes.h>							//Wlan types
 #include <iphlpapi.h>						//IP Helper APIs
 #include <comdef.h>							//Easy HRESULT conversion
 
@@ -36,7 +36,7 @@ public:
 
 public slots:
 	void onThreadStarted();
-	void onCoreStartInssidious(int, int, QString, QString);
+	void onCoreStartInssidious(QString, QString);
 	void onRouterFailed(QString);
 	//void onRouterDeviceConnected(QString);
 	//void onRouterDeviceDisconnected(QString);

@@ -2,6 +2,7 @@
 #define TAMPERWIDGET_H
 
 #include <QWidget>
+#include <QMovie>
 #include <QLabel>
 #include <QLayout>
 #include <QMouseEvent>
@@ -20,6 +21,10 @@ public:
 signals: 
 	void tamperWidgetClicked(TamperType);				//Signal this tamper widget was clicked
 
+public slots:
+	void onTamperActivity();							//Flash the tamper activity label
+	void onEndTamperActivity();							//Hide the tamper activity label when done
+
 private:
 	void mousePressEvent(QMouseEvent *e);				//Mouse events for hover and select updates
 	void mouseReleaseEvent(QMouseEvent *e);
@@ -34,6 +39,9 @@ private:
 	QVBoxLayout* textContainerLayout;					//Nested layout for the Name and Description
 	QVBoxLayout* descriptionChildLayout;				//So much nesting
 
+	QMovie* tamperActivityMovie;						//QMovie to play the activity gif
+	
+	QLabel* tamperActivity;								//Tamper Activity label
 	QLabel* tamperName;									//Tamper Name label
 	QLabel* tamperIcon;									//Tamper Icon label
 	QLabel* tamperDescription;							//Tamper Description label

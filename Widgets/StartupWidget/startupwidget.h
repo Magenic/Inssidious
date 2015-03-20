@@ -20,7 +20,7 @@ public:
 	StartupWidget(QWidget *parent);
 
 signals:
-	void coreStartInssidious(int, int, QString, QString);	//Signal to Core to start Inssidious 
+	void coreStartInssidious(QString, QString);				//Signal to Core to start Inssidious 
 
 public slots:
 	void onCoreReadyToStart();								//Triggered by Core's successful start, now have a list of network adapters 

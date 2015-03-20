@@ -14,8 +14,7 @@ TamperWidget::TamperWidget(TamperType t)
 	tamperIconActive = QPixmap();
 	tamperIconInactive = QPixmap();
 	tamperDescription = new QLabel();
-
-
+	
 	//Initialize tamperName font 
 	tamperNameFont.setPixelSize(22);
 	tamperNameFont.setFamily("Calibri");
@@ -44,44 +43,7 @@ TamperWidget::TamperWidget(TamperType t)
 	this->setAutoFillBackground(true);
 	this->setFixedSize(478, 66);
 
-	//Set the Name and Description texts
-	tamperName->setFont(tamperNameFont);
-	tamperName->setPalette(tamperTextsPaletteInactive);
-	tamperName->setContentsMargins(15, 0, 0, 0);
-	tamperDescription->setFont(tamperDescriptionFont);
-	tamperDescription->setPalette(tamperTextsPaletteInactive);
-	tamperDescription->setContentsMargins(15, 0, 0, 0);
-
-	//Set the tamper icon size, image, and margins 
-	tamperIcon->setMaximumHeight(44);
-	tamperIcon->setPixmap(tamperIconInactive);
-	tamperIcon->setContentsMargins(15, 0, 0, 0);
-
-	//Initialize layouts for the name and description texts
-	descriptionChildLayout = new QVBoxLayout();
-	descriptionChildLayout->addWidget(tamperDescription);
-	descriptionChildLayout->setMargin(5);
-	descriptionChildLayout->setSpacing(5);
-	descriptionChildLayout->setContentsMargins(0, 0, 0, 10);
-
-	textContainerLayout = new QVBoxLayout();
-	textContainerLayout->addWidget(tamperName);
-	textContainerLayout->addLayout(descriptionChildLayout);
-	textContainerLayout->setMargin(4);
-	textContainerLayout->setSpacing(4);
-	textContainerLayout->setContentsMargins(0, 10, 0, 0);
-
-	//Initialize the main tamper widget layout and add widgets to it
-	tamperWidgetLayout = new QHBoxLayout();
-	tamperWidgetLayout->setMargin(0);
-	tamperWidgetLayout->setMargin(0);
-	tamperWidgetLayout->addWidget(tamperIcon);
-	tamperWidgetLayout->addLayout(textContainerLayout, 3);
-
-
-	//Set widget layout
-	this->setLayout(tamperWidgetLayout);
-
+	//Set the tamper icon and text content based on the tamper type
 	switch (tamperType)
 	{
 	case NETWORK_LAG:
@@ -129,6 +91,68 @@ TamperWidget::TamperWidget(TamperType t)
 	default:
 		break;
 	}
+
+	//Initialize the tamper activity layout, label, and movie
+	tamperActivity = new QLabel();
+	tamperActivityMovie = new QMovie(":/TamperWidget/TamperActivity.gif");
+	tamperActivity->setContentsMargins(0, 0, 0, 0);
+	tamperActivity->setMovie(tamperActivityMovie);
+	tamperActivityMovie->setParent(tamperActivity);
+	this->tamperActivityMovie->jumpToFrame(0);
+	connect(this->tamperActivityMovie, SIGNAL(finished()), this, SLOT(onEndTamperActivity()));
+
+	//Set the tamper icon size, image, and margins 
+	tamperIcon->setFixedSize(44, 44);
+	tamperIcon->setPixmap(tamperIconInactive);
+	tamperIcon->setContentsMargins(0, 0, 0, 0);
+
+	//Set the Name and Description text style and padding 
+	tamperName->setFont(tamperNameFont);
+	tamperName->setPalette(tamperTextsPaletteInactive);
+	tamperName->setContentsMargins(10, 0, 0, 0);
+	tamperDescription->setFont(tamperDescriptionFont);
+	tamperDescription->setPalette(tamperTextsPaletteInactive);
+	tamperDescription->setContentsMargins(10, 0, 0, 0);
+
+	//Initialize layouts for the name and description texts
+	descriptionChildLayout = new QVBoxLayout();
+	descriptionChildLayout->addWidget(tamperDescription);
+	descriptionChildLayout->setMargin(5);
+	descriptionChildLayout->setSpacing(5);
+	descriptionChildLayout->setContentsMargins(0, 0, 0, 10);
+
+	textContainerLayout = new QVBoxLayout();
+	textContainerLayout->addWidget(tamperName);
+	textContainerLayout->addLayout(descriptionChildLayout);
+	textContainerLayout->setMargin(4);
+	textContainerLayout->setSpacing(4);
+	textContainerLayout->setContentsMargins(0, 10, 0, 0);
+
+	//Initialize the main tamper widget layout and add widgets to it
+	tamperWidgetLayout = new QHBoxLayout();
+	tamperWidgetLayout->setMargin(0);
+	tamperWidgetLayout->addSpacing(10);
+	tamperWidgetLayout->addWidget(tamperActivity);
+	tamperWidgetLayout->addWidget(tamperIcon);
+	tamperWidgetLayout->addLayout(textContainerLayout, 3); /* contains name and description text labels */
+
+
+	//Set widget layout
+	this->setLayout(tamperWidgetLayout);
+
+}
+
+void TamperWidget::onTamperActivity()
+{
+	if (this->tamperActivityMovie->currentFrameNumber() == 0)
+	{
+		this->tamperActivityMovie->start();
+	}
+}
+
+void TamperWidget::onEndTamperActivity()
+{
+	this->tamperActivityMovie->jumpToFrame(0);
 }
 
 void TamperWidget::select()
@@ -149,16 +173,13 @@ void TamperWidget::unselect()
 
 void TamperWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-	if ((e->buttons() & Qt::LeftButton) == Qt::LeftButton)
+	if (this->palette().background() == tamperWidgetPaletteActivePressed.background())
 	{
-		if (this->palette().background() == tamperWidgetPaletteActivePressed.background())
-		{
-			this->setPalette(tamperWidgetPaletteActive);
-		}
-		else if (this->palette().background() == tamperWidgetPaletteInactivePressed.background())
-		{
-			this->setPalette(tamperWidgetPaletteInactive);
-		}
+		this->setPalette(tamperWidgetPaletteActive);
+	}
+	else if (this->palette().background() == tamperWidgetPaletteInactivePressed.background())
+	{
+		this->setPalette(tamperWidgetPaletteInactive);
 	}
 
 	emit tamperWidgetClicked(tamperType);

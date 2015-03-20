@@ -42,27 +42,27 @@ StartupWidget::StartupWidget(QWidget *parent)
 
 void StartupWidget::onCoreReadyToStart()
 {
-	//Draw the Internet Connection description field
-	internetConnectionTextLabel = new QLabel();
-	internetConnectionTextLabel->setText(internetConnectionText);
-	internetConnectionTextLabel->setPalette(descriptionTextPalette);
-	internetConnectionTextLabel->setContentsMargins(0, 20, 0, 2); /* padding to push away from logo and tag line */
-	startupWidgetLayout->addWidget(internetConnectionTextLabel, 0, Qt::AlignTop);
-	
-	//Draw the Internet Connection combo box
-	internetConnectionComboBox = new QComboBox();
-	startupWidgetLayout->addWidget(internetConnectionComboBox, 0, Qt::AlignTop);
-	
-	//Draw the Wireless Adapter description field
-	wirelessAdapterTextLabel = new QLabel();
-	wirelessAdapterTextLabel->setText(wirelessAdapterText);
-	wirelessAdapterTextLabel->setPalette(descriptionTextPalette);
-	wirelessAdapterTextLabel->setContentsMargins(0, 10, 0, 2); /* padding from combo box above */
-	startupWidgetLayout->addWidget(wirelessAdapterTextLabel, 0, Qt::AlignTop);
-	
-	//Draw the Wireless Adapter combo box
-	wirelessAdapterComboBox = new QComboBox();
-	startupWidgetLayout->addWidget(wirelessAdapterComboBox, 0, Qt::AlignTop);
+	////Draw the Internet Connection description field
+	//internetConnectionTextLabel = new QLabel();
+	//internetConnectionTextLabel->setText(internetConnectionText);
+	//internetConnectionTextLabel->setPalette(descriptionTextPalette);
+	//internetConnectionTextLabel->setContentsMargins(0, 20, 0, 2); /* padding to push away from logo and tag line */
+	//startupWidgetLayout->addWidget(internetConnectionTextLabel, 0, Qt::AlignTop);
+	//
+	////Draw the Internet Connection combo box
+	//internetConnectionComboBox = new QComboBox();
+	//startupWidgetLayout->addWidget(internetConnectionComboBox, 0, Qt::AlignTop);
+	//
+	////Draw the Wireless Adapter description field
+	//wirelessAdapterTextLabel = new QLabel();
+	//wirelessAdapterTextLabel->setText(wirelessAdapterText);
+	//wirelessAdapterTextLabel->setPalette(descriptionTextPalette);
+	//wirelessAdapterTextLabel->setContentsMargins(0, 10, 0, 2); /* padding from combo box above */
+	//startupWidgetLayout->addWidget(wirelessAdapterTextLabel, 0, Qt::AlignTop);
+	//
+	////Draw the Wireless Adapter combo box
+	//wirelessAdapterComboBox = new QComboBox();
+	//startupWidgetLayout->addWidget(wirelessAdapterComboBox, 0, Qt::AlignTop);
 	
 	//Draw the Wireless Network Name description field
 	wirelessNetworkNameTextLabel = new QLabel();
@@ -101,19 +101,18 @@ void StartupWidget::onCoreReadyToStart()
 	//Connect the start button signal & slot
 	connect(inssidiousStartButton, SIGNAL(clicked()), this, SLOT(onStartButtonClicked()));
 	
-	for (NetworkAdapter networkAdapter : Core::NetworkAdapterList)
-	{
-		//Add each of them to the Internet Connection combo box
-		internetConnectionComboBox->addItem(networkAdapter.AdapterDescription);
+	//for (NetworkAdapter networkAdapter : Core::NetworkAdapterList)
+	//{
+	//	//Add each of them to the Internet Connection combo box
+	//	internetConnectionComboBox->addItem(networkAdapter.AdapterDescription);
 
-		//Add wireless ones to the wireless adapter combo box
-		if (networkAdapter.AdapterType == WIRELESS || networkAdapter.AdapterType == WIRELESS_HOSTED_NETWORK_CAPABLE)
-		{
-			wirelessAdapterComboBox->addItem(networkAdapter.AdapterDescription);
-		}
-	}
+	//	//Add wireless ones to the wireless adapter combo box
+	//	if (networkAdapter.AdapterType == WIRELESS || networkAdapter.AdapterType == WIRELESS_HOSTED_NETWORK_CAPABLE)
+	//	{
+	//		wirelessAdapterComboBox->addItem(networkAdapter.AdapterDescription);
+	//	}
+	//}
 }
-
 
 void StartupWidget::onStartButtonClicked()
 {
@@ -121,47 +120,47 @@ void StartupWidget::onStartButtonClicked()
 	bool dataIsValid = true;
 
 	//Reset description texts & palettes
-	internetConnectionTextLabel->setText(internetConnectionText);
-	internetConnectionTextLabel->setPalette(descriptionTextPalette);
-	wirelessAdapterTextLabel->setText(wirelessAdapterText);
-	wirelessAdapterTextLabel->setPalette(descriptionTextPalette);
+	//internetConnectionTextLabel->setText(internetConnectionText);
+	//internetConnectionTextLabel->setPalette(descriptionTextPalette);
+	//wirelessAdapterTextLabel->setText(wirelessAdapterText);
+	//wirelessAdapterTextLabel->setPalette(descriptionTextPalette);
 	wirelessNetworkNameTextLabel->setText(wirelessNetworkNameText);
 	wirelessNetworkNameTextLabel->setPalette(descriptionTextPalette);
 	wirelessNetworkPasswordTextLabel->setText(wirelessNetworkPasswordText);
 	wirelessNetworkPasswordTextLabel->setPalette(descriptionTextPalette);
 
-	int internetConnectionIndex;
-	int wirelessAdapterIndex;
+	//int internetConnectionIndex;
+	//int wirelessAdapterIndex;
 
-	//Find the index of our selected adapters to emit to core later
-	for (int i = 0; i < Core::NetworkAdapterList.count(); i++)
-	{
-		if (internetConnectionComboBox->currentText() == Core::NetworkAdapterList[i].AdapterDescription)
-		{
-			internetConnectionIndex = i;
-		}
-		if (wirelessAdapterComboBox->currentText() == Core::NetworkAdapterList[i].AdapterDescription)
-		{
-			wirelessAdapterIndex = i;
-		}
-	}
+	////Find the index of our selected adapters to emit to core later
+	//for (int i = 0; i < Core::NetworkAdapterList.count(); i++)
+	//{
+	//	if (internetConnectionComboBox->currentText() == Core::NetworkAdapterList[i].AdapterDescription)
+	//	{
+	//		internetConnectionIndex = i;
+	//	}
+	//	if (wirelessAdapterComboBox->currentText() == Core::NetworkAdapterList[i].AdapterDescription)
+	//	{
+	//		wirelessAdapterIndex = i;
+	//	}
+	//}
 
-	//Check whether both Internet Connection and Wireless Adapter combo boxes are set to the same adapter
-	if (internetConnectionComboBox->currentText() == wirelessAdapterComboBox->currentText())
-	{
-		internetConnectionTextLabel->setText("The selected adapter doesn't support Wireless Hosted Networks.\nPlease select another wireless adapter:");
-		internetConnectionTextLabel->setText("The selected Internet Connection and Wireless Adapter cannot\nbe the same. Please select another internet connection:");
-		internetConnectionTextLabel->setPalette(errorTextPalette);
-		dataIsValid = false;
-	}
+	////Check whether both Internet Connection and Wireless Adapter combo boxes are set to the same adapter
+	//if (internetConnectionComboBox->currentText() == wirelessAdapterComboBox->currentText())
+	//{
+	//	internetConnectionTextLabel->setText("The selected adapter doesn't support Wireless Hosted Networks.\nPlease select another wireless adapter:");
+	//	internetConnectionTextLabel->setText("The selected Internet Connection and Wireless Adapter cannot\nbe the same. Please select another internet connection:");
+	//	internetConnectionTextLabel->setPalette(errorTextPalette);
+	//	dataIsValid = false;
+	//}
 
-	//Check whether the selected wireless adapter supports Hosted Network functionality
-	if (Core::NetworkAdapterList[wirelessAdapterIndex].AdapterType != WIRELESS_HOSTED_NETWORK_CAPABLE)
-	{
-		wirelessAdapterTextLabel->setText("The selected adapter doesn't support Wireless Hosted Networks.\nPlease select another wireless adapter:");
-		wirelessAdapterTextLabel->setPalette(errorTextPalette);
-		dataIsValid = false;
-	}
+	////Check whether the selected wireless adapter supports Hosted Network functionality
+	//if (Core::NetworkAdapterList[wirelessAdapterIndex].AdapterType != WIRELESS_HOSTED_NETWORK_CAPABLE)
+	//{
+	//	wirelessAdapterTextLabel->setText("The selected adapter doesn't support Wireless Hosted Networks.\nPlease select another wireless adapter:");
+	//	wirelessAdapterTextLabel->setPalette(errorTextPalette);
+	//	dataIsValid = false;
+	//}
 
 	
 	//Check whether the Inssidious Wireless Network Name is of appropriate length
@@ -206,11 +205,6 @@ void StartupWidget::onStartButtonClicked()
 	//Signal to core to start Inssidious if data was valid
 	if (dataIsValid)
 	{
-		emit coreStartInssidious(
-			internetConnectionIndex, 
-			wirelessAdapterIndex, 
-			wirelessNetworkNameLineEdit->text(), 
-			wirelessNetworkPasswordLineEdit->text()
-			);
+		emit coreStartInssidious(wirelessNetworkNameLineEdit->text(), wirelessNetworkPasswordLineEdit->text());
 	}
 }

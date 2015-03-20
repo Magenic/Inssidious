@@ -73,18 +73,48 @@ void DeviceWidget::select()
 	this->deviceIcon.setPixmap(iconActive);
 }
 
+void DeviceWidget::setTamperCount(int totalActiveTamperCount)
+{
+	switch (totalActiveTamperCount)
+	{
+		case 0:
+			this->tamperCount.setPixmap(QPixmap());
+			break;
+		case 1:
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/1static.png"));
+			break;
+		case 2:
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/2static.png"));
+			break;
+		case 3:
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/3static.png"));
+			break;
+		case 4:
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/4static.png"));
+			break;
+		case 5:
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/5static.png"));
+			break;
+		case 6:
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/6static.png"));
+			break;
+		case 7:
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/7static.png"));
+			break;
+		default:
+			this->tamperCount.setPixmap(QPixmap());
+	}
+}
+
 void DeviceWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-	if ((e->buttons() & Qt::LeftButton) == Qt::LeftButton)
+	if (this->palette().background().color() == backgroundColorActivePressed)
 	{
-		if (this->palette().background().color() == backgroundColorActivePressed)
-		{
-			this->setPalette(backgroundColorActive);
-		}
-		else if (this->palette().background().color() == backgroundColorInactivePressed)
-		{
-			this->setPalette(backgroundColorInactive);
-		}
+		this->setPalette(backgroundColorActive);
+	}
+	else if (this->palette().background().color() == backgroundColorInactivePressed)
+	{
+		this->setPalette(backgroundColorInactive);
 	}
 
 	emit deviceWidgetClicked(this);

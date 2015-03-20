@@ -58,11 +58,11 @@ void __stdcall Router::WlanNotificationCallback(PWLAN_NOTIFICATION_DATA pNotifDa
 
 
 
-bool Router::start(QUuid internetConnectionAdapterGUID, QUuid wirelessAdapterGuid, QString networkName, QString networkPassword)
+bool Router::start(QString networkName, QString networkPassword)
 {
 	DWORD negotiatedVersion = 0;					//DWORD for the Wlan API to store the negotiated API version in
 	HRESULT result;									//HRESULT to store the return value from IP Helper API calls
-	DWORD dwMaxNumberOfPeers = 100;					//Maximum number of clients that can connect, default is 100
+	DWORD dwMaxNumberOfPeers = 8;					//Maximum number of clients that can connect, default is 100, 8 is required by hardware certification
 	DOT11_SSID hostedNetworkSSID;					//DOT11_SSID struct to use later with WLAN_HOSTED_NETWORK_CONNECTION_SETTINGS
 	DWORD dwKeyLength;								//Length of the network password
 	PUCHAR pucKeyData;								//Pointer to a UCHAR array for the network password text
@@ -177,7 +177,7 @@ bool Router::start(QUuid internetConnectionAdapterGUID, QUuid wirelessAdapterGui
 		dwKeyLength,									//Length of the network password array including the null character
 		pucKeyData,										//Pointer to a UCHAR array with the network password
 		TRUE,											//Is a pass phrase
-		FALSE,											//Do not persist this key for future hosted network sessions
+		TRUE,											//Do not persist this key for future hosted network sessions
 		pHostedNetworkFailReason,						//Pointer to where the API can store a failure reason in
 		NULL											//Reserved
 		);
@@ -188,10 +188,6 @@ bool Router::start(QUuid internetConnectionAdapterGUID, QUuid wirelessAdapterGui
 		emit routerFailed("Unable to set hosted network password. Error: \n   " + QString::fromWCharArray(_com_error(result).ErrorMessage()));
 		return false;
 	}
-
-
-	//TODO Temporarily deny hosted network ACE for any extra wireless adapters not specified
-
 
 	//Start hosted network
 	result = WlanHostedNetworkStartUsing(

@@ -2,10 +2,11 @@
 #define DEVICE_H
 
 #include <QObject> 
-#include "Core\types.h"
+#include <QThread>
 #include "Widgets\DeviceWidgets\devicewidget.h"
 #include "Widgets\TamperWidgets\tamperwidget.h"
-
+#include "Core\types.h"
+#include "Core\Tamper\networklag.h"
 
 class Device : public QObject
 {
@@ -21,7 +22,7 @@ public:
 	bool isActive = false;
 
 	QString* MACAddress;
-	DeviceWidget* widget;
+	DeviceWidget* deviceWidget;
 
 	QWidget* tamperWidgetsContainer;
 
@@ -29,8 +30,6 @@ signals:
 
 
 public slots:
-	//void onEnableTamper();
-	//void onDisableTamper();
 	//void onTamperActivity();
 
 private slots:
@@ -39,16 +38,17 @@ private slots:
 private:
 	QGridLayout* containerLayout;
 
-	TamperWidget* NetworkLag;
-	TamperWidget* DropAllTraffic;
-	TamperWidget* DropNonHttpTraffic;
-	TamperWidget* RedirectToPortal;
-	TamperWidget* WebServiceError;
-	TamperWidget* WebServiceTimeOut;
-	TamperWidget* WebServiceEmptyResponses;
+	typedef struct TamperStyles { TamperWidget* widget; Tamper* tamper; QThread* thread; bool isActive; }TamperStyles;
 
+	TamperStyles* NetworkLag = new TamperStyles{ new TamperWidget(NETWORK_LAG), new TamperNetworkLag(), new QThread(this), false, };
+	TamperStyles* DropAllTraffic = new TamperStyles{ new TamperWidget(DROP_ALL_TRAFFIC), new TamperNetworkLag(), new QThread(this), false, };
+	TamperStyles* DropNonHttpTraffic = new TamperStyles{ new TamperWidget(DROP_NON_HTTP_TRAFFIC), new TamperNetworkLag(), new QThread(this), false, };
+	TamperStyles* RedirectToPortal = new TamperStyles{ new TamperWidget(REDIRECT_TO_PORTAL), new TamperNetworkLag(), new QThread(this), false, };
+	TamperStyles* WebServiceError = new TamperStyles{ new TamperWidget(WEB_SERVICE_ERROR), new TamperNetworkLag(), new QThread(this), false, };
+	TamperStyles* WebServiceTimeOut = new TamperStyles{ new TamperWidget(WEB_SERVICE_TIME_OUT), new TamperNetworkLag(), new QThread(this), false, };
+	TamperStyles* WebServiceEmptyResponses = new TamperStyles{ new TamperWidget(WEB_SERVICE_EMPTY_RESPONSES), new TamperNetworkLag(), new QThread(this), false, };
 
-	int totalActiveTamperCount;
+	int totalActiveTamperCount = 0;
 
 };
 

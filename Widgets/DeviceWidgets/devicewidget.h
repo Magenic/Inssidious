@@ -17,6 +17,7 @@ public:
 	void unselect();							//Show as an unselected device widget
 	void select();								//Show as the selected device widget
 
+	void setTamperCount(int);					//Set the number of active tamper widgets icon
 
 signals:
 	void deviceWidgetClicked(DeviceWidget*);	//Signal this device widget was clicked
