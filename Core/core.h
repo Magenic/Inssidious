@@ -30,30 +30,26 @@ public:
 	Core();
 	~Core();
 	
+	static QList<NetworkAdapter> NetworkAdapterList;				//List of ethernet and wireless internet connections
 	
-	static QList<NetworkAdapter> NetworkAdapterList;
-	
-
 public slots:
-	void onThreadStarted();
-	void onCoreStartInssidious(QString, QString);
-	void onRouterFailed(QString);
-	//void onRouterDeviceConnected(QString);
-	//void onRouterDeviceDisconnected(QString);
+	void onThreadStarted();											//Fires when Core's thread starts, performs basic initialization work
+	void onCoreStartRouter(QString, QString, QString);				//Triggered by a signal from Startup Widget, contains wireless name, password, and internet connection adapter
+	void onRouterFailed(QString);									//Triggered by Router if something ever goes wrong
 
 signals:
-	void coreReadyToStart();
+	void coreReadyToStart();										//Notify Startup Widget that Core is on it's own thread and ready to start
 
-	void coreStarted(QString networkName, QString networkPassword);
-	void coreFailed(QString errorMessage);			
+	void coreRouterStarted(QString, QString);						//Notify InssidiousUi that the router started successfully. Pass along network name and password
+	void coreFailed(QString);										//Notify InssidiousUi of a critical core failure
 
-	void coreDeviceConnected(QString);
-	void coreDeviceDisconnected(QString);
+	void coreDeviceConnected(QString);								//Notify InssidiousUi of a device connection
+	void coreDeviceDisconnected(QString);							//Notify InssidiousUi of a device disconnection
 
 private:
-	bool runningAsAdmin();
-	bool runningOnWindows7OrNewer();
-	bool getNetworkAdapters();
+	bool runningAsAdmin();											//Confirm we are running as an Admin, return false if not
+	bool runningOnWindows7OrNewer();								//Confirm we are running on Windows 7 or newer, return false if not
+	bool getNetworkAdapters();										//Populate NetworkAdapterList with list of network adapters
 
 };
 

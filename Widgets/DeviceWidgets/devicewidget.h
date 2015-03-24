@@ -12,12 +12,13 @@ class DeviceWidget : public QWidget
 	Q_OBJECT
 
 public:
-	DeviceWidget(QString m);					//MAC Address
+	DeviceWidget();
 
 	void unselect();							//Show as an unselected device widget
 	void select();								//Show as the selected device widget
 
 	void setTamperCount(int);					//Set the number of active tamper widgets icon
+	void setNameAndType(QString, QString);		//Set the device name and type in the device widget
 
 signals:
 	void deviceWidgetClicked(DeviceWidget*);	//Signal this device widget was clicked
@@ -31,14 +32,12 @@ private:
 	void enterEvent(QEvent *e);
 	void leaveEvent(QEvent *e);
 
-	void initializeNameAndIcons(QString m);		//Fill in deviceNameString, iconActive, and iconInactive from MAC Address
-
 	QHBoxLayout deviceWidgetLayout;				//Layout for the device widget
 	
-	QLabel deviceIcon;
-	QLabel deviceName;
+	QLabel deviceIcon;							//QLabel for the device icon
+	QLabel deviceName;							//QLabel for the device name
 
-	QString deviceNameString;					//QString for device name
+	QString deviceNameText;						//QString for device name
 	QPixmap iconActive;							//QPixmap for active icon
 	QPixmap iconInactive;						//QPixmap for inactive icon
 

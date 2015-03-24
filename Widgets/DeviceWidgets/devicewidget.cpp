@@ -1,9 +1,11 @@
 #include "devicewidget.h"
 
-DeviceWidget::DeviceWidget(QString m)
+DeviceWidget::DeviceWidget()
 {
-	//Initialize the device name and icon text from the MAC address
-	initializeNameAndIcons(m);
+	//Set initial device name and icon QPixmaps 
+	deviceName.setText("New Device Joined");
+	iconActive = QPixmap(":/DeviceWidget/NewDeviceActive.png");
+	iconInactive = QPixmap(":/DeviceWidget/NewDeviceInactive.png");
 
 	//Enable mouse tracking for hover highlighting on the sidebar
 	this->setMouseTracking(true);
@@ -14,7 +16,7 @@ DeviceWidget::DeviceWidget(QString m)
 
 	//Set the device widget size
 	this->setFixedWidth(210);
-	this->setFixedHeight(50);
+	this->setFixedHeight(56);
 
 	//Zero the layout spacing & margin and set layout for the device widget
 	deviceWidgetLayout.setSpacing(0);
@@ -22,8 +24,8 @@ DeviceWidget::DeviceWidget(QString m)
 	this->setLayout(&deviceWidgetLayout);
 
 	//Initialize the Device Name font
-	deviceNameFont.setPointSize(15);
-	deviceNameFont.setFamily("Calibri");
+	deviceNameFont.setPointSize(18);
+	deviceNameFont.setFamily("Segoe UI Semibold");
 	deviceNameFont.setBold(true);
 
 	//Initialize Colors for Device Name and Device Widget Background
@@ -37,14 +39,13 @@ DeviceWidget::DeviceWidget(QString m)
 	backgroundColorInactivePressed = QColor(85, 85, 85, 255);	
 
 	//Initialize the Device icon 
-	deviceIcon.setFixedSize(44,44);
+	deviceIcon.setFixedSize(48,48);
 	deviceIcon.setPixmap(iconInactive);
 
 	//Initialize the Device name
 	deviceName.setFont(deviceNameFont);
 	deviceName.setPalette(textColorInactive);
 	deviceName.setContentsMargins(10, 0, 0, 0); /*indent text from device avatar*/
-	deviceName.setText(deviceNameString);
 
 	//Add the objects to the device widget
 	deviceWidgetLayout.addSpacing(5);
@@ -55,7 +56,6 @@ DeviceWidget::DeviceWidget(QString m)
 	deviceWidgetLayout.addSpacing(5);
 	deviceWidgetLayout.addWidget(&tamperCount);
 	deviceWidgetLayout.addSpacing(12);
-
 
 }
 
@@ -81,29 +81,42 @@ void DeviceWidget::setTamperCount(int totalActiveTamperCount)
 			this->tamperCount.setPixmap(QPixmap());
 			break;
 		case 1:
-			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/1static.png"));
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/1.png"));
 			break;
 		case 2:
-			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/2static.png"));
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/2.png"));
 			break;
 		case 3:
-			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/3static.png"));
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/3.png"));
 			break;
 		case 4:
-			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/4static.png"));
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/4.png"));
 			break;
 		case 5:
-			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/5static.png"));
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/5.png"));
 			break;
 		case 6:
-			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/6static.png"));
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/6.png"));
 			break;
 		case 7:
-			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/7static.png"));
+			this->tamperCount.setPixmap(QPixmap(":/DeviceWidget/7.png"));
 			break;
 		default:
 			this->tamperCount.setPixmap(QPixmap());
 	}
+}
+
+void DeviceWidget::setNameAndType(QString name, QString type)
+{
+	//Set the device name
+	this->deviceName.setText(name);
+
+	//Set the appropriate QPixmap values
+	this->iconActive = QPixmap(":/DeviceWidget/" + type + "Active.png");
+	this->iconInactive = QPixmap(":/DeviceWidget/" + type + "Inactive.png");
+
+	//Update name and pixmap
+	this->select();
 }
 
 void DeviceWidget::mouseReleaseEvent(QMouseEvent *e)
@@ -169,9 +182,3 @@ void DeviceWidget::leaveEvent(QEvent *e)
 	}
 }
 
-void DeviceWidget::initializeNameAndIcons(QString m)
-{
-	deviceNameString = "iPhone 6";
-	iconActive = QPixmap(":/DeviceWidget/iPhoneActive.png");
-	iconInactive = QPixmap(":/DeviceWidget/iPhoneInactive.png");
-}

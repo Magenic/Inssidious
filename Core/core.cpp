@@ -44,7 +44,7 @@ void Core::onThreadStarted()
 	/* No further action taken until StartupWidget emits coreStartInssidiou */
 }
 
-void Core::onCoreStartInssidious(QString networkName, QString networkPassword)
+void Core::onCoreStartRouter(QString networkName, QString networkPassword, QString networkAdapater)
 {
 	
 	Router* router = new Router();
@@ -60,7 +60,7 @@ void Core::onCoreStartInssidious(QString networkName, QString networkPassword)
 
 	if (true)
 	{
-		emit coreStarted(networkName, networkPassword);
+		emit coreRouterStarted(networkName, networkPassword);
 	}
 	else
 	{
@@ -75,15 +75,6 @@ void Core::onRouterFailed(QString errorMessage)
 	//Emit the signal to InssidiousUi
 	emit coreFailed(errorMessage);
 }
-
-//void Core::onRouterDeviceConnected(DOT11_MAC_ADDRESS MACAddress)
-//{
-//	emit coreDeviceConnected(MACAddress);
-//}
-//void Core::onRouterDeviceDisconnected(DOT11_MAC_ADDRESS MACAddress)
-//{
-//	emit coreDeviceDisconnected(MACAddress);
-//}
 
 bool Core::runningAsAdmin()
 {

@@ -3,7 +3,6 @@
 
 #include "Core\Tamper\tamper.h"
 
-
 class TamperNetworkLag : public Tamper
 {
 	Q_OBJECT
@@ -13,17 +12,20 @@ public:
 	~TamperNetworkLag();
 
 	bool open(QString);
-	bool open(QString, QSettings);
-
-	bool tamper();
-	bool stop();
+	bool isActive = false;
 
 signals:
 	void activity();
-	void testTamperActivity();
+	void failed();
 
-public slots: 
-	void onTestTamperActivity();
+public slots:
+	void start();
+
+private:
+	QString* filter;
+	HANDLE outboundTraffic;
+	HANDLE inboundTraffic;
+
 };
 
 #endif // NETWORKLAG_H

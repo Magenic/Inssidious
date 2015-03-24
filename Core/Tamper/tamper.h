@@ -2,6 +2,7 @@
 #define TAMPER_H
 
 #include "WinDivert\windivert.h"			//WinDivert functions and types
+#include "Core\types.h"						//Tamper priorities
 
 #include <QString>
 #include <QSettings>
@@ -14,16 +15,15 @@ class Tamper : public QObject
 
 public:
 	virtual bool open(QString) = 0;
-	virtual bool open(QString, QSettings) = 0;
-
-	virtual bool tamper() = 0;
-	virtual bool stop() = 0;
+	bool isActive;
 
 signals:
 	void activity();
+	void failed();
 
-private:
-	
+public slots:
+	virtual void start() = 0;
+
 };
 
 #endif // TAMPER_H

@@ -81,14 +81,11 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	//Connect initial signals and slots
 	connect(coreThread, &QThread::started, core, &Core::onThreadStarted);									//Notify Core that it is on it's own thread	and that thread has started
 	connect(core, &Core::coreReadyToStart, startupWidget, &StartupWidget::onCoreReadyToStart);				//Notify Startup Widget that core is ready to go
-	connect(startupWidget, &StartupWidget::coreStartInssidious, core, &Core::onCoreStartInssidious);		//Notify Core that Startup Widget requests to start Inssidious 
-	connect(core, &Core::coreStarted, this, &InssidiousUi::onCoreStarted);									//Notify Inssidious (main) that Core has successfully started Inssidious
-	connect(core, &Core::coreFailed, this, &InssidiousUi::onCoreFailed);									//Notify Startup Widget that core has failed to start Inssidious
-	connect(core, &Core::coreDeviceConnected, this, &InssidiousUi::onDeviceConnected);
-	connect(core, &Core::coreDeviceDisconnected, this, &InssidiousUi::onDeviceDisconnected);
-
-	//connect(core, &Core::addDeviceWidget, this, &InssidiousUi::onDeviceConnected);							//Notify Inssidious (main) that a device has connected to the network
-	//connect(core, &Core::removeDeviceWidget, this, &InssidiousUi::onDeviceDisconnected);					//Notify Inssidious (main) that a device has disconnected from the network
+	connect(startupWidget, &StartupWidget::coreStartRouter, core, &Core::onCoreStartRouter);				//Notify Core that Startup Widget requests to start the router
+	connect(core, &Core::coreRouterStarted, this, &InssidiousUi::onCoreRouterStarted);						//Notify InssidiousUi that Core has successfully started the router
+	connect(core, &Core::coreFailed, this, &InssidiousUi::onCoreFailed);									//Notify InssidiousUi that core has failed 
+	connect(core, &Core::coreDeviceConnected, this, &InssidiousUi::onDeviceConnected);						//Notify InssidiousUi that a device has connected
+	connect(core, &Core::coreDeviceDisconnected, this, &InssidiousUi::onDeviceDisconnected);				//Notify InssidiousUi that a device has disconnected
 
 	//Start the core thread
 	coreThread->start();
@@ -96,7 +93,7 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	/* Core will emit a signal for StartupWidget to indicate it successfully started or failed */
 }
 
-void InssidiousUi::onCoreStarted(QString networkName, QString networkPassword)
+void InssidiousUi::onCoreRouterStarted(QString networkName, QString networkPassword)
 {	
 	//Set the wireless network name and password
 	ui.WirelessNetworkNameText->setText(networkName);
@@ -149,10 +146,8 @@ void InssidiousUi::onDeviceConnected(QString MACAddress)
 		ui.WaitingForDevicesWidget->hide();
 
 		//Tell the new Device Widget to show as active
-		device->deviceWidget->select();
+		device->select();
 
-		//Show the tamper widgets container
-		device->tamperWidgetsContainer->show();
 	}
 }
 

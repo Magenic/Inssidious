@@ -20,13 +20,13 @@ public:
 	StartupWidget(QWidget *parent);
 
 signals:
-	void coreStartInssidious(QString, QString);				//Signal to Core to start Inssidious 
+	void coreStartRouter(QString, QString, QString);		//Signal to Core to start the router
 
 public slots:
 	void onCoreReadyToStart();								//Triggered by Core's successful start, now have a list of network adapters 
-	
+
 private slots:
-	void onStartButtonClicked();							//Triggered by QPushButton's clicked signal, emits info to Core to start Inssidious
+	void onStartButtonClicked();							//Triggered by QPushButton's clicked signal, check the UI data and signal core to start the router
 
 private:
 	QVBoxLayout* startupWidgetLayout;						//Layout for the Startup Widget
@@ -37,25 +37,21 @@ private:
 	QPalette descriptionTextPalette;						//Palette for grey description text
 	QPalette errorTextPalette;								//Palette for red error text
 
-	QLabel* internetConnectionTextLabel;					//Description text label
-	QComboBox* internetConnectionComboBox;					//Combo box for all network adapters
-
-	QLabel* wirelessAdapterTextLabel;						//Description text label
-	QComboBox* wirelessAdapterComboBox;						//Combo box for all wireless network adapters
-
 	QLabel* wirelessNetworkNameTextLabel;					//Description text label
 	QLineEdit* wirelessNetworkNameLineEdit;					//Editable field to specify the wireless network name
 
 	QLabel* wirelessNetworkPasswordTextLabel;				//Description text label
 	QLineEdit* wirelessNetworkPasswordLineEdit;				//Editable field to specify the wireless network password
 	
+	QLabel* internetConnectionTextLabel;					//Description text label
+	QComboBox* internetConnectionComboBox;					//Combo box for all network adapters
+
 	QPushButton* inssidiousStartButton;						//Start button
 
 	//Description text strings to set the labels to
-	const QString internetConnectionText = "Select an Internet Connection:";								
-	const QString wirelessAdapterText = "Select a Wireless Adapter:";										
 	const QString wirelessNetworkNameText = "Specify the name of the Inssidious wireless network:";			
 	const QString wirelessNetworkPasswordText = "Specify the password for the Inssidious wireless network:";
+	const QString internetConnectionText = "Select an Internet Connection:";
 };
 
 #endif // STARTUPWIDGET_H

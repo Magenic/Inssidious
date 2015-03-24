@@ -21,7 +21,7 @@ public:
 
 
 public slots :
-	void onCoreStarted(QString, QString);					//Core has started Inssidious. Hide the Startup Widget and show Waiting for Devices message
+	void onCoreRouterStarted(QString, QString);				//Core has started the router. Hide the Startup Widget and show Waiting for Devices message
 	void onCoreFailed(QString);								//Core has hit a critical error. Display an error message asking to restart Inssidious.
 
 	void onDeviceConnected(QString MACAddress);				//A device connected. Add a device widget to sidebar & device to device list
@@ -44,7 +44,6 @@ private:
 	QPushButton* criticalErrorQuitButton;					//Button to quit Inssidious after a critical error
 
 	QList<Device*> DeviceList;								//List of all device objects
-
 
 private slots:
 	void onDeviceWidgetClicked(DeviceWidget*);				//A device widget was clicked. Hide all device widgets and then show that device widget

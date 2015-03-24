@@ -25,6 +25,17 @@ static enum TamperType					//Tamper Types
 	WEB_SERVICE_EMPTY_RESPONSES
 };
 
+static enum TamperTypePriorities		//WinDivert processing priority
+{
+	NETWORK_LAG_PRIORITY,
+	DROP_ALL_TRAFFIC_PRIORITY,
+	DROP_NON_HTTP_TRAFFIC_PRIORITY,
+	REDIRECT_TO_PORTAL_PRIORITY,
+	WEB_SERVICE_ERROR_PRIORITY,
+	WEB_SERVICE_TIME_OUT_PRIORITY,
+	WEB_SERVICE_EMPTY_RESPONSES_PRIORITY
+};
+
 static enum AdapterPhysType				//Adapter Types
 {
 	ETHERNET,
