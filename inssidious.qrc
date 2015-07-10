@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/Header">
+        <file alias="HeaderSid.png">Resources/HeaderSid.png</file>
+        <file alias="MenuDefault.png">Resources/MenuDefault.png</file>
+        <file alias="MenuHover.png">Resources/MenuHover.png</file>
+        <file alias="MenuPressed.png">Resources/MenuPressed.png</file>
+    </qresource>
+    <qresource prefix="/Start">
+        <file alias="StartLogo.png">Resources/StartLogo.png</file>
+        <file alias="StartButtonActive.png">Resources/StartButtonActive.png</file>
+        <file alias="StartButtonDisabled.png">Resources/StartButtonDisabled.png</file>
+        <file alias="StartButtonHover.png">Resources/StartButtonHover.png</file>
+        <file alias="StartButtonPressed.png">Resources/StartButtonPressed.png</file>
+        <file alias="StartBackground.png">Resources/StartBackground.png</file>
+    </qresource>
+</RCC>

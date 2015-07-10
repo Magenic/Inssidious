@@ -1,0 +1,78 @@
+<RCC>
+    <qresource prefix="HeaderWidget">
+      <file alias="AppLogo.png">../Resources/HeaderWidget/AppLogo.png</file>
+      <file alias="WirelessNetworkNameIcon.png">../Resources/HeaderWidget/WirelessNetworkNameIcon.png</file>
+      <file alias="WirelessNetworkPasswordIcon.png">../Resources/HeaderWidget/WirelessNetworkPasswordIcon.png</file>
+    </qresource>
+    <qresource prefix="StartupWidget">
+      <file alias="AppLogo.png">../Resources/StartupWidget/AppLogo.png</file>
+      <file alias="AppTagLine.png">../Resources/StartupWidget/AppTagLine.png</file>
+      <file alias="StartButtonActive.png">../Resources/StartupWidget/StartButtonActive.png</file>
+      <file alias="StartButtonInactive.png">../Resources/StartupWidget/StartButtonInactive.png</file>
+      <file alias="StartButtonHover.png">../Resources/StartupWidget/StartButtonHover.png</file>
+      <file alias="StartButtonPressed.png">../Resources/StartupWidget/StartButtonPressed.png</file>
+    </qresource>
+    <qresource prefix="DeviceWidget">
+      <file alias="WaitingForDevices.png">../Resources/DeviceWidget/WaitingForDevices.png</file>
+      <file alias="SetButtonActive.png">../Resources/DeviceWidget/SetButtonActive.png</file>
+      <file alias="SetButtonInactive.png">../Resources/DeviceWidget/SetButtonInactive.png</file>
+      <file alias="SetButtonHover.png">../Resources/DeviceWidget/SetButtonHover.png</file>
+      <file alias="SetButtonPressed.png">../Resources/DeviceWidget/SetButtonPressed.png</file>
+      <file alias="NewDeviceActive.png">../Resources/DeviceWidget/DeviceIcons/NewDeviceActive.png</file>
+      <file alias="NewDeviceInactive.png">../Resources/DeviceWidget/DeviceIcons/NewDeviceInactive.png</file>
+      <file alias="iPhoneActive.png">../Resources/DeviceWidget/DeviceIcons/iPhoneActive.png</file>
+      <file alias="iPhoneInactive.png">../Resources/DeviceWidget/DeviceIcons/iPhoneInactive.png</file>
+      <file alias="AndroidActive.png">../Resources/DeviceWidget/DeviceIcons/AndroidActive.png</file>
+      <file alias="AndroidInactive.png">../Resources/DeviceWidget/DeviceIcons/AndroidInactive.png</file>
+      <file alias="WindowsPhoneActive.png">../Resources/DeviceWidget/DeviceIcons/WindowsPhoneActive.png</file>
+      <file alias="WindowsPhoneInactive.png">../Resources/DeviceWidget/DeviceIcons/WindowsPhoneInactive.png</file>
+      <file alias="iPadActive.png">../Resources/DeviceWidget/DeviceIcons/iPadActive.png</file>
+      <file alias="iPadInactive.png">../Resources/DeviceWidget/DeviceIcons/iPadInactive.png</file>
+      <file alias="AndroidTabletActive.png">../Resources/DeviceWidget/DeviceIcons/AndroidTabletActive.png</file>
+      <file alias="AndroidTabletInactive.png">../Resources/DeviceWidget/DeviceIcons/AndroidTabletInactive.png</file>
+      <file alias="WindowsTabletActive.png">../Resources/DeviceWidget/DeviceIcons/WindowsTabletActive.png</file>
+      <file alias="WindowsTabletInactive.png">../Resources/DeviceWidget/DeviceIcons/WindowsTabletInactive.png</file>
+      <file alias="MacBookActive.png">../Resources/DeviceWidget/DeviceIcons/MacBookActive.png</file>
+      <file alias="MacBookInactive.png">../Resources/DeviceWidget/DeviceIcons/MacBookInactive.png</file>
+      <file alias="ChromebookActive.png">../Resources/DeviceWidget/DeviceIcons/ChromebookActive.png</file>
+      <file alias="ChromebookInactive.png">../Resources/DeviceWidget/DeviceIcons/ChromebookInactive.png</file>
+      <file alias="WindowsLaptopActive.png">../Resources/DeviceWidget/DeviceIcons/WindowsLaptopActive.png</file>
+      <file alias="WindowsLaptopInactive.png">../Resources/DeviceWidget/DeviceIcons/WindowsLaptopInactive.png</file>
+      <file alias="1.png">../Resources/DeviceWidget/TamperCounts/1.png</file>
+      <file alias="2.png">../Resources/DeviceWidget/TamperCounts/2.png</file>
+      <file alias="3.png">../Resources/DeviceWidget/TamperCounts/3.png</file>
+      <file alias="4.png">../Resources/DeviceWidget/TamperCounts/4.png</file>
+      <file alias="5.png">../Resources/DeviceWidget/TamperCounts/5.png</file>
+      <file alias="6.png">../Resources/DeviceWidget/TamperCounts/6.png</file>
+      <file alias="7.png">../Resources/DeviceWidget/TamperCounts/7.png</file>
+    </qresource>
+    <qresource prefix="TamperWidget">
+      <file alias="DropAllTrafficActive.png">../Resources/TamperWidget/DropAllTrafficActive.png</file>
+      <file alias="DropAllTrafficInactive.png">../Resources/TamperWidget/DropAllTrafficInactive.png</file>
+      <file alias="DropNonHTTPTrafficActive.png">../Resources/TamperWidget/DropNonHTTPTrafficActive.png</file>
+      <file alias="DropNonHTTPTrafficInactive.png">../Resources/TamperWidget/DropNonHTTPTrafficInactive.png</file>
+      <file alias="NetworkLagActive.png">../Resources/TamperWidget/NetworkLagActive.png</file>
+      <file alias="NetworkLagInactive.png">../Resources/TamperWidget/NetworkLagInactive.png</file>
+      <file alias="RedirectToPortalActive.png">../Resources/TamperWidget/RedirectToPortalActive.png</file>
+      <file alias="RedirectToPortalInactive.png">../Resources/TamperWidget/RedirectToPortalInactive.png</file>
+      <file alias="TamperWidgetActive.png">../Resources/TamperWidget/TamperWidgetActive.png</file>
+      <file alias="TamperWidgetActiveHover.png">../Resources/TamperWidget/TamperWidgetActiveHover.png</file>
+      <file alias="TamperWidgetActivePressed.png">../Resources/TamperWidget/TamperWidgetActivePressed.png</file>
+      <file alias="TamperWidgetInactive.png">../Resources/TamperWidget/TamperWidgetInactive.png</file>
+      <file alias="TamperWidgetInactiveHover.png">../Resources/TamperWidget/TamperWidgetInactiveHover.png</file>
+      <file alias="TamperWidgetInactivePressed.png">../Resources/TamperWidget/TamperWidgetInactivePressed.png</file>
+      <file alias="WebServiceEmptyResponsesActive.png">../Resources/TamperWidget/WebServiceEmptyResponsesActive.png</file>
+      <file alias="WebServiceEmptyResponsesInactive.png">../Resources/TamperWidget/WebServiceEmptyResponsesInactive.png</file>
+      <file alias="WebServiceErrorsActive.png">../Resources/TamperWidget/WebServiceErrorsActive.png</file>
+      <file alias="WebServiceErrorsInactive.png">../Resources/TamperWidget/WebServiceErrorsInactive.png</file>
+      <file alias="WebServiceTimeoutsActive.png">../Resources/TamperWidget/WebServiceTimeoutsActive.png</file>
+      <file alias="WebServiceTimeoutsInactive.png">../Resources/TamperWidget/WebServiceTimeoutsInactive.png</file>
+      <file alias="TamperActivity.gif">../Resources/TamperWidget/TamperActivity.gif</file>
+    </qresource>
+    <qresource prefix="CriticalErrorWidget">
+      <file alias="AppSadLogo.png">../Resources/CriticalErrorWidget/AppSadLogo.png</file>
+      <file alias="QuitButtonActive.png">../Resources/CriticalErrorWidget/QuitButtonActive.png</file>
+      <file alias="QuitButtonHover.png">../Resources/CriticalErrorWidget/QuitButtonHover.png</file>
+      <file alias="QuitButtonPressed.png">../Resources/CriticalErrorWidget/QuitButtonPressed.png</file>
+    </qresource>
+</RCC>

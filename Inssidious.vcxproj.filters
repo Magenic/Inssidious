@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h</Extensions>
     </Filter>
-    <Filter Include="Form Files">
-      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
-      <Extensions>ui</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
       <Extensions>qrc;*</Extensions>
@@ -24,12 +20,12 @@
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{006b1547-77ba-4f3e-8899-17edd014e3b0}</UniqueIdentifier>
+      <UniqueIdentifier>{30f07314-d32d-435d-a242-7034a61ffef5}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{77c9bd3c-0a1e-4792-8e29-3e139d1e0c7e}</UniqueIdentifier>
+      <UniqueIdentifier>{fed9d31f-af36-4c3e-92aa-12f66cbad7f5}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -38,25 +34,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\TamperWidgets\tamperwidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_tamperwidget.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_tamperwidget.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\DeviceWidgets\devicewidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_devicewidget.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_devicewidget.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\inssidious.cpp">
+    <ClCompile Include="inssidious.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_inssidious.cpp">
@@ -65,7 +43,28 @@
     <ClCompile Include="GeneratedFiles\Release\moc_inssidious.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Core\core.cpp">
+    <ClCompile Include="Widgets\header.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_header.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_header.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_inssidious.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\start.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_start.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_start.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="core.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_core.cpp">
@@ -74,184 +73,93 @@
     <ClCompile Include="GeneratedFiles\Release\moc_core.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Router\router.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_router.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_icombobox.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_router.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_icombobox.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_inssidious.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\StartupWidget\startupwidget.cpp">
+    <ClCompile Include="Components\hostednetwork.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_startupwidget.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_hostednetwork.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_startupwidget.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_hostednetwork.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_device.cpp">
+    <ClCompile Include="Components\ics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ics.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_device.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_ics.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Device\device.cpp">
+    <ClCompile Include="Widgets\devices.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Tamper\tamper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_tamper.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_devices.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_tamper.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Tamper\networklag.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_networklag.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_networklag.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_devices.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Widgets\TamperWidgets\tamperwidget.h">
+    <CustomBuild Include="inssidious.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Widgets\inssidious.h">
+    <CustomBuild Include="Widgets\header.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Widgets\inssidious.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Core\core.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Core\Router\router.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Widgets\inssidious.qrc">
+    <CustomBuild Include="inssidious.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Widgets\StartupWidget\startupwidget.h">
+    <CustomBuild Include="Widgets\start.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Widgets\DeviceWidgets\devicewidget.h">
+    <CustomBuild Include="core.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Device\device.h">
+    <CustomBuild Include="Widgets\icombobox.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Core\Tamper\tamper.h">
+    <CustomBuild Include="Components\hostednetwork.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Core\Tamper\networklag.h">
+    <CustomBuild Include="Components\ics.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\devices.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GeneratedFiles\ui_inssidious.h">
-      <Filter>Generated Files</Filter>
+    <Image Include="Resources\HeaderSid.png" />
+    <Image Include="Resources\MenuDefault.png" />
+    <Image Include="Resources\MenuHover.png" />
+    <Image Include="Resources\MenuPressed.png" />
+    <Image Include="Resources\StartLogo.png" />
+    <Image Include="Resources\StartButtonActive.png" />
+    <Image Include="Resources\StartButtonDisabled.png" />
+    <Image Include="Resources\StartButtonHover.png" />
+    <Image Include="Resources\StartButtonPressed.png" />
+    <Image Include="Resources\StartBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Components\types.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\types.h">
+    <ClInclude Include="Components\IcsMgr\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WinDivert\windivert.h">
+    <ClInclude Include="Components\IcsMgr\icsconn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resources\DeviceWidget\DeviceIcons\AndroidActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\AndroidInactive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\iPhoneActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\iPhoneInactive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\MacLaptopActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\MacLaptopInactive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\WindowsLaptopActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\WindowsLaptopInactive.png" />
-    <Image Include="Resources\StartupWidget\AppLogo.png" />
-    <Image Include="Resources\TamperWidget\DropAllTrafficActive.png" />
-    <Image Include="Resources\TamperWidget\DropAllTrafficInactive.png" />
-    <Image Include="Resources\TamperWidget\DropNonHTTPTrafficActive.png" />
-    <Image Include="Resources\TamperWidget\DropNonHTTPTrafficInactive.png" />
-    <Image Include="Resources\TamperWidget\NetworkLagActive.png" />
-    <Image Include="Resources\TamperWidget\NetworkLagInactive.png" />
-    <Image Include="Resources\TamperWidget\RedirectToPortalActive.png" />
-    <Image Include="Resources\TamperWidget\RedirectToPortalInactive.png" />
-    <Image Include="Resources\TamperWidget\TamperWidgetActive.png" />
-    <Image Include="Resources\TamperWidget\TamperWidgetActiveHover.png" />
-    <Image Include="Resources\TamperWidget\TamperWidgetActivePressed.png" />
-    <Image Include="Resources\TamperWidget\TamperWidgetInactive.png" />
-    <Image Include="Resources\TamperWidget\TamperWidgetInactiveHover.png" />
-    <Image Include="Resources\TamperWidget\TamperWidgetInactivePressed.png" />
-    <Image Include="Resources\TamperWidget\WebServiceEmptyResponsesActive.png" />
-    <Image Include="Resources\TamperWidget\WebServiceEmptyResponsesInactive.png" />
-    <Image Include="Resources\TamperWidget\WebServiceErrorsActive.png" />
-    <Image Include="Resources\TamperWidget\WebServiceErrorsInactive.png" />
-    <Image Include="Resources\TamperWidget\WebServiceTimeoutsActive.png" />
-    <Image Include="Resources\TamperWidget\WebServiceTimeoutsInactive.png" />
-    <Image Include="Resources\AppIcon.ico" />
-    <Image Include="Resources\StartupWidget\AppTagLine.png" />
-    <Image Include="Resources\HeaderWidget\AppLogo.png" />
-    <Image Include="Resources\DeviceWidget\WaitingForDevices.png" />
-    <Image Include="Resources\HeaderWidget\WirelessNetworkNameIcon.png" />
-    <Image Include="Resources\HeaderWidget\WirelessNetworkPasswordIcon.png" />
-    <Image Include="Resources\StartupWidget\StartButtonActive.png" />
-    <Image Include="Resources\StartupWidget\StartButtonHover.png" />
-    <Image Include="Resources\StartupWidget\StartButtonInactive.png" />
-    <Image Include="Resources\StartupWidget\StartButtonPressed.png" />
-    <Image Include="Resources\CriticalErrorWidget\QuitButtonActive.png" />
-    <Image Include="Resources\CriticalErrorWidget\QuitButtonHover.png" />
-    <Image Include="Resources\CriticalErrorWidget\QuitButtonPressed.png" />
-    <Image Include="Resources\CriticalErrorWidget\AppSadLogo.png" />
-    <Image Include="Resources\TamperWidget\TamperActivity.gif" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\AndroidTabletActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\AndroidTabletInactive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\ChromebookActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\ChromebookInactive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\iPadActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\iPadInactive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\WindowsPhoneActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\WindowsPhoneInactive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\WindowsTabletActive.png" />
-    <Image Include="Resources\DeviceWidget\DeviceIcons\WindowsTabletInactive.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\1active.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\1static.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\2active.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\2static.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\3active.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\3static.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\4active.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\4static.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\5active.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\5static.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\6active.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\6static.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\7active.png" />
-    <Image Include="Resources\DeviceWidget\TamperCounts\7static.png" />
-    <Image Include="Resources\StartupWidget\NextButtonActive.png" />
-    <Image Include="Resources\StartupWidget\NextButtonHover.png" />
-    <Image Include="Resources\StartupWidget\NextButtonInactive.png" />
-    <Image Include="Resources\StartupWidget\NextButtonPressed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Resources\AppIcon.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="WinDivert\WinDivert.dll" />
-    <None Include="WinDivert\WinDivert32.sys" />
-    <None Include="WinDivert\WinDivert64.sys" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="WinDivert\WinDivert.lib" />
+    <ClInclude Include="Components\IcsMgr\icsmgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

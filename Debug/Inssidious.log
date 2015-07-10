@@ -1,0 +1,43 @@
+﻿Build started 7/1/2015 7:52:47 AM.
+     1>Project "C:\Users\IanB\Source\Repos\__Temp\Inssidious\Inssidious.vcxproj" on node 2 (Build target(s)).
+     1>CustomBuild:
+         Moc'ing inssidious.h...
+         Moc'ing start.h...
+         Moc'ing devices.h...
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I. /IC:\Qt\Qt5.4.2\5.4\msvc2013\include /I.\GeneratedFiles\Debug /IC:\Qt\Qt5.4.2\5.4\msvc2013\include\QtCore /I.\Widgets /I.\Components /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt GeneratedFiles\Debug\moc_devices.cpp GeneratedFiles\Debug\moc_inssidious.cpp GeneratedFiles\Debug\moc_start.cpp inssidious.cpp main.cpp Widgets\devices.cpp Widgets\start.cpp
+         moc_devices.cpp
+         moc_inssidious.cpp
+         moc_start.cpp
+         inssidious.cpp
+         main.cpp
+         devices.cpp
+         start.cpp
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\IanB\Source\Repos\__Temp\Inssidious\Win32\Debug\\Inssidious.exe" /NOLOGO /LIBPATH:C:\Qt\Qt5.4.2\5.4\msvc2013\lib qtmaind.lib Qt5Cored.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\IanB\Source\Repos\__Temp\Inssidious\Win32\Debug\Inssidious.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\IanB\Source\Repos\__Temp\Inssidious\Win32\Debug\Inssidious.lib" /MACHINE:X86 /SAFESEH Debug\hostednetwork.obj
+         Debug\ics.obj
+         Debug\core.obj
+         Debug\moc_core.obj
+         Debug\moc_devices.obj
+         Debug\moc_header.obj
+         Debug\moc_hostednetwork.obj
+         Debug\moc_icombobox.obj
+         Debug\moc_ics.obj
+         Debug\moc_inssidious.obj
+         Debug\moc_start.obj
+         Debug\qrc_inssidious.obj
+         Debug\inssidious.obj
+         Debug\main.obj
+         Debug\devices.obj
+         Debug\header.obj
+         Debug\start.obj
+         IcsMgr.lib(icsmgr.obj) : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
+         Generating code
+         Finished generating code
+         Inssidious.vcxproj -> C:\Users\IanB\Source\Repos\__Temp\Inssidious\Win32\Debug\Inssidious.exe
+     1>Done Building Project "C:\Users\IanB\Source\Repos\__Temp\Inssidious\Inssidious.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:08.93
