@@ -22,6 +22,10 @@ public:
 	Devices(QWidget *parent);
 	~Devices();
 
+	void addTab(/* identifier */);
+	void removeTab(/* identifier */);
+	
+	
 private:
 	
 };

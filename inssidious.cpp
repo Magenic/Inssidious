@@ -30,20 +30,26 @@ Inssidious::Inssidious(QWidget *parent)
 	inssidiousCore = new Core();									//Creates the Core instance as a unique thread
 	inssidiousCore->start();										//Starts the thread, Core populates list of network adapters
 
-	/* Initialize the Header, Status and Startup widgets */
+
+	/* Initialize the Header and Tabs widgets, hide them for now */
 	
 	headerWidget = new Header(this);								//Draw the Header widget
-	headerWidget->hide();											//Hide it for now until we hear from the Startup Widget
-	//statusWidget = new Status(this);								//Draw the Status widget
-	//statusWidget->hide();											//Hide it for now until we hear from the Startup Widget
+	tabsWidget = new tabsWidget(this);								//Draw the Tabs widget
+	headerWidget->hide();											//Hide it for now until we hear from Core
+	tabsWidget->hide();												//Hide it for now until we hear from Core
+	
+
+	/* Initialize the Startup widget and connect a few signals */
+	
 	startupWidget = new Start(this,									//Draw the initial Inssidious Startup Widget on the window
 		*inssidiousCore->pNetworkConnectionNames);					//Passing along the list of network adapter descriptions
 	connect(startupWidget, &Start::startCore,						//Connect the startInssidious signal from startupWidget
 			inssidiousCore, &Core::onCoreStart);					//to the onCoreStart slot in the Core class
 	connect(inssidiousCore, &Core::updateStatus,					//Connect the updateStatus signal from Core
-			startupWidget, &Start::onUpdateStatus);					//to the onUpdateStatus slot in the Status class
+			startupWidget, &Start::onUpdateStatus);					//to the onUpdateStatus slot in the Start class
 	connect(inssidiousCore, &Core::started,							//Connect the updateStatus signal from Core
-		this, &Inssidious::onCoreStarted);							//to the onUpdateStatus slot in the Status class
+		this, &Inssidious::onCoreStarted);							//to the onUpdateStatus slot in the Start class
+
 
 	/* Startup Widget will emit a signal to direct further activity */
 
