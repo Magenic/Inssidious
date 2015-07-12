@@ -34,10 +34,15 @@ Inssidious::Inssidious(QWidget *parent)
 	/* Initialize the Header and Tabs widgets, hide them for now */
 	
 	headerWidget = new Header(this);								//Draw the Header widget
-	tabsWidget = new tabsWidget(this);								//Draw the Tabs widget
+	tabsWidget = new Tabs(this);									//Draw the Tabs widget
 	headerWidget->hide();											//Hide it for now until we hear from Core
-	tabsWidget->hide();												//Hide it for now until we hear from Core
-	
+	//tabsWidget->hide();												//Hide it for now until we hear from Core
+	tabsWidget->addTab();
+	tabsWidget->addTab();
+	tabsWidget->addTab();
+	tabsWidget->addTab();
+	tabsWidget->addTab();
+
 
 	/* Initialize the Startup widget and connect a few signals */
 	
@@ -53,8 +58,12 @@ Inssidious::Inssidious(QWidget *parent)
 
 	/* Startup Widget will emit a signal to direct further activity */
 
+
+	startupWidget->hide();
 }
 
+
+//
 Inssidious::~Inssidious()
 {
 
@@ -64,12 +73,15 @@ Inssidious::~Inssidious()
 //
 void Inssidious::onCoreStarted()
 {
+
+	/* Hide Startup Widget, show the Header and Tabs widgets */
+
 	this->headerWidget->show();
+	this->tabsWidget->show();
 	this->startupWidget->hide();
 
-
-
 }
+
 
 //Override nativeEvent to react to messages sent to our window, particularly for window drawing & dragging
 bool Inssidious::nativeEvent(const QByteArray& eventType, void* message, long* result)

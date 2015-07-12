@@ -1,33 +1,52 @@
-/*
-*  File:		devices.h
-*  Author:		Ian Bannerman
-*  License:		GNU Public License v3
-*
-*  Description:
-*
-*
-*/
+#ifndef TABS_H
+#define TABS_H
 
+#include <QtWidgets/QWidget>				//QWidgets
+#include <QtWidgets/QLayout>				//Layouts for QWidgets
+#include <QtGui/QMouseEvent>
 
-#ifndef DEVICES_H
-#define DEVICES_H
-
-#include <QtWidgets\QWidget>
-
-class Devices : public QWidget
+class Tab : public QWidget
 {
 	Q_OBJECT
 
 public:
-	Devices(QWidget *parent);
-	~Devices();
+	Tab(QWidget *parent);
 
-	void addTab(/* identifier */);
-	void removeTab(/* identifier */);
-	
-	
+signals:
+	void tabClicked(QWidget*);
+
 private:
-	
+	void mousePressEvent(QMouseEvent *e);		//Catch mouse click events
+	void mouseReleaseEvent(QMouseEvent *e);
+	void enterEvent(QEvent *e);
+	void leaveEvent(QEvent *e);
+
+	QColor textColorActive;						//QColors for different mouse states
+	QColor textColorInactive;
+	QColor backgroundColorActive;
+	QColor backgroundColorActiveHover;
+	QColor backgroundColorActivePressed;
+	QColor backgroundColorInactive;
+	QColor backgroundColorInactiveHover;
+	QColor backgroundColorInactivePressed;
 };
 
-#endif // DEVICES_H
+class Tabs : public QWidget
+{
+	Q_OBJECT
+
+public:
+	Tabs(QWidget *parent);
+	~Tabs();
+
+	void addTab();
+	void removeTab();
+
+private:
+	QList<Tab*> tabList;
+};
+
+
+
+
+#endif // TABS_H

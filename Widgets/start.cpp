@@ -37,15 +37,6 @@ Start::Start(QWidget *parent, QList<QString> networkConnectionDescriptions)
 								QColor(255, 150, 0, 255));		//To a bright red
 
 
-	/* Qt 5.4 has a bug rendering on top of transparent windows, so set a background */
-
-	//this->setAutoFillBackground(true);							//Tell the widget background to fill
-	//QPalette startBackground = QPalette();						//Create a palette
-	//startBackground.setBrush(QPalette::Background,				//For the background
-	//	QBrush(QPixmap(":/Start/StartBackground.png")));		//Fill it with the StartBackground png
-	//this->setPalette(startBackground);							//Set the palette
-
-
 	/* Draw the Inssidious logo */
 	
 	logo = new QLabel();										//Initialize the QLabel pointer
