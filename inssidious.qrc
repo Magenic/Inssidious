@@ -13,4 +13,9 @@
         <file alias="StartButtonPressed.png">Resources/StartButtonPressed.png</file>
         <file alias="StartBackground.png">Resources/StartBackground.png</file>
     </qresource>
+    <qresource prefix="/Tabs">
+        <file alias="Tab.png">Resources/Tab.png</file>
+        <file alias="TabBackground.png">Resources/TabBackground.png</file>
+        <file alias="TabActive.png">Resources/TabActive.png</file>
+    </qresource>
 </RCC>

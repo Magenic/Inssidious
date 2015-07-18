@@ -147,6 +147,9 @@
     <Image Include="Resources\StartButtonHover.png" />
     <Image Include="Resources\StartButtonPressed.png" />
     <Image Include="Resources\StartBackground.png" />
+    <Image Include="Resources\Tab.png" />
+    <Image Include="Resources\TabActive.png" />
+    <Image Include="Resources\TabBackground.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\types.h">

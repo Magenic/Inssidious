@@ -6,14 +6,19 @@ Tabs::Tabs(QWidget *parent)
 	/* Set the layout and initial settings for the Start widget */
 
 	this->setLayout(new QVBoxLayout());							//Use a Vertical Box Layout
-	this->layout()->setContentsMargins(0, 12, 0, 0);			//Clear the content margins except for a 12 pixel pad from the top
-	this->layout()->setSpacing(12);								//Clear the spacing between any child widgets
+	this->layout()->setContentsMargins(0, 20, 0, 0);			//Clear the content margins except for a 20 pixel pad from the top
+	this->layout()->setSpacing(8);								//Clear the spacing between any child widgets
 	this->layout()->setAlignment(Qt::AlignTop);					//Align layout contents at the top of the widget
 	this->setGeometry(16,										//Start 16 pixels in from the left to account for extended frame 
 		120,													//120 pixels from the top to draw below the header and logo
-		200,													//200 pixels as a fixed width for the sidebar
+		800 - 16,												//200 pixels as a fixed width for the sidebar
 		600 - 120);												//Use height of the parent - padding 
-	this->setAutoFillBackground(false);							//Don't fill in a background color
+
+	QPalette* test = new QPalette();
+	test->setBrush(QPalette::Background, QBrush(QImage(":/Tabs/TabBackground.png")));
+	this->setPalette(*test);
+
+	this->setAutoFillBackground(true);							//Don't fill in a background color
 	this->setParent(parent);									//Display the widget on top of Inssidious widget
 
 	
@@ -44,8 +49,11 @@ Tab::Tab(QWidget* parent)
 {
 
 	//Set the device widget background to a dark grey
+	QPalette* test = new QPalette();
+	test->setBrush(QPalette::Background, QBrush(QImage(":/Tabs/Tab.png")));
 	this->setAutoFillBackground(true);
-	this->setPalette(QPalette(QPalette::Background, QColor(65, 65, 65, 255)));
+	//this->setPalette(QPalette(QPalette::Background, QColor(65, 65, 65, 255)));
+	this->setPalette(*test);
 
 	//Set the device widget size
 	this->setFixedWidth(200);
@@ -97,6 +105,13 @@ void Tab::mousePressEvent(QMouseEvent *e)
 
 void Tab::enterEvent(QEvent *e)
 {
+
+
+	QPalette* test2 = new QPalette();
+	test2->setBrush(QPalette::Background, QBrush(QImage(":/Tabs/TabActive.png")));
+	this->setPalette(*test2);
+
+
 	if (this->palette().background().color() == backgroundColorActive)
 	{
 		this->setPalette(backgroundColorActiveHover);
