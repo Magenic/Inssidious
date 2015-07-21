@@ -24,6 +24,8 @@ HostedNetwork::~HostedNetwork()
 
 }
 
+
+//Performs legwork of configuring and starting the wireless hosted network
 bool HostedNetwork::initialize(QString networkName, QString networkPassword)
 {
 
@@ -202,6 +204,7 @@ bool HostedNetwork::initialize(QString networkName, QString networkPassword)
 }
 
 
+//Callback that fires on HostedNetwork notifications from Windows, signals Core as appropriate
 void __stdcall HostedNetwork::WlanNotificationCallback(PWLAN_NOTIFICATION_DATA pNotifData, PVOID pContext)
 {
 
@@ -246,7 +249,7 @@ void __stdcall HostedNetwork::WlanNotificationCallback(PWLAN_NOTIFICATION_DATA p
 }
 
 
-
+//Called on HostedNetwork instantiation, message boxes if hosted network is not enabled
 void HostedNetwork::isHostedNetworkCapable()
 {
 	HANDLE wlanHandle;								//Handle to use with Wlan API calls

@@ -1,3 +1,14 @@
+/*
+*  File:		ics.cpp
+*  Author:		Ian Bannerman
+*  License:		GNU Public License v3
+*
+*  Description:
+*
+*
+*/
+
+
 #include "ics.h"
 
 ICS::ICS(QObject *parent)
@@ -69,9 +80,11 @@ ICS::~ICS()
 }
 
 
+//Performs legwork of configuring and starting Internet Connection Sharing
 bool ICS::initialize(QString networkConnectionName, GUID hostedNetworkGUID)
 {
-	/* Disable all existing ICS Settings */
+	/* Disable all existing ICS configurations */
+
 	pICSManager->DisableIcsOnAll();
 
 
@@ -84,18 +97,24 @@ bool ICS::initialize(QString networkConnectionName, GUID hostedNetworkGUID)
 			/* Found the connection in icsNetworkConnectionList, now have the GUID */
 
 			HRESULT result = pICSManager->EnableIcs(networkConnection.networkConnectionGUID, hostedNetworkGUID);
+			if (result != S_OK)
+			{
+				/* Something went wrong */
 
-			if (S_OK == result)
-			{
-				return true;
-			}
-			else
-			{
+				//TODO: Pass error message
 				return false;
 			}
+
+
+			/* ICS started successfully */
+
+			return true;
 		}
 	}
 
+	/* We should never end up here */
+
+	//TODO: Pass error message
 	return false;
 }
 

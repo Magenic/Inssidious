@@ -1,3 +1,14 @@
+/*
+*  File:		tabcontroller.cpp
+*  Author:		Ian Bannerman
+*  License:		GNU Public License v3
+*
+*  Description:
+*
+*
+*/
+
+
 #include "tabcontroller.h"
 
 TabController::TabController(QWidget *parent)
@@ -31,6 +42,7 @@ TabController::~TabController()
 }
 
 
+//Receives notifications to create a tab when a device has connected
 void TabController::onDeviceConnected(QString MACaddress)
 {
 
@@ -53,14 +65,21 @@ void TabController::onDeviceConnected(QString MACaddress)
 }
 
 
+//Receive notifications to delete a tab when a device has disconnected
 void TabController::onDeviceDisconnected(QString MACAddress)
 {
+
+	/* Search through the tab list for the matching MAC address */
 
 	for (Tab* t : tcTabList)
 	{
 		if (t->MAC == MACAddress)
 		{
-			if (t->active)
+			/* Delete the tab and remove it from the tab list */
+
+			/* If the tab was selected we additionally need to set the remaining topmost tab as selected */
+
+			if (t->selected && tcTabList.count() != 1)
 			{
 				tcTabList.removeOne(t);
 				t->deleteLater();
@@ -87,8 +106,11 @@ void TabController::onDeviceDisconnected(QString MACAddress)
 }
 
 
+//Receive notifications to switch to a different active tab
 void TabController::onTabClicked(Tab* tab)
 {
+	/* Unselect all tabs, then select the one that was clicked */
+
 	for (Tab* t : tcTabList)
 	{
 		t->unselect();

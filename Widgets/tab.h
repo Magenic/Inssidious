@@ -1,10 +1,21 @@
+/*
+*  File:		tab.h
+*  Author:		Ian Bannerman
+*  License:		GNU Public License v3
+*
+*  Description:
+*
+*
+*/
+
+
 #ifndef TAB_H
 #define TAB_H
 
-#include <QtWidgets/QWidget>				//QWidgets
+#include <QtWidgets/QWidget>				//Base of Tab class
 #include <QtWidgets/QLayout>				//Layouts for QWidgets
-#include <QtWidgets/QLabel>
-#include <QtGui/QMouseEvent>
+#include <QtWidgets/QLabel>					//QLabel for displaying text and icons
+#include <QtGui/QMouseEvent>				//Used to track mouse movements and clicks to update state
 
 
 class Tab : public QWidget
@@ -17,7 +28,7 @@ public:
 	void unselect();
 
 	QString MAC;
-	bool active;
+	bool selected;
 
 signals:
 	void tabClicked(Tab*);

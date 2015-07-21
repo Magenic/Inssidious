@@ -1,29 +1,27 @@
+/*
+*  File:		ics.h
+*  Author:		Ian Bannerman
+*  License:		GNU Public License v3
+*
+*  Description:
+*
+*
+*/
+
 #ifndef ICS_H
 #define ICS_H
 
-#include <QObject>
 
-#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+#include <QObject>							//Base of ICS class
 
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#include <windows.h>
-#include <stdlib.h>
-#include <netcon.h>
-#include <new>
-
-#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS    // some CString constructors will be explicit
-
-#include <atlbase.h>
-#include <atlstr.h>
-#include <atlcoll.h>
-#include <strsafe.h>
+#include <netcon.h>							//Used by CIcsManager for INet APIs
+#include <atlstr.h>							//Used by CIcsManager for CAtlString
+#include <atlcoll.h>						//Used by CIcsManager for CRefObjList & CAtlList
 #include <comdef.h>							//Easy HRESULT error conversion
 
-#include "IcsMgr\common.h"
-#include "IcsMgr\icsconn.h"
-#include "IcsMgr\icsmgr.h"
-
+#include "IcsMgr\common.h"					//Required by CIcsManager
+#include "IcsMgr\icsconn.h"					//Required by CIcsManager
+#include "IcsMgr\icsmgr.h"					//Provides CIcsManager
 
 
 #pragma comment(lib, "Components\\IcsMgr\\IcsMgr.lib")		//IcsMgr library
@@ -37,30 +35,34 @@ public:
 	ICS(QObject *parent);
 	~ICS();
 
+	//Public list of network connection names used by UI and passed back in to identify connection to use
 	QList<QString> networkConnectionNames;
 
 
-	//
+	//Performs legwork of configuring and starting Internet Connection Sharing
 	bool initialize(QString networkConnectionName, GUID hostedNetworkGUID);
 
 
 private:
-	
-	CIcsManager* pICSManager;				//Pointer to an instance of the ICS Manager from icsmgr.h
+	//Checks if ICS has been disabled on this machine, message boxes if so
+	bool isICSAllowed();
 
-	CRefObjList<CIcsConnectionInfo *> m_ConnectionList; // List of connections (adapters)
 
+	//Instance of CIcsManager from the Microsoft sample project, defined in icsmgr.h
+	CIcsManager* pICSManager;
+
+
+	//List of available network connections populated via CIcsManager
+	CRefObjList<CIcsConnectionInfo *> m_ConnectionList; 
+
+
+	//Used to store the network connection name and GUID pair; only name used and passed back in by UI
 	struct ICSNetworkConnections
 	{
 		QString networkConnectionName;
 		GUID networkConnectionGUID;
 	};
 	QList<ICSNetworkConnections> icsNetworkConnectionList;
-
-	
-	//Check a Registry value to confirm ICS has not been disabled on this machine
-	bool isICSAllowed();
-
 
 };
 

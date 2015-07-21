@@ -1,3 +1,14 @@
+/*
+*  File:		tab.cpp
+*  Author:		Ian Bannerman
+*  License:		GNU Public License v3
+*
+*  Description:
+*
+*
+*/
+
+
 #include "tab.h"
 
 
@@ -64,7 +75,7 @@ void Tab::select()
 {
 	this->setPalette(tabPaletteActive);
 	this->tabTamperContainer->show();
-	this->active = true;
+	this->selected = true;
 
 }
 
@@ -73,7 +84,7 @@ void Tab::unselect()
 {
 	this->setPalette(tabPaletteInactive);
 	this->tabTamperContainer->hide();
-	this->active = false;
+	this->selected = false;
 
 }
 
