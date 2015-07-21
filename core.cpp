@@ -15,28 +15,35 @@
 Core::Core()
 {
 
-	/* Populate QLists with the system's network adapters */
-	/* Some error conditions such as no wireless card will Messagebox & quit the app */
-
+	/* Initialize instances of the Hosted Network and ICS classses */
+	/* Error conditions such as no wireless card will trigger a Messagebox & quit the app */
 
 	hostedNetwork = new HostedNetwork(this);
 	ics = new ICS(this);
 
+
+	/* Grab a pointer to the list of network connection names for use by Inssidious */
+
 	pNetworkConnectionNames = &ics->networkConnectionNames;
 
+
+	/* No further work until the Startup widget signals */
 }
 
 Core::~Core()
 {
 
-	/* Clear all settings and stop Hosted Network and ICS */
 }
 
+
+//Calls QThread exec() to start the thread's event loop
 void Core::run()
 {
 	QThread::exec();
 }
 
+
+//Receives a notification from the Startup Widget with info to start the hosted network and ICS with
 void Core::onCoreStart(QString networkName, QString networkPassword, QString networkConnection)
 {
 
@@ -51,6 +58,7 @@ void Core::onCoreStart(QString networkName, QString networkPassword, QString net
 	if (!hostedNetwork->initialize(networkName, networkPassword))
 	{
 		/* Something went wrong, we'll have displayed the message. Stop initialization */
+
 		return;
 	}
 
@@ -60,20 +68,22 @@ void Core::onCoreStart(QString networkName, QString networkPassword, QString net
 	emit updateStatus("Starting Internet Connection Sharing.", false);
 	if (!ics->initialize(networkConnection, hostedNetwork->hostedNetworkGUID))
 	{
-		emit updateStatus("Unable to start Internet Connection Sharing. Error: \n" + GetLastError(), true);
+		/* Something went wrong, display a message and stop initialization. */
 
+		emit updateStatus("Unable to start Internet Connection Sharing. Error: \nTODO", true);
 		return;
 	}
 
 	
 	/* Success! */
+
 	emit updateStatus("Started Internet Connection Sharing.", false);
 	emit started();
 
 }
 
 
-//
+//Receives notifications from the Hosted Network class with status and error info
 void Core::onHostedNetworkMessage(QString message, HostedNetworkReason reason)
 {
 	switch (reason)

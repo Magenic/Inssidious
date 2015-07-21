@@ -39,7 +39,7 @@ Inssidious::Inssidious(QWidget *parent)
 	tcWidget->hide();												//Hide it for now until we hear from Core
 
 
-	/* Initialize the Startup widget and connect a few signals */
+	/* Initialize the Startup widget and connect signals to slots */
 	
 	startupWidget = new Start(this,									//Draw the initial Inssidious Startup Widget on the window
 		*inssidiousCore->pNetworkConnectionNames);					//Passing along the list of network adapter descriptions
@@ -49,10 +49,10 @@ Inssidious::Inssidious(QWidget *parent)
 			startupWidget, &Start::onUpdateStatus);					//to the onUpdateStatus slot in the Start class
 	connect(inssidiousCore, &Core::started,							//Connect the updateStatus signal from Core
 		this, &Inssidious::onCoreStarted);							//to the onUpdateStatus slot in the Start class
-	connect(inssidiousCore, &Core::deviceConnected,
-		tcWidget, &TabController::onDeviceConnected);
-	connect(inssidiousCore, &Core::deviceDisconnected,
-		tcWidget, &TabController::onDeviceDisconnected);
+	connect(inssidiousCore, &Core::deviceConnected,					//Connect the deviceConnected signal from Core
+		tcWidget, &TabController::onDeviceConnected);				//to the onDeviceConnected slot in the Tab Controller class
+	connect(inssidiousCore, &Core::deviceDisconnected,				//Connect the deviceDisconnected signal from Core
+		tcWidget, &TabController::onDeviceDisconnected);			//to the onDeviceDisconnected slot in the Tab Controller class
 
 
 	/* Startup Widget will emit a signal to direct further activity */
@@ -67,15 +67,15 @@ Inssidious::~Inssidious()
 }
 
 
-//
+//Receives a message from Core to trigger removing the Startup widget & showing the header and tab controller
 void Inssidious::onCoreStarted()
 {
 
 	/* Hide Startup Widget, show the Header and Tabs widgets */
 
+	this->startupWidget->hide();
 	this->headerWidget->show();
 	this->tcWidget->show();
-	this->startupWidget->hide();
 
 }
 

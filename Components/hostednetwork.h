@@ -23,7 +23,7 @@
 #pragma comment(lib, "wlanapi.lib")			//Wireless Networking API libary
 #pragma comment(lib, "iphlpapi.lib")		//Networking Helper API library
 
-#include "types.h"							//
+#include "types.h"							//Shared types between Core components
 
 class HostedNetwork : public QObject
 {
@@ -43,7 +43,7 @@ signals:
 	void hostedNetworkMessage(QString message, HostedNetworkReason reason);
 
 private:
-	const DWORD maxNumberOfPeers = 8;
+	const DWORD maxNumberOfPeers = 5;
 
 	void isHostedNetworkCapable();
 

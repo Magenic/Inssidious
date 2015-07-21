@@ -32,7 +32,6 @@
 *.opensdf
 *.suo
 
-
 #Directories
 Debug/
 Win32/
