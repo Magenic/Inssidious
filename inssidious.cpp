@@ -34,14 +34,9 @@ Inssidious::Inssidious(QWidget *parent)
 	/* Initialize the Header and Tabs widgets, hide them for now */
 	
 	headerWidget = new Header(this);								//Draw the Header widget
-	tabsWidget = new Tabs(this);									//Draw the Tabs widget
+	tcWidget = new TabController(this);								//Draw the Tabs widget
 	headerWidget->hide();											//Hide it for now until we hear from Core
-	//tabsWidget->hide();												//Hide it for now until we hear from Core
-	tabsWidget->addTab();
-	tabsWidget->addTab();
-	tabsWidget->addTab();
-	tabsWidget->addTab();
-	tabsWidget->addTab();
+	tcWidget->hide();												//Hide it for now until we hear from Core
 
 
 	/* Initialize the Startup widget and connect a few signals */
@@ -54,12 +49,14 @@ Inssidious::Inssidious(QWidget *parent)
 			startupWidget, &Start::onUpdateStatus);					//to the onUpdateStatus slot in the Start class
 	connect(inssidiousCore, &Core::started,							//Connect the updateStatus signal from Core
 		this, &Inssidious::onCoreStarted);							//to the onUpdateStatus slot in the Start class
+	connect(inssidiousCore, &Core::deviceConnected,
+		tcWidget, &TabController::onDeviceConnected);
+	connect(inssidiousCore, &Core::deviceDisconnected,
+		tcWidget, &TabController::onDeviceDisconnected);
 
 
 	/* Startup Widget will emit a signal to direct further activity */
 
-
-	startupWidget->hide();
 }
 
 
@@ -77,7 +74,7 @@ void Inssidious::onCoreStarted()
 	/* Hide Startup Widget, show the Header and Tabs widgets */
 
 	this->headerWidget->show();
-	this->tabsWidget->show();
+	this->tcWidget->show();
 	this->startupWidget->hide();
 
 }

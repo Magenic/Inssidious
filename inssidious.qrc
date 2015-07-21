@@ -11,11 +11,15 @@
         <file alias="StartButtonDisabled.png">Resources/StartButtonDisabled.png</file>
         <file alias="StartButtonHover.png">Resources/StartButtonHover.png</file>
         <file alias="StartButtonPressed.png">Resources/StartButtonPressed.png</file>
-        <file alias="StartBackground.png">Resources/StartBackground.png</file>
     </qresource>
     <qresource prefix="/Tabs">
-        <file alias="Tab.png">Resources/Tab.png</file>
-        <file alias="TabBackground.png">Resources/TabBackground.png</file>
         <file alias="TabActive.png">Resources/TabActive.png</file>
+        <file alias="TabActiveHover.png">Resources/TabActiveHover.png</file>
+        <file alias="TabActivePressed.png">Resources/TabActivePressed.png</file>
+        <file alias="TabInactive.png">Resources/TabInactive.png</file>
+        <file alias="TabInactiveHover.png">Resources/TabInactiveHover.png</file>
+        <file alias="TabInactivePressed.png">Resources/TabInactivePressed.png</file>
+        <file alias="TabsDevicesPresent.png">Resources/TabsDevicesPresent.png</file>
+        <file alias="TabsNoDevices.png">Resources/TabsNoDevices.png</file>
     </qresource>
 </RCC>

@@ -23,7 +23,7 @@
 
 
 #include "Widgets\header.h"					//
-#include "Widgets\tabs.h"					//
+#include "Widgets\tabcontroller.h"			//
 #include "Widgets\start.h"					//
 
 
@@ -57,7 +57,7 @@ private:
 	Core* inssidiousCore;					//Pointer to the Inssidious backend implemented in Core			
 
 	Header* headerWidget;					//Pointer to the Header widget that controls the Menu icon and Sid logo
-	Tabs* tabsWidget;						//Pointer to the Tabs widget that draws each device's tampering options
+	TabController* tcWidget;				//Pointer to the Tabs widget that draws each device's tampering options
 	Start* startupWidget;					//Pointer to the Start widget that displays on initial startup
 
 };

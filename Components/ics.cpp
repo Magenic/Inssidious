@@ -83,9 +83,15 @@ bool ICS::initialize(QString networkConnectionName, GUID hostedNetworkGUID)
 		{ 
 			/* Found the connection in icsNetworkConnectionList, now have the GUID */
 
-			if (S_OK == pICSManager->EnableIcs(networkConnection.networkConnectionGUID, hostedNetworkGUID))
+			HRESULT result = pICSManager->EnableIcs(networkConnection.networkConnectionGUID, hostedNetworkGUID);
+
+			if (S_OK == result)
 			{
 				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 	}

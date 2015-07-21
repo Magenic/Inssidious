@@ -43,7 +43,7 @@ void Core::onCoreStart(QString networkName, QString networkPassword, QString net
 	/* Configure Hosted Network Settings and confirm Hosted Network is allowed on machine */
 	
 	connect(hostedNetwork, &HostedNetwork::hostedNetworkMessage,
-		this, &Core::onHostedNetworkMessage);
+		this, &Core::onHostedNetworkMessage, Qt::DirectConnection);
 
 
 	/* Initialize the hosted network first, as that may change the available ICS connections */
@@ -92,10 +92,10 @@ void Core::onHostedNetworkMessage(QString message, HostedNetworkReason reason)
 		/* TODO: cleanup and critical error */
 		break;
 	case DEVICE_CONNECTED:
-		/* TODO: Notify Inssidious UI */
+		emit deviceConnected(message /* device MAC address */);
 		break;
 	case DEVICE_DISCONNECTED:
-		/* TODO: Notify Inssidious UI */
+		emit deviceDisconnected(message /* device MAC address */);
 		break;
 	}
 }

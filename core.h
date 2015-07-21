@@ -40,6 +40,8 @@ public slots:
 signals:
 	void updateStatus(QString statusMessage, bool error = false);
 	void started();
+	void deviceConnected(QString);
+	void deviceDisconnected(QString);
 
 private:
 

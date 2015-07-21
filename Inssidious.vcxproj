@@ -100,7 +100,10 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_start.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_tabs.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_tab.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_tabcontroller.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_inssidious.cpp">
@@ -130,14 +133,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_start.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_tabs.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_tab.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_tabcontroller.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="inssidious.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Widgets\header.cpp" />
     <ClCompile Include="Widgets\start.cpp" />
-    <ClCompile Include="Widgets\tabs.cpp" />
+    <ClCompile Include="Widgets\tab.cpp" />
+    <ClCompile Include="Widgets\tabcontroller.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="inssidious.h">
@@ -180,15 +187,19 @@
     <Image Include="Resources\MenuDefault.png" />
     <Image Include="Resources\MenuHover.png" />
     <Image Include="Resources\MenuPressed.png" />
-    <Image Include="Resources\StartBackground.png" />
     <Image Include="Resources\StartButtonActive.png" />
     <Image Include="Resources\StartButtonDisabled.png" />
     <Image Include="Resources\StartButtonHover.png" />
     <Image Include="Resources\StartButtonPressed.png" />
     <Image Include="Resources\StartLogo.png" />
-    <Image Include="Resources\Tab.png" />
     <Image Include="Resources\TabActive.png" />
-    <Image Include="Resources\TabBackground.png" />
+    <Image Include="Resources\TabActiveHover.png" />
+    <Image Include="Resources\TabActivePressed.png" />
+    <Image Include="Resources\TabInactive.png" />
+    <Image Include="Resources\TabInactiveHover.png" />
+    <Image Include="Resources\TabInactivePressed.png" />
+    <Image Include="Resources\TabsDevicesPresent.png" />
+    <Image Include="Resources\TabsNoDevices.png" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Widgets\start.h">
@@ -242,13 +253,23 @@
     <ClInclude Include="Components\IcsMgr\common.h" />
     <ClInclude Include="Components\IcsMgr\icsconn.h" />
     <ClInclude Include="Components\IcsMgr\icsmgr.h" />
-    <CustomBuild Include="Widgets\tabs.h">
+    <CustomBuild Include="Widgets\tabcontroller.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing tabs.h...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing tabcontroller.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I.\Widgets" "-I.\Components"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing tabs.h...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing tabcontroller.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I.\Widgets" "-I.\Components"</Command>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\tab.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing tab.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I.\Widgets" "-I.\Components"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing tab.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I.\Widgets" "-I.\Components"</Command>
     </CustomBuild>
