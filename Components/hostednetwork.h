@@ -23,7 +23,16 @@
 #pragma comment(lib, "wlanapi.lib")			//Wireless Networking API libary
 #pragma comment(lib, "iphlpapi.lib")		//Networking Helper API library
 
-#include "types.h"							//Shared types between Core components
+
+typedef enum HostedNetworkReason
+{
+	HOSTED_NETWORK_STARTING,
+	HOSTED_NETWORK_STARTING_FAILED,
+	HOSTED_NETWORK_STARTED,
+	HOSTED_NETWORK_STOPPED,
+	DEVICE_CONNECTED,
+	DEVICE_DISCONNECTED
+};
 
 class HostedNetwork : public QObject
 {
@@ -43,6 +52,7 @@ public:
 
 	//Used by Core to inform ICS who to set up the internet connection sharing against
 	GUID hostedNetworkGUID;
+
 
 signals:
 	//Signal to notify Core of changes to the hosted network such as starting, stopping, and device arrivals

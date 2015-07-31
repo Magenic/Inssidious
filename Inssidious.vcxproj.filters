@@ -168,9 +168,6 @@
     <Image Include="Resources\TabsNoDevices.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Components\types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Components\IcsMgr\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -184,5 +181,10 @@
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
+    <None Include="LICENSE" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Components\IcsMgr\IcsMgr_Debug.lib" />
+    <Library Include="Components\IcsMgr\IcsMgr_Release.lib" />
   </ItemGroup>
 </Project>

@@ -13,7 +13,6 @@
 
 #include <QThread>							//Core is a QThread running separately from the Inssidious UI
 
-#include "Components\types.h"				//Shared types between Core components
 #include "Components\hostednetwork.h"		//Hosted network class to start and manage the wireless network
 #include "Components\ics.h"					//Internet Connection Sharing class to start and manage ICS
 

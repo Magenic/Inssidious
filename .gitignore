@@ -34,5 +34,7 @@
 
 #Directories
 Debug/
+Release/
+GeneratedFiles/
 Win32/
 x64/

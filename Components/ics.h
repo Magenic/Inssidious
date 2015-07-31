@@ -24,7 +24,11 @@
 #include "IcsMgr\icsmgr.h"					//Provides CIcsManager
 
 
+#if _DEBUG
+#pragma comment(lib, "Components\\IcsMgr\\IcsMgr_Debug.lib")		//IcsMgr library
+#else
 #pragma comment(lib, "Components\\IcsMgr\\IcsMgr_Release.lib")		//IcsMgr library
+#endif
 
 
 class ICS : public QObject
