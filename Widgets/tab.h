@@ -25,11 +25,14 @@ class Tab : public QWidget
 
 public:
 	Tab(QWidget *parent, QString MACaddress);
+	
 	void select();
 	void unselect();
-
-	QString MAC;
 	bool selected;
+	
+	
+	QString MAC;
+	
 
 signals:
 	void tabClicked(Tab*);

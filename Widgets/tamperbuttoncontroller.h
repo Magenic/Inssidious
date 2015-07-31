@@ -2,6 +2,8 @@
 #define TAMPERBUTTONCONTROLLER_H
 
 #include <QtWidgets/QWidget>
+#include "TamperButtons\tamperbutton.h"
+
 
 class TamperButtonController : public QWidget
 {
@@ -10,6 +12,11 @@ class TamperButtonController : public QWidget
 public:
 	TamperButtonController(QWidget *parent);
 	~TamperButtonController();
+
+
+private slots:
+	void onTamperButtonClicked(TamperButton*);
+
 
 private:
 	

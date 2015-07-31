@@ -34,7 +34,6 @@ Tab::Tab(QWidget* parent, QString MACaddress)
 	this->setParent(parent);
 
 
-
 	tabDeviceIconLabel.setFixedSize(32, 32);
 	tabDeviceNameLabel.setFont(QFont("Segoe UI Semibold", 12));
 	tabDeviceNameLabel.setText("New Device");

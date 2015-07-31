@@ -124,15 +124,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_tamperbuttoncontroller.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\tamperbuttonbase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_tamperbuttonbase.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_tamperbuttonbase.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Components\tampercontroller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -142,13 +133,22 @@
     <ClCompile Include="GeneratedFiles\Release\moc_tampercontroller.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Components\tamperbase.cpp">
+    <ClCompile Include="Widgets\TamperButtons\tamperbutton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_tamperbase.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_tamperbutton.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_tamperbase.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_tamperbutton.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Tamper\tampercomponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_tampercomponent.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_tampercomponent.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
@@ -186,13 +186,13 @@
     <CustomBuild Include="Widgets\tamperbuttoncontroller.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Widgets\tamperbuttonbase.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="Components\tampercontroller.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Components\tamperbase.h">
+    <CustomBuild Include="Widgets\TamperButtons\tamperbutton.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Components\Tamper\tampercomponent.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -214,6 +214,12 @@
     <Image Include="Resources\TabInactivePressed.png" />
     <Image Include="Resources\TabsDevicesPresent.png" />
     <Image Include="Resources\TabsNoDevices.png" />
+    <Image Include="Resources\TamperButtonInactive.png" />
+    <Image Include="Resources\TamperButtonActive.png" />
+    <Image Include="Resources\TamperButtonActiveHover.png" />
+    <Image Include="Resources\TamperButtonActivePressed.png" />
+    <Image Include="Resources\TamperButtonInactiveHover.png" />
+    <Image Include="Resources\TamperButtonInactivePressed.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\IcsMgr\common.h">
@@ -227,9 +233,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include=".gitattributes" />
-    <None Include=".gitignore" />
     <None Include="LICENSE" />
+    <None Include="README" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Components\IcsMgr\IcsMgr_Debug.lib" />
