@@ -49,21 +49,9 @@ Tab::Tab(QWidget* parent, QString MACaddress)
 	this->layout()->addWidget(&tabTamperCount);
 
 
-	tabTamperContainer = new QWidget();
-	tabTamperContainer->setGeometry(200,					//698 pixels in from the left
-		16,										//6 pixels plus the title bar height down from the top
-		800 - 200 - 16 - 16,								//Use width of the png for qlabel width
-		600 - 120 - 16 - 16);								//Use height of the png for qlabel height
-	QPalette test;
-	test.setBrush(QPalette::Background, 				//Initialize the Tabs palette background
-		QBrush(Qt::red));						//With the tabs background image
-	tabTamperContainer->setPalette(test);							//Set the palette 
-
-	tabTamperContainer->setAutoFillBackground(true);		//Don't fill in a background color
-	
-	tabTamperContainer->setParent(parent);				//Display the widget on top of Inssidious widget
-	
-	tabTamperContainer->hide();
+	/* Get a tamper button controller */
+	tamperButtonController = new TamperButtonController(this);
+	tamperButtonController->hide();
 
 
 	MAC = MACaddress;
@@ -74,7 +62,7 @@ Tab::Tab(QWidget* parent, QString MACaddress)
 void Tab::select()
 {
 	this->setPalette(tabPaletteActive);
-	this->tabTamperContainer->show();
+	this->tamperButtonController->show();
 	this->selected = true;
 
 }
@@ -83,7 +71,7 @@ void Tab::select()
 void Tab::unselect()
 {
 	this->setPalette(tabPaletteInactive);
-	this->tabTamperContainer->hide();
+	this->tamperButtonController->hide();
 	this->selected = false;
 
 }

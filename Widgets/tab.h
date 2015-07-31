@@ -17,6 +17,7 @@
 #include <QtWidgets/QLabel>					//QLabel for displaying text and icons
 #include <QtGui/QMouseEvent>				//Used to track mouse movements and clicks to update state
 
+#include "tamperbuttoncontroller.h"
 
 class Tab : public QWidget
 {
@@ -41,7 +42,7 @@ private:
 
 
 
-	QWidget* tabTamperContainer;
+	TamperButtonController* tamperButtonController;
 
 
 

@@ -103,9 +103,11 @@ void Core::onHostedNetworkMessage(QString message, HostedNetworkReason reason)
 		break;
 	case DEVICE_CONNECTED:
 		emit deviceConnected(message /* device MAC address */);
+		/*TODO: Notify tamper controller to set up tamper objects */
 		break;
 	case DEVICE_DISCONNECTED:
 		emit deviceDisconnected(message /* device MAC address */);
+		/*TODO: Notify tamper controller to delete tamper objects */
 		break;
 	}
 }
