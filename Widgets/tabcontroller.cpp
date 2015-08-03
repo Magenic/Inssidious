@@ -43,13 +43,13 @@ TabController::~TabController()
 
 
 //Receives notifications to create a tab when a device has connected
-void TabController::onDeviceConnected(QString MACaddress)
+void TabController::onDeviceConnected(QString MACAddress)
 {
 
 	/* Add a new Tab to the list and layout, then connect the tabClicked signal */
 	
 	tcDeviceList.append(new tcDevice);
-	tcDeviceList.last()->MAC = MACaddress;
+	tcDeviceList.last()->MAC = MACAddress;
 	tcDeviceList.last()->tab = new Tab(this);
 	tcDeviceList.last()->tbContainer = new QWidget(this);
 	tcDeviceList.last()->tbGridLayout = new QGridLayout();

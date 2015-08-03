@@ -28,8 +28,8 @@ public:
 
 
 public slots:
-	void onDeviceConnected(QString MACaddress);		//Receives notifications to create a tab when a device has connected
-	void onDeviceDisconnected(QString MACaddress);	//Receives notifications to delete a tab when a device has disconnected
+	void onDeviceConnected(QString MACAddress);		//Receives notifications to create a tab when a device has connected
+	void onDeviceDisconnected(QString MACAddress);	//Receives notifications to delete a tab when a device has disconnected
 
 
 private slots:

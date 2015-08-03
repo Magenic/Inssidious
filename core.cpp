@@ -27,6 +27,11 @@ Core::Core()
 	pNetworkConnectionNames = &ics->networkConnectionNames;
 
 
+	/* Initialize the Tamper Controller and connect some signals */
+	tamperController = new TamperController();
+	connect(this, &Core::deviceConnected, tamperController, &TamperController::onDeviceConnected);
+	connect(this, &Core::deviceDisconnected, tamperController, &TamperController::onDeviceDisconnected);
+
 	/* No further work until the Startup widget signals */
 }
 
@@ -70,7 +75,7 @@ void Core::onCoreStart(QString networkName, QString networkPassword, QString net
 	{
 		/* Something went wrong, display a message and stop initialization. */
 
-		emit updateStatus("Unable to start Internet Connection Sharing. Error:" 
+		emit updateStatus("Unable to start Internet Connection Sharing. Error:\n" 
 			+ QString::fromWCharArray(_com_error(ics->result).ErrorMessage()), true);
 		return;
 	}

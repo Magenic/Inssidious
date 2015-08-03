@@ -8,11 +8,20 @@ class TamperController : public QObject
 	Q_OBJECT
 
 public:
-	TamperController(QObject *parent);
+	TamperController();
 	~TamperController();
 
+public slots:
+	void onDeviceConnected(QString MACAddress);
+	void onDeviceDisconnected(QString MACAddress);
+
+
 private:
-	
+	struct tcDevice{
+		QString MAC;
+	};
+
+	QList<tcDevice*>tcDeviceList;
 };
 
 #endif // TAMPERCONTROLLER_H

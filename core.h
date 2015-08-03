@@ -15,7 +15,7 @@
 
 #include "Components\hostednetwork.h"		//Hosted network class to start and manage the wireless network
 #include "Components\ics.h"					//Internet Connection Sharing class to start and manage ICS
-
+#include "Components\tampercontroller.h"
 
 class Core : public QThread
 {
@@ -47,7 +47,7 @@ private:
 
 	HostedNetwork* hostedNetwork;									//Instance of the hosted network class
 	ICS* ics;														//Instance of the internet connection sharing class
-
+	TamperController* tamperController;
 };
 
 #endif // CORE_H
