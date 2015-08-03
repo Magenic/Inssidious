@@ -47,6 +47,9 @@ public:
 	bool initialize(QString networkConnectionName, GUID hostedNetworkGUID);
 
 
+	//Stores the error HRESULT on initialize failure
+	HRESULT result;
+
 private:
 	//Checks if ICS has been disabled on this machine, message boxes if so
 	bool isICSAllowed();

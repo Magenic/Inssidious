@@ -48,17 +48,64 @@ void TabController::onDeviceConnected(QString MACaddress)
 
 	/* Add a new Tab to the list and layout, then connect the tabClicked signal */
 	
-	tcTabList.append(new Tab(this, MACaddress));
-	this->layout()->addWidget(tcTabList.last());
-	connect(tcTabList.last(), &Tab::tabClicked, 
-		this, &TabController::onTabClicked);
+	tcDeviceList.append(new tcDevice);
+	tcDeviceList.last()->MAC = MACaddress;
+	tcDeviceList.last()->tab = new Tab(this);
+	tcDeviceList.last()->tbContainer = new QWidget(this);
+	tcDeviceList.last()->tbGridLayout = new QGridLayout();
+	tcDeviceList.last()->tb1 = new TamperButton(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb2 = new TamperButton(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb3 = new TamperButton(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb4 = new TamperButton(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb5 = new TamperButton(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb6 = new TamperButton(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb7 = new TamperButton(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb8 = new TamperButton(tcDeviceList.last()->tbContainer);
+
+
+	this->layout()->addWidget(tcDeviceList.last()->tab);
+	
+
+	
+	tcDeviceList.last()->tbContainer->setLayout(tcDeviceList.last()->tbGridLayout);									//Use a Vertical Box Layout to stack tabs top -> down
+	tcDeviceList.last()->tbContainer->setGeometry(200,										//698 pixels in from the left
+		16,														//6 pixels plus the title bar height down from the top
+		800 - 200 - 16 - 16,									//Use width of the png for qlabel width
+		600 - 120 - 16 - 16);									//Use height of the png for qlabel height
+	tcDeviceList.last()->tbContainer->setAutoFillBackground(false);							//Don't fill in a background color
+	tcDeviceList.last()->tbContainer->setParent(this);					//Display the widget on top of Inssidious widget
+
+
+	tcDeviceList.last()->tbGridLayout->setContentsMargins(0, 0, 0, 0);				//Zero margins for any child widget margins except for a 20 pixel pad from the top
+	tcDeviceList.last()->tbGridLayout->setSpacing(0);								//Set spacing between child widgets to 8 pixels
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb1, 0, 0);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb2, 0, 1);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb3, 1, 0);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb4, 1, 1);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb5, 2, 0);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb6, 2, 1);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb7, 3, 0);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb8, 3, 1);
+
+
+	connect(tcDeviceList.last()->tab, &Tab::tabClicked, this, &TabController::onTabClicked);
+
+	connect(tcDeviceList.last()->tb1, &TamperButton::tamperButtonClicked, this, &TabController::onTamperButtonClicked);
+	connect(tcDeviceList.last()->tb2, &TamperButton::tamperButtonClicked, this, &TabController::onTamperButtonClicked);
+	connect(tcDeviceList.last()->tb3, &TamperButton::tamperButtonClicked, this, &TabController::onTamperButtonClicked);
+	connect(tcDeviceList.last()->tb4, &TamperButton::tamperButtonClicked, this, &TabController::onTamperButtonClicked);
+	connect(tcDeviceList.last()->tb5, &TamperButton::tamperButtonClicked, this, &TabController::onTamperButtonClicked);
+	connect(tcDeviceList.last()->tb6, &TamperButton::tamperButtonClicked, this, &TabController::onTamperButtonClicked);
+	connect(tcDeviceList.last()->tb7, &TamperButton::tamperButtonClicked, this, &TabController::onTamperButtonClicked);
+	connect(tcDeviceList.last()->tb8, &TamperButton::tamperButtonClicked, this, &TabController::onTamperButtonClicked);
 
 
 	/* If this is the first tab we've added, select it to default it to active and change the background image */
 
-	if (tcTabList.count() == 1) 
+	if (tcDeviceList.count() == 1) 
 	{
-		tcTabList.last()->select();
+		tcDeviceList.last()->tab->select();
+		tcDeviceList.last()->tbContainer->show();
 		this->setPalette(tcPaletteDevicesPresent);
 	}
 
@@ -71,25 +118,27 @@ void TabController::onDeviceDisconnected(QString MACAddress)
 
 	/* Search through the tab list for the matching MAC address */
 
-	for (Tab* t : tcTabList)
+	for (tcDevice* d : tcDeviceList)
 	{
-		if (t->MAC == MACAddress)
+		if (d->MAC == MACAddress)
 		{
 			/* Delete the tab and remove it from the tab list */
 
 			/* If the tab was selected we additionally need to set the remaining topmost tab as selected */
 
-			if (t->selected && tcTabList.count() != 1)
+			if (d->tab->selected && tcDeviceList.count() != 1)
 			{
-				tcTabList.removeOne(t);
-				t->deleteLater();
-				tcTabList.first()->select();
+				tcDeviceList.removeOne(d);
+				d->tab->deleteLater();
+				d->tbContainer->deleteLater();
+				tcDeviceList.first()->tab->select();
 				break;
 			}
 			else
 			{
-				tcTabList.removeOne(t);
-				t->deleteLater();
+				tcDeviceList.removeOne(d);
+				d->tab->deleteLater();
+				d->tbContainer->deleteLater();
 				break;
 			}
 		}
@@ -98,7 +147,7 @@ void TabController::onDeviceDisconnected(QString MACAddress)
 
 	/* If the tab list is now empty, switch to the no devices present background image */
 
-	if (tcTabList.isEmpty())
+	if (tcDeviceList.isEmpty())
 	{
 		this->setPalette(tcPaletteNoDevices);
 	}
@@ -111,10 +160,38 @@ void TabController::onTabClicked(Tab* tab)
 {
 	/* Unselect all tabs, then select the one that was clicked */
 
-	for (Tab* t : tcTabList)
+	for (tcDevice* d : tcDeviceList)
 	{
-		t->unselect();
+		if (d->tab == tab)
+		{
+			tab->select();
+			d->tbContainer->show();
+		}
+		else
+		{
+			d->tab->unselect();
+			d->tbContainer->hide();
+		}
 	}
+}
 
-	tab->select();
+void TabController::onTamperButtonClicked(TamperButton* tamperButton)
+{
+	if (tamperButton->selected)
+	{
+		/* TODO: Send blocking? signals up the chain */
+		/* Ah. How about an inbetween state of changing... */
+
+		/* Change state of button */
+		tamperButton->unselect();
+	}
+	else
+	{
+		/* TODO: Send blocking? signals up the chain */
+		/* Ah. How about an inbetween state of changing... */
+
+		/* Change state of button */
+
+		tamperButton->select();
+	}
 }

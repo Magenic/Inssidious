@@ -17,21 +17,17 @@
 #include <QtWidgets/QLabel>					//QLabel for displaying text and icons
 #include <QtGui/QMouseEvent>				//Used to track mouse movements and clicks to update state
 
-#include "tamperbuttoncontroller.h"
 
 class Tab : public QWidget
 {
 	Q_OBJECT
 
 public:
-	Tab(QWidget *parent, QString MACaddress);
+	Tab(QWidget *parent);
 	
 	void select();
 	void unselect();
 	bool selected;
-	
-	
-	QString MAC;
 	
 
 signals:
@@ -42,10 +38,6 @@ private:
 	void mouseReleaseEvent(QMouseEvent *e);
 	void enterEvent(QEvent *e);
 	void leaveEvent(QEvent *e);
-
-
-
-	TamperButtonController* tamperButtonController;
 
 
 

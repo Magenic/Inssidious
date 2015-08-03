@@ -12,7 +12,7 @@
 #include "tab.h"
 
 
-Tab::Tab(QWidget* parent, QString MACaddress)
+Tab::Tab(QWidget* parent)
 {
 	/* Initialize tab palettes for the various states */
 
@@ -48,20 +48,12 @@ Tab::Tab(QWidget* parent, QString MACaddress)
 	this->layout()->addWidget(&tabTamperCount);
 
 
-	/* Get a tamper button controller */
-	tamperButtonController = new TamperButtonController(this);
-	tamperButtonController->hide();
-
-
-	MAC = MACaddress;
-
 }
 
 
 void Tab::select()
 {
 	this->setPalette(tabPaletteActive);
-	this->tamperButtonController->show();
 	this->selected = true;
 
 }
@@ -70,7 +62,6 @@ void Tab::select()
 void Tab::unselect()
 {
 	this->setPalette(tabPaletteInactive);
-	this->tamperButtonController->hide();
 	this->selected = false;
 
 }

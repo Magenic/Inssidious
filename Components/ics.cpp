@@ -96,25 +96,38 @@ bool ICS::initialize(QString networkConnectionName, GUID hostedNetworkGUID)
 		{ 
 			/* Found the connection in icsNetworkConnectionList, now have the GUID */
 
-			HRESULT result = pICSManager->EnableIcs(networkConnection.networkConnectionGUID, hostedNetworkGUID);
+			result = pICSManager->EnableIcs(networkConnection.networkConnectionGUID, hostedNetworkGUID);
 			if (result != S_OK)
 			{
-				/* Something went wrong */
+				/* Something went wrong. Try one more time because ICS is buggy */
 
-				//TODO: Pass error message
-				return false;
+				result = pICSManager->EnableIcs(networkConnection.networkConnectionGUID, hostedNetworkGUID);
+				if (result != S_OK)
+				{
+					/* We can't start ICS */
+					
+					return false;
+				}
+				else
+				{
+					/* ICS started successfully */
+
+					return true;
+				}
 			}
+			else
+			{
 
+				/* ICS started successfully */
 
-			/* ICS started successfully */
-
-			return true;
+				return true;
+			}
 		}
 	}
 
 	/* We should never end up here */
 
-	//TODO: Pass error message
+	result = ERROR_UNEXP_NET_ERR;
 	return false;
 }
 

@@ -70,7 +70,8 @@ void Core::onCoreStart(QString networkName, QString networkPassword, QString net
 	{
 		/* Something went wrong, display a message and stop initialization. */
 
-		emit updateStatus("Unable to start Internet Connection Sharing. Error: \nTODO", true);
+		emit updateStatus("Unable to start Internet Connection Sharing. Error:" 
+			+ QString::fromWCharArray(_com_error(ics->result).ErrorMessage()), true);
 		return;
 	}
 
@@ -103,11 +104,11 @@ void Core::onHostedNetworkMessage(QString message, HostedNetworkReason reason)
 		break;
 	case DEVICE_CONNECTED:
 		emit deviceConnected(message /* device MAC address */);
-		/*TODO: Notify tamper controller to set up tamper objects */
+		/*TODO: have a list of tamper controllers and add a new instance to it */
 		break;
 	case DEVICE_DISCONNECTED:
 		emit deviceDisconnected(message /* device MAC address */);
-		/*TODO: Notify tamper controller to delete tamper objects */
+		/*TODO: remove the appropriate tamper controller from the list */
 		break;
 	}
 }

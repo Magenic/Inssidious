@@ -16,6 +16,7 @@
 #include <QtWidgets/QLayout>				//Layouts for QWidgets
 
 #include "tab.h"							//Tab Controller owns the creation and deletion of tabs
+#include "TamperButtons\tamperbutton.h"			//
 
 class TabController : public QWidget
 {
@@ -33,10 +34,25 @@ public slots:
 
 private slots:
 	void onTabClicked(Tab* tab);					//Receive notifications to switch to a different active tab
-
+	void onTamperButtonClicked(TamperButton* tamperButton);
 
 private:
-	QList<Tab*> tcTabList;							//Private list of all tab objects, identified by pointer or MAC
+	struct tcDevice{
+		QString MAC;
+		Tab* tab;
+		QWidget* tbContainer;
+		QGridLayout* tbGridLayout;
+		TamperButton* tb1;
+		TamperButton* tb2;
+		TamperButton* tb3;
+		TamperButton* tb4;
+		TamperButton* tb5;
+		TamperButton* tb6;
+		TamperButton* tb7;
+		TamperButton* tb8;
+	};
+	
+	QList<tcDevice*> tcDeviceList;
 
 	QPalette tcPaletteDevicesPresent;				//Palette used to define the background image of the tab controller
 	QPalette tcPaletteNoDevices;					//Palette used to define the background image of the tab controller
