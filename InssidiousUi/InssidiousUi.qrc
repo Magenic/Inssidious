@@ -1,0 +1,36 @@
+<RCC>
+    <qresource prefix="/Header">
+        <file alias="HeaderSid.png">Resources/HeaderSid.png</file>
+        <file alias="MenuDefault.png">Resources/MenuDefault.png</file>
+        <file alias="MenuHover.png">Resources/MenuHover.png</file>
+        <file alias="MenuPressed.png">Resources/MenuPressed.png</file>
+    </qresource>
+    <qresource prefix="/Start">
+        <file alias="StartLogo.png">Resources/StartLogo.png</file>
+        <file alias="StartButtonActive.png">Resources/StartButtonActive.png</file>
+        <file alias="StartButtonDisabled.png">Resources/StartButtonDisabled.png</file>
+        <file alias="StartButtonHover.png">Resources/StartButtonHover.png</file>
+        <file alias="StartButtonPressed.png">Resources/StartButtonPressed.png</file>
+    </qresource>
+    <qresource prefix="/Tabs">
+        <file alias="TabActive.png">Resources/TabActive.png</file>
+        <file alias="TabActiveHover.png">Resources/TabActiveHover.png</file>
+        <file alias="TabActivePressed.png">Resources/TabActivePressed.png</file>
+        <file alias="TabInactive.png">Resources/TabInactive.png</file>
+        <file alias="TabInactiveHover.png">Resources/TabInactiveHover.png</file>
+        <file alias="TabInactivePressed.png">Resources/TabInactivePressed.png</file>
+        <file alias="TabsDevicesPresent.png">Resources/TabsDevicesPresent.png</file>
+        <file alias="TabsNoDevices.png">Resources/TabsNoDevices.png</file>
+    </qresource>
+    <qresource prefix="/Tamper">
+        <file alias="TamperButtonActive.png">Resources/TamperButtonActive.png</file>
+        <file alias="TamperButtonActiveHover.png">Resources/TamperButtonActiveHover.png</file>
+        <file alias="TamperButtonPressed.png">Resources/TamperButtonActivePressed.png</file>
+        <file alias="TamperButtonInactive.png">Resources/TamperButtonInactive.png</file>
+        <file alias="TamperButtonInactiveHover.png">Resources/TamperButtonInactiveHover.png</file>
+        <file alias="TamperButtonInactivePressed.png">Resources/TamperButtonInactivePressed.png</file>
+    </qresource>
+    <qresource prefix="/InssidiousUi">
+        <file alias="Background.png">Resources/Background.png</file>
+    </qresource>
+</RCC>

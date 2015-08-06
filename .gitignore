@@ -38,3 +38,10 @@ Debug/
 Release/
 Win32/
 x64/
+Builds/
+IcsMgr/Debug
+IcsMgr/Release
+InssidiousCore/Debug
+InssidiousCore/Release
+InssidiousUi/Debug
+InssidiousUi/Release
