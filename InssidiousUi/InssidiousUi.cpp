@@ -18,70 +18,126 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 
 	/* Initialize default window settings */
 
-	this->backgroundPalette.setBrush(QPalette::Background,			//
-		QBrush(backgroundImage));									//
-	this->setFixedSize(800, 600);									//Sets an initial window size
-	this->setPalette(backgroundPalette);							//Sets the background palette
-	this->setWindowFlags(Qt::FramelessWindowHint);					//Removes the window frame
-	this->winId();													//Forces Qt to acquire the Windows window handle for the widget
+	this->backgroundPalette.setBrush(QPalette::Background,			//Set the brush of the Background palette
+		QBrush(backgroundImage));									//To use our background image
+	this->setFixedSize(800, 600);									//Set an initial window size
+	this->setPalette(backgroundPalette);							//Apply the background palette
+	this->setWindowFlags(Qt::FramelessWindowHint);					//Remove the window frame
+	this->winId();													//And force Qt to acquire the Windows window handle for the widget
 
 
-	/* Initialize the Inssidious backend */
+	/* Initialize the core backend and start the thread */
 
-	inssidiousCore = new InssidiousCore();									//Creates the Core instance as a unique thread
-	inssidiousCore->start();										//Starts the thread, Core populates list of network adapters
-
-
-	/* Initialize the Header and Tabs widgets, hide them for now */
-
-	headerWidget = new HeaderWidget(this);							//Draw the Header widget
-	tabController = new TabController(this);						//Draw the Tabs widget
-	headerWidget->hide();											//Hide it for now until we hear from Core
-	tabController->hide();												//Hide it for now until we hear from Core
+	inssidiousCore = new InssidiousCore();
+	inssidiousCore->start();				
 
 
-	/* Initialize the Startup widget and connect signals to slots */
+	/* Initialize the Ui objects and hide the header and tab sidebar for now */
 
-	startupWidget = new StartWidget(this,									//Draw the initial Inssidious Startup Widget on the window
-		*inssidiousCore->pNetworkConnectionNames);					//Passing along the list of network adapter descriptions
-	connect(startupWidget, &StartWidget::startCore,						//Connect the startInssidious signal from startupWidget
-		inssidiousCore, &InssidiousCore::onCoreStart);					//to the onCoreStart slot in the Core class
-	connect(inssidiousCore, &InssidiousCore::updateStatus,					//Connect the updateStatus signal from Core
-		startupWidget, &StartWidget::onUpdateStatus);					//to the onUpdateStatus slot in the Start class
-	connect(inssidiousCore, &InssidiousCore::started,							//Connect the updateStatus signal from Core
-		this, &InssidiousUi::onCoreStarted);							//to the onUpdateStatus slot in the Start class
-	connect(inssidiousCore, &InssidiousCore::deviceConnected,					//Connect the deviceConnected signal from Core
-		tabController, &TabController::onDeviceConnected);				//to the onDeviceConnected slot in the Tab Controller class
-	connect(inssidiousCore, &InssidiousCore::deviceDisconnected,				//Connect the deviceDisconnected signal from Core
-		tabController, &TabController::onDeviceDisconnected);			//to the onDeviceDisconnected slot in the Tab Controller class
+	headerWidget = new HeaderWidget(this);	
+	headerWidget->hide();
+	tabController = new TabController(this);
+	tabController->hide();
+	startWidget = new StartWidget(this,	*inssidiousCore->pNetworkConnectionNames);
 
 
-	/* Startup Widget will emit a signal to direct further activity */
+	/* Connect Signals and Slots */
+	
+	connect(startWidget, &StartWidget::uiStartCore, this, &InssidiousUi::onUiStartCore);
+	connect(this, &InssidiousUi::coreStart, inssidiousCore, &InssidiousCore::onUiCoreStart);
+
+	connect(inssidiousCore, &InssidiousCore::coreStarting, this, &InssidiousUi::onCoreStarting);
+	connect(inssidiousCore, &InssidiousCore::coreStarted, this, &InssidiousUi::onCoreStarted);
+	connect(inssidiousCore, &InssidiousCore::coreStopped, this, &InssidiousUi::onCoreStopped);
+
+
+	connect(inssidiousCore, &InssidiousCore::coreAddDevice, this, &InssidiousUi::onCoreAddDevice);
+	connect(inssidiousCore, &InssidiousCore::coreDropDevice, this, &InssidiousUi::onCoreDropDevice);
+	connect(this, &InssidiousUi::uiAddDevice, tabController, &TabController::onUiAddDevice);
+	connect(this, &InssidiousUi::uiDropDevice, tabController, &TabController::onUiDropDevice);
+
+
+	connect(tabController, &TabController::uiTamperStart, this, &InssidiousUi::onUiTamperStart);
+	connect(tabController, &TabController::uiTamperStop, this, &InssidiousUi::onUiTamperStop);
+	connect(this, &InssidiousUi::coreStartTamper, inssidiousCore, &InssidiousCore::onUiCoreStartTamper);
+	connect(this, &InssidiousUi::coreStopTamper, inssidiousCore, &InssidiousCore::onUiCoreStopTamper);
+	connect(inssidiousCore, &InssidiousCore::coreTamperStarted, this, &InssidiousUi::onCoreTamperStarted);
+	connect(inssidiousCore, &InssidiousCore::coreTamperStopped, this, &InssidiousUi::onCoreTamperStopped);
+
+
+
+	/* No further work until we receive signals */
 
 }
 
 
-//
-InssidiousUi::~InssidiousUi()
+void InssidiousUi::onUiStartCore(QString networkName, QString networkPassword, QString networkAdapter)
 {
-
+	emit coreStart(networkName, networkPassword, networkAdapter);
 }
 
 
-//Receives a message from Core to trigger removing the Startup widget & showing the header and tab controller
+void InssidiousUi::onCoreStarting(QString messageText, bool isErrorMessage)
+{
+	emit uiUpdateStartingText(messageText, isErrorMessage);
+}
+
 void InssidiousUi::onCoreStarted()
 {
+	/* Hide and delete the Start Widget */
 
-	/* Hide Startup Widget, show the Header and Tabs widgets */
+	this->startWidget->hide();
+	delete this->startWidget;
 
-	this->startupWidget->hide();
+
+	/* Show the Header and Tab Widgets*/
+
 	this->headerWidget->show();
 	this->tabController->show();
-
 }
 
 
-//Override nativeEvent to react to messages sent to our window, particularly for window drawing & dragging
+void InssidiousUi::onCoreStopped()
+{
+	/* TODO: Draw a nicer error screen and handle error message text */
+
+	MessageBoxW((HWND)this->winId(), L"Inssidious stopped unexpectedly. Error: TODO", L"An error occured.", MB_OK);
+	ExitProcess(1);
+}
+
+void InssidiousUi::onCoreAddDevice(QString MACAddress)
+{
+	emit uiAddDevice(MACAddress);
+}
+
+void InssidiousUi::onCoreDropDevice(QString MACAddress)
+{
+	emit uiDropDevice(MACAddress);
+}
+
+void InssidiousUi::onUiTamperStart(QString MACAddress, QString TamperType)
+{
+	emit coreStartTamper(MACAddress, TamperType);
+}
+
+void InssidiousUi::onUiTamperStop(QString MACAddress, QString TamperType)
+{
+	emit coreStopTamper(MACAddress, TamperType);
+}
+
+void InssidiousUi::onCoreTamperStarted(QString MACAddress, QString TamperType)
+{
+	emit uiTamperStarted(MACAddress, TamperType);
+}
+
+void InssidiousUi::onCoreTamperStopped(QString MACAddress, QString TamperType)
+{
+	emit uiTamperStopped(MACAddress, TamperType);
+}
+
+
+
+//Override the nativeEvent function to react to window messages and handle drawing & dragging
 bool InssidiousUi::nativeEvent(const QByteArray& eventType, void* message, long* result)
 {
 	//Cast the window message to a type we can work with

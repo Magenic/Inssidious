@@ -10,7 +10,7 @@ TamperController::~TamperController()
 
 }
 
-void TamperController::onDeviceConnected(QString MACAddress)
+void TamperController::onCoreAddDevice(QString MACAddress)
 {
 	tcDeviceList.append(new tcDevice);
 	tcDeviceList.last()->MAC = MACAddress;
@@ -18,7 +18,7 @@ void TamperController::onDeviceConnected(QString MACAddress)
 }
 
 
-void TamperController::onDeviceDisconnected(QString MACAddress)
+void TamperController::onCoreDropDevice(QString MACAddress)
 {
 
 	/* Search through the tab list for the matching MAC address */
@@ -33,4 +33,15 @@ void TamperController::onDeviceDisconnected(QString MACAddress)
 			break;
 		}
 	}
+}
+
+
+void TamperController::onCoreTamperStart(QString MACAddress, QString TamperType)
+{
+
+}
+
+void TamperController::onCoreTamperStop(QString MACAddress, QString TamperType)
+{
+
 }

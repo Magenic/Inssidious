@@ -34,17 +34,12 @@ public:
 
 signals:
 	//Signal to Inssidious that the user has set a name and password and asked to start
-	void startCore(QString networkName, QString networkPassword, QString networkAdapter);
+	void uiStartCore(QString networkName, QString networkPassword, QString networkAdapter);
 
 
 public slots:
 	//Receive and display new status messages when signaled
-	void onUpdateStatus(QString newStatusMessage, bool error = false);
-
-
-private slots:
-	//React to Start button being clicked and confirm user inputted valid data
-	void onStartButtonClicked();
+	void onUiUpdateStartingText(QString messageText, bool isErrorMessage = false);
 
 
 private:
@@ -90,6 +85,11 @@ private:
 		QPushButton:pressed{ background-image: url(\":/Start/StartButtonPressed.png\");}\
 		QPushButton:focus { outline: none;} "
 		;
+
+
+private slots:
+	//React to Start button being clicked and confirm user inputted valid data
+	void onStartButtonClicked();
 
 };
 

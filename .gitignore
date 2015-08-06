@@ -45,3 +45,4 @@ InssidiousCore/Debug
 InssidiousCore/Release
 InssidiousUi/Debug
 InssidiousUi/Release
+*.ipch

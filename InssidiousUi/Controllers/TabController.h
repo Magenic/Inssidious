@@ -27,13 +27,21 @@ public:
 	~TabController();
 
 
+signals:
+	void uiTamperStart(QString MACAddress, QString TamperType);
+	void uiTamperStop(QString MACAddress, QString TamperType);
+
+
 public slots:
-	void onDeviceConnected(QString MACAddress);		//Receives notifications to create a tab when a device has connected
-	void onDeviceDisconnected(QString MACAddress);	//Receives notifications to delete a tab when a device has disconnected
+	void onUiAddDevice(QString MACAddress);		//Receives notifications to create a tab when a device has connected
+	void onUiDropDevice(QString MACAddress);	//Receives notifications to delete a tab when a device has disconnected
+
+	void onUiTamperStarted(QString MACAddress, QString TamperType);
+	void onUiTamperStopped(QString MACAddress, QString TamperType);
 
 
 private slots:
-	void onTabClicked(TabWidget* tab);					//Receive notifications to switch to a different active tab
+	void onTabClicked(TabWidget* tab);						//Receive notifications to switch to a different active tab
 	void onTamperWidgetClicked(TamperWidget* tamperButton);
 
 private:
@@ -42,14 +50,7 @@ private:
 		TabWidget* tab;
 		QWidget* tbContainer;
 		QGridLayout* tbGridLayout;
-		TamperWidget* tb1;
-		TamperWidget* tb2;
-		TamperWidget* tb3;
-		TamperWidget* tb4;
-		TamperWidget* tb5;
-		TamperWidget* tb6;
-		TamperWidget* tb7;
-		TamperWidget* tb8;
+		TamperWidget* tb[7];
 	};
 	
 	QList<tcDevice*> tcDeviceList;

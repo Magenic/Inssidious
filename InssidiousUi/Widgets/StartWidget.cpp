@@ -244,7 +244,7 @@ void StartWidget::onStartButtonClicked()
 
 	/* Notify Inssidious */
 
-	emit startCore(networkNameInput->text(),			//Network Name
+	emit uiStartCore(networkNameInput->text(),			//Network Name
 		networkPasswordInput->text(),					//Network Password
 		internetConnectionComboBox->currentText());		//Network Connection
 
@@ -254,12 +254,12 @@ void StartWidget::onStartButtonClicked()
 
 
 //Receive and display new status messages when signaled
-void StartWidget::onUpdateStatus(QString newStatusMessage, bool error)
+void StartWidget::onUiUpdateStartingText(QString messageText, bool isErrorMessage)
 {
 
 	/* Adjust the text palette to red text if the new status is an error */
 
-	if (error)
+	if (isErrorMessage)
 	{
 		this->statusMessage->setPalette(errorTextPalette);
 	}
@@ -271,6 +271,8 @@ void StartWidget::onUpdateStatus(QString newStatusMessage, bool error)
 
 	/* Update the status texts */
 
-	this->statusMessage->setText(newStatusMessage);
-
+	this->statusMessage->setText(messageText);
+	this->statusMessage->repaint();
+	this->parentWidget()->repaint();
+	this->parentWidget()->parentWidget()->repaint();
 }

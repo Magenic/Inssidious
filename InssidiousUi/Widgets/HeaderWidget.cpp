@@ -33,18 +33,6 @@ HeaderWidget::HeaderWidget(QWidget *parent)
 	this->setAutoFillBackground(true);			//Fill the background since we're using background palettes
 	this->setParent(parent);					//Display the widget on top of Inssidious widget
 
-
-	/* Draw the Sid logo */
-
-	//sid = new QLabel();							//Initialize the QLabel pointer
-	//sid->setPixmap(sidPixmap);					//Set it to display the Sid logo
-	//sid->setGeometry(698,						//698 pixels in from the left
-	//	6 + GetSystemMetrics(SM_CYCAPTION),		//6 pixels plus the title bar height down from the top
-	//	sidPixmap.width(),						//Use width of the png for qlabel width
-	//	sidPixmap.height());					//Use height of the png for qlabel height
-	//sid->setAutoFillBackground(false);			//Don't fill in a background color
-	//sid->setParent(parent);						//Display the widget on top of Inssidious widget
-
 	
 
 	/* Draw the Minimize & Close icons */
@@ -59,7 +47,8 @@ HeaderWidget::HeaderWidget(QWidget *parent)
 	pushButtonMinimize->setParent(parent);						//Display the widget on top of Inssidious widget
 	QObject::connect(pushButtonMinimize, SIGNAL(clicked()), this, SLOT(pushButtonMinimizeClicked()));
 
-	// Close
+	
+
 	QPushButton *pushButtonClose = new QPushButton("", this);
 	pushButtonClose->setObjectName("pushButtonClose");
 	pushButtonClose->setGeometry(768,						//698 pixels in from the left
@@ -68,7 +57,6 @@ HeaderWidget::HeaderWidget(QWidget *parent)
 		14);					//Use height of the png for qlabel height
 	pushButtonClose->setAutoFillBackground(true);			//Don't fill in a background color
 	pushButtonClose->setParent(parent);						//Display the widget on top of Inssidious widget
-
 	QObject::connect(pushButtonClose, SIGNAL(clicked()), this, SLOT(pushButtonCloseClicked()));
 
 
@@ -100,8 +88,6 @@ void HeaderWidget::mouseReleaseEvent(QMouseEvent *e)
 	{
 		this->setPalette(menuPaletteDefault);
 	}
-
-	//emit menuClicked();
 }
 
 void HeaderWidget::mousePressEvent(QMouseEvent *e)

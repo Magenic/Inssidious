@@ -40,28 +40,53 @@ class InssidiousUi : public QWidget
 
 public:
 	InssidiousUi(QWidget *parent = 0);
-	~InssidiousUi();
 
-	public slots:
-	//Receives a message from Core to trigger removing the Startup widget & showing the header and tab controller
-	void onCoreStarted();
 
 private:
-	//Override nativeEvent to react to messages sent to our window, particularly for window drawing & dragging
+
+	QPalette backgroundPalette;
+	QPixmap backgroundImage = QPixmap(":/InssidiousUi/Background.png");
+
+
+	/* Inssidious creates instances of the core backend, Header Widget, Start Widget, and Tab Controller */
+
+	InssidiousCore* inssidiousCore;
+	HeaderWidget* headerWidget;
+	StartWidget* startWidget;
+	TabController* tabController;
+
+
+	/* Inssidious implements the nativeEvent function to react to window messages and handle drawing & dragging */
+
 	bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
 
 
-	InssidiousCore* inssidiousCore;			//Pointer to the Inssidious backend implemented in Core			
+private slots:
+	
+	void onUiStartCore(QString networkName, QString networkPassword, QString networkAdapter);
+	void onCoreStarting(QString messageText, bool isErrorMessage = false);
+	void onCoreStarted();
+	void onCoreStopped();
 
-	HeaderWidget* headerWidget;				//Pointer to the Header widget that controls the Menu icon and Sid logo
-	StartWidget* startupWidget;				//Pointer to the Start widget that displays on initial startup
+	void onCoreAddDevice(QString MACAddress);
+	void onCoreDropDevice(QString MACAddress);
+	
+	void onUiTamperStart(QString MACAddress, QString TamperType);
+	void onUiTamperStop(QString MACAddress, QString TamperType);
+	void onCoreTamperStarted(QString MACAddress, QString TamperType);
+	void onCoreTamperStopped(QString MACAddress, QString TamperType);
 
-	TabController* tabController;			//Pointer to the Tab Controller that owns device tabs
+signals:
+	void coreStart(QString networkName, QString networkPassword, QString networkAdapter);
+	void uiUpdateStartingText(QString messageText, bool isErrorMessage = false);
 
+	void uiAddDevice(QString MACAddress);
+	void uiDropDevice(QString MACAddress);
 
-	QPalette backgroundPalette;
-	QPixmap backgroundImage = QPixmap(
-		":/InssidiousUi/Background.png");	//QPixmap for the Inssidious Background image
+	void coreStartTamper(QString MACAddress, QString TamperType);
+	void coreStopTamper(QString MACAddress, QString TamperType);
+	void uiTamperStarted(QString MACAddress, QString TamperType);
+	void uiTamperStopped(QString MACAddress, QString TamperType);
 };
 
 #endif // INSSIDIOUSUI_H

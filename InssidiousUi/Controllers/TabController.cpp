@@ -43,7 +43,7 @@ TabController::~TabController()
 
 
 //Receives notifications to create a tab when a device has connected
-void TabController::onDeviceConnected(QString MACAddress)
+void TabController::onUiAddDevice(QString MACAddress)
 {
 
 	/* Add a new Tab to the list and layout, then connect the tabClicked signal */
@@ -53,14 +53,14 @@ void TabController::onDeviceConnected(QString MACAddress)
 	tcDeviceList.last()->tab = new TabWidget(this);
 	tcDeviceList.last()->tbContainer = new QWidget(this);
 	tcDeviceList.last()->tbGridLayout = new QGridLayout();
-	tcDeviceList.last()->tb1 = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb2 = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb3 = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb4 = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb5 = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb6 = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb7 = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb8 = new TamperWidget(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb[1] = new TamperWidget(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb[2] = new TamperWidget(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb[3] = new TamperWidget(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb[4] = new TamperWidget(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb[5] = new TamperWidget(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb[6] = new TamperWidget(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb[7] = new TamperWidget(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb[8] = new TamperWidget(tcDeviceList.last()->tbContainer);
 
 
 	this->layout()->addWidget(tcDeviceList.last()->tab);
@@ -78,26 +78,26 @@ void TabController::onDeviceConnected(QString MACAddress)
 
 	tcDeviceList.last()->tbGridLayout->setContentsMargins(0, 0, 0, 0);				//Zero margins for any child widget margins except for a 20 pixel pad from the top
 	tcDeviceList.last()->tbGridLayout->setSpacing(0);								//Set spacing between child widgets to 8 pixels
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb1, 0, 0);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb2, 0, 1);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb3, 1, 0);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb4, 1, 1);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb5, 2, 0);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb6, 2, 1);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb7, 3, 0);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb8, 3, 1);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[1], 0, 0);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[2], 0, 1);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[3], 1, 0);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[4], 1, 1);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[5], 2, 0);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[6], 2, 1);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[7], 3, 0);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[8], 3, 1);
 
 
 	connect(tcDeviceList.last()->tab, &TabWidget::tabClicked, this, &TabController::onTabClicked);
 
-	connect(tcDeviceList.last()->tb1, &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb2, &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb3, &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb4, &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb5, &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb6, &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb7, &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb8, &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tb[1], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tb[2], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tb[3], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tb[4], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tb[5], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tb[6], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tb[7], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tb[8], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
 
 
 	/* If this is the first tab we've added, select it to default it to active and change the background image */
@@ -113,7 +113,7 @@ void TabController::onDeviceConnected(QString MACAddress)
 
 
 //Receive notifications to delete a tab when a device has disconnected
-void TabController::onDeviceDisconnected(QString MACAddress)
+void TabController::onUiDropDevice(QString MACAddress)
 {
 
 	/* Search through the tab list for the matching MAC address */
@@ -154,6 +154,15 @@ void TabController::onDeviceDisconnected(QString MACAddress)
 
 }
 
+void TabController::onUiTamperStarted(QString MACAddress, QString TamperType)
+{
+
+}
+
+void TabController::onUiTamperStopped(QString MACAddress, QString TamperType)
+{
+
+}
 
 //Receive notifications to switch to a different active tab
 void TabController::onTabClicked(TabWidget* tab)
@@ -175,23 +184,26 @@ void TabController::onTabClicked(TabWidget* tab)
 	}
 }
 
-void TabController::onTamperWidgetClicked(TamperWidget* tamperButton)
+void TabController::onTamperWidgetClicked(TamperWidget* tamperWidget)
 {
-	if (tamperButton->selected)
+
+	for (tcDevice* d : tcDeviceList)
 	{
-		/* TODO: Send blocking? signals up the chain */
-		/* Ah. How about an inbetween state of changing... */
-
-		/* Change state of button */
-		tamperButton->unselect();
-	}
-	else
-	{
-		/* TODO: Send blocking? signals up the chain */
-		/* Ah. How about an inbetween state of changing... */
-
-		/* Change state of button */
-
-		tamperButton->select();
+		for (int i = 0; i < 8; i++)
+		{
+			if (d->tb[i] == tamperWidget)
+			{
+				if (d->tb[i]->selected)
+				{
+					emit uiTamperStop(d->MAC, "TamperType");
+					d->tb[i]->unselect();
+				}
+				else
+				{
+					emit uiTamperStart(d->MAC, "TamperType");
+					d->tb[i]->select();
+				}
+			}
+		}
 	}
 }
