@@ -44,25 +44,25 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	/* Connect Signals and Slots */
 	
 	connect(startWidget, &StartWidget::uiStartCore, this, &InssidiousUi::onUiStartCore);
-	connect(this, &InssidiousUi::coreStart, inssidiousCore, &InssidiousCore::onUiCoreStart);
+	connect(this, &InssidiousUi::coreStart, inssidiousCore, &InssidiousCore::onUiCoreStart, Qt::QueuedConnection);
 
-	connect(inssidiousCore, &InssidiousCore::coreStarting, this, &InssidiousUi::onCoreStarting);
-	connect(inssidiousCore, &InssidiousCore::coreStarted, this, &InssidiousUi::onCoreStarted);
-	connect(inssidiousCore, &InssidiousCore::coreStopped, this, &InssidiousUi::onCoreStopped);
+	connect(inssidiousCore, &InssidiousCore::coreStarting, this, &InssidiousUi::onCoreStarting, Qt::QueuedConnection);
+	connect(inssidiousCore, &InssidiousCore::coreStarted, this, &InssidiousUi::onCoreStarted, Qt::QueuedConnection);
+	connect(inssidiousCore, &InssidiousCore::coreStopped, this, &InssidiousUi::onCoreStopped, Qt::QueuedConnection);
 
 
-	connect(inssidiousCore, &InssidiousCore::coreAddDevice, this, &InssidiousUi::onCoreAddDevice);
-	connect(inssidiousCore, &InssidiousCore::coreDropDevice, this, &InssidiousUi::onCoreDropDevice);
+	connect(inssidiousCore, &InssidiousCore::coreAddDevice, this, &InssidiousUi::onCoreAddDevice, Qt::QueuedConnection);
+	connect(inssidiousCore, &InssidiousCore::coreDropDevice, this, &InssidiousUi::onCoreDropDevice, Qt::QueuedConnection);
 	connect(this, &InssidiousUi::uiAddDevice, tabController, &TabController::onUiAddDevice);
 	connect(this, &InssidiousUi::uiDropDevice, tabController, &TabController::onUiDropDevice);
 
 
 	connect(tabController, &TabController::uiTamperStart, this, &InssidiousUi::onUiTamperStart);
 	connect(tabController, &TabController::uiTamperStop, this, &InssidiousUi::onUiTamperStop);
-	connect(this, &InssidiousUi::coreStartTamper, inssidiousCore, &InssidiousCore::onUiCoreStartTamper);
-	connect(this, &InssidiousUi::coreStopTamper, inssidiousCore, &InssidiousCore::onUiCoreStopTamper);
-	connect(inssidiousCore, &InssidiousCore::coreTamperStarted, this, &InssidiousUi::onCoreTamperStarted);
-	connect(inssidiousCore, &InssidiousCore::coreTamperStopped, this, &InssidiousUi::onCoreTamperStopped);
+	connect(this, &InssidiousUi::coreStartTamper, inssidiousCore, &InssidiousCore::onUiCoreStartTamper, Qt::QueuedConnection);
+	connect(this, &InssidiousUi::coreStopTamper, inssidiousCore, &InssidiousCore::onUiCoreStopTamper, Qt::QueuedConnection);
+	connect(inssidiousCore, &InssidiousCore::coreTamperStarted, this, &InssidiousUi::onCoreTamperStarted, Qt::QueuedConnection);
+	connect(inssidiousCore, &InssidiousCore::coreTamperStopped, this, &InssidiousUi::onCoreTamperStopped, Qt::QueuedConnection);
 
 
 

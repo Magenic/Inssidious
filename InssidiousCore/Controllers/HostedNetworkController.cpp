@@ -204,6 +204,31 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 }
 
 
+char digits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+
+QString get_mac_id(DOT11_MAC_ADDRESS &_in)
+{
+
+	QString addr;
+
+	if (_in == NULL)
+	{
+		return false;
+	}
+	addr.clear();
+	for (uint k = 0; k < 6; k++)
+	{
+		char lowbit = digits[(int)_in[k] & 0xf];
+		char highbit = digits[(int)((_in[k] & 0xf0) >> 4)];
+		addr.push_back(highbit);
+		addr.push_back(lowbit);
+		if (k != 5)
+			addr.push_back('-');
+	}
+	return addr;
+}
+
+
 //Callback that fires on HostedNetwork notifications from Windows, signals Core as appropriate
 void __stdcall HostedNetworkController::WlanNotificationCallback(PWLAN_NOTIFICATION_DATA pNotifData, PVOID pContext)
 {
@@ -239,11 +264,11 @@ void __stdcall HostedNetworkController::WlanNotificationCallback(PWLAN_NOTIFICAT
 		PWLAN_HOSTED_NETWORK_DATA_PEER_STATE_CHANGE pPeerStateChange = (PWLAN_HOSTED_NETWORK_DATA_PEER_STATE_CHANGE)pNotifData->pData;
 		if (wlan_hosted_network_peer_state_authenticated == pPeerStateChange->NewState.PeerAuthState)
 		{
-			emit hostedNetwork->hostedNetworkMessage(QString(*pPeerStateChange->NewState.PeerMacAddress), DEVICE_CONNECTED);
+			emit hostedNetwork->hostedNetworkMessage(get_mac_id(pPeerStateChange->NewState.PeerMacAddress), DEVICE_CONNECTED);
 		}
 		else if (wlan_hosted_network_peer_state_invalid == pPeerStateChange->NewState.PeerAuthState)
 		{
-			emit hostedNetwork->hostedNetworkMessage(QString(*pPeerStateChange->NewState.PeerMacAddress), DEVICE_DISCONNECTED);
+			emit hostedNetwork->hostedNetworkMessage(get_mac_id(pPeerStateChange->NewState.PeerMacAddress), DEVICE_DISCONNECTED);
 		}
 	}
 }
@@ -414,3 +439,5 @@ void HostedNetworkController::isHostedNetworkCapable()
 		return;
 	}
 }
+
+

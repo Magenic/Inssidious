@@ -14,9 +14,10 @@
 
 #include <QThread>										//Core is a QThread running separately from the Inssidious UI
 
-#include "Controllers\HostedNetworkController.h"		//Hosted network class to start and manage the wireless network
-#include "Controllers\ICSController.h"					//Internet Connection Sharing class to start and manage ICS
-#include "Controllers\TamperController.h"				//Tamper Controller class to manage tamper instances
+class HostedNetworkController;
+class ICSController;
+class TamperController;
+enum HostedNetworkReason;
 
 class InssidiousCore : public QThread
 {

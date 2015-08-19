@@ -53,6 +53,7 @@ void TabController::onUiAddDevice(QString MACAddress)
 	tcDeviceList.last()->tab = new TabWidget(this);
 	tcDeviceList.last()->tbContainer = new QWidget(this);
 	tcDeviceList.last()->tbGridLayout = new QGridLayout();
+	tcDeviceList.last()->tb[0] = new TamperWidget(tcDeviceList.last()->tbContainer);
 	tcDeviceList.last()->tb[1] = new TamperWidget(tcDeviceList.last()->tbContainer);
 	tcDeviceList.last()->tb[2] = new TamperWidget(tcDeviceList.last()->tbContainer);
 	tcDeviceList.last()->tb[3] = new TamperWidget(tcDeviceList.last()->tbContainer);
@@ -60,7 +61,7 @@ void TabController::onUiAddDevice(QString MACAddress)
 	tcDeviceList.last()->tb[5] = new TamperWidget(tcDeviceList.last()->tbContainer);
 	tcDeviceList.last()->tb[6] = new TamperWidget(tcDeviceList.last()->tbContainer);
 	tcDeviceList.last()->tb[7] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[8] = new TamperWidget(tcDeviceList.last()->tbContainer);
+	
 
 
 	this->layout()->addWidget(tcDeviceList.last()->tab);
@@ -78,18 +79,19 @@ void TabController::onUiAddDevice(QString MACAddress)
 
 	tcDeviceList.last()->tbGridLayout->setContentsMargins(0, 0, 0, 0);				//Zero margins for any child widget margins except for a 20 pixel pad from the top
 	tcDeviceList.last()->tbGridLayout->setSpacing(0);								//Set spacing between child widgets to 8 pixels
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[1], 0, 0);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[2], 0, 1);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[3], 1, 0);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[4], 1, 1);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[5], 2, 0);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[6], 2, 1);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[7], 3, 0);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[8], 3, 1);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[0], 0, 0);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[1], 0, 1);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[2], 1, 0);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[3], 1, 1);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[4], 2, 0);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[5], 2, 1);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[6], 3, 0);
+	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[7], 3, 1);
 
 
 	connect(tcDeviceList.last()->tab, &TabWidget::tabClicked, this, &TabController::onTabClicked);
 
+	connect(tcDeviceList.last()->tb[0], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
 	connect(tcDeviceList.last()->tb[1], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
 	connect(tcDeviceList.last()->tb[2], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
 	connect(tcDeviceList.last()->tb[3], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
@@ -97,7 +99,7 @@ void TabController::onUiAddDevice(QString MACAddress)
 	connect(tcDeviceList.last()->tb[5], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
 	connect(tcDeviceList.last()->tb[6], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
 	connect(tcDeviceList.last()->tb[7], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb[8], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	
 
 
 	/* If this is the first tab we've added, select it to default it to active and change the background image */
@@ -132,6 +134,7 @@ void TabController::onUiDropDevice(QString MACAddress)
 				d->tab->deleteLater();
 				d->tbContainer->deleteLater();
 				tcDeviceList.first()->tab->select();
+				tcDeviceList.first()->tbContainer->show();
 				break;
 			}
 			else
