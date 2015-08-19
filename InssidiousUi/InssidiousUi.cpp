@@ -115,24 +115,24 @@ void InssidiousUi::onCoreDropDevice(QString MACAddress)
 	emit uiDropDevice(MACAddress);
 }
 
-void InssidiousUi::onUiTamperStart(QString MACAddress, QString TamperType)
+void InssidiousUi::onUiTamperStart(QString MACAddress, TamperType tamperType)
 {
-	emit coreStartTamper(MACAddress, TamperType);
+	emit coreStartTamper(MACAddress, tamperType);
 }
 
-void InssidiousUi::onUiTamperStop(QString MACAddress, QString TamperType)
+void InssidiousUi::onUiTamperStop(QString MACAddress, TamperType tamperType)
 {
-	emit coreStopTamper(MACAddress, TamperType);
+	emit coreStopTamper(MACAddress, tamperType);
 }
 
-void InssidiousUi::onCoreTamperStarted(QString MACAddress, QString TamperType)
+void InssidiousUi::onCoreTamperStarted(QString MACAddress, TamperType tamperType)
 {
-	emit uiTamperStarted(MACAddress, TamperType);
+	emit uiTamperStarted(MACAddress, tamperType);
 }
 
-void InssidiousUi::onCoreTamperStopped(QString MACAddress, QString TamperType)
+void InssidiousUi::onCoreTamperStopped(QString MACAddress, TamperType tamperType)
 {
-	emit uiTamperStopped(MACAddress, TamperType);
+	emit uiTamperStopped(MACAddress, tamperType);
 }
 
 

@@ -4,9 +4,8 @@
 #include <QObject>
 
 #include "DivertController.h"
+#include "TamperTypes.h"
 
-
-class Divert;
 
 class TamperController : public QObject
 {
@@ -17,15 +16,15 @@ public:
 	~TamperController();
 
 signals:
-	void coreTamperStarted(QString MACAddress, QString TamperType);
-	void coreTamperStopped(QString MACAddress, QString TamperType);
+	void coreTamperStarted(QString MACAddress, TamperType tamperType);
+	void coreTamperStopped(QString MACAddress, TamperType tamperType);
 
 public slots:
 	void onCoreAddDevice(QString MACAddress);
 	void onCoreDropDevice(QString MACAddress);
 
-	void onCoreTamperStart(QString MACAddress, QString TamperType);
-	void onCoreTamperStop(QString MACAddress, QString TamperType);
+	void onCoreTamperStart(QString MACAddress, TamperType tamperType);
+	void onCoreTamperStop(QString MACAddress, TamperType tamperType);
 
 private:
 

@@ -18,6 +18,7 @@ class HostedNetworkController;
 class ICSController;
 class TamperController;
 enum HostedNetworkReason;
+enum TamperType;
 
 class InssidiousCore : public QThread
 {
@@ -38,21 +39,21 @@ signals:
 	void coreAddDevice(QString MACAddress);
 	void coreDropDevice(QString MACAddress);	
 
-	void coreTamperStart(QString MACAddress, QString TamperType);
-	void coreTamperStop(QString MACAddress, QString TamperType);
+	void coreTamperStart(QString MACAddress, TamperType tamperType);
+	void coreTamperStop(QString MACAddress, TamperType tamperType);
 
-	void coreTamperStarted(QString MACAddress, QString TamperType);
-	void coreTamperStopped(QString MACAddress, QString TamperType);
+	void coreTamperStarted(QString MACAddress, TamperType tamperType);
+	void coreTamperStopped(QString MACAddress, TamperType tamperType);
 
 
 public slots:
 	void onUiCoreStart(QString networkName, QString networkPassword, QString networkAdapter);									
-	void onUiCoreStartTamper(QString MACAddress, QString TamperType);
-	void onUiCoreStopTamper(QString MACAddress, QString TamperType);
+	void onUiCoreStartTamper(QString MACAddress, TamperType tamperType);
+	void onUiCoreStopTamper(QString MACAddress, TamperType tamperType);
 
 
-	void onCoreTamperStarted(QString MACAddress, QString TamperType);
-	void onCoreTamperStopped(QString MACAddress, QString TamperType);
+	void onCoreTamperStarted(QString MACAddress, TamperType tamperType);
+	void onCoreTamperStopped(QString MACAddress, TamperType tamperType);
 
 	void onCoreHostedNetworkMessage(QString message, HostedNetworkReason reason);								
 

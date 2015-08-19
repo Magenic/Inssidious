@@ -48,7 +48,7 @@ void TamperController::onCoreDropDevice(QString MACAddress)
 }
 
 
-void TamperController::onCoreTamperStart(QString MACAddress, QString TamperType)
+void TamperController::onCoreTamperStart(QString MACAddress, TamperType tamperType)
 {
 	/* Search through the tab list for the matching MAC address */
 
@@ -57,12 +57,12 @@ void TamperController::onCoreTamperStart(QString MACAddress, QString TamperType)
 		if (d->MAC == MACAddress)
 		{
 			/* Start tamper type */
-			//d->drop->enabledFlag = 1;
+			d->drop->enabledFlag = 1;
 		}
 	}
 }
 
-void TamperController::onCoreTamperStop(QString MACAddress, QString TamperType)
+void TamperController::onCoreTamperStop(QString MACAddress, TamperType tamperType)
 {
 	/* Search through the tab list for the matching MAC address */
 
@@ -72,7 +72,7 @@ void TamperController::onCoreTamperStop(QString MACAddress, QString TamperType)
 		{
 
 			/* Stop tamper type */
-			//d->drop->enabledFlag = 0;
+			d->drop->enabledFlag = 0;
 		}
 	}
 }

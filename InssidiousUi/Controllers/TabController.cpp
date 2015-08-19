@@ -53,14 +53,14 @@ void TabController::onUiAddDevice(QString MACAddress)
 	tcDeviceList.last()->tab = new TabWidget(this);
 	tcDeviceList.last()->tbContainer = new QWidget(this);
 	tcDeviceList.last()->tbGridLayout = new QGridLayout();
-	tcDeviceList.last()->tb[0] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[1] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[2] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[3] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[4] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[5] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[6] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[7] = new TamperWidget(tcDeviceList.last()->tbContainer);
+	tcDeviceList.last()->tb[0] = new TamperWidget(tcDeviceList.last()->tbContainer, TamperType::CORRUPT);
+	tcDeviceList.last()->tb[1] = new TamperWidget(tcDeviceList.last()->tbContainer, TamperType::DROP);
+	tcDeviceList.last()->tb[2] = new TamperWidget(tcDeviceList.last()->tbContainer, TamperType::LAG);
+	tcDeviceList.last()->tb[3] = new TamperWidget(tcDeviceList.last()->tbContainer, TamperType::RESET);
+	tcDeviceList.last()->tb[4] = new TamperWidget(tcDeviceList.last()->tbContainer, TamperType::THROTTLE);
+	tcDeviceList.last()->tb[5] = new TamperWidget(tcDeviceList.last()->tbContainer, TamperType::SYN);
+	tcDeviceList.last()->tb[6] = new TamperWidget(tcDeviceList.last()->tbContainer, TamperType::ACK);
+	tcDeviceList.last()->tb[7] = new TamperWidget(tcDeviceList.last()->tbContainer, TamperType::LOL);
 	
 
 
@@ -157,12 +157,12 @@ void TabController::onUiDropDevice(QString MACAddress)
 
 }
 
-void TabController::onUiTamperStarted(QString MACAddress, QString TamperType)
+void TabController::onUiTamperStarted(QString MACAddress, TamperType tamperType)
 {
 
 }
 
-void TabController::onUiTamperStopped(QString MACAddress, QString TamperType)
+void TabController::onUiTamperStopped(QString MACAddress, TamperType tamperType)
 {
 
 }
@@ -198,12 +198,12 @@ void TabController::onTamperWidgetClicked(TamperWidget* tamperWidget)
 			{
 				if (d->tb[i]->selected)
 				{
-					emit uiTamperStop(d->MAC, "TamperType");
+					emit uiTamperStop(d->MAC, TamperType(i));
 					d->tb[i]->unselect();
 				}
 				else
 				{
-					emit uiTamperStart(d->MAC, "TamperType");
+					emit uiTamperStart(d->MAC, TamperType(i));
 					d->tb[i]->select();
 				}
 			}

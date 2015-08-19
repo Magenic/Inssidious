@@ -14,6 +14,7 @@
 #include "Controllers\ICSController.h"					//Internet Connection Sharing class to start and manage ICS
 #include "Controllers\TamperController.h"				//Tamper Controller class to manage tamper instances
 
+
 InssidiousCore::InssidiousCore()
 {
 
@@ -96,24 +97,24 @@ void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword,
 
 }
 
-void InssidiousCore::onUiCoreStartTamper(QString MACAddress, QString TamperType)
+void InssidiousCore::onUiCoreStartTamper(QString MACAddress, TamperType tamperType)
 {
-	emit coreTamperStart(MACAddress, TamperType);
+	emit coreTamperStart(MACAddress, tamperType);
 }
 
-void InssidiousCore::onUiCoreStopTamper(QString MACAddress, QString TamperType)
+void InssidiousCore::onUiCoreStopTamper(QString MACAddress, TamperType tamperType)
 {
-	emit coreTamperStop(MACAddress, TamperType);
+	emit coreTamperStop(MACAddress, tamperType);
 }
 
-void InssidiousCore::onCoreTamperStarted(QString MACAddress, QString TamperType)
+void InssidiousCore::onCoreTamperStarted(QString MACAddress, TamperType tamperType)
 {
-	emit coreTamperStarted(MACAddress, TamperType);
+	emit coreTamperStarted(MACAddress, tamperType);
 }
 
-void InssidiousCore::onCoreTamperStopped(QString MACAddress, QString TamperType)
+void InssidiousCore::onCoreTamperStopped(QString MACAddress, TamperType tamperType)
 {
-	emit coreTamperStopped(MACAddress, TamperType);
+	emit coreTamperStopped(MACAddress, tamperType);
 }
 
 

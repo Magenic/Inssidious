@@ -18,6 +18,7 @@
 #include "Widgets\TabWidget.h"				//
 #include "Widgets\TamperWidget.h"			//
 
+
 class TabController : public QWidget
 {
 	Q_OBJECT
@@ -28,16 +29,16 @@ public:
 
 
 signals:
-	void uiTamperStart(QString MACAddress, QString TamperType);
-	void uiTamperStop(QString MACAddress, QString TamperType);
+	void uiTamperStart(QString MACAddress, TamperType tamperType);
+	void uiTamperStop(QString MACAddress, TamperType tamperType);
 
 
 public slots:
 	void onUiAddDevice(QString MACAddress);		//Receives notifications to create a tab when a device has connected
 	void onUiDropDevice(QString MACAddress);	//Receives notifications to delete a tab when a device has disconnected
 
-	void onUiTamperStarted(QString MACAddress, QString TamperType);
-	void onUiTamperStopped(QString MACAddress, QString TamperType);
+	void onUiTamperStarted(QString MACAddress, TamperType tamperType);
+	void onUiTamperStopped(QString MACAddress, TamperType tamperType);
 
 
 private slots:

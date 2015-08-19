@@ -72,5 +72,8 @@
     <ClInclude Include="PacketTamper\PacketTamperModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TamperTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

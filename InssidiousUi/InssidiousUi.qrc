@@ -29,6 +29,12 @@
         <file alias="TamperButtonInactive.png">Resources/TamperButtonInactive.png</file>
         <file alias="TamperButtonInactiveHover.png">Resources/TamperButtonInactiveHover.png</file>
         <file alias="TamperButtonInactivePressed.png">Resources/TamperButtonInactivePressed.png</file>
+        <file alias="CorruptPacketsActive.png">Resources/TamperCorruptActive.png</file>
+        <file alias="CorruptPacketsInactive.png">Resources/TamperCorruptInactive.png</file>
+        <file alias="DropPacketsActive.png">Resources/TamperDropActive.png</file>
+        <file alias="DropPacketsInactive.png">Resources/TamperDropInactive.png</file>
+        <file alias="LagPacketsActive.png">Resources/TamperLagActive.png</file>
+        <file alias="LagPacketsInactive.png">Resources/TamperLagInactive.png</file>
     </qresource>
     <qresource prefix="/InssidiousUi">
         <file alias="Background.png">Resources/Background.png</file>
