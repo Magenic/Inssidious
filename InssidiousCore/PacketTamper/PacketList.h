@@ -1,5 +1,5 @@
-#ifndef PACKETBASE_H
-#define PACKETBASE_H
+#ifndef PACKETLIST_H
+#define PACKETLIST_H
 
 #include "C:\temp\clumsy-master\external\WinDivert-1.1.7-MSVC\include\windivert.h"
 #pragma comment(lib, "C:\\temp\\clumsy-master\\external\\WinDivert-1.1.7-MSVC\\x86\\windivert.lib")
@@ -7,35 +7,38 @@
 #pragma comment(lib, "ws2_32.lib")
 
 
+class Packet
+{
+public:
+	char *packet;
+	UINT packetLen;
+	WINDIVERT_ADDRESS addr;
+	DWORD timestamp; // ! timestamp isn't filled when creating node since it's only needed for lag
+	Packet *prev, *next;
+};
+
+
 class PacketList
 {
 
 public:
+	PacketList();
 
-	//Packet Linked List
-	typedef struct _NODE {
-		char *packet;
-		UINT packetLen;
-		WINDIVERT_ADDRESS addr;
-		DWORD timestamp; // ! timestamp isn't filled when creating node since it's only needed for lag
-		struct _NODE *prev, *next;
-	} PacketNode;
+	Packet headNode = Packet{ 0 }, tailNode = Packet{ 0 };
+	Packet * const head = &headNode, *const tail = &tailNode;
 
-	PacketNode headNode = _NODE{ 0 }, tailNode = _NODE{ 0 };
-	PacketNode * const head = &headNode, *const tail = &tailNode;
-
-	void initPacketNodeList();
-	
-	PacketNode* createNode(char* buf, UINT len, WINDIVERT_ADDRESS *addr);
-	void freeNode(PacketNode *node);
-	PacketNode* popNode(PacketNode *node);
-	PacketNode* insertBefore(PacketNode *node, PacketNode *target);
-	PacketNode* insertAfter(PacketNode *node, PacketNode *target);
-	PacketNode* appendNode(PacketNode *node);
-	
-	
 	short isListEmpty();
+	
+	void freeNode(Packet *node);
+	Packet* createNode(char* buf, UINT len, WINDIVERT_ADDRESS *addr);
+	Packet* popNode(Packet *node);
+	Packet* insertBefore(Packet *node, Packet *target);
+	Packet* insertAfter(Packet *node, Packet *target);
+	Packet* appendNode(Packet *node);
+	
+	
+	
 };
 
 
-#endif //PACKETBASE_H
+#endif //PACKETLIST_H

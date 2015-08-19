@@ -1,8 +1,8 @@
 
 
 
-#include "PacketController.h"
-#include "PacketList.h"
+#include "DivertController.h"
+#include <InssidiousCore/PacketTamper/PacketList.h>
 
 #define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
 #define DIVERT_MAX_PACKETSIZE 0xFFFF
@@ -11,34 +11,21 @@
 #define DIVERT_QUEUE_TIME 2 << 9 
 
 
-PacketController::PacketController()
+
+DivertController::DivertController(QString MACAddress)
 {
+
+	MAC = MACAddress;
+	packetList = new PacketList();
+
 	drop = new PacketTamperModule();
-	drop->enabledFlag = 0;
+	
 }
 
-void PacketController::run()
+void DivertController::run()
 {
-	QThread::exec();
-}
-
-DWORD PacketController::StaticReadLoopThreadStart(void* pPacketControllerInstance)
-{
-	PacketController* This = (PacketController*)pPacketControllerInstance;
-	return This->divertReadLoop();
-}
-
-DWORD PacketController::StaticClockLoopThreadStart(void* pPacketControllerInstance)
-{
-	PacketController* This = (PacketController*)pPacketControllerInstance;
-	return This->divertClockLoop();
-}
-
-void PacketController::onPacketControllerStart(QString MACAddress, bool * pHasIPAddress)
-{
-
 	//
-	*pHasIPAddress = false;
+	hasIPAddress = false;
 	DWORD result = ERROR_SUCCESS;
 	PMIB_IPNETTABLE pIpNetTable = NULL;
 	DWORD dwSize = 0;
@@ -68,12 +55,12 @@ void PacketController::onPacketControllerStart(QString MACAddress, bool * pHasIP
 
 			return;
 		}
-		
+
 
 		/* Get the IP Address to Physical Address table */
 
 		result = GetIpNetTable(pIpNetTable, &dwSize, 0);
-		if (result != NO_ERROR) 
+		if (result != NO_ERROR)
 		{
 			result = GetLastError();
 			//TODO: Handle this error
@@ -83,8 +70,8 @@ void PacketController::onPacketControllerStart(QString MACAddress, bool * pHasIP
 
 
 		/* Loop through the entries in the table to find our MAC Address */
-		
-		for (int i = 0; i < pIpNetTable->dwNumEntries; i++) 
+
+		for (int i = 0; i < pIpNetTable->dwNumEntries; i++)
 		{
 
 			/* If we find a matching MAC Address, convert and save the IP Address string and flag that we have an IP */
@@ -98,13 +85,13 @@ void PacketController::onPacketControllerStart(QString MACAddress, bool * pHasIP
 				if (k != 5)
 					tableMAC.push_back('-');
 			}
-			
-			if (MACAddress == tableMAC)
+
+			if (MAC == tableMAC)
 			{
 				struct in_addr addr;
 				addr.s_addr = (long)pIpNetTable->table[i].dwAddr;
 				ipAddress = inet_ntoa(addr);
-				*pHasIPAddress = true;
+				hasIPAddress = true;
 			}
 
 		}
@@ -116,7 +103,7 @@ void PacketController::onPacketControllerStart(QString MACAddress, bool * pHasIP
 
 		/* Continue looping until we get an IP address */
 
-	} while (!*pHasIPAddress);
+	} while (!hasIPAddress);
 
 
 	/* Open a WinDivert handle */
@@ -138,18 +125,12 @@ void PacketController::onPacketControllerStart(QString MACAddress, bool * pHasIP
 	//LOG("WinDivert internal queue Len: %d, queue time: %d", QUEUE_LEN, QUEUE_TIME);
 
 
-	
-	// init package link list
-	packetList = new PacketList();
-	packetList->initPacketNodeList();
-
-
 
 	// kick off the loop
 	//LOG("Creating threads and mutex...");
 	stopLooping = FALSE;
 	mutex = CreateMutex(NULL, FALSE, NULL);
-	if (mutex == NULL) 
+	if (mutex == NULL)
 	{
 		result = GetLastError();
 
@@ -167,26 +148,40 @@ void PacketController::onPacketControllerStart(QString MACAddress, bool * pHasIP
 	}
 
 	clockThread = CreateThread(NULL, 1, (LPTHREAD_START_ROUTINE)StaticClockLoopThreadStart, this, 0, NULL);
-	if (clockThread == NULL) 
+	if (clockThread == NULL)
 	{
 		result = GetLastError();
 
 		//TODO: Handle this error
 		return;
 	}
+
+	QThread::exec();
+}
+
+DWORD DivertController::StaticReadLoopThreadStart(void* pDivertControllerInstance)
+{
+	DivertController* This = (DivertController*)pDivertControllerInstance;
+	return This->divertReadLoop();
+}
+
+DWORD DivertController::StaticClockLoopThreadStart(void* pDivertControllerInstance)
+{
+	DivertController* This = (DivertController*)pDivertControllerInstance;
+	return This->divertClockLoop();
 }
 
 
-int PacketController::sendAllListPackets() {
+int DivertController::sendAllListPackets() {
 	// send packet from tail to head and remove sent ones
 	int sendCount = 0;
 	UINT sendLen;
-	PacketList::PacketNode *pnode;
+	Packet *pnode;
 
 #ifdef _DEBUG
 	// check the list is good
 	// might go into dead loop but it's better for debugging
-	PacketList::PacketNode *p = packetList->head;
+	Packet *p = packetList->head;
 	do {
 		p = p->next;
 	} while (p->next);
@@ -225,7 +220,7 @@ int PacketController::sendAllListPackets() {
 }
 
 // step function to let module process and consume all packets on the list
-void PacketController::divertConsumeStep() {
+void DivertController::divertConsumeStep() {
 #ifdef _DEBUG
 	DWORD startTick = GetTickCount(), dt;
 #endif
@@ -262,7 +257,7 @@ void PacketController::divertConsumeStep() {
 }
 
 // periodically try to consume packets to keep the network responsive and not blocked by recv
-DWORD PacketController::divertClockLoop() {
+DWORD DivertController::divertClockLoop() {
 	DWORD startTick, stepTick, waitResult;
 	int ix;
 
@@ -345,11 +340,11 @@ DWORD PacketController::divertClockLoop() {
 	}
 }
 
-DWORD PacketController::divertReadLoop() {
+DWORD DivertController::divertReadLoop() {
 	char packetBuf[DIVERT_MAX_PACKETSIZE];
 	WINDIVERT_ADDRESS addrBuf;
 	UINT readLen;
-	PacketList::PacketNode *pnode;
+	Packet *pnode;
 	DWORD waitResult;
 
 
@@ -412,7 +407,7 @@ DWORD PacketController::divertReadLoop() {
 	}
 }
 
-void PacketController::divertStop() {
+void DivertController::onDivertStop() {
 	HANDLE threads[2];
 	threads[0] = loopThread;
 	threads[1] = clockThread;

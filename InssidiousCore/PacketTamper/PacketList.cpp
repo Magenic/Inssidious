@@ -2,7 +2,8 @@
 
 #define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
 
-void PacketList::initPacketNodeList() {
+PacketList::PacketList() 
+{
 	if (head->next == NULL && tail->prev == NULL) {
 		// first time initializing
 		head->next = tail;
@@ -14,10 +15,10 @@ void PacketList::initPacketNodeList() {
 	}
 }
 
-// TODO  using malloc in the loop is not good for performance
-//       just not sure I can write a better memory allocator
-PacketList::PacketNode* PacketList::createNode(char* buf, UINT len, WINDIVERT_ADDRESS *addr) {
-	PacketNode *newNode = (PacketNode*)malloc(sizeof(PacketNode));
+
+
+Packet* PacketList::createNode(char* buf, UINT len, WINDIVERT_ADDRESS *addr) {
+	Packet *newNode = (Packet*)malloc(sizeof(Packet));
 	newNode->packet = (char*)malloc(len);
 	memcpy(newNode->packet, buf, len);
 	newNode->packetLen = len;
@@ -26,20 +27,20 @@ PacketList::PacketNode* PacketList::createNode(char* buf, UINT len, WINDIVERT_AD
 	return newNode;
 }
 
-void PacketList::freeNode(PacketNode *node) {
+void PacketList::freeNode(Packet *node) {
 	assert((node != head) && (node != tail));
 	free(node->packet);
 	free(node);
 }
 
-PacketList::PacketNode* PacketList::popNode(PacketNode *node) {
+Packet* PacketList::popNode(Packet *node) {
 	assert((node != head) && (node != tail));
 	node->prev->next = node->next;
 	node->next->prev = node->prev;
 	return node;
 }
 
-PacketList::PacketNode* PacketList::insertAfter(PacketNode *node, PacketNode *target) {
+Packet* PacketList::insertAfter(Packet *node, Packet *target) {
 	assert(node && node != head && node != tail && target != tail);
 	node->prev = target;
 	node->next = target->next;
@@ -48,7 +49,7 @@ PacketList::PacketNode* PacketList::insertAfter(PacketNode *node, PacketNode *ta
 	return node;
 }
 
-PacketList::PacketNode* PacketList::insertBefore(PacketNode *node, PacketNode *target) {
+Packet* PacketList::insertBefore(Packet *node, Packet *target) {
 	assert(node && node != head && node != tail && target != head);
 	node->next = target;
 	node->prev = target->prev;
@@ -57,7 +58,7 @@ PacketList::PacketNode* PacketList::insertBefore(PacketNode *node, PacketNode *t
 	return node;
 }
 
-PacketList::PacketNode* PacketList::appendNode(PacketNode *node) {
+Packet* PacketList::appendNode(Packet *node) {
 	return insertBefore(node, tail);
 }
 

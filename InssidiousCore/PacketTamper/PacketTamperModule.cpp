@@ -4,9 +4,9 @@
 short PacketTamperModule::process(PacketList* packetList) 
 {
 	int dropped = 0;
-	PacketList::PacketNode* dropHead = packetList->head;
+	Packet* dropHead = packetList->head;
 	while (dropHead->next != packetList->tail) {
-		PacketList::PacketNode *pac = dropHead->next;
+		Packet *pac = dropHead->next;
 		// chance in range of [0, 10000]
 		if (enabledFlag) 
 		{

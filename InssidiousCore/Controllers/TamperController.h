@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "PacketTamper\PacketController.h"
+#include "DivertController.h"
 
 
 class Divert;
@@ -19,7 +19,6 @@ public:
 signals:
 	void coreTamperStarted(QString MACAddress, QString TamperType);
 	void coreTamperStopped(QString MACAddress, QString TamperType);
-	void packetControllerStart(QString, bool *);
 
 public slots:
 	void onCoreAddDevice(QString MACAddress);
@@ -29,13 +28,8 @@ public slots:
 	void onCoreTamperStop(QString MACAddress, QString TamperType);
 
 private:
-	struct tcDevice{
-		QString MAC;
-		bool hasIPAddress;
-		PacketController* divert;
-	};
 
-	QList<tcDevice*>tcDeviceList;
+	QList<DivertController*>tcDeviceList;
 
 };
 

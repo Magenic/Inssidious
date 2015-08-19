@@ -4,31 +4,29 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_hostednetworkcontroller.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_icscontroller.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_inssidiouscore.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_tampercomponent.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_tampercontroller.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_hostednetworkcontroller.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_icscontroller.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_inssidiouscore.cpp" />
-    <ClCompile Include="GeneratedFiles\Release\moc_tampercomponent.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_tampercontroller.cpp" />
     <ClCompile Include="Controllers\HostedNetworkController.cpp" />
     <ClCompile Include="Controllers\ICSController.cpp" />
     <ClCompile Include="InssidiousCore.cpp" />
     <ClCompile Include="Controllers\TamperController.cpp" />
-    <ClCompile Include="PacketTamper\PacketController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_PacketController.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_PacketController.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="PacketTamper\PacketList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PacketTamper\PacketTamperModule.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controllers\DivertController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DivertController.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DivertController.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -36,7 +34,7 @@
     <CustomBuild Include="Controllers\HostedNetworkController.h" />
     <CustomBuild Include="Controllers\ICSController.h" />
     <CustomBuild Include="InssidiousCore.h" />
-    <CustomBuild Include="PacketTamper\PacketController.h">
+    <CustomBuild Include="Controllers\DivertController.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
