@@ -16,7 +16,7 @@
 
 class HostedNetworkController;
 class ICSController;
-class TamperController;
+class DeviceController;
 enum HostedNetworkReason;
 enum TamperType;
 
@@ -48,8 +48,8 @@ signals:
 
 public slots:
 	void onUiCoreStart(QString networkName, QString networkPassword, QString networkAdapter);									
-	void onUiCoreStartTamper(QString MACAddress, TamperType tamperType);
-	void onUiCoreStopTamper(QString MACAddress, TamperType tamperType);
+	void onUiCoreStartTamper(QString MACAddress, int tamperType);
+	void onUiCoreStopTamper(QString MACAddress, int tamperType);
 
 
 	void onCoreTamperStarted(QString MACAddress, TamperType tamperType);
@@ -64,7 +64,7 @@ private:
 
 	HostedNetworkController* hostedNetwork;	
 	ICSController* ics;	
-	TamperController* tamperController;
+	DeviceController* deviceController;
 };
 
 #endif // INSSIDIOUSCORE_H

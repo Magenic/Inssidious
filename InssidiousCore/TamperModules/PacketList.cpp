@@ -1,4 +1,4 @@
-#include "PacketList.h"
+#include "TamperBase.h"
 
 #define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
 
@@ -66,3 +66,4 @@ short PacketList::isListEmpty() {
 	return head->next == tail;
 
 }
+

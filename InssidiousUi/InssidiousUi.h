@@ -83,8 +83,8 @@ signals:
 	void uiAddDevice(QString MACAddress);
 	void uiDropDevice(QString MACAddress);
 
-	void coreStartTamper(QString MACAddress, TamperType tamperType);
-	void coreStopTamper(QString MACAddress, TamperType tamperType);
+	void coreStartTamper(QString MACAddress, int tamperType);
+	void coreStopTamper(QString MACAddress, int tamperType);
 	void uiTamperStarted(QString MACAddress, TamperType tamperType);
 	void uiTamperStopped(QString MACAddress, TamperType tamperType);
 };

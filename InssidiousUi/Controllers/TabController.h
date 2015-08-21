@@ -47,11 +47,13 @@ private slots:
 
 private:
 	struct tcDevice{
-		QString MAC;
-		TabWidget* tab;
-		QWidget* tbContainer;
-		QGridLayout* tbGridLayout;
-		TamperWidget* tb[7];
+		QString MAC;									//MAC Address as the unique identifier
+		TabWidget* tab;									//Tab widget to sit in the side bar
+		QWidget* twContainer;							//Container to hold the tamper widgets
+		QVBoxLayout* twContainerVLayout;				//VBoxLayout to lay out the tamper widgets
+		QLabel* tamperClassLabel[NUM_TAMPER_CLASSES];
+		QHBoxLayout* tamperClassLayout[NUM_TAMPER_CLASSES];
+		TamperWidget* tamperWidget[NUM_TAMPER_TYPES];
 	};
 	
 	QList<tcDevice*> tcDeviceList;
@@ -62,6 +64,7 @@ private:
 	QPixmap tcBackgroundImageDevicesPresent = QPixmap(":/Tabs/TabsDevicesPresent.png");	//Draws a bordered rectangle
 	QPixmap tcBackgroundImageNoDevices = QPixmap(":/Tabs/TabsNoDevices.png");			//Draws Waiting for Devices text
 
+	QFont tamperClassFont;
 };
 
 #endif // TABCONTROLLER_H

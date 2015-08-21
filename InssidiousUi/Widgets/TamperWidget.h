@@ -13,7 +13,7 @@ class TamperWidget : public QWidget
 	Q_OBJECT
 
 public:
-	TamperWidget(QWidget *parent, TamperType tamperType);
+	TamperWidget(TamperType tamperType);
 
 	void select();
 	void unselect();
@@ -25,10 +25,15 @@ signals:
 
 
 private:
-	void mousePressEvent(QMouseEvent *e);		//Catch mouse click events
+	void mousePressEvent(QMouseEvent *e);
 	void mouseReleaseEvent(QMouseEvent *e);
 	void enterEvent(QEvent *e);
 	void leaveEvent(QEvent *e);
+
+
+	/* QHBoxLayout */
+	
+	QHBoxLayout* tamperWidgetLayout;
 
 
 	/* Tamper Palettes and Pixmaps for the Active/Inactive/Hover/Pressed button states */
@@ -48,19 +53,20 @@ private:
 	QPixmap tamperImageInactivePressed = QPixmap(":/Tamper/TamperButtonInactivePressed.png");	//QPixmap for active device tampers while pressed
 
 
-	/* Name, Icon, and Description objects to draw in the button */
+	/* Text QLabels, QFonts, QPalettes, and QPixmaps to draw in the button */
 
-	QLabel* tamperName;			
-	QLabel* tamperDescription;	
-	QLabel* tamperIcon;			
-	QPixmap tamperIconActive;	
-	QPixmap tamperIconInactive;	
+	QLabel* tamperNameLabel;			
 	QFont tamperNameFont;
+
+	QLabel* tamperDescriptionLabel;	
 	QFont tamperDescriptionFont;
+
 	QPalette tamperTextActive;
 	QPalette tamperTextInactive;
 
-
+	QLabel* tamperIcon;
+	QPixmap tamperIconActive;
+	QPixmap tamperIconInactive;
 
 };
 

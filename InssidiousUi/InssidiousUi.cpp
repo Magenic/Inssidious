@@ -47,6 +47,7 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	connect(this, &InssidiousUi::coreStart, inssidiousCore, &InssidiousCore::onUiCoreStart, Qt::QueuedConnection);
 
 	connect(inssidiousCore, &InssidiousCore::coreStarting, this, &InssidiousUi::onCoreStarting, Qt::QueuedConnection);
+	connect(this, &InssidiousUi::uiUpdateStartingText, startWidget, &StartWidget::onUiUpdateStartingText);
 	connect(inssidiousCore, &InssidiousCore::coreStarted, this, &InssidiousUi::onCoreStarted, Qt::QueuedConnection);
 	connect(inssidiousCore, &InssidiousCore::coreStopped, this, &InssidiousUi::onCoreStopped, Qt::QueuedConnection);
 

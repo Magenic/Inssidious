@@ -2,7 +2,7 @@
 
 
 #include "DivertController.h"
-#include <InssidiousCore/PacketTamper/PacketList.h>
+
 
 #define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
 #define DIVERT_MAX_PACKETSIZE 0xFFFF
@@ -18,48 +18,65 @@ DivertController::DivertController(QString MACAddress)
 	MAC = MACAddress;
 	packetList = new PacketList();
 
-	drop = new PacketTamperModule();
-	
+	tamperModule[LAG] = new LagModule();
+	tamperModule[THROTTLE] = new ThrottleModule();
+	tamperModule[RESET] = new ResetModule();
+	tamperModule[JITTER] = new JitterModule();
+	tamperModule[DROPPED_PACKETS] = new DropPacketsModule();
+	tamperModule[CORRUPT_PACKETS] = new CorruptPacketsModule();
+	tamperModule[NO_PACKETS] = new NoPacketsModule();
+	tamperModule[NO_DNS] = new NoDNSModule();
+	tamperModule[NO_SERVER] = new NoServerModule();
+	tamperModule[NO_SSL] = new NoSSLModule();
+	tamperModule[REDIR_TO_PORTAL] = new RedirToPortalModule();
+	tamperModule[HTTP_HTTPS_ONLY] = new HTTPHTTPSOnlyModule();
+	tamperModule[SITE_BLOCKED] = new SiteBlockedModule();
+
+	enabled[LAG] = false;
+	enabled[THROTTLE] = false;
+	enabled[RESET] = false;
+	enabled[JITTER] = false;
+	enabled[DROPPED_PACKETS] = false;
+	enabled[CORRUPT_PACKETS] = false;
+	enabled[NO_PACKETS] = false;
+	enabled[NO_DNS] = false;
+	enabled[NO_SERVER] = false;
+	enabled[NO_SSL] = false;
+	enabled[REDIR_TO_PORTAL] = false;
+	enabled[HTTP_HTTPS_ONLY] = false;
+	enabled[SITE_BLOCKED] = false;
 }
 
 void DivertController::run()
 {
-	//
+
+	QString ipAddress;
 	hasIPAddress = false;
 	DWORD result = ERROR_SUCCESS;
-	PMIB_IPNETTABLE pIpNetTable = NULL;
-	DWORD dwSize = 0;
-	QString ipAddress;
+	PMIB_IPNET_TABLE2 pIpNetTable = NULL;	
 	char digits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+
 
 	/* Loop until this device has an IP Address */
 
+	int debugLoopVar = 0;
 	do
 	{
+		debugLoopVar++;
+
+		if (debugLoopVar > 100)
+		{
+			DebugBreak();
+		}
+
 		/* Sleep for a second */
 
 		sleep(1);
 
 
-		/* Get the size required by GetIpNetTable and allocate the memory */
-
-		result = GetIpNetTable(NULL, &dwSize, 0);
-		if (result == ERROR_INSUFFICIENT_BUFFER)
-		{
-			pIpNetTable = (MIB_IPNETTABLE *)malloc(dwSize);
-		}
-		else
-		{
-			result = GetLastError();
-			//TODO: Handle this error
-
-			return;
-		}
-
-
 		/* Get the IP Address to Physical Address table */
 
-		result = GetIpNetTable(pIpNetTable, &dwSize, 0);
+		result = GetIpNetTable2(AF_INET, &pIpNetTable);
 		if (result != NO_ERROR)
 		{
 			result = GetLastError();
@@ -71,34 +88,57 @@ void DivertController::run()
 
 		/* Loop through the entries in the table to find our MAC Address */
 
-		for (int i = 0; i < pIpNetTable->dwNumEntries; i++)
+		for (int i = 0; i < pIpNetTable->NumEntries; i++)
 		{
 
-			/* If we find a matching MAC Address, convert and save the IP Address string and flag that we have an IP */
-			QString tableMAC;
-			for (uint k = 0; k < 6; k++)
+			/* Convert the MAC Address in the IpNetTable to a QString */
+
+			QString tableMACAddress;
+			for (uint j = 0; j < pIpNetTable->Table[i].PhysicalAddressLength; j++)
 			{
-				char lowbit = digits[(int)pIpNetTable->table[i].bPhysAddr[k] & 0xf];
-				char highbit = digits[(int)((pIpNetTable->table[i].bPhysAddr[k] & 0xf0) >> 4)];
-				tableMAC.push_back(highbit);
-				tableMAC.push_back(lowbit);
-				if (k != 5)
-					tableMAC.push_back('-');
+				char lowbit = digits[(int)pIpNetTable->Table[i].PhysicalAddress[j] & 0xf];
+				char highbit = digits[(int)((pIpNetTable->Table[i].PhysicalAddress[j] & 0xf0) >> 4)];
+				tableMACAddress.append(highbit);
+				tableMACAddress.append(lowbit);
+				if (j != 5)
+					tableMACAddress.append('-');
+				
 			}
 
-			if (MAC == tableMAC)
-			{
-				struct in_addr addr;
-				addr.s_addr = (long)pIpNetTable->table[i].dwAddr;
-				ipAddress = inet_ntoa(addr);
-				hasIPAddress = true;
-			}
 
+			/* If the MAC Address matches the device we're here for, confirm the entry we see is valid */
+
+			if (MAC == tableMACAddress)
+			{
+				MIB_IPNET_ROW2 ipNetRow = pIpNetTable->Table[i];
+
+				/* NlnsReachable == pIpNetTable->Table[i].State ||  */
+				if (S_OK == ResolveIpNetEntry2(&ipNetRow, NULL))
+				{
+
+					/* Save this as the IP Address and leave the loop */
+
+					ipAddress = inet_ntoa(ipNetRow.Address.Ipv4.sin_addr);
+					hasIPAddress = true;
+				}
+				else
+				{
+					
+					/* The entry appears stale. Flush the table and loop again */
+
+					if(NO_ERROR != FlushIpNetTable2(AF_INET, pIpNetTable->Table[i].InterfaceIndex))
+					{
+						//TODO: Handle this error
+
+					}
+				}
+
+
+				/* In any case, if we found a MAC Address, break out of the table for loop */
+
+				break;
+			}
 		}
-
-		/* Free the memory we allocated for pIpNetTable */
-
-		free(pIpNetTable);
 
 
 		/* Continue looping until we get an IP address */
@@ -107,6 +147,8 @@ void DivertController::run()
 
 
 	/* Open a WinDivert handle */
+
+	dbgFilterString = QString("ip.DstAddr == " + ipAddress + " and ip.SrcAddr != 192.168.25.1");
 	QByteArray byteArray = QString("ip.DstAddr == " + ipAddress + " and ip.SrcAddr != 192.168.25.1").toLocal8Bit();
 	const char * pFilterString = byteArray.data();
 
@@ -221,33 +263,22 @@ int DivertController::sendAllListPackets() {
 
 // step function to let module process and consume all packets on the list
 void DivertController::divertConsumeStep() {
+
 #ifdef _DEBUG
 	DWORD startTick = GetTickCount(), dt;
 #endif
-	int ix, cnt;
 
-	drop->process(packetList);
+	for (int i = 0; i < NUM_TAMPER_TYPES - 1; i++)
+	{
+		if (this->enabled[i])
+		{
+			this->tamperModule[i]->process(packetList);
+			//InterlockedIncrement16(&(module->processTriggered));
+		}
+	}
 
-	// use lastEnabled to keep track of module starting up and closing down
-	//for (ix = 0; ix < moduleCount; ++ix) {
-		//PacketTamperModule *module = modules[ix];
-		/*if (*(module->enabledFlag)) {
-			if (!module->lastEnabled) {
-				module->startUp();
-				module->lastEnabled = 1;
-			}*/
-			//if (module->process(packetList)) {
-				//InterlockedIncrement16(&(module->processTriggered));
-			//}
-		//}
-		//else {
-		//	if (module->lastEnabled) {
-		//		module->closeDown(head, tail);
-		//		module->lastEnabled = 0;
-		//	}
-		//}
-	//}
-	cnt = sendAllListPackets();
+	int cnt = sendAllListPackets();
+
 #ifdef _DEBUG
 	dt = GetTickCount() - startTick;
 	if (dt > DIVERT_CLOCK_WAIT_MS / 2) {

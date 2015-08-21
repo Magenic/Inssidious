@@ -12,18 +12,18 @@
 #include "InssidiousCore.h"
 #include "Controllers\HostedNetworkController.h"		//Hosted network class to start and manage the wireless network
 #include "Controllers\ICSController.h"					//Internet Connection Sharing class to start and manage ICS
-#include "Controllers\TamperController.h"				//Tamper Controller class to manage tamper instances
+#include "Controllers\DeviceController.h"				//Tamper Controller class to manage tamper instances
 
 
 InssidiousCore::InssidiousCore()
 {
 
-	/* Initialize instances of the Hosted Network, ICS, and TamperController classes */
+	/* Initialize instances of the Hosted Network, ICS, and DeviceController classes */
 	/* Error conditions such as no wireless card will trigger a Messagebox & quit the app */
 
 	hostedNetwork = new HostedNetworkController(this);
 	ics = new ICSController(this);
-	tamperController = new TamperController();
+	deviceController = new DeviceController();
 
 
 	/* Grab a pointer to the list of network connection names for use by Inssidious */
@@ -33,14 +33,14 @@ InssidiousCore::InssidiousCore()
 
 	/* Connect Signals and Slots */
 	
-	connect(this, &InssidiousCore::coreTamperStart, tamperController, &TamperController::onCoreTamperStart);
-	connect(this, &InssidiousCore::coreTamperStop, tamperController, &TamperController::onCoreTamperStop);
-	connect(tamperController, &TamperController::coreTamperStarted, this, &InssidiousCore::onCoreTamperStarted);
-	connect(tamperController, &TamperController::coreTamperStopped, this, &InssidiousCore::onCoreTamperStopped);
+	connect(this, &InssidiousCore::coreTamperStart, deviceController, &DeviceController::onCoreTamperStart);
+	connect(this, &InssidiousCore::coreTamperStop, deviceController, &DeviceController::onCoreTamperStop);
+	connect(deviceController, &DeviceController::coreTamperStarted, this, &InssidiousCore::onCoreTamperStarted);
+	connect(deviceController, &DeviceController::coreTamperStopped, this, &InssidiousCore::onCoreTamperStopped);
 
 
-	connect(this, &InssidiousCore::coreAddDevice, tamperController, &TamperController::onCoreAddDevice);
-	connect(this, &InssidiousCore::coreDropDevice, tamperController, &TamperController::onCoreDropDevice);
+	connect(this, &InssidiousCore::coreAddDevice, deviceController, &DeviceController::onCoreAddDevice);
+	connect(this, &InssidiousCore::coreDropDevice, deviceController, &DeviceController::onCoreDropDevice);
 
 
 	connect(hostedNetwork, &HostedNetworkController::hostedNetworkMessage, this, &InssidiousCore::onCoreHostedNetworkMessage, Qt::DirectConnection);
@@ -97,14 +97,14 @@ void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword,
 
 }
 
-void InssidiousCore::onUiCoreStartTamper(QString MACAddress, TamperType tamperType)
+void InssidiousCore::onUiCoreStartTamper(QString MACAddress, int tamperType)
 {
-	emit coreTamperStart(MACAddress, tamperType);
+	emit coreTamperStart(MACAddress, TamperType(tamperType));
 }
 
-void InssidiousCore::onUiCoreStopTamper(QString MACAddress, TamperType tamperType)
+void InssidiousCore::onUiCoreStopTamper(QString MACAddress, int tamperType)
 {
-	emit coreTamperStop(MACAddress, tamperType);
+	emit coreTamperStop(MACAddress, TamperType(tamperType));
 }
 
 void InssidiousCore::onCoreTamperStarted(QString MACAddress, TamperType tamperType)

@@ -1,19 +1,18 @@
-#ifndef TAMPERCONTROLLER_H
-#define TAMPERCONTROLLER_H
+#ifndef DEVICECONTROLLER_H
+#define DEVICECONTROLLER_H
 
 #include <QObject>
 
 #include "DivertController.h"
-#include "TamperTypes.h"
 
 
-class TamperController : public QObject
+class DeviceController : public QObject
 {
 	Q_OBJECT
 
 public:
-	TamperController();
-	~TamperController();
+	DeviceController();
+	~DeviceController();
 
 signals:
 	void coreTamperStarted(QString MACAddress, TamperType tamperType);
@@ -28,8 +27,8 @@ public slots:
 
 private:
 
-	QList<DivertController*>tcDeviceList;
+	QList<DivertController*>deviceList;
 
 };
 
-#endif // TAMPERCONTROLLER_H
+#endif // DEVICECONTROLLER_H

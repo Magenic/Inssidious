@@ -1,62 +1,116 @@
 
 #include <QString>
 
+
+enum TamperClass
+{
+	SPEED,
+	NOISE,
+	FAILURE,
+	RESTRICTION,
+	NUM_TAMPER_CLASSES
+};
+
+static QString TamperClassName[]
+{
+	QString("Network Speed"),
+	QString("Network Noise"),
+	QString("Network Failures"),
+	QString("Network Restrictions")
+};
+
+
 enum TamperType
 {
-	CORRUPT,
-	DROP,
+	/* speed */
 	LAG,
-	RESET,
 	THROTTLE,
-	SYN,
-	ACK,
-	LOL
+
+	/* noise */
+	RESET,
+	JITTER,
+	DROPPED_PACKETS,
+	CORRUPT_PACKETS,
+
+	/* failures */
+	NO_PACKETS,
+	NO_DNS,
+	NO_SERVER,
+	NO_SSL,
+
+	/* restrictions */
+	REDIR_TO_PORTAL,
+	HTTP_HTTPS_ONLY,
+	SITE_BLOCKED,
+
+	/* total*/
+	NUM_TAMPER_TYPES
 };
 
-static QString TamperTypeNames[]
+static QString TamperTypeName[]
 {
-	QString("Corrupt Packets"),
-		QString("Drop Packets"),
-		QString("Lag Packets"),
-		QString("Reset Connection"),
-		QString("Throttle Packets"),
-		QString("Unimplemented"),
-		QString("Unimplemented"),
-		QString("Unimplemented")
+	QString("Lag"),
+	QString("Throttle"),
+	QString("TCP Resets"),
+	QString("Packet Jitter"),
+	QString("Dropped Packets"),
+	QString("Corrupted Packets"),
+	QString("No Packets"),
+	QString("No DNS"),
+	QString("No Server"),
+	QString("No SSL"),
+	QString("Redirected to Portal"),
+	QString("HTTP and HTTPS Only"),
+	QString("Site Blocked")
 };
 
-static QString TamperTypeDescriptions[]
+static QString TamperTypeDescription[]
 {
-	QString("Corrupt Packets"),
-		QString("Drop Packets"),
-		QString("Lag Packets"),
-		QString("Reset Connection"),
-		QString("Throttle Packets"),
-		QString("Unimplemented"),
-		QString("Unimplemented"),
-		QString("Unimplemented")
+	QString("Lag"),
+	QString("Throttle"),
+	QString("TCP Resets"),
+	QString("Packet Jitter"),
+	QString("Dropped Packets"),
+	QString("Corrupted Packets"),
+	QString("No Packets"),
+	QString("No DNS"),
+	QString("No Server"),
+	QString("No SSL"),
+	QString("Redirected to Portal"),
+	QString("HTTP and HTTPS Only"),
+	QString("Site Blocked")
 };
 
 static QString TamperTypeActiveIcon[]
 {
-	QString(":/Tamper/CorruptPacketsActive.png"),
-		QString(":/Tamper/DropPacketsActive.png"),
-		QString(":/Tamper/LagPacketsActive.png"),
-		QString(":/Tamper/ResetTCPConnectionActive.png"),
-		QString(":/Tamper/ThrottlePacketsActive.png"),
-		QString(":/Tamper/UnimplementedActive.png"),
-		QString(":/Tamper/UnimplementedActive.png"),
-		QString(":/Tamper/UnimplementedActive.png")
+	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png"),
 };
 
 static QString TamperTypeInactiveIcon[]
 {
-	QString(":/Tamper/CorruptPacketsInactive.png"),
-		QString(":/Tamper/DropPacketsInactive.png"),
-		QString(":/Tamper/LagPacketsInactive.png"),
-		QString(":/Tamper/ResetTCPConnectionInactive.png"),
-		QString(":/Tamper/ThrottlePacketsInactive.png"),
-		QString(":/Tamper/UnimplementedInactive.png"),
-		QString(":/Tamper/UnimplementedInactive.png"),
-		QString(":/Tamper/UnimplementedInactive.png")
+	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png"),
 };

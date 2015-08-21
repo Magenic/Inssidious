@@ -12,13 +12,6 @@
     <ClCompile Include="Controllers\HostedNetworkController.cpp" />
     <ClCompile Include="Controllers\ICSController.cpp" />
     <ClCompile Include="InssidiousCore.cpp" />
-    <ClCompile Include="Controllers\TamperController.cpp" />
-    <ClCompile Include="PacketTamper\PacketList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PacketTamper\PacketTamperModule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Controllers\DivertController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -28,13 +21,66 @@
     <ClCompile Include="GeneratedFiles\Release\moc_DivertController.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Controllers\DeviceController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DeviceController.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DeviceController.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperCorruptPackets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperDropPackets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperHTTPHTTPSOnly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperJitter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperLag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperReset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperSiteBlocked.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperRedirToPortal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperNoServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperNoPackets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperNoDNS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperThrottle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\PacketList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperNoSSL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Controllers\TamperController.h" />
     <CustomBuild Include="Controllers\HostedNetworkController.h" />
     <CustomBuild Include="Controllers\ICSController.h" />
     <CustomBuild Include="InssidiousCore.h" />
     <CustomBuild Include="Controllers\DivertController.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Controllers\DeviceController.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -66,13 +112,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PacketTamper\PacketList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketTamper\PacketTamperModule.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TamperTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

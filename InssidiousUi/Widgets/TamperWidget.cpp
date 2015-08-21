@@ -1,7 +1,6 @@
 #include "TamperWidget.h"
 
-TamperWidget::TamperWidget(QWidget *parent, TamperType tamperType)
-	: QWidget(parent)
+TamperWidget::TamperWidget(TamperType tamperType)
 {
 	/* Initialize tamper palettes for the various button states */
 
@@ -12,39 +11,40 @@ TamperWidget::TamperWidget(QWidget *parent, TamperType tamperType)
 	tamperPaletteInactiveHover.setBrush(QPalette::Background, QBrush(tamperImageInactiveHover));
 	tamperPaletteInactivePressed.setBrush(QPalette::Background, QBrush(tamperImageInactivePressed));
 
+	tamperTextActive.setColor(QPalette::WindowText, QColor(31, 31, 31));
+	tamperTextInactive.setColor(QPalette::WindowText, QColor(107, 107, 107));
+
 
 	/* Set the layout and initial settings */
-	QHBoxLayout* tamperWidgetLayout = new QHBoxLayout();
+
+	tamperWidgetLayout = new QHBoxLayout();
 	this->setLayout(tamperWidgetLayout);
 	this->setAutoFillBackground(true);
 	this->setPalette(tamperPaletteInactive);
-	this->setFixedWidth(250);
-	this->setFixedHeight(80);
-	this->setParent(parent);
+	this->setFixedWidth(100);
+	this->setFixedHeight(52);
+	//this->setParent(parent);
 	this->selected = false;
 
 
 	/* Initialize the Name, Icon, and Description objects */
-	
-	tamperTextActive.setColor(QPalette::WindowText, QColor(31, 31, 31));
-	tamperTextInactive.setColor(QPalette::WindowText, QColor(107, 107, 107));
 
-	tamperName = new QLabel(TamperTypeNames[tamperType]);
-	tamperNameFont.setPixelSize(22);
+	tamperNameLabel = new QLabel(TamperTypeName[tamperType]);
+	tamperNameFont.setPixelSize(16);
 	tamperNameFont.setFamily("Calibri");
 	tamperNameFont.setBold(true);
 	tamperNameFont.setStyleStrategy(QFont::PreferAntialias);
-	tamperName->setFont(tamperNameFont);
-	tamperName->setPalette(tamperTextInactive);
-	tamperName->setContentsMargins(10, 0, 0, 0);
+	tamperNameLabel->setFont(tamperNameFont);
+	tamperNameLabel->setPalette(tamperTextInactive);
+	tamperNameLabel->setContentsMargins(10, 0, 0, 0);
 
-	tamperDescription = new QLabel(TamperTypeDescriptions[tamperType]);
-	tamperDescriptionFont.setPixelSize(14);
+	tamperDescriptionLabel = new QLabel(TamperTypeDescription[tamperType]);
+	tamperDescriptionFont.setPixelSize(12);
 	tamperDescriptionFont.setFamily("Calibri");
 	tamperDescriptionFont.setStyleStrategy(QFont::PreferAntialias);
-	tamperDescription->setFont(tamperDescriptionFont);
-	tamperDescription->setPalette(tamperTextInactive);
-	tamperDescription->setContentsMargins(10, 0, 0, 0);
+	tamperDescriptionLabel->setFont(tamperDescriptionFont);
+	tamperDescriptionLabel->setPalette(tamperTextInactive);
+	tamperDescriptionLabel->setContentsMargins(10, 0, 0, 0);
 
 	tamperIcon = new QLabel();
 	tamperIconActive = QPixmap(TamperTypeInactiveIcon[tamperType]);
@@ -67,13 +67,13 @@ TamperWidget::TamperWidget(QWidget *parent, TamperType tamperType)
 
 	//Initialize layouts for the name and description texts
 	descriptionChildLayout = new QVBoxLayout();
-	descriptionChildLayout->addWidget(tamperDescription);
+	descriptionChildLayout->addWidget(tamperDescriptionLabel);
 	descriptionChildLayout->setMargin(5);
 	descriptionChildLayout->setSpacing(5);
 	descriptionChildLayout->setContentsMargins(0, 0, 0, 10);
 
 	textContainerLayout = new QVBoxLayout();
-	textContainerLayout->addWidget(tamperName);
+	textContainerLayout->addWidget(tamperNameLabel);
 	textContainerLayout->addLayout(descriptionChildLayout);
 	textContainerLayout->setMargin(4);
 	textContainerLayout->setSpacing(4);
@@ -82,7 +82,7 @@ TamperWidget::TamperWidget(QWidget *parent, TamperType tamperType)
 	//Initialize the main tamper widget layout and add widgets to it
 	tamperWidgetLayout->setMargin(0);
 	tamperWidgetLayout->addSpacing(10);
-	tamperWidgetLayout->addWidget(tamperIcon);
+	//tamperWidgetLayout->addWidget(tamperIcon);
 	tamperWidgetLayout->addLayout(textContainerLayout); /* contains name and description text labels */
 
 
@@ -92,8 +92,8 @@ TamperWidget::TamperWidget(QWidget *parent, TamperType tamperType)
 void TamperWidget::select()
 {
 	this->setPalette(tamperPaletteActive);
-	this->tamperName->setPalette(tamperTextActive);
-	this->tamperDescription->setPalette(tamperTextActive);
+	this->tamperNameLabel->setPalette(tamperTextActive);
+	this->tamperDescriptionLabel->setPalette(tamperTextActive);
 	this->tamperIcon->setPixmap(tamperIconActive);
 	this->selected = true;
 }
@@ -102,8 +102,8 @@ void TamperWidget::select()
 void TamperWidget::unselect()
 {
 	this->setPalette(tamperPaletteInactive);
-	this->tamperName->setPalette(tamperTextInactive);
-	this->tamperDescription->setPalette(tamperTextInactive);
+	this->tamperNameLabel->setPalette(tamperTextInactive);
+	this->tamperDescriptionLabel->setPalette(tamperTextInactive);
 	this->tamperIcon->setPixmap(tamperIconInactive);
 	this->selected = false;
 }

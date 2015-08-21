@@ -10,9 +10,8 @@
 #include <Iphlpapi.h>					//Types used with WinDivert & functions to obtain the IP Address from MAC Address
 #include <mmsystem.h>					//Time APIs used during synchronization
 
-#include <InssidiousCore/PacketTamper/PacketTamperModule.h>
-
-class PacketNode;
+#include <InssidiousCore/TamperModules/TamperBase.h>
+#include <InssidiousCore/TamperTypes.h>
 
 class DivertController : public QThread
 {
@@ -22,27 +21,21 @@ class DivertController : public QThread
 public:
 	DivertController(QString MACAddress);
 
+	QString dbgFilterString;
 
 	/* Accessed by TamperController when receiving signals */
 
 	QString MAC;
 
+	TamperModule* tamperModule[NUM_TAMPER_TYPES];
+	volatile bool enabled[NUM_TAMPER_TYPES];
+	
 
 	/* Variable is watched for an atomically-increased change when we need close up the threads */
 
 	volatile short stopLooping = FALSE;
-
-
-
-
 	volatile bool hasIPAddress = false;
 
-	volatile bool dropPackets = false;
-	volatile short dropPacketsPercent = 0;
-
-	static const int moduleCount = 1;
-
-	PacketTamperModule* drop; // all modules in a list
 
 public slots:
 	void onDivertStop();

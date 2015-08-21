@@ -273,6 +273,6 @@ void StartWidget::onUiUpdateStartingText(QString messageText, bool isErrorMessag
 
 	this->statusMessage->setText(messageText);
 	this->statusMessage->repaint();
+	this->repaint();
 	this->parentWidget()->repaint();
-	this->parentWidget()->parentWidget()->repaint();
 }
