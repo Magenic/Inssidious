@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Controllers\TabController.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_HeaderWidget.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_inssidiousui.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_StartWidget.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_TabController.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_TabWidget.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_TamperWidget.cpp" />
+    <ClCompile Include="GeneratedFiles\qrc_inssidiousui.cpp" />
+    <ClCompile Include="GeneratedFiles\Release\moc_HeaderWidget.cpp" />
+    <ClCompile Include="GeneratedFiles\Release\moc_inssidiousui.cpp" />
+    <ClCompile Include="GeneratedFiles\Release\moc_StartWidget.cpp" />
+    <ClCompile Include="GeneratedFiles\Release\moc_TabController.cpp" />
+    <ClCompile Include="GeneratedFiles\Release\moc_TabWidget.cpp" />
+    <ClCompile Include="GeneratedFiles\Release\moc_TamperWidget.cpp" />
+    <ClCompile Include="InssidiousUi.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Widgets\HeaderWidget.cpp" />
+    <ClCompile Include="Widgets\StartWidget.cpp" />
+    <ClCompile Include="Widgets\TabWidget.cpp" />
+    <ClCompile Include="Widgets\TamperWidget.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="InssidiousUi.h" />
+    <CustomBuild Include="inssidiousui.qrc" />
+    <CustomBuild Include="Controllers\TabController.h" />
+    <CustomBuild Include="Widgets\HeaderWidget.h" />
+    <CustomBuild Include="Widgets\StartWidget.h" />
+    <CustomBuild Include="Widgets\TabWidget.h" />
+    <CustomBuild Include="Widgets\TamperWidget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Background.png" />
+    <Image Include="Resources\HeaderSid.png" />
+    <Image Include="Resources\MenuDefault.png" />
+    <Image Include="Resources\MenuHover.png" />
+    <Image Include="Resources\MenuPressed.png" />
+    <Image Include="Resources\StartButtonActive.png" />
+    <Image Include="Resources\StartButtonDisabled.png" />
+    <Image Include="Resources\StartButtonHover.png" />
+    <Image Include="Resources\StartButtonPressed.png" />
+    <Image Include="Resources\StartLogo.png" />
+    <Image Include="Resources\TabActive.png" />
+    <Image Include="Resources\TabActiveHover.png" />
+    <Image Include="Resources\TabActivePressed.png" />
+    <Image Include="Resources\TabInactive.png" />
+    <Image Include="Resources\TabInactiveHover.png" />
+    <Image Include="Resources\TabInactivePressed.png" />
+    <Image Include="Resources\TabsDevicesPresent.png" />
+    <Image Include="Resources\TabsNoDevices.png" />
+    <Image Include="Resources\TamperButtonActive.png" />
+    <Image Include="Resources\TamperButtonActiveHover.png" />
+    <Image Include="Resources\TamperButtonActivePressed.png" />
+    <Image Include="Resources\TamperButtonInactive.png" />
+    <Image Include="Resources\TamperButtonInactiveHover.png" />
+    <Image Include="Resources\TamperButtonInactivePressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+  </ItemGroup>
+</Project>

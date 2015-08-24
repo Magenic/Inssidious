@@ -6,13 +6,14 @@
 #include <QtWidgets/QLabel>					//QLabel for displaying text and icons
 #include <QtGui/QMouseEvent>				//Used to track mouse movements and clicks to update state
 
+#include <InssidiousCore/TamperTypes.h>
 
 class TamperWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	TamperWidget(QWidget *parent);
+	TamperWidget(TamperType tamperType);
 
 	void select();
 	void unselect();
@@ -24,12 +25,18 @@ signals:
 
 
 private:
-	void mousePressEvent(QMouseEvent *e);		//Catch mouse click events
+	void mousePressEvent(QMouseEvent *e);
 	void mouseReleaseEvent(QMouseEvent *e);
 	void enterEvent(QEvent *e);
 	void leaveEvent(QEvent *e);
 
 
+	/* QHBoxLayout */
+	
+	QHBoxLayout* tamperWidgetLayout;
+
+
+	/* Tamper Palettes and Pixmaps for the Active/Inactive/Hover/Pressed button states */
 
 	QPalette tamperPaletteActive;
 	QPalette tamperPaletteActiveHover;
@@ -45,6 +52,21 @@ private:
 	QPixmap tamperImageInactiveHover = QPixmap(":/Tamper/TamperButtonInactiveHover.png");		//QPixmap for active device tampers while hovered over
 	QPixmap tamperImageInactivePressed = QPixmap(":/Tamper/TamperButtonInactivePressed.png");	//QPixmap for active device tampers while pressed
 
+
+	/* Text QLabels, QFonts, QPalettes, and QPixmaps to draw in the button */
+
+	QLabel* tamperNameLabel;			
+	QFont tamperNameFont;
+
+	QLabel* tamperDescriptionLabel;	
+	QFont tamperDescriptionFont;
+
+	QPalette tamperTextActive;
+	QPalette tamperTextInactive;
+
+	QLabel* tamperIcon;
+	QPixmap tamperIconActive;
+	QPixmap tamperIconInactive;
 
 };
 

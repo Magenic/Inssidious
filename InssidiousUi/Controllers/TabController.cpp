@@ -33,7 +33,10 @@ TabController::TabController(QWidget *parent)
 	this->setAutoFillBackground(true);							//And enable filling in the  background
 	this->setParent(parent);									//Display the widget on top of Inssidious widget
 
-
+	tamperClassFont.setPixelSize(16);
+	tamperClassFont.setFamily("Calibri");
+	tamperClassFont.setBold(true);
+	tamperClassFont.setStyleStrategy(QFont::PreferAntialias);
 }
 
 TabController::~TabController()
@@ -46,66 +49,148 @@ TabController::~TabController()
 void TabController::onUiAddDevice(QString MACAddress)
 {
 
-	/* Add a new Tab to the list and layout, then connect the tabClicked signal */
-	
-	tcDeviceList.append(new tcDevice);
-	tcDeviceList.last()->MAC = MACAddress;
-	tcDeviceList.last()->tab = new TabWidget(this);
-	tcDeviceList.last()->tbContainer = new QWidget(this);
-	tcDeviceList.last()->tbGridLayout = new QGridLayout();
-	tcDeviceList.last()->tb[1] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[2] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[3] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[4] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[5] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[6] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[7] = new TamperWidget(tcDeviceList.last()->tbContainer);
-	tcDeviceList.last()->tb[8] = new TamperWidget(tcDeviceList.last()->tbContainer);
+	/* Create a new tcDevice */
 
+	tcDeviceList.append(new tcDevice({
+		MACAddress, 
+		new TabWidget(this), 
+		new QWidget(this), 
+		new QVBoxLayout(),
+		{
+			new QLabel(TamperClassName[SPEED]),
+			new QLabel(TamperClassName[NOISE]),
+			new QLabel(TamperClassName[FAILURE]),
+			new QLabel(TamperClassName[RESTRICTION])
+		},
+		{
+			new QHBoxLayout(),
+			new QHBoxLayout(),
+			new QHBoxLayout(),
+			new QHBoxLayout()
+		},
+		{
+			new TamperWidget(LAG),
+			new TamperWidget(THROTTLE),
+			new TamperWidget(RESET),
+			new TamperWidget(JITTER),
+			new TamperWidget(DROPPED_PACKETS),
+			new TamperWidget(CORRUPT_PACKETS),
+			new TamperWidget(NO_PACKETS),
+			new TamperWidget(NO_DNS),
+			new TamperWidget(NO_SERVER),
+			new TamperWidget(NO_SSL),
+			new TamperWidget(REDIR_TO_PORTAL),
+			new TamperWidget(HTTP_HTTPS_ONLY),
+			new TamperWidget(SITE_BLOCKED)
+		}
+	}));
+	
+
+	/* Add the Tab Widget to the TabController layout and connect the tabClicked signal */
 
 	this->layout()->addWidget(tcDeviceList.last()->tab);
-	
-
-	
-	tcDeviceList.last()->tbContainer->setLayout(tcDeviceList.last()->tbGridLayout);									//Use a Vertical Box Layout to stack tabs top -> down
-	tcDeviceList.last()->tbContainer->setGeometry(200,										//698 pixels in from the left
-		16,														//6 pixels plus the title bar height down from the top
-		800 - 200 - 16 - 16,									//Use width of the png for qlabel width
-		600 - 120 - 16 - 16);									//Use height of the png for qlabel height
-	tcDeviceList.last()->tbContainer->setAutoFillBackground(false);							//Don't fill in a background color
-	tcDeviceList.last()->tbContainer->setParent(this);					//Display the widget on top of Inssidious widget
-
-
-	tcDeviceList.last()->tbGridLayout->setContentsMargins(0, 0, 0, 0);				//Zero margins for any child widget margins except for a 20 pixel pad from the top
-	tcDeviceList.last()->tbGridLayout->setSpacing(0);								//Set spacing between child widgets to 8 pixels
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[1], 0, 0);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[2], 0, 1);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[3], 1, 0);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[4], 1, 1);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[5], 2, 0);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[6], 2, 1);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[7], 3, 0);
-	tcDeviceList.last()->tbGridLayout->addWidget(tcDeviceList.last()->tb[8], 3, 1);
-
-
 	connect(tcDeviceList.last()->tab, &TabWidget::tabClicked, this, &TabController::onTabClicked);
 
-	connect(tcDeviceList.last()->tb[1], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb[2], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb[3], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb[4], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb[5], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb[6], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb[7], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
-	connect(tcDeviceList.last()->tb[8], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
 
+	/* Initialize the Tamper Widget Container */
+
+	tcDeviceList.last()->twContainer->setAutoFillBackground(false);
+	tcDeviceList.last()->twContainer->setGeometry(200,								
+		16,																				
+		800 - 200 - 16 - 16,															
+		600 - 120 - 16 - 16);																				
+	tcDeviceList.last()->twContainer->setLayout(tcDeviceList.last()->twContainerVLayout);
+	tcDeviceList.last()->twContainerVLayout->setContentsMargins(0, 0, 0, 0);
+	tcDeviceList.last()->twContainerVLayout->setSpacing(0);	
+
+	/* Set the widget parent values to allow hiding and showing the container */
+	
+	tcDeviceList.last()->twContainer->setParent(this);							
+	tcDeviceList.last()->tamperWidget[LAG]->setParent(this);
+	tcDeviceList.last()->tamperWidget[THROTTLE]->setParent(this);
+	tcDeviceList.last()->tamperWidget[RESET]->setParent(this);
+	tcDeviceList.last()->tamperWidget[JITTER]->setParent(this);
+	tcDeviceList.last()->tamperWidget[DROPPED_PACKETS]->setParent(this);
+	tcDeviceList.last()->tamperWidget[CORRUPT_PACKETS]->setParent(this);
+	tcDeviceList.last()->tamperWidget[NO_PACKETS]->setParent(this);
+	tcDeviceList.last()->tamperWidget[NO_DNS]->setParent(this);
+	tcDeviceList.last()->tamperWidget[NO_SERVER]->setParent(this);
+	tcDeviceList.last()->tamperWidget[NO_SSL]->setParent(this);
+	tcDeviceList.last()->tamperWidget[REDIR_TO_PORTAL]->setParent(this);
+	tcDeviceList.last()->tamperWidget[HTTP_HTTPS_ONLY]->setParent(this);
+	tcDeviceList.last()->tamperWidget[SITE_BLOCKED]->setParent(this);
+
+
+
+	/* Add the Tamper Class Labels and Layouts to the container */
+
+	tcDeviceList.last()->twContainerVLayout->addWidget(tcDeviceList.last()->tamperClassLabel[SPEED], Qt::AlignHCenter);
+	tcDeviceList.last()->twContainerVLayout->addLayout(tcDeviceList.last()->tamperClassLayout[SPEED], Qt::AlignHCenter);
+	tcDeviceList.last()->twContainerVLayout->addWidget(tcDeviceList.last()->tamperClassLabel[NOISE], Qt::AlignHCenter);
+	tcDeviceList.last()->twContainerVLayout->addLayout(tcDeviceList.last()->tamperClassLayout[NOISE], Qt::AlignHCenter);
+	tcDeviceList.last()->twContainerVLayout->addWidget(tcDeviceList.last()->tamperClassLabel[FAILURE], Qt::AlignHCenter);
+	tcDeviceList.last()->twContainerVLayout->addLayout(tcDeviceList.last()->tamperClassLayout[FAILURE], Qt::AlignHCenter);
+	tcDeviceList.last()->twContainerVLayout->addWidget(tcDeviceList.last()->tamperClassLabel[RESTRICTION], Qt::AlignHCenter);
+	tcDeviceList.last()->twContainerVLayout->addLayout(tcDeviceList.last()->tamperClassLayout[RESTRICTION], Qt::AlignHCenter);
+
+	
+	/* Set the Tamper Class Font and Alignment */
+
+	tcDeviceList.last()->tamperClassLabel[SPEED]->setFont(tamperClassFont);
+	tcDeviceList.last()->tamperClassLabel[NOISE]->setFont(tamperClassFont);
+	tcDeviceList.last()->tamperClassLabel[FAILURE]->setFont(tamperClassFont);
+	tcDeviceList.last()->tamperClassLabel[RESTRICTION]->setFont(tamperClassFont);
+	tcDeviceList.last()->tamperClassLabel[SPEED]->setAlignment(Qt::AlignCenter);
+	tcDeviceList.last()->tamperClassLabel[NOISE]->setAlignment(Qt::AlignCenter);
+	tcDeviceList.last()->tamperClassLabel[FAILURE]->setAlignment(Qt::AlignCenter);
+	tcDeviceList.last()->tamperClassLabel[RESTRICTION]->setAlignment(Qt::AlignCenter);
+
+	/* Add the Tamper Types to the appropriate class layouts */
+
+	tcDeviceList.last()->tamperClassLayout[SPEED]->addWidget(tcDeviceList.last()->tamperWidget[LAG]);
+	tcDeviceList.last()->tamperClassLayout[SPEED]->addWidget(tcDeviceList.last()->tamperWidget[THROTTLE]);
+
+	tcDeviceList.last()->tamperClassLayout[NOISE]->addWidget(tcDeviceList.last()->tamperWidget[RESET]);
+	tcDeviceList.last()->tamperClassLayout[NOISE]->addWidget(tcDeviceList.last()->tamperWidget[JITTER]);
+	tcDeviceList.last()->tamperClassLayout[NOISE]->addWidget(tcDeviceList.last()->tamperWidget[DROPPED_PACKETS]);
+	tcDeviceList.last()->tamperClassLayout[NOISE]->addWidget(tcDeviceList.last()->tamperWidget[CORRUPT_PACKETS]);
+
+	tcDeviceList.last()->tamperClassLayout[FAILURE]->addWidget(tcDeviceList.last()->tamperWidget[NO_PACKETS]);
+	tcDeviceList.last()->tamperClassLayout[FAILURE]->addWidget(tcDeviceList.last()->tamperWidget[NO_DNS]);
+	tcDeviceList.last()->tamperClassLayout[FAILURE]->addWidget(tcDeviceList.last()->tamperWidget[NO_SERVER]);
+	tcDeviceList.last()->tamperClassLayout[FAILURE]->addWidget(tcDeviceList.last()->tamperWidget[NO_SSL]);
+
+	tcDeviceList.last()->tamperClassLayout[RESTRICTION]->addWidget(tcDeviceList.last()->tamperWidget[REDIR_TO_PORTAL]);
+	tcDeviceList.last()->tamperClassLayout[RESTRICTION]->addWidget(tcDeviceList.last()->tamperWidget[HTTP_HTTPS_ONLY]);
+	tcDeviceList.last()->tamperClassLayout[RESTRICTION]->addWidget(tcDeviceList.last()->tamperWidget[SITE_BLOCKED]);
+
+
+	
+
+
+
+
+	
+	connect(tcDeviceList.last()->tamperWidget[LAG], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tamperWidget[THROTTLE], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tamperWidget[RESET], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tamperWidget[JITTER], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tamperWidget[DROPPED_PACKETS], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tamperWidget[CORRUPT_PACKETS], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tamperWidget[NO_PACKETS], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tamperWidget[NO_DNS], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tamperWidget[NO_SERVER], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tamperWidget[NO_SSL], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tamperWidget[REDIR_TO_PORTAL], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tamperWidget[HTTP_HTTPS_ONLY], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
+	connect(tcDeviceList.last()->tamperWidget[SITE_BLOCKED], &TamperWidget::tamperButtonClicked, this, &TabController::onTamperWidgetClicked);
 
 	/* If this is the first tab we've added, select it to default it to active and change the background image */
 
 	if (tcDeviceList.count() == 1) 
 	{
 		tcDeviceList.last()->tab->select();
-		tcDeviceList.last()->tbContainer->show();
+		tcDeviceList.last()->twContainer->show();
 		this->setPalette(tcPaletteDevicesPresent);
 	}
 
@@ -130,15 +215,16 @@ void TabController::onUiDropDevice(QString MACAddress)
 			{
 				tcDeviceList.removeOne(d);
 				d->tab->deleteLater();
-				d->tbContainer->deleteLater();
+				d->twContainer->deleteLater();
 				tcDeviceList.first()->tab->select();
+				tcDeviceList.first()->twContainer->show();
 				break;
 			}
 			else
 			{
 				tcDeviceList.removeOne(d);
 				d->tab->deleteLater();
-				d->tbContainer->deleteLater();
+				d->twContainer->deleteLater();
 				break;
 			}
 		}
@@ -154,12 +240,12 @@ void TabController::onUiDropDevice(QString MACAddress)
 
 }
 
-void TabController::onUiTamperStarted(QString MACAddress, QString TamperType)
+void TabController::onUiTamperStarted(QString MACAddress, TamperType tamperType)
 {
 
 }
 
-void TabController::onUiTamperStopped(QString MACAddress, QString TamperType)
+void TabController::onUiTamperStopped(QString MACAddress, TamperType tamperType)
 {
 
 }
@@ -174,12 +260,12 @@ void TabController::onTabClicked(TabWidget* tab)
 		if (d->tab == tab)
 		{
 			tab->select();
-			d->tbContainer->show();
+			d->twContainer->show();
 		}
 		else
 		{
 			d->tab->unselect();
-			d->tbContainer->hide();
+			d->twContainer->hide();
 		}
 	}
 }
@@ -189,19 +275,19 @@ void TabController::onTamperWidgetClicked(TamperWidget* tamperWidget)
 
 	for (tcDevice* d : tcDeviceList)
 	{
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < NUM_TAMPER_TYPES - 1; i++)
 		{
-			if (d->tb[i] == tamperWidget)
+			if (d->tamperWidget[i] == tamperWidget)
 			{
-				if (d->tb[i]->selected)
+				if (d->tamperWidget[i]->selected)
 				{
-					emit uiTamperStop(d->MAC, "TamperType");
-					d->tb[i]->unselect();
+					emit uiTamperStop(d->MAC, TamperType(i));
+					d->tamperWidget[i]->unselect();
 				}
 				else
 				{
-					emit uiTamperStart(d->MAC, "TamperType");
-					d->tb[i]->select();
+					emit uiTamperStart(d->MAC, TamperType(i));
+					d->tamperWidget[i]->select();
 				}
 			}
 		}
