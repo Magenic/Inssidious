@@ -21,6 +21,8 @@ class DivertController : public QThread
 public:
 	DivertController(QString MACAddress);
 
+	static void staticDivertDHCPThread();
+
 	QString dbgFilterString;
 
 	/* Accessed by TamperController when receiving signals */
