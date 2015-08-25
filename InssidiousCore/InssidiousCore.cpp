@@ -32,18 +32,21 @@ InssidiousCore::InssidiousCore()
 
 
 	/* Connect Signals and Slots */
-	
-	connect(this, &InssidiousCore::coreTamperStart, deviceController, &DeviceController::onCoreTamperStart);
-	connect(this, &InssidiousCore::coreTamperStop, deviceController, &DeviceController::onCoreTamperStop);
-	connect(deviceController, &DeviceController::coreTamperStarted, this, &InssidiousCore::onCoreTamperStarted);
-	connect(deviceController, &DeviceController::coreTamperStopped, this, &InssidiousCore::onCoreTamperStopped);
 
+	connect(dhcpController, &DHCPController::ipAddressAssigned, this, &InssidiousCore::onCoreDHCPipAddressAssigned);
 
 	connect(this, &InssidiousCore::coreAddDevice, deviceController, &DeviceController::onCoreAddDevice);
 	connect(this, &InssidiousCore::coreDropDevice, deviceController, &DeviceController::onCoreDropDevice);
+	connect(this, &InssidiousCore::coreUpdateDevice, deviceController, &DeviceController::onCoreUpdateDevice);
 
+	connect(this, &InssidiousCore::coreTamperStart, deviceController, &DeviceController::onCoreTamperStart);
+	connect(this, &InssidiousCore::coreTamperStop, deviceController, &DeviceController::onCoreTamperStop);
+
+	connect(deviceController, &DeviceController::coreTamperStarted, this, &InssidiousCore::onCoreTamperStarted);
+	connect(deviceController, &DeviceController::coreTamperStopped, this, &InssidiousCore::onCoreTamperStopped);
 
 	connect(hostedNetwork, &HostedNetworkController::hostedNetworkMessage, this, &InssidiousCore::onCoreHostedNetworkMessage, Qt::DirectConnection);
+
 
 	/* No further work until we receive signals */
 
@@ -68,7 +71,7 @@ void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword,
 
 	/* Start the Divert DHCP thread */
 
-	dhcpController->run();
+	dhcpController->start();
 
 
 	/* Configure Hosted Network Settings and confirm Hosted Network is allowed on machine */
@@ -103,12 +106,12 @@ void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword,
 
 }
 
-void InssidiousCore::onUiCoreStartTamper(QString MACAddress, int tamperType)
+void InssidiousCore::onUiTamperStart(QString MACAddress, int tamperType)
 {
 	emit coreTamperStart(MACAddress, TamperType(tamperType));
 }
 
-void InssidiousCore::onUiCoreStopTamper(QString MACAddress, int tamperType)
+void InssidiousCore::onUiTamperStop(QString MACAddress, int tamperType)
 {
 	emit coreTamperStop(MACAddress, TamperType(tamperType));
 }
@@ -153,3 +156,7 @@ void InssidiousCore::onCoreHostedNetworkMessage(QString message, HostedNetworkRe
 	}
 }
 
+void InssidiousCore::onCoreDHCPipAddressAssigned(QString MACAddress, QString ipAddress)
+{
+	emit coreUpdateDevice(MACAddress, ipAddress);
+}

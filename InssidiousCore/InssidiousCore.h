@@ -30,15 +30,29 @@ public:
 	~InssidiousCore();
 
 	QList<QString>* pNetworkConnectionNames;						//Public list of network connection names to share with Startup widget
-	void run();														//Calls QThread exec() to start the thread's event loop
+
+
+public slots:
+	void onUiCoreStart(QString networkName, QString networkPassword, QString networkAdapter);									
+	void onUiTamperStart(QString MACAddress, int tamperType);
+	void onUiTamperStop(QString MACAddress, int tamperType);
+
+
+	void onCoreTamperStarted(QString MACAddress, TamperType tamperType);
+	void onCoreTamperStopped(QString MACAddress, TamperType tamperType);
+
+private slots:
+	void onCoreHostedNetworkMessage(QString message, HostedNetworkReason reason);								
+	void onCoreDHCPipAddressAssigned(QString ipAddress, QString MACAddress);
 
 signals:
 	void coreStarting(QString statusMessage, bool error = false);
-	void coreStarted();													
-	void coreStopped();													
+	void coreStarted();
+	void coreStopped();
 
 	void coreAddDevice(QString MACAddress);
-	void coreDropDevice(QString MACAddress);	
+	void coreDropDevice(QString MACAddress);
+	void coreUpdateDevice(QString MACAddress, QString ipAddress);
 
 	void coreTamperStart(QString MACAddress, TamperType tamperType);
 	void coreTamperStop(QString MACAddress, TamperType tamperType);
@@ -47,21 +61,10 @@ signals:
 	void coreTamperStopped(QString MACAddress, TamperType tamperType);
 
 
-public slots:
-	void onUiCoreStart(QString networkName, QString networkPassword, QString networkAdapter);									
-	void onUiCoreStartTamper(QString MACAddress, int tamperType);
-	void onUiCoreStopTamper(QString MACAddress, int tamperType);
-
-
-	void onCoreTamperStarted(QString MACAddress, TamperType tamperType);
-	void onCoreTamperStopped(QString MACAddress, TamperType tamperType);
-
-	void onCoreHostedNetworkMessage(QString message, HostedNetworkReason reason);								
-
-
-
 
 private:
+	void run() override;											//Calls QThread exec() to start the thread's event loop
+
 
 	HostedNetworkController* hostedNetwork;	
 	ICSController* ics;	

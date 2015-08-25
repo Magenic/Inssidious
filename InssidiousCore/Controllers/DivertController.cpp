@@ -7,15 +7,16 @@
 #define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
 #define DIVERT_MAX_PACKETSIZE 0xFFFF
 #define DIVERT_CLOCK_WAIT_MS 100
-#define DIVERT_QUEUE_LEN 2 << 10
-#define DIVERT_QUEUE_TIME 2 << 9 
+#define DIVERT_QUEUE_LEN_MAX 8192
+#define DIVERT_QUEUE_TIME_MAX 2048
 
 
 
-DivertController::DivertController(QString MACAddress)
+DivertController::DivertController(device * d)
 {
 
-	MAC = MACAddress;
+	parentDevice = d;
+
 	packetList = new PacketList();
 
 	tamperModule[LAG] = new LagModule();
@@ -32,128 +33,28 @@ DivertController::DivertController(QString MACAddress)
 	tamperModule[HTTP_HTTPS_ONLY] = new HTTPHTTPSOnlyModule();
 	tamperModule[SITE_BLOCKED] = new SiteBlockedModule();
 
-	enabled[LAG] = false;
-	enabled[THROTTLE] = false;
-	enabled[RESET] = false;
-	enabled[JITTER] = false;
-	enabled[DROPPED_PACKETS] = false;
-	enabled[CORRUPT_PACKETS] = false;
-	enabled[NO_PACKETS] = false;
-	enabled[NO_DNS] = false;
-	enabled[NO_SERVER] = false;
-	enabled[NO_SSL] = false;
-	enabled[REDIR_TO_PORTAL] = false;
-	enabled[HTTP_HTTPS_ONLY] = false;
-	enabled[SITE_BLOCKED] = false;
 }
 
 
 void DivertController::run()
 {
+	this->createThreads();
 
-	QString ipAddress;
-	hasIPAddress = false;
+	QThread::exec();
+}
+
+void DivertController::createThreads()
+{
+	inboundFilterString = QString("ip.DstAddr == " + parentDevice->IPAddress + " and ip.SrcAddr != 192.168.25.1");
+	outboundFilterString = QString("ip.SrcAddr == " + parentDevice->IPAddress + " and ip.DstAddr != 192.168.25.1");
+
+
 	DWORD result = ERROR_SUCCESS;
-	PMIB_IPNET_TABLE2 pIpNetTable = NULL;	
-	char digits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-
-
-	/* Loop until this device has an IP Address */
-
-	int debugLoopVar = 0;
-	do
-	{
-		debugLoopVar++;
-
-		if (debugLoopVar > 100)
-		{
-			DebugBreak();
-		}
-
-		/* Sleep for a second */
-
-		sleep(1);
-
-
-		/* Get the IP Address to Physical Address table */
-
-		result = GetIpNetTable2(AF_INET, &pIpNetTable);
-		if (result != NO_ERROR)
-		{
-			result = GetLastError();
-			//TODO: Handle this error
-
-			return;
-		}
-
-
-		/* Loop through the entries in the table to find our MAC Address */
-
-		for (int i = 0; i < pIpNetTable->NumEntries; i++)
-		{
-
-			/* Convert the MAC Address in the IpNetTable to a QString */
-
-			QString tableMACAddress;
-			for (uint j = 0; j < pIpNetTable->Table[i].PhysicalAddressLength; j++)
-			{
-				char lowbit = digits[(int)pIpNetTable->Table[i].PhysicalAddress[j] & 0xf];
-				char highbit = digits[(int)((pIpNetTable->Table[i].PhysicalAddress[j] & 0xf0) >> 4)];
-				tableMACAddress.append(highbit);
-				tableMACAddress.append(lowbit);
-				if (j != 5)
-					tableMACAddress.append('-');
-				
-			}
-
-
-			/* If the MAC Address matches the device we're here for, confirm the entry we see is valid */
-
-			if (MAC == tableMACAddress)
-			{
-				MIB_IPNET_ROW2 ipNetRow = pIpNetTable->Table[i];
-
-				/* NlnsReachable == pIpNetTable->Table[i].State ||  */
-				if (S_OK == ResolveIpNetEntry2(&ipNetRow, NULL))
-				{
-
-					/* Save this as the IP Address and leave the loop */
-
-					ipAddress = inet_ntoa(ipNetRow.Address.Ipv4.sin_addr);
-					hasIPAddress = true;
-				}
-				else
-				{
-					
-					/* The entry appears stale. Flush the table and loop again */
-
-					if(NO_ERROR != FlushIpNetTable2(AF_INET, pIpNetTable->Table[i].InterfaceIndex))
-					{
-						//TODO: Handle this error
-
-					}
-				}
-
-
-				/* In any case, if we found a MAC Address, break out of the table for loop */
-
-				break;
-			}
-		}
-
-
-		/* Continue looping until we get an IP address */
-
-	} while (!hasIPAddress);
-
 
 	/* Open a WinDivert handle */
 
-	dbgFilterString = QString("ip.DstAddr == " + ipAddress + " and ip.SrcAddr != 192.168.25.1");
-	QByteArray byteArray = QString("ip.DstAddr == " + ipAddress + " and ip.SrcAddr != 192.168.25.1").toLocal8Bit();
-	const char * pFilterString = byteArray.data();
 
-	divertHandle = WinDivertOpen(pFilterString, WINDIVERT_LAYER_NETWORK, 0, 0);
+	divertHandle = WinDivertOpen(inboundFilterString.toLocal8Bit(), WINDIVERT_LAYER_NETWORK, 0, 0);
 	if (divertHandle == INVALID_HANDLE_VALUE)
 	{
 		result = GetLastError();
@@ -163,15 +64,14 @@ void DivertController::run()
 	}
 
 
-	WinDivertSetParam(divertHandle, WINDIVERT_PARAM_QUEUE_LEN, DIVERT_QUEUE_LEN);
-	WinDivertSetParam(divertHandle, WINDIVERT_PARAM_QUEUE_TIME, DIVERT_QUEUE_TIME);
+	WinDivertSetParam(divertHandle, WINDIVERT_PARAM_QUEUE_LEN, DIVERT_QUEUE_LEN_MAX);
+	WinDivertSetParam(divertHandle, WINDIVERT_PARAM_QUEUE_TIME, DIVERT_QUEUE_TIME_MAX);
 	//LOG("WinDivert internal queue Len: %d, queue time: %d", QUEUE_LEN, QUEUE_TIME);
 
 
 
 	// kick off the loop
 	//LOG("Creating threads and mutex...");
-	stopLooping = FALSE;
 	mutex = CreateMutex(NULL, FALSE, NULL);
 	if (mutex == NULL)
 	{
@@ -198,10 +98,7 @@ void DivertController::run()
 		//TODO: Handle this error
 		return;
 	}
-
-	QThread::exec();
 }
-
 DWORD DivertController::StaticReadLoopThreadStart(void* pDivertControllerInstance)
 {
 	DivertController* This = (DivertController*)pDivertControllerInstance;
@@ -271,7 +168,7 @@ void DivertController::divertConsumeStep() {
 
 	for (int i = 0; i < NUM_TAMPER_TYPES - 1; i++)
 	{
-		if (this->enabled[i])
+		if (this->parentDevice->enabled[i])
 		{
 			this->tamperModule[i]->process(packetList);
 			//InterlockedIncrement16(&(module->processTriggered));
@@ -303,7 +200,7 @@ DWORD DivertController::divertClockLoop() {
 			divertConsumeStep();
 			/***************** leave critical region ************************/
 			if (!ReleaseMutex(mutex)) {
-				InterlockedIncrement16(&stopLooping);
+				InterlockedIncrement16(&(parentDevice->stop));
 				//LOG("Fatal: Failed to release mutex (%lu)", GetLastError());
 				assert(true);
 				//ABORT();
@@ -321,16 +218,17 @@ DWORD DivertController::divertClockLoop() {
 			break;
 		case WAIT_ABANDONED:
 			//LOG("Acquired abandoned mutex");
-			InterlockedIncrement16(&stopLooping);
+			InterlockedIncrement16(&(parentDevice->stop));
 			break;
 		case WAIT_FAILED:
 			//LOG("Acquire failed (%lu)", GetLastError());
-			InterlockedIncrement16(&stopLooping);
+			InterlockedIncrement16(&(parentDevice->stop));
 			break;
 		}
 
 		// need to get the lock here
-		if (stopLooping) {
+		if (parentDevice->stop) 
+		{
 			int lastSendCount = 0;
 			BOOL closed;
 
@@ -405,7 +303,8 @@ DWORD DivertController::divertReadLoop() {
 		switch (waitResult) {
 		case WAIT_OBJECT_0:
 			/***************** enter critical region ************************/
-			if (stopLooping) {
+			if (parentDevice->stop) 
+			{
 				//LOG("Lost last recved packet but user stopped. Stop read loop.");
 				/***************** leave critical region ************************/
 				if (!ReleaseMutex(mutex)) {
@@ -445,8 +344,10 @@ void DivertController::onDivertStop() {
 	threads[1] = clockThread;
 
 	//LOG("Stopping...");
-	InterlockedIncrement16(&stopLooping);
+	InterlockedIncrement16(&(parentDevice->stop));
 	WaitForMultipleObjects(2, threads, TRUE, INFINITE);
 
 	//LOG("Successfully waited threads and stopped.");
+
+	emit divertStopped(parentDevice->MACAddress);
 }

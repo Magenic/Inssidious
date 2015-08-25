@@ -2,6 +2,13 @@
 
 short DropPacketsModule::process(PacketList* packetList)
 {
+	if (packetList->head == packetList->tail)
+	{
+		/* no packets */
+		return 0;
+	}
+
+
 	Packet* dropHead = packetList->head;
 
 	int dropped = 0;

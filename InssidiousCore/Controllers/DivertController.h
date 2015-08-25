@@ -19,25 +19,13 @@ class DivertController : public QThread
 
 
 public:
-	DivertController(QString MACAddress);
+	DivertController(device* d);	
 
-	static void staticDivertDHCPThread();
+	void createThreads();
 
-	QString dbgFilterString;
 
-	/* Accessed by TamperController when receiving signals */
-
-	QString MAC;
-
-	TamperModule* tamperModule[NUM_TAMPER_TYPES];
-	volatile bool enabled[NUM_TAMPER_TYPES];
-	
-
-	/* Variable is watched for an atomically-increased change when we need close up the threads */
-
-	volatile short stopLooping = FALSE;
-	volatile bool hasIPAddress = false;
-
+signals:
+	void divertStopped(QString MACAddress);
 
 public slots:
 	void onDivertStop();
@@ -50,14 +38,22 @@ private:
 	void run();
 
 
-	/* PacketList to hold all diverted packets */
+	/* Pointer to the device instance with states and device info */
+
+	device* parentDevice;
+
+
+	/* PacketList to hold all diverted packets, TamperModule* to individual tamper classes */
 
 	PacketList* packetList;
+	TamperModule* tamperModule[NUM_TAMPER_TYPES];
 
 
 	/* Handles to the WinDivert instance, the two threads, and the synchronization mutex */
 
 	HANDLE divertHandle, loopThread, clockThread, mutex;
+	QString inboundFilterString;
+	QString outboundFilterString;
 
 
 	/* Functions to create threads to process packets captured by WinDivert */

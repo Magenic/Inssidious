@@ -225,7 +225,7 @@ QString get_mac_id(DOT11_MAC_ADDRESS &_in)
 		if (k != 5)
 			addr.push_back('-');
 	}
-	return addr;
+	return addr.toUpper();
 }
 
 

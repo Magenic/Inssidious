@@ -60,8 +60,8 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 
 	connect(tabController, &TabController::uiTamperStart, this, &InssidiousUi::onUiTamperStart);
 	connect(tabController, &TabController::uiTamperStop, this, &InssidiousUi::onUiTamperStop);
-	connect(this, &InssidiousUi::coreStartTamper, inssidiousCore, &InssidiousCore::onUiCoreStartTamper, Qt::QueuedConnection);
-	connect(this, &InssidiousUi::coreStopTamper, inssidiousCore, &InssidiousCore::onUiCoreStopTamper, Qt::QueuedConnection);
+	connect(this, &InssidiousUi::coreStartTamper, inssidiousCore, &InssidiousCore::onUiTamperStart, Qt::QueuedConnection);
+	connect(this, &InssidiousUi::coreStopTamper, inssidiousCore, &InssidiousCore::onUiTamperStop, Qt::QueuedConnection);
 	connect(inssidiousCore, &InssidiousCore::coreTamperStarted, this, &InssidiousUi::onCoreTamperStarted, Qt::QueuedConnection);
 	connect(inssidiousCore, &InssidiousCore::coreTamperStopped, this, &InssidiousUi::onCoreTamperStopped, Qt::QueuedConnection);
 

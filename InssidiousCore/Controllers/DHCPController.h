@@ -11,15 +11,16 @@ class DHCPController : public QThread
 public:
 	DHCPController(QObject *parent);
 	~DHCPController();
-	
-	
-	void run() override;
 
 signals: 
-	void ipAddressAssigned(QString ipAddress, QString MACAddress);
+	void ipAddressAssigned(QString MACAddress, QString ipAddress);
 
 
 private:
+
+	void run() override;
+
+
 	HANDLE divertDHCPHandle;
 
 	const QString divertDHCPFilterString = QString("ip.SrcAddr == 192.168.25.1 and udp.SrcPort == 67");

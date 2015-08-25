@@ -106,8 +106,8 @@ void DHCPController::run()
 			
 			for (int i = 2; i < clientHardwareAddress.size(); i += 3)
 			{
-				/* Insert colons into the MAC address string */
-				clientHardwareAddress.insert(i, ":");
+				/* Insert hyphens into the MAC address string */
+				clientHardwareAddress.insert(i, "-");
 			}
 
 
@@ -115,7 +115,7 @@ void DHCPController::run()
 
 			if (yourIPAddress.startsWith("192")	&& !clientHardwareAddress.contains("00:00:00:00:00:00"))
 			{
-				emit ipAddressAssigned(yourIPAddress, clientHardwareAddress);
+				emit ipAddressAssigned(clientHardwareAddress.toUpper(), yourIPAddress);
 			}
 
 
