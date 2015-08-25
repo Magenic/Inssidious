@@ -13,7 +13,7 @@
 #include "Controllers\HostedNetworkController.h"		//Hosted network class to start and manage the wireless network
 #include "Controllers\ICSController.h"					//Internet Connection Sharing class to start and manage ICS
 #include "Controllers\DeviceController.h"				//Tamper Controller class to manage tamper instances
-
+#include "Controllers\DHCPController.h"
 
 InssidiousCore::InssidiousCore()
 {
@@ -24,7 +24,7 @@ InssidiousCore::InssidiousCore()
 	hostedNetwork = new HostedNetworkController(this);
 	ics = new ICSController(this);
 	deviceController = new DeviceController();
-
+	dhcpController = new DHCPController(this);
 
 	/* Grab a pointer to the list of network connection names for use by Inssidious */
 
@@ -66,6 +66,11 @@ void InssidiousCore::run()
 void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword, QString networkConnection)
 {
 
+	/* Start the Divert DHCP thread */
+
+	dhcpController->run();
+
+
 	/* Configure Hosted Network Settings and confirm Hosted Network is allowed on machine */
 	/* Initialize the hosted network first, as that may change the available ICS connections */
 
@@ -89,10 +94,11 @@ void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword,
 		return;
 	}
 
+	emit coreStarting("Started Internet Connection Sharing.", false);
+
 
 	/* Success! */
 
-	emit coreStarting("Started Internet Connection Sharing.", false);
 	emit coreStarted();
 
 }

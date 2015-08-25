@@ -17,6 +17,7 @@
 class HostedNetworkController;
 class ICSController;
 class DeviceController;
+class DHCPController;
 enum HostedNetworkReason;
 enum TamperType;
 
@@ -65,6 +66,7 @@ private:
 	HostedNetworkController* hostedNetwork;	
 	ICSController* ics;	
 	DeviceController* deviceController;
+	DHCPController* dhcpController;
 };
 
 #endif // INSSIDIOUSCORE_H

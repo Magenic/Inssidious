@@ -48,22 +48,6 @@ DivertController::DivertController(QString MACAddress)
 }
 
 
-void DivertController::staticDivertDHCPThread()
-{
-	//HANDLE dhcpHandle = WinDivertOpen(pFilterString, WINDIVERT_LAYER_NETWORK, 0, 0);
-	if (dhcpHandle == INVALID_HANDLE_VALUE)
-	{
-		HRESULT result = GetLastError();
-
-		//TODO: Handle this error
-		return;
-	}
-
-
-
-
-}
-
 void DivertController::run()
 {
 

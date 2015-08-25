@@ -4,11 +4,9 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_hostednetworkcontroller.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_icscontroller.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_inssidiouscore.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_tampercontroller.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_hostednetworkcontroller.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_icscontroller.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_inssidiouscore.cpp" />
-    <ClCompile Include="GeneratedFiles\Release\moc_tampercontroller.cpp" />
     <ClCompile Include="Controllers\HostedNetworkController.cpp" />
     <ClCompile Include="Controllers\ICSController.cpp" />
     <ClCompile Include="InssidiousCore.cpp" />
@@ -72,6 +70,15 @@
     <ClCompile Include="TamperModules\TamperNoSSL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Controllers\DHCPController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DHCPController.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DHCPController.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Controllers\HostedNetworkController.h" />
@@ -81,6 +88,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="Controllers\DeviceController.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Controllers\DHCPController.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
