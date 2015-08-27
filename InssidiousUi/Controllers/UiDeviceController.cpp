@@ -132,14 +132,14 @@ void UiDeviceController::onTabClicked(TabWidget* tab)
 	}
 }
 
-void UiDeviceController::onTamperStart(TamperWidget* signaled, TamperType type)
+void UiDeviceController::onTamperStart(TamperWidget* signaled, TamperType type, void * pTamperConfig)
 {
 
 	for (device* d : deviceList)
 	{
 		if (d->tamper == signaled)
 		{
-			emit uiTamperStart(d->MAC, TamperType(type));
+			emit uiTamperStart(d->MAC, TamperType(type), pTamperConfig);
 			return;
 		}
 	}
@@ -152,7 +152,7 @@ void UiDeviceController::onTamperStop(TamperWidget* signaled, TamperType type)
 	{
 		if (d->tamper == signaled)
 		{
-			emit uiTamperStart(d->MAC, TamperType(type));
+			emit uiTamperStop(d->MAC, TamperType(type));
 			return;
 		}
 	}

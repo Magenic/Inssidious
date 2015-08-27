@@ -16,10 +16,10 @@ public:
 
 signals:
 	void tamperStop(TamperWidget*, TamperType);
-	void tamperStart(TamperWidget*, TamperType);
+	void tamperStart(TamperWidget*, TamperType, void* pTamperConfig);
 
 private slots:
-	void onTamperModuleClicked(UiTamperModule* signaled);
+	void onTamperModuleClicked(UiTamperModule* signaled, void* pTamperConfig);
 
 private:
 

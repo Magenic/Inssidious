@@ -145,7 +145,7 @@ void UiTamperModule::mouseReleaseEvent(QMouseEvent *e)
 		this->setPalette(buttonPaletteInactive);
 	}
 
-	emit tamperButtonClicked(this, nullptr);
+	emit tamperButtonClicked(this, pTamperConfig);
 }
 
 void UiTamperModule::mousePressEvent(QMouseEvent *e)

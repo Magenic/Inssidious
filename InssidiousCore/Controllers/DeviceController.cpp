@@ -1,4 +1,5 @@
 #include "DeviceController.h"
+#include <QtWidgets/QLabel>
 
 DeviceController::DeviceController()
 {
@@ -110,7 +111,7 @@ void DeviceController::onCoreUpdateDevice(QString MACAddress, QString ipAddress)
 }
 
 
-void DeviceController::onCoreTamperStart(QString MACAddress, TamperType tamperType)
+void DeviceController::onCoreTamperStart(QString MACAddress, TamperType tamperType, void* pTamperConfig)
 {
 	/* Search through the tab list for the matching MAC address */
 

@@ -42,9 +42,6 @@ InssidiousCore::InssidiousCore()
 	connect(this, &InssidiousCore::coreTamperStart, deviceController, &DeviceController::onCoreTamperStart);
 	connect(this, &InssidiousCore::coreTamperStop, deviceController, &DeviceController::onCoreTamperStop);
 
-	connect(deviceController, &DeviceController::coreTamperStarted, this, &InssidiousCore::onCoreTamperStarted);
-	connect(deviceController, &DeviceController::coreTamperStopped, this, &InssidiousCore::onCoreTamperStopped);
-
 	connect(hostedNetwork, &HostedNetworkController::hostedNetworkMessage, this, &InssidiousCore::onCoreHostedNetworkMessage, Qt::DirectConnection);
 
 
@@ -106,24 +103,14 @@ void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword,
 
 }
 
-void InssidiousCore::onUiTamperStart(QString MACAddress, int tamperType)
+void InssidiousCore::onUiTamperStart(QString MACAddress, int tamperType, void* pTamperConfig)
 {
-	emit coreTamperStart(MACAddress, TamperType(tamperType));
+	emit coreTamperStart(MACAddress, TamperType(tamperType), pTamperConfig);
 }
 
 void InssidiousCore::onUiTamperStop(QString MACAddress, int tamperType)
 {
 	emit coreTamperStop(MACAddress, TamperType(tamperType));
-}
-
-void InssidiousCore::onCoreTamperStarted(QString MACAddress, TamperType tamperType)
-{
-	emit coreTamperStarted(MACAddress, tamperType);
-}
-
-void InssidiousCore::onCoreTamperStopped(QString MACAddress, TamperType tamperType)
-{
-	emit coreTamperStopped(MACAddress, tamperType);
 }
 
 

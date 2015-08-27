@@ -28,7 +28,7 @@ public:
 
 
 signals:
-	void uiTamperStart(QString MACAddress, TamperType tamperType);
+	void uiTamperStart(QString MACAddress, TamperType tamperType, void* pTamperConfig);
 	void uiTamperStop(QString MACAddress, TamperType tamperType);
 
 
@@ -39,7 +39,7 @@ public slots:
 
 private slots:
 	void onTabClicked(TabWidget* tab);						//Receive notifications to switch to a different active tab
-	void onTamperStart(TamperWidget*, TamperType);
+	void onTamperStart(TamperWidget*, TamperType, void* pTamperConfig);
 	void onTamperStop(TamperWidget* , TamperType);
 
 

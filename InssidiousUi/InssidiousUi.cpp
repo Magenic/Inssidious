@@ -101,9 +101,6 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	connect(uiDeviceController, &UiDeviceController::uiTamperStop, this, &InssidiousUi::onUiTamperStop);
 	connect(this, &InssidiousUi::coreStartTamper, inssidiousCore, &InssidiousCore::onUiTamperStart, Qt::QueuedConnection);
 	connect(this, &InssidiousUi::coreStopTamper, inssidiousCore, &InssidiousCore::onUiTamperStop, Qt::QueuedConnection);
-	connect(inssidiousCore, &InssidiousCore::coreTamperStarted, this, &InssidiousUi::onCoreTamperStarted, Qt::QueuedConnection);
-	connect(inssidiousCore, &InssidiousCore::coreTamperStopped, this, &InssidiousUi::onCoreTamperStopped, Qt::QueuedConnection);
-
 
 
 	/* No further work until we receive signals */
@@ -160,26 +157,15 @@ void InssidiousUi::onCoreDropDevice(QString MACAddress)
 	emit uiDropDevice(MACAddress);
 }
 
-void InssidiousUi::onUiTamperStart(QString MACAddress, TamperType tamperType)
+void InssidiousUi::onUiTamperStart(QString MACAddress, TamperType tamperType, void * pTamperConfig)
 {
-	emit coreStartTamper(MACAddress, tamperType);
+	emit coreStartTamper(MACAddress, tamperType, pTamperConfig);
 }
 
 void InssidiousUi::onUiTamperStop(QString MACAddress, TamperType tamperType)
 {
 	emit coreStopTamper(MACAddress, tamperType);
 }
-
-void InssidiousUi::onCoreTamperStarted(QString MACAddress, TamperType tamperType)
-{
-	emit uiTamperStarted(MACAddress, tamperType);
-}
-
-void InssidiousUi::onCoreTamperStopped(QString MACAddress, TamperType tamperType)
-{
-	emit uiTamperStopped(MACAddress, tamperType);
-}
-
 
 
 //Override the nativeEvent function to react to window messages and handle drawing & dragging

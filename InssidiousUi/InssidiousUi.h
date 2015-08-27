@@ -73,10 +73,8 @@ private slots:
 	void onCoreAddDevice(QString MACAddress);
 	void onCoreDropDevice(QString MACAddress);
 	
-	void onUiTamperStart(QString MACAddress, TamperType tamperType);
+	void onUiTamperStart(QString MACAddress, TamperType tamperType, void* pTamperConfig);
 	void onUiTamperStop(QString MACAddress, TamperType tamperType);
-	void onCoreTamperStarted(QString MACAddress, TamperType tamperType);
-	void onCoreTamperStopped(QString MACAddress, TamperType tamperType);
 
 signals:
 	void coreStart(QString networkName, QString networkPassword, QString networkAdapter);
@@ -85,10 +83,9 @@ signals:
 	void uiAddDevice(QString MACAddress);
 	void uiDropDevice(QString MACAddress);
 
-	void coreStartTamper(QString MACAddress, int tamperType);
+	void coreStartTamper(QString MACAddress, int tamperType, void* pTamperConfig);
 	void coreStopTamper(QString MACAddress, int tamperType);
-	void uiTamperStarted(QString MACAddress, TamperType tamperType);
-	void uiTamperStopped(QString MACAddress, TamperType tamperType);
+
 };
 
 #endif // INSSIDIOUSUI_H

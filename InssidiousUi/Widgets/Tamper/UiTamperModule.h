@@ -17,20 +17,21 @@ public:
 
 	static UiTamperModule* makeUiTamperModule(QWidget* parent, TamperType);
 
-
-
 	void select();
 	void unselect();
 
 	bool selected;
+
 
 	QPalette moduleTextPaletteActive;
 	QPalette moduleTextPaletteInactive;
 
 	QVBoxLayout* moduleLayout;
 
+	void* pTamperConfig;
+
 signals:
-	void tamperButtonClicked(UiTamperModule* signaled, void * tamperData);
+	void tamperButtonClicked(UiTamperModule* signaled, void * pTamperConfig);
 
 
 private:

@@ -15,8 +15,6 @@ public:
 	~DeviceController();
 
 signals:
-	void coreTamperStarted(QString MACAddress, TamperType tamperType);
-	void coreTamperStopped(QString MACAddress, TamperType tamperType);
 
 	void dcUpdateDevice(QString MACAddress, QString ipAddress);
 	void dcDivertStop();
@@ -26,7 +24,7 @@ public slots:
 	void onCoreDropDevice(QString MACAddress);
 	void onCoreUpdateDevice(QString MACAddress, QString ipAddress);
 
-	void onCoreTamperStart(QString MACAddress, TamperType tamperType);
+	void onCoreTamperStart(QString MACAddress, TamperType tamperType, void* pTamperConfig);
 	void onCoreTamperStop(QString MACAddress, TamperType tamperType);
 
 private slots:

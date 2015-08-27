@@ -34,16 +34,15 @@ public:
 
 public slots:
 	void onUiCoreStart(QString networkName, QString networkPassword, QString networkAdapter);									
-	void onUiTamperStart(QString MACAddress, int tamperType);
+	void onUiTamperStart(QString MACAddress, int tamperType, void* pTamperConfig);
 	void onUiTamperStop(QString MACAddress, int tamperType);
 
-
-	void onCoreTamperStarted(QString MACAddress, TamperType tamperType);
-	void onCoreTamperStopped(QString MACAddress, TamperType tamperType);
 
 private slots:
 	void onCoreHostedNetworkMessage(QString message, HostedNetworkReason reason);								
 	void onCoreDHCPipAddressAssigned(QString ipAddress, QString MACAddress);
+
+
 
 signals:
 	void coreStarting(QString statusMessage, bool error = false);
@@ -54,11 +53,8 @@ signals:
 	void coreDropDevice(QString MACAddress);
 	void coreUpdateDevice(QString MACAddress, QString ipAddress);
 
-	void coreTamperStart(QString MACAddress, TamperType tamperType);
+	void coreTamperStart(QString MACAddress, TamperType tamperType, void* pTamperConfig);
 	void coreTamperStop(QString MACAddress, TamperType tamperType);
-
-	void coreTamperStarted(QString MACAddress, TamperType tamperType);
-	void coreTamperStopped(QString MACAddress, TamperType tamperType);
 
 
 

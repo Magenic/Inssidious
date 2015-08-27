@@ -74,7 +74,7 @@ TamperWidget::~TamperWidget()
 
 }
 
-void TamperWidget::onTamperModuleClicked(UiTamperModule* signaled)
+void TamperWidget::onTamperModuleClicked(UiTamperModule* signaled, void * pTamperConfig)
 {
 	for (int i = 0; i < NUM_TAMPER_TYPES; i++)
 	{
@@ -87,7 +87,7 @@ void TamperWidget::onTamperModuleClicked(UiTamperModule* signaled)
 			}
 			else
 			{
-				emit tamperStart(this, TamperType(i));
+				emit tamperStart(this, TamperType(i), pTamperConfig);
 				tamperModule[i]->select();
 			}
 		}
