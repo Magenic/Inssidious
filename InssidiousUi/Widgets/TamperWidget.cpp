@@ -1,165 +1,95 @@
 #include "TamperWidget.h"
 
-TamperWidget::TamperWidget(TamperType tamperType)
+TamperWidget::TamperWidget(QWidget *parent)
+	: QWidget(parent)
 {
-	/* Initialize tamper palettes for the various button states */
+	/* Initialize the Tamper Widget Container */
 
-	tamperPaletteActive.setBrush(QPalette::Background, QBrush(tamperImageActive));
-	tamperPaletteActiveHover.setBrush(QPalette::Background, QBrush(tamperImageActiveHover));
-	tamperPaletteActivePressed.setBrush(QPalette::Background, QBrush(tamperImageActivePressed));
-	tamperPaletteInactive.setBrush(QPalette::Background, QBrush(tamperImageInactive));
-	tamperPaletteInactiveHover.setBrush(QPalette::Background, QBrush(tamperImageInactiveHover));
-	tamperPaletteInactivePressed.setBrush(QPalette::Background, QBrush(tamperImageInactivePressed));
-
-	tamperTextActive.setColor(QPalette::WindowText, QColor(31, 31, 31));
-	tamperTextInactive.setColor(QPalette::WindowText, QColor(107, 107, 107));
-
-
-	/* Set the layout and initial settings */
-
-	tamperWidgetLayout = new QHBoxLayout();
-	this->setLayout(tamperWidgetLayout);
 	this->setAutoFillBackground(true);
-	this->setPalette(tamperPaletteInactive);
-	this->setFixedWidth(100);
-	this->setFixedHeight(52);
-	//this->setParent(parent);
-	this->selected = false;
+	twContainerPalette.setBrush(QPalette::Background,		//Set a background image for the devices present palette
+		QBrush(tcBackgroundImageDevicesPresent));				//With the tab container area background image
+	this->setPalette(twContainerPalette);
+	this->setGeometry(10 /* in */, 108 /* down */, 780 /* width */, 480 /* height */);
 
-
-	/* Initialize the Name, Icon, and Description objects */
-
-	tamperNameLabel = new QLabel(TamperTypeName[tamperType]);
-	tamperNameFont.setPixelSize(16);
-	tamperNameFont.setFamily("Calibri");
-	tamperNameFont.setBold(true);
-	tamperNameFont.setStyleStrategy(QFont::PreferAntialias);
-	tamperNameLabel->setFont(tamperNameFont);
-	tamperNameLabel->setPalette(tamperTextInactive);
-	tamperNameLabel->setContentsMargins(10, 0, 0, 0);
-
-	tamperDescriptionLabel = new QLabel(TamperTypeDescription[tamperType]);
-	tamperDescriptionFont.setPixelSize(12);
-	tamperDescriptionFont.setFamily("Calibri");
-	tamperDescriptionFont.setStyleStrategy(QFont::PreferAntialias);
-	tamperDescriptionLabel->setFont(tamperDescriptionFont);
-	tamperDescriptionLabel->setPalette(tamperTextInactive);
-	tamperDescriptionLabel->setContentsMargins(10, 0, 0, 0);
-
-	tamperIcon = new QLabel();
-	tamperIconActive = QPixmap(TamperTypeInactiveIcon[tamperType]);
-	tamperIconInactive = QPixmap(TamperTypeInactiveIcon[tamperType]);
-	tamperIcon->setFixedSize(44, 44);
-	tamperIcon->setPixmap(tamperIconInactive);
-	tamperIcon->setContentsMargins(0, 0, 0, 0);
+	twContainerVLayout = new QVBoxLayout();
+	this->setLayout(twContainerVLayout);
+	this->twContainerVLayout->setContentsMargins(0, 0, 0, 0);
+	this->twContainerVLayout->setSpacing(0);
 
 
 
 
+	tamperClassFont.setPixelSize(16);
+	tamperClassFont.setFamily("Segoe UI Semibold");
+	tamperClassFont.setStyleStrategy(QFont::PreferAntialias);
 
 
-
-
-
-	
-	QVBoxLayout* textContainerLayout;					//Nested layout for the Name and Description
-	QVBoxLayout* descriptionChildLayout;				//So much nesting
-
-	//Initialize layouts for the name and description texts
-	descriptionChildLayout = new QVBoxLayout();
-	descriptionChildLayout->addWidget(tamperDescriptionLabel);
-	descriptionChildLayout->setMargin(5);
-	descriptionChildLayout->setSpacing(5);
-	descriptionChildLayout->setContentsMargins(0, 0, 0, 10);
-
-	textContainerLayout = new QVBoxLayout();
-	textContainerLayout->addWidget(tamperNameLabel);
-	textContainerLayout->addLayout(descriptionChildLayout);
-	textContainerLayout->setMargin(4);
-	textContainerLayout->setSpacing(4);
-	textContainerLayout->setContentsMargins(0, 10, 0, 0);
-
-	//Initialize the main tamper widget layout and add widgets to it
-	tamperWidgetLayout->setMargin(0);
-	tamperWidgetLayout->addSpacing(10);
-	//tamperWidgetLayout->addWidget(tamperIcon);
-	tamperWidgetLayout->addLayout(textContainerLayout); /* contains name and description text labels */
-
-
-}
-
-
-void TamperWidget::select()
-{
-	this->setPalette(tamperPaletteActive);
-	this->tamperNameLabel->setPalette(tamperTextActive);
-	this->tamperDescriptionLabel->setPalette(tamperTextActive);
-	this->tamperIcon->setPixmap(tamperIconActive);
-	this->selected = true;
-}
-
-
-void TamperWidget::unselect()
-{
-	this->setPalette(tamperPaletteInactive);
-	this->tamperNameLabel->setPalette(tamperTextInactive);
-	this->tamperDescriptionLabel->setPalette(tamperTextInactive);
-	this->tamperIcon->setPixmap(tamperIconInactive);
-	this->selected = false;
-}
-
-
-void TamperWidget::mouseReleaseEvent(QMouseEvent *e)
-{
-	if (this->palette().background() == tamperPaletteActivePressed.background())
+	for (int i = 0; i < NUM_TAMPER_CLASSES; i++)
 	{
-		this->setPalette(tamperPaletteActive);
-	}
-	else if (this->palette().background() == tamperPaletteInactivePressed.background())
-	{
-		this->setPalette(tamperPaletteInactive);
+		tamperClassLabel[i] = new QLabel(TamperClassName[i]);
+		tamperClassLabel[i]->setFixedHeight(22);
+		tamperClassLabel[i]->setFont(tamperClassFont);
+		tamperClassLabel[i]->setStyleSheet(QString("QLabel { color : #46514B; }"));
+		tamperClassLabel[i]->setAlignment(Qt::AlignCenter);
+		this->twContainerVLayout->addWidget(this->tamperClassLabel[i], Qt::AlignHCenter);
+
+
+		tamperClassLayout[i] = new QHBoxLayout();
+		this->twContainerVLayout->addLayout(this->tamperClassLayout[i], Qt::AlignHCenter);
 	}
 
-	emit tamperButtonClicked(this);
+
+
+	for (int i = 0; i < NUM_TAMPER_TYPES; i++)
+	{
+		tamperModule[i] = UiTamperModule::makeUiTamperModule(this, TamperType(i));
+		tamperModule[i]->setParent(this);
+		connect(this->tamperModule[i], &UiTamperModule::tamperButtonClicked, this, &TamperWidget::onTamperModuleClicked);
+	}
+
+
+
+	/* Add the Tamper Types to the appropriate class layouts */
+
+	this->tamperClassLayout[CONDITIONS]->addWidget(this->tamperModule[SPEED]);
+	this->tamperClassLayout[CONDITIONS]->addWidget(this->tamperModule[DELAY]);
+	this->tamperClassLayout[CONDITIONS]->addWidget(this->tamperModule[QUALITY]);
+
+	this->tamperClassLayout[RESTRICTIONS]->addWidget(this->tamperModule[REDIR_TO_PORAL]);
+	this->tamperClassLayout[RESTRICTIONS]->addWidget(this->tamperModule[CONTENT_BLOCKED]);
+	this->tamperClassLayout[RESTRICTIONS]->addWidget(this->tamperModule[HTTP_HTTPS_ONLY]);
+
+	this->tamperClassLayout[NETWORK_FAILURES]->addWidget(this->tamperModule[NO_INTERNET]);
+	this->tamperClassLayout[NETWORK_FAILURES]->addWidget(this->tamperModule[NO_DNS]);
+	this->tamperClassLayout[NETWORK_FAILURES]->addWidget(this->tamperModule[NO_SERVER]);
+
+	this->tamperClassLayout[WEB_SERVICE_FAILURES]->addWidget(this->tamperModule[HTTP_TIME_OUT]);
+	this->tamperClassLayout[WEB_SERVICE_FAILURES]->addWidget(this->tamperModule[HTTP_UNEXPECTED_RESPONSE]);
+	this->tamperClassLayout[WEB_SERVICE_FAILURES]->addWidget(this->tamperModule[HTTP_CORRUPTED_RESPONSE]);
+
 }
 
-void TamperWidget::mousePressEvent(QMouseEvent *e)
+TamperWidget::~TamperWidget()
 {
-	if ((e->buttons() & Qt::LeftButton) == Qt::LeftButton)
+
+}
+
+void TamperWidget::onTamperModuleClicked(UiTamperModule* signaled)
+{
+	for (int i = 0; i < NUM_TAMPER_TYPES; i++)
 	{
-		if (this->palette().background() == tamperPaletteActive.background() || this->palette().background() == tamperPaletteActiveHover.background())
+		if (tamperModule[i] == signaled)
 		{
-			this->setPalette(tamperPaletteActivePressed);
+			if (tamperModule[i]->selected)
+			{
+				emit tamperStop(this, TamperType(i));
+				tamperModule[i]->unselect();
+			}
+			else
+			{
+				emit tamperStart(this, TamperType(i));
+				tamperModule[i]->select();
+			}
 		}
-		else if (this->palette().background() == tamperPaletteInactive.background() || this->palette().background() == tamperPaletteInactiveHover.background())
-		{
-			this->setPalette(tamperPaletteInactivePressed);
-		}
-	}
-}
-
-
-void TamperWidget::enterEvent(QEvent *e)
-{
-	if (this->palette().background() == tamperPaletteActive.background())
-	{
-		this->setPalette(tamperPaletteActiveHover);
-	}
-	else if (this->palette().background() == tamperPaletteInactive.background())
-	{
-		this->setPalette(tamperPaletteInactiveHover);
-	}
-}
-
-
-void TamperWidget::leaveEvent(QEvent *e)
-{
-	if (this->palette().background() == tamperPaletteActiveHover.background() || this->palette().background() == tamperPaletteActivePressed.background())
-	{
-		this->setPalette(tamperPaletteActive);
-	}
-	else if (this->palette().background() == tamperPaletteInactiveHover.background() || this->palette().background() == tamperPaletteInactivePressed.background())
-	{
-		this->setPalette(tamperPaletteInactive);
 	}
 }

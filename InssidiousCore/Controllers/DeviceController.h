@@ -34,18 +34,6 @@ private slots:
 
 private:
 
-	//struct device
-	//{
-	//	QString MACAddress;
-	//	QString IPAddress;
-	//	volatile bool updateIPAddress;
-	//	volatile bool stop;
-
-	//	DivertController* divertController;
-
-	//	volatile bool enabled[NUM_TAMPER_TYPES];
-	//};
-
 	QList<device*>deviceList;
 
 	struct LostPair

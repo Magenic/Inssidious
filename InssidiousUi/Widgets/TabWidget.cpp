@@ -29,14 +29,14 @@ TabWidget::TabWidget(QWidget* parent)
 	this->setLayout(new QHBoxLayout());
 	this->setAutoFillBackground(true);
 	this->setPalette(tabPaletteInactive);
-	this->setFixedWidth(200);
-	this->setFixedHeight(82);
+	this->setFixedWidth(146);
+	this->setFixedHeight(44);
 	this->setParent(parent);
 
 
 	tabDeviceIconLabel.setFixedSize(32, 32);
 	tabDeviceNameLabel.setFont(QFont("Segoe UI Semibold", 12));
-	tabDeviceNameLabel.setText("New Device");
+	//tabDeviceNameLabel.setText("New Device");
 	tabDeviceNameLabel.setContentsMargins(10, 0, 0, 0);				/*indent text from device avatar*/
 
 

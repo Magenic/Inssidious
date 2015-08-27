@@ -19,19 +19,19 @@ DivertController::DivertController(device * d)
 
 	packetList = new PacketList();
 
-	tamperModule[LAG] = new LagModule();
-	tamperModule[THROTTLE] = new ThrottleModule();
-	tamperModule[RESET] = new ResetModule();
-	tamperModule[JITTER] = new JitterModule();
-	tamperModule[DROPPED_PACKETS] = new DropPacketsModule();
-	tamperModule[CORRUPT_PACKETS] = new CorruptPacketsModule();
-	tamperModule[NO_PACKETS] = new NoPacketsModule();
+
+	tamperModule[SPEED] = new LagModule();
+	tamperModule[DELAY] = new ThrottleModule();
+	tamperModule[QUALITY] = new ResetModule();
+	tamperModule[REDIR_TO_PORAL] = new JitterModule();
+	tamperModule[CONTENT_BLOCKED] = new DropPacketsModule();
+	tamperModule[HTTP_HTTPS_ONLY] = new CorruptPacketsModule();
+	tamperModule[NO_INTERNET] = new NoPacketsModule();
 	tamperModule[NO_DNS] = new NoDNSModule();
 	tamperModule[NO_SERVER] = new NoServerModule();
-	tamperModule[NO_SSL] = new NoSSLModule();
-	tamperModule[REDIR_TO_PORTAL] = new RedirToPortalModule();
-	tamperModule[HTTP_HTTPS_ONLY] = new HTTPHTTPSOnlyModule();
-	tamperModule[SITE_BLOCKED] = new SiteBlockedModule();
+	tamperModule[HTTP_TIME_OUT] = new RedirToPortalModule();
+	tamperModule[HTTP_UNEXPECTED_RESPONSE] = new HTTPHTTPSOnlyModule();
+	tamperModule[HTTP_CORRUPTED_RESPONSE] = new SiteBlockedModule();
 
 }
 
@@ -349,5 +349,8 @@ void DivertController::onDivertStop() {
 
 	//LOG("Successfully waited threads and stopped.");
 
-	emit divertStopped(parentDevice->MACAddress);
+	if (parentDevice)
+	{
+		emit divertStopped(parentDevice->MACAddress);
+	}
 }

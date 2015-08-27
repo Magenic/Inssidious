@@ -1,73 +1,38 @@
-#ifndef TAMPERWIDGET_H
-#define TAMPERWIDGET_H
+#ifndef TAMPERWIDGETCONTROLLER_H
+#define TAMPERWIDGETCONTROLLER_H
 
-#include <QtWidgets/QWidget>				//Base of TamperWidget class
-#include <QtWidgets/QLayout>				//Layouts for QWidgets
-#include <QtWidgets/QLabel>					//QLabel for displaying text and icons
-#include <QtGui/QMouseEvent>				//Used to track mouse movements and clicks to update state
+#include <QWidget>
+#include <QLayout>
 
-#include <InssidiousCore/TamperTypes.h>
+#include "Tamper\UiTamperModule.h"			//
 
 class TamperWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	TamperWidget(TamperType tamperType);
-
-	void select();
-	void unselect();
-
-	bool selected;
+	TamperWidget(QWidget *parent);
+	~TamperWidget();
 
 signals:
-	void tamperButtonClicked(TamperWidget*);
+	void tamperStop(TamperWidget*, TamperType);
+	void tamperStart(TamperWidget*, TamperType);
 
+private slots:
+	void onTamperModuleClicked(UiTamperModule* signaled);
 
 private:
-	void mousePressEvent(QMouseEvent *e);
-	void mouseReleaseEvent(QMouseEvent *e);
-	void enterEvent(QEvent *e);
-	void leaveEvent(QEvent *e);
+
+	QVBoxLayout* twContainerVLayout;				//VBoxLayout to lay out the tamper widgets
+	QLabel* tamperClassLabel[NUM_TAMPER_CLASSES];
+	QHBoxLayout* tamperClassLayout[NUM_TAMPER_CLASSES];
+	UiTamperModule* tamperModule[NUM_TAMPER_TYPES];
 
 
-	/* QHBoxLayout */
-	
-	QHBoxLayout* tamperWidgetLayout;
-
-
-	/* Tamper Palettes and Pixmaps for the Active/Inactive/Hover/Pressed button states */
-
-	QPalette tamperPaletteActive;
-	QPalette tamperPaletteActiveHover;
-	QPalette tamperPaletteActivePressed;
-	QPalette tamperPaletteInactive;
-	QPalette tamperPaletteInactiveHover;
-	QPalette tamperPaletteInactivePressed;
-
-	QPixmap tamperImageActive = QPixmap(":/Tamper/TamperButtonActive.png");						//QPixmap for active device tampers 
-	QPixmap tamperImageActiveHover = QPixmap(":/Tamper/TamperButtonActiveHover.png");			//QPixmap for active device tampers  while hovered over
-	QPixmap tamperImageActivePressed = QPixmap(":/Tamper/TamperButtonActivePressed.png");		//QPixmap for active device tampers while pressed
-	QPixmap tamperImageInactive = QPixmap(":/Tamper/TamperButtonInactive.png");					//QPixmap for inactive device tampers 
-	QPixmap tamperImageInactiveHover = QPixmap(":/Tamper/TamperButtonInactiveHover.png");		//QPixmap for active device tampers while hovered over
-	QPixmap tamperImageInactivePressed = QPixmap(":/Tamper/TamperButtonInactivePressed.png");	//QPixmap for active device tampers while pressed
-
-
-	/* Text QLabels, QFonts, QPalettes, and QPixmaps to draw in the button */
-
-	QLabel* tamperNameLabel;			
-	QFont tamperNameFont;
-
-	QLabel* tamperDescriptionLabel;	
-	QFont tamperDescriptionFont;
-
-	QPalette tamperTextActive;
-	QPalette tamperTextInactive;
-
-	QLabel* tamperIcon;
-	QPixmap tamperIconActive;
-	QPixmap tamperIconInactive;
+	QPalette twContainerPalette;
+	QPixmap tcBackgroundImageDevicesPresent = QPixmap(":/Tabs/TabsDevicesPresent.png");	//Draws a bordered rectangle
+	QFont tamperClassFont;
 
 };
 
-#endif // TAMPERWIDGET_H
+#endif // TAMPERWIDGETCONTROLLER_H

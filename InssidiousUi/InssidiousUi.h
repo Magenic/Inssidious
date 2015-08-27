@@ -21,10 +21,9 @@
 #include "Windowsx.h"						//Macros header for GET_X_LPARAM and GET_Y_LPARAM macros
 #include "Dwmapi.h"							//DWM Api header for the DwmDefWindowProc function
 
-#include "Widgets\HeaderWidget.h"			//Inssidious creates and draws the Header on the main window
 #include "Widgets\StartWidget.h"			//Inssidious creates and draws the Startup widget on the main window
 
-#include "Controllers\TabController.h"		//Inssidious creates and draws the tab controller on the main window
+#include "Controllers\UiDeviceController.h"		//Inssidious creates and draws the tab controller on the main window
 
 #pragma comment(lib, "Qt5Cored.lib")		//QT Core libary
 #pragma comment(lib, "Qt5Guid.lib")			//QApplication library
@@ -45,15 +44,18 @@ public:
 private:
 
 	QPalette backgroundPalette;
-	QPixmap backgroundImage = QPixmap(":/InssidiousUi/Background.png");
+	QPixmap backgroundImageStart = QPixmap(":/InssidiousUi/BackgroundStart.png");
+	QPixmap backgroundImageRunning = QPixmap(":/InssidiousUi/BackgroundRunning.png");
 
+	QPushButton *pushButtonClose;
+	QPushButton *pushButtonMinimize;
+	QPushButton *pushButtonSettings;
 
-	/* Inssidious creates instances of the core backend, Header Widget, Start Widget, and Tab Controller */
+	/* Inssidious creates instances of the core backend, Start Widget, and Tab Controller */
 
 	InssidiousCore* inssidiousCore;
-	HeaderWidget* headerWidget;
 	StartWidget* startWidget;
-	TabController* tabController;
+	UiDeviceController* uiDeviceController;
 
 
 	/* Inssidious implements the nativeEvent function to react to window messages and handle drawing & dragging */

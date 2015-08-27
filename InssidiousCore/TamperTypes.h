@@ -4,84 +4,81 @@
 
 enum TamperClass
 {
-	SPEED,
-	NOISE,
-	FAILURE,
-	RESTRICTION,
+	CONDITIONS,
+	RESTRICTIONS,
+	NETWORK_FAILURES,
+	WEB_SERVICE_FAILURES,
 	NUM_TAMPER_CLASSES
 };
 
 static QString TamperClassName[]
 {
-	QString("Network Speed"),
-	QString("Network Noise"),
+	QString("Network Conditions"),
+	QString("Network Restrictions"),
 	QString("Network Failures"),
-	QString("Network Restrictions")
+	QString("Web Service Failures")
 };
 
 
 enum TamperType
 {
-	/* speed */
-	LAG,
-	THROTTLE,
+	/* network condition */
+	SPEED,
+	DELAY,
+	QUALITY,
 
-	/* noise */
-	RESET,
-	JITTER,
-	DROPPED_PACKETS,
-	CORRUPT_PACKETS,
+	/* network restrictions */
+	REDIR_TO_PORAL,
+	CONTENT_BLOCKED,
+	HTTP_HTTPS_ONLY,
 
-	/* failures */
-	NO_PACKETS,
+	/* network failures */
+	NO_INTERNET,
 	NO_DNS,
 	NO_SERVER,
-	NO_SSL,
 
-	/* restrictions */
-	REDIR_TO_PORTAL,
-	HTTP_HTTPS_ONLY,
-	SITE_BLOCKED,
+	/* web service failures */
+	HTTP_TIME_OUT,
+	HTTP_UNEXPECTED_RESPONSE,
+	HTTP_CORRUPTED_RESPONSE,
 
 	/* total*/
 	NUM_TAMPER_TYPES
 };
 
-static QString TamperTypeName[]
+static QString TamperTypeName[NUM_TAMPER_TYPES]
 {
-	QString("Lag"),
-	QString("Throttle"),
-	QString("TCP Resets"),
-	QString("Packet Jitter"),
-	QString("Dropped Packets"),
-	QString("Corrupted Packets"),
-	QString("No Packets"),
-	QString("No DNS"),
-	QString("No Server"),
-	QString("No SSL"),
-	QString("Redirected to Portal"),
-	QString("HTTP and HTTPS Only"),
-	QString("Site Blocked")
+	QString("Speed"),
+	QString("Delay"),
+	QString("Quality"),
+	QString("Redirected to Poral"),
+	QString("Content Blocked by Filter"),
+	QString("HTTP(S) Traffic Only"),
+	QString("Internet is Unreachable"),
+	QString("DNS Server is Unreachable"),
+	QString("Your Server is Unreachable"),
+	QString("HTTP Time Out"),
+	QString("Unexpected HTTP Response"),
+	QString("Corrupted HTTP Response")
 };
 
-static QString TamperTypeDescription[]
+static QString TamperTypeDescription[NUM_TAMPER_TYPES]
 {
-	QString("Lag"),
-	QString("Throttle"),
-	QString("TCP Resets"),
-	QString("Packet Jitter"),
-	QString("Dropped Packets"),
-	QString("Corrupted Packets"),
-	QString("No Packets"),
-	QString("No DNS"),
-	QString("No Server"),
-	QString("No SSL"),
-	QString("Redirected to Portal"),
-	QString("HTTP and HTTPS Only"),
-	QString("Site Blocked")
+	QString("Description Text"),
+	QString("Description Text"),
+	QString("Description Text"),
+	QString("Description Text"),
+	QString("Description Text"),
+	QString("Description Text"),
+	QString("Description Text"),
+	QString("Description Text"),
+	QString("Description Text"),
+	QString("Description Text"),
+	QString("Description Text"),
+	QString("Description Text")
 };
 
-static QString TamperTypeActiveIcon[]
+static QString TamperTypeActiveIcon[NUM_TAMPER_TYPES]
 {
 	QString(":/Tamper/UnimplementedActive.png"),
 	QString(":/Tamper/UnimplementedActive.png"),
@@ -94,11 +91,10 @@ static QString TamperTypeActiveIcon[]
 	QString(":/Tamper/UnimplementedActive.png"),
 	QString(":/Tamper/UnimplementedActive.png"),
 	QString(":/Tamper/UnimplementedActive.png"),
-	QString(":/Tamper/UnimplementedActive.png"),
-	QString(":/Tamper/UnimplementedActive.png"),
+	QString(":/Tamper/UnimplementedActive.png")
 };
 
-static QString TamperTypeInactiveIcon[]
+static QString TamperTypeInactiveIcon[NUM_TAMPER_TYPES]
 {
 	QString(":/Tamper/UnimplementedInactive.png"),
 	QString(":/Tamper/UnimplementedInactive.png"),
@@ -111,8 +107,7 @@ static QString TamperTypeInactiveIcon[]
 	QString(":/Tamper/UnimplementedInactive.png"),
 	QString(":/Tamper/UnimplementedInactive.png"),
 	QString(":/Tamper/UnimplementedInactive.png"),
-	QString(":/Tamper/UnimplementedInactive.png"),
-	QString(":/Tamper/UnimplementedInactive.png"),
+	QString(":/Tamper/UnimplementedInactive.png")
 };
 
 

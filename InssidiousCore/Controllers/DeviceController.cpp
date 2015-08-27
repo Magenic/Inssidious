@@ -34,6 +34,7 @@ void DeviceController::onCoreAddDevice(QString MACAddress)
 			emit dcUpdateDevice(deviceList.last()->MACAddress, lp->ipAddress);
 
 			lostPairs.removeOne(lp);
+			break;
 		}
 	}
 
@@ -83,12 +84,26 @@ void DeviceController::onCoreUpdateDevice(QString MACAddress, QString ipAddress)
 				d->updateIPAddress = true;
 				emit dcDivertStop();
 			}
+
 			return;
 		}
 	}
 
 	
 	/* No matching device, store the MAC & IP for now */
+
+	for (LostPair* lp : lostPairs)
+	{
+		if (lp->MACAddress == MACAddress)
+		{
+			/* We already have this device in the LostPairs list, update the IP and return */
+
+			lp->ipAddress = ipAddress;
+			return;
+		}
+	}
+
+	/* The MAC address wasn't in the lost pair list, so add it as a new lost pair  */
 
 	lostPairs.append(new LostPair{ MACAddress, ipAddress });
 	
@@ -104,6 +119,8 @@ void DeviceController::onCoreTamperStart(QString MACAddress, TamperType tamperTy
 		if (d->MACAddress == MACAddress)
 		{
 			d->enabled[tamperType] = true;
+
+			return;
 		}
 	}
 }
@@ -117,6 +134,8 @@ void DeviceController::onCoreTamperStop(QString MACAddress, TamperType tamperTyp
 		if (d->MACAddress == MACAddress)
 		{
 			d->enabled[tamperType] = false;
+
+			return;
 		}
 	}
 }
@@ -136,6 +155,8 @@ void DeviceController::onDivertStopped(QString MACAddress)
 				deviceList.removeOne(d);
 				delete d;
 			}
+
+			return;
 		}
 	}
 }

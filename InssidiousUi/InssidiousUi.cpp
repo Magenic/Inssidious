@@ -19,11 +19,50 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	/* Initialize default window settings */
 
 	this->backgroundPalette.setBrush(QPalette::Background,			//Set the brush of the Background palette
-		QBrush(backgroundImage));									//To use our background image
+		QBrush(backgroundImageStart));								//To use our background image
 	this->setFixedSize(800, 600);									//Set an initial window size
 	this->setPalette(backgroundPalette);							//Apply the background palette
 	this->setWindowFlags(Qt::FramelessWindowHint);					//Remove the window frame
 	this->winId();													//And force Qt to acquire the Windows window handle for the widget
+
+
+	/* Draw the Minimize & Close icons */
+
+	pushButtonClose = new QPushButton("", this);
+	pushButtonMinimize = new QPushButton("", this);
+	pushButtonSettings = new QPushButton("", this);
+
+	pushButtonClose->setObjectName("pushButtonClose");
+	pushButtonMinimize->setObjectName("pushButtonMinimize");
+	pushButtonSettings->setObjectName("pushButtonSettings");
+
+	pushButtonClose->setParent(this);							//Display the widget on top of Inssidious widget
+	pushButtonMinimize->setParent(this);						//Display the widget on top of Inssidious widget
+	pushButtonSettings->setParent(this);						//Display the widget on top of Inssidious widget
+
+	pushButtonClose->setAutoFillBackground(true);				//Don't fill in a background color
+	pushButtonMinimize->setAutoFillBackground(true);			//Don't fill in a background color
+	pushButtonSettings->setAutoFillBackground(true);			//Don't fill in a background color
+
+	pushButtonClose->setIcon(QIcon(":/InssidiousUi/CloseDefault.png"));
+	pushButtonMinimize->setIcon(QIcon(":/InssidiousUi/MinimizeDefault.png"));
+	pushButtonSettings->setIcon(QIcon(":/InssidiousUi/SettingsDefault.png"));
+
+	pushButtonClose->setIconSize(QSize(33, 20));
+	pushButtonMinimize->setIconSize(QSize(33, 20));
+	pushButtonSettings->setIconSize(QSize(32, 20));
+
+	pushButtonClose->setGeometry(766, 2, 33, 20);
+	pushButtonMinimize->setGeometry(733, 2, 33, 20);
+	pushButtonSettings->setGeometry(701, 2, 32, 20);
+
+	connect(pushButtonClose, SIGNAL(clicked()), this, SLOT(pushButtonCloseClicked()));
+	connect(pushButtonMinimize, SIGNAL(clicked()), this, SLOT(pushButtonMinimizeClicked()));
+	connect(pushButtonSettings, SIGNAL(clicked()), this, SLOT(pushButtonSettingsClicked()));
+
+	pushButtonClose->hide();
+	pushButtonMinimize->hide();
+	pushButtonSettings->hide();
 
 
 	/* Initialize the core backend and start the thread */
@@ -32,13 +71,13 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	inssidiousCore->start();				
 
 
-	/* Initialize the Ui objects and hide the header and tab sidebar for now */
+	/* Initialize and hide the tab controller for now */
 
-	headerWidget = new HeaderWidget(this);	
-	headerWidget->hide();
-	tabController = new TabController(this);
-	tabController->hide();
-	startWidget = new StartWidget(this,	*inssidiousCore->pNetworkConnectionNames);
+	uiDeviceController = new UiDeviceController(this);
+	uiDeviceController->hide();
+
+
+	startWidget = new StartWidget(this, *inssidiousCore->pNetworkConnectionNames);
 
 
 	/* Connect Signals and Slots */
@@ -54,12 +93,12 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 
 	connect(inssidiousCore, &InssidiousCore::coreAddDevice, this, &InssidiousUi::onCoreAddDevice, Qt::QueuedConnection);
 	connect(inssidiousCore, &InssidiousCore::coreDropDevice, this, &InssidiousUi::onCoreDropDevice, Qt::QueuedConnection);
-	connect(this, &InssidiousUi::uiAddDevice, tabController, &TabController::onUiAddDevice);
-	connect(this, &InssidiousUi::uiDropDevice, tabController, &TabController::onUiDropDevice);
+	connect(this, &InssidiousUi::uiAddDevice, uiDeviceController, &UiDeviceController::onUiAddDevice);
+	connect(this, &InssidiousUi::uiDropDevice, uiDeviceController, &UiDeviceController::onUiDropDevice);
 
 
-	connect(tabController, &TabController::uiTamperStart, this, &InssidiousUi::onUiTamperStart);
-	connect(tabController, &TabController::uiTamperStop, this, &InssidiousUi::onUiTamperStop);
+	connect(uiDeviceController, &UiDeviceController::uiTamperStart, this, &InssidiousUi::onUiTamperStart);
+	connect(uiDeviceController, &UiDeviceController::uiTamperStop, this, &InssidiousUi::onUiTamperStop);
 	connect(this, &InssidiousUi::coreStartTamper, inssidiousCore, &InssidiousCore::onUiTamperStart, Qt::QueuedConnection);
 	connect(this, &InssidiousUi::coreStopTamper, inssidiousCore, &InssidiousCore::onUiTamperStop, Qt::QueuedConnection);
 	connect(inssidiousCore, &InssidiousCore::coreTamperStarted, this, &InssidiousUi::onCoreTamperStarted, Qt::QueuedConnection);
@@ -91,10 +130,15 @@ void InssidiousUi::onCoreStarted()
 	delete this->startWidget;
 
 
-	/* Show the Header and Tab Widgets*/
+	/* Change the Background and Show the Header and Tab Widgets*/
 
-	this->headerWidget->show();
-	this->tabController->show();
+	this->backgroundPalette.setBrush(QPalette::Background,			
+		QBrush(backgroundImageRunning));
+	this->setPalette(backgroundPalette);
+	this->uiDeviceController->show();
+	this->pushButtonClose->show();
+	this->pushButtonMinimize->show();
+	this->pushButtonSettings->show();
 }
 
 
