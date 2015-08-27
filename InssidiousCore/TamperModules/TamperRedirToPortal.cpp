@@ -1,11 +1,17 @@
 #include <InssidiousCore/TamperModules/TamperBase.h>
 
-short RedirToPortalModule::process(PacketList* packetList)
-{
-	return 0;
-}
 
-RedirToPortalModule::~RedirToPortalModule()
+TamperRedirToPortal::TamperRedirToPortal()
 {
 	
+}
+
+TamperRedirToPortal::~TamperRedirToPortal()
+{
+	
+}
+
+short TamperRedirToPortal::process(PacketList* packetList)
+{
+	return 0;
 }

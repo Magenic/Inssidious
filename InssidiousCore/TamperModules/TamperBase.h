@@ -49,14 +49,18 @@ public:
 		// notice that here we made a copy of chance, so even though it's volatile it is still ok
 		return (chance == 10000) || ((rand() % 10000) < chance);
 	}
+
+
+	static TamperModule* makeTamperModule(int tamperType);
+
 };
 
-class LagModule : public TamperModule
+class TamperSpeed : public TamperModule
 {
 
 public:
-	LagModule();
-	~LagModule();
+	TamperSpeed();
+	~TamperSpeed();
 	short process(PacketList* packetList) override;
 
 	volatile short lagTime;
@@ -70,11 +74,11 @@ private:
 	
 };
 
-class ThrottleModule : public TamperModule
+class TamperDelay : public TamperModule
 {
 public:
-	ThrottleModule();
-	~ThrottleModule();
+	TamperDelay();
+	~TamperDelay();
 	short process(PacketList* packetList) override;
 
 private:
@@ -93,51 +97,116 @@ private:
 	
 };
 
-class ResetModule : public TamperModule
+class TamperQuality : public TamperModule
 {
 public:
-	~ResetModule();
+	TamperQuality();
+	~TamperQuality();
 	short process(PacketList* packetList) override;
+
+
+	volatile short jitterVarianceInMs;
+
 
 private:
 	volatile short chance = 0; // [0-10000]
 	volatile short setNextCount = 0;
 
 	const unsigned int TCP_MIN_SIZE = sizeof(WINDIVERT_IPHDR) + sizeof(WINDIVERT_TCPHDR);
-};
 
-class JitterModule : public TamperModule
-{
-public:
-	JitterModule();
-	~JitterModule();
-	short process(PacketList* packetList) override;
 
-	volatile short jitterVarianceInMs;
-private:
 	Packet jitterHeadNode = Packet{ 0 }, jitterTailNode = Packet{ 0 };
 	Packet *bufHead = &jitterHeadNode, *bufTail = &jitterTailNode;
 	int bufSize = 0;
 
 	short isBufEmpty();
+
+
 };
 
-class DropPacketsModule : public TamperModule
+
+
+
+
+
+
+class TamperRedirToPortal : public TamperModule
 {
 public:
-	~DropPacketsModule();
+	TamperRedirToPortal();
+	~TamperRedirToPortal();
+	short process(PacketList* packetList) override;
+};
+
+class TamperContentBlocked : public TamperModule
+{
+public:
+	TamperContentBlocked();
+	~TamperContentBlocked();
+	short process(PacketList* packetList) override;
+};
+
+class TamperHTTPHTTPSOnly : public TamperModule
+{
+public:
+	TamperHTTPHTTPSOnly();
+	~TamperHTTPHTTPSOnly();
 	short process(PacketList* packetList) override;
 
 private:
-	volatile short chance = 1000; // [0-10000]
-
+	volatile short chance = 1000; // [0 - 10000]
 };
 
-class CorruptPacketsModule : public TamperModule
+
+
+class TamperNoInternet : public TamperModule
 {
 public:
-	CorruptPacketsModule();
-	~CorruptPacketsModule();
+	TamperNoInternet();
+	~TamperNoInternet();
+	short process(PacketList* packetList) override;
+};
+
+class TamperNoDNS : public TamperModule
+{
+public:
+	TamperNoDNS();
+	~TamperNoDNS();
+	short process(PacketList* packetList) override;
+};
+
+class TamperNoServer : public TamperModule
+{
+public:
+	TamperNoServer();
+	~TamperNoServer();
+	short process(PacketList* packetList) override;
+};
+
+
+
+
+class TamperHTTPTimeOut : public TamperModule
+{
+public:
+	TamperHTTPTimeOut();
+	~TamperHTTPTimeOut();
+	short process(PacketList* packetList) override;
+};
+
+class TamperHTTPUnexpectedResponse : public TamperModule
+{
+public:
+	TamperHTTPUnexpectedResponse();
+	~TamperHTTPUnexpectedResponse();
+	short process(PacketList* packetList) override;
+};
+
+class TamperHTTPCorruptedResponse : public TamperModule
+{
+public:
+	TamperHTTPCorruptedResponse();
+	~TamperHTTPCorruptedResponse();
 	short process(PacketList* packetList) override;
 
 private:
@@ -149,56 +218,4 @@ private:
 	int patIx = 0; // put this here to give a more random results
 
 	inline void tamper_buf(char* buf, UINT len);
-};
-
-class NoPacketsModule : public TamperModule
-{
-public:
-	~NoPacketsModule();
-	short process(PacketList* packetList) override;
-};
-
-class NoDNSModule : public TamperModule
-{
-public:
-	~NoDNSModule();
-	short process(PacketList* packetList) override;
-};
-
-class NoServerModule : public TamperModule
-{
-public:
-	~NoServerModule();
-	short process(PacketList* packetList) override;
-};
-
-class NoSSLModule : public TamperModule
-{
-public:
-	~NoSSLModule();
-	short process(PacketList* packetList) override;
-};
-
-class RedirToPortalModule : public TamperModule
-{
-public:
-	~RedirToPortalModule();
-	short process(PacketList* packetList) override;
-};
-
-class HTTPHTTPSOnlyModule : public TamperModule
-{
-public:
-	~HTTPHTTPSOnlyModule();
-	short process(PacketList* packetList) override;
-
-private:
-	volatile short chance = 1000; // [0 - 10000]
-};
-
-class SiteBlockedModule : public TamperModule
-{
-public:
-	~SiteBlockedModule();
-	short process(PacketList* packetList) override;
 };

@@ -19,19 +19,10 @@ DivertController::DivertController(device * d)
 
 	packetList = new PacketList();
 
-
-	tamperModule[SPEED] = new LagModule();
-	tamperModule[DELAY] = new ThrottleModule();
-	tamperModule[QUALITY] = new ResetModule();
-	tamperModule[REDIR_TO_PORAL] = new JitterModule();
-	tamperModule[CONTENT_BLOCKED] = new DropPacketsModule();
-	tamperModule[HTTP_HTTPS_ONLY] = new CorruptPacketsModule();
-	tamperModule[NO_INTERNET] = new NoPacketsModule();
-	tamperModule[NO_DNS] = new NoDNSModule();
-	tamperModule[NO_SERVER] = new NoServerModule();
-	tamperModule[HTTP_TIME_OUT] = new RedirToPortalModule();
-	tamperModule[HTTP_UNEXPECTED_RESPONSE] = new HTTPHTTPSOnlyModule();
-	tamperModule[HTTP_CORRUPTED_RESPONSE] = new SiteBlockedModule();
+	for (int i = 0; i < NUM_TAMPER_TYPES; i++)
+	{
+		tamperModule[i] = TamperModule::makeTamperModule(i);
+	}
 
 }
 

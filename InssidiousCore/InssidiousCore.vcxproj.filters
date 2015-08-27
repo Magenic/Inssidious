@@ -28,25 +28,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_DeviceController.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="TamperModules\TamperCorruptPackets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TamperModules\TamperDropPackets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TamperModules\TamperHTTPHTTPSOnly.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TamperModules\TamperJitter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TamperModules\TamperLag.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TamperModules\TamperReset.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TamperModules\TamperSiteBlocked.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TamperModules\TamperRedirToPortal.cpp">
@@ -55,19 +37,10 @@
     <ClCompile Include="TamperModules\TamperNoServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TamperModules\TamperNoPackets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TamperModules\TamperNoDNS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TamperModules\TamperThrottle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TamperModules\PacketList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TamperModules\TamperNoSSL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Controllers\DHCPController.cpp">
@@ -78,6 +51,33 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_DHCPController.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperHTTPCorruptedResponse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperQuality.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperNoInternet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperContentBlocked.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperDelay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperHTTPUnexpectedResponse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperHTTPTimeOut.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperSpeed.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

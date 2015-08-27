@@ -1,11 +1,16 @@
 #include <InssidiousCore/TamperModules/TamperBase.h>
 
-short NoDNSModule::process(PacketList* packetList)
+short TamperNoDNS::process(PacketList* packetList)
 {
 	return 0;
 }
 
-NoDNSModule::~NoDNSModule()
+TamperNoDNS::TamperNoDNS()
+{
+	
+}
+
+TamperNoDNS::~TamperNoDNS()
 {
 	
 }

@@ -2,7 +2,7 @@
 
 
 
-CorruptPacketsModule::CorruptPacketsModule()
+TamperHTTPCorruptedResponse::TamperHTTPCorruptedResponse()
 {
 	patterns[0] = 0x64;
 	patterns[1] = 0x13;
@@ -16,7 +16,7 @@ CorruptPacketsModule::CorruptPacketsModule()
 	patterns[7] = 0x55;
 }
 
-inline void CorruptPacketsModule::tamper_buf(char* buf, UINT len)
+inline void TamperHTTPCorruptedResponse::tamper_buf(char* buf, UINT len)
 {
 	UINT ix;
 	for (ix = 0; ix < len; ++ix) {
@@ -24,7 +24,7 @@ inline void CorruptPacketsModule::tamper_buf(char* buf, UINT len)
 	}
 }
 
-short CorruptPacketsModule::process(PacketList* packetList)
+short TamperHTTPCorruptedResponse::process(PacketList* packetList)
 {
 	short tampered = FALSE;
 	Packet *pac = packetList->head->next;
@@ -63,7 +63,8 @@ short CorruptPacketsModule::process(PacketList* packetList)
 	return tampered;
 }
 
-CorruptPacketsModule::~CorruptPacketsModule()
+
+TamperHTTPCorruptedResponse::~TamperHTTPCorruptedResponse()
 {
 	
 }

@@ -117,21 +117,21 @@
     <ClCompile Include="Controllers\HostedNetworkController.cpp" />
     <ClCompile Include="Controllers\ICSController.cpp" />
     <ClCompile Include="InssidiousCore.cpp" />
-    <ClCompile Include="TamperModules\TamperCorruptPackets.cpp" />
-    <ClCompile Include="TamperModules\TamperDropPackets.cpp" />
+    <ClCompile Include="TamperModules\TamperBase.cpp" />
+    <ClCompile Include="TamperModules\TamperHTTPCorruptedResponse.cpp" />
+    <ClCompile Include="TamperModules\TamperQuality.cpp" />
     <ClCompile Include="TamperModules\TamperHTTPHTTPSOnly.cpp" />
-    <ClCompile Include="TamperModules\TamperJitter.cpp" />
-    <ClCompile Include="TamperModules\TamperLag.cpp" />
+    <ClCompile Include="TamperModules\TamperHTTPUnexpectedResponse.cpp" />
+    <ClCompile Include="TamperModules\TamperSpeed.cpp" />
     <ClCompile Include="TamperModules\TamperNoDNS.cpp" />
-    <ClCompile Include="TamperModules\TamperNoPackets.cpp" />
+    <ClCompile Include="TamperModules\TamperNoInternet.cpp" />
     <ClCompile Include="TamperModules\TamperNoServer.cpp" />
     <ClCompile Include="TamperModules\PacketList.cpp" />
     <ClCompile Include="Controllers\DivertController.cpp" />
-    <ClCompile Include="TamperModules\TamperNoSSL.cpp" />
     <ClCompile Include="TamperModules\TamperRedirToPortal.cpp" />
-    <ClCompile Include="TamperModules\TamperReset.cpp" />
-    <ClCompile Include="TamperModules\TamperSiteBlocked.cpp" />
-    <ClCompile Include="TamperModules\TamperThrottle.cpp" />
+    <ClCompile Include="TamperModules\TamperHTTPTimeOut.cpp" />
+    <ClCompile Include="TamperModules\TamperContentBlocked.cpp" />
+    <ClCompile Include="TamperModules\TamperDelay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Controllers\HostedNetworkController.h">

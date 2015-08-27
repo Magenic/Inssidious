@@ -10,7 +10,7 @@
 #define KEEP_AT_MOST 1000
 #define TIMER_RESOLUTION 4
 
-ThrottleModule::ThrottleModule()
+TamperDelay::TamperDelay()
 {
 	throttleFrame = TIME_DEFAULT;
 
@@ -32,14 +32,14 @@ ThrottleModule::ThrottleModule()
 	
 }
 
-inline short ThrottleModule::isBufEmpty()
+inline short TamperDelay::isBufEmpty()
 {
 	short ret = bufHead->next == bufTail;
 	if (ret) assert(bufSize == 0);
 	return ret;
 }
 
-short ThrottleModule::process(PacketList* packetList)
+short TamperDelay::process(PacketList* packetList)
 {
 	short throttled = FALSE;
 
@@ -88,7 +88,7 @@ short ThrottleModule::process(PacketList* packetList)
 }
 
 
-ThrottleModule::~ThrottleModule()
+TamperDelay::~TamperDelay()
 {
 	
 }

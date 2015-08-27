@@ -1,6 +1,6 @@
 #include <InssidiousCore/TamperModules/TamperBase.h>
 
-short NoPacketsModule::process(PacketList* packetList)
+short TamperNoInternet::process(PacketList* packetList)
 {
 	
 	int dropped = 0;
@@ -14,7 +14,12 @@ short NoPacketsModule::process(PacketList* packetList)
 
 }
 
-NoPacketsModule::~NoPacketsModule()
+TamperNoInternet::TamperNoInternet()
+{
+	
+}
+
+TamperNoInternet::~TamperNoInternet()
 {
 	
 }

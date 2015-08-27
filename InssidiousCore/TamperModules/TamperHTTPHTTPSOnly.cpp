@@ -1,6 +1,6 @@
 #include <InssidiousCore/TamperModules/TamperBase.h>
 
-short HTTPHTTPSOnlyModule::process(PacketList* packetList)
+short TamperHTTPHTTPSOnly::process(PacketList* packetList)
 {
 	short tampered = FALSE;
 	Packet *pac = packetList->head->next;
@@ -37,7 +37,12 @@ short HTTPHTTPSOnlyModule::process(PacketList* packetList)
 	return tampered;
 }
 
-HTTPHTTPSOnlyModule::~HTTPHTTPSOnlyModule()
+TamperHTTPHTTPSOnly::TamperHTTPHTTPSOnly()
+{
+	
+}
+
+TamperHTTPHTTPSOnly::~TamperHTTPHTTPSOnly()
 {
 	
 }

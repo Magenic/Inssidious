@@ -13,7 +13,7 @@
 #define TIMER_RESOLUTION 4
 
 
-LagModule::LagModule()
+TamperSpeed::TamperSpeed()
 {
 	lagTime = LAG_DEFAULT;
 
@@ -33,19 +33,19 @@ LagModule::LagModule()
 	}
 }
 
-LagModule::~LagModule()
+TamperSpeed::~TamperSpeed()
 {
 	
 }
 
-inline short LagModule::isBufEmpty()
+inline short TamperSpeed::isBufEmpty()
 {
 		short ret = bufHead->next == bufTail;
 		if (ret) assert(bufSize == 0);
 		return ret;
 }
 
-short LagModule::process(PacketList* packetList)
+short TamperSpeed::process(PacketList* packetList)
 {
 	DWORD currentTime = timeGetTime();
 	Packet *pac = packetList->tail->prev;
