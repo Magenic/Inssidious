@@ -1,4 +1,5 @@
-#include <InssidiousCore/TamperModules/TamperBase.h>
+
+#include "TamperDelay.h"
 
 #define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
 
@@ -10,8 +11,10 @@
 #define KEEP_AT_MOST 1000
 #define TIMER_RESOLUTION 4
 
-TamperDelay::TamperDelay()
+TamperDelay::TamperDelay(void** ppTamperConfig)
 {
+	this->ppTamperConfig = ppTamperConfig;
+
 	throttleFrame = TIME_DEFAULT;
 
 	if (bufHead->next == NULL && bufTail->next == NULL) {

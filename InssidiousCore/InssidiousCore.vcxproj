@@ -117,7 +117,7 @@
     <ClCompile Include="Controllers\HostedNetworkController.cpp" />
     <ClCompile Include="Controllers\ICSController.cpp" />
     <ClCompile Include="InssidiousCore.cpp" />
-    <ClCompile Include="TamperModules\TamperBase.cpp" />
+    <ClCompile Include="TamperModules\TamperModule.cpp" />
     <ClCompile Include="TamperModules\TamperHTTPCorruptedResponse.cpp" />
     <ClCompile Include="TamperModules\TamperQuality.cpp" />
     <ClCompile Include="TamperModules\TamperHTTPHTTPSOnly.cpp" />
@@ -208,7 +208,20 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DINSSIDIOUSCORE_LIB "-I.\GeneratedFiles" "-I.\.." "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I.\Controllers" "-I.\Tamper"</Command>
     </CustomBuild>
-    <ClInclude Include="TamperModules\TamperBase.h" />
+    <ClInclude Include="TamperModules\PacketList.h" />
+    <ClInclude Include="TamperModules\TamperModule.h" />
+    <ClInclude Include="TamperModules\TamperContentBlocked.h" />
+    <ClInclude Include="TamperModules\TamperDelay.h" />
+    <ClInclude Include="TamperModules\TamperHTTPCorruptedResponse.h" />
+    <ClInclude Include="TamperModules\TamperHTTPHTTPSOnly.h" />
+    <ClInclude Include="TamperModules\TamperHTTPTimeOut.h" />
+    <ClInclude Include="TamperModules\TamperHTTPUnexpectedResponse.h" />
+    <ClInclude Include="TamperModules\TamperNoDNS.h" />
+    <ClInclude Include="TamperModules\TamperNoInternet.h" />
+    <ClInclude Include="TamperModules\TamperNoServer.h" />
+    <ClInclude Include="TamperModules\TamperQuality.h" />
+    <ClInclude Include="TamperModules\TamperRedirToPortal.h" />
+    <ClInclude Include="TamperModules\TamperSpeed.h" />
     <ClInclude Include="TamperTypes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,8 +1,8 @@
-#include <InssidiousCore/TamperModules/TamperBase.h>
+
+#include "TamperHTTPCorruptedResponse.h"
 
 
-
-TamperHTTPCorruptedResponse::TamperHTTPCorruptedResponse()
+TamperHTTPCorruptedResponse::TamperHTTPCorruptedResponse(void** ppTamperConfig)
 {
 	patterns[0] = 0x64;
 	patterns[1] = 0x13;
@@ -66,5 +66,5 @@ short TamperHTTPCorruptedResponse::process(PacketList* packetList)
 
 TamperHTTPCorruptedResponse::~TamperHTTPCorruptedResponse()
 {
-	
+	this->ppTamperConfig = ppTamperConfig;
 }

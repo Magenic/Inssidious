@@ -2,9 +2,12 @@
 #define DEVICECONTROLLER_H
 
 #include <QObject>
-#include <QTimer>
-#include "DivertController.h"
 
+#include <InssidiousCore/TamperTypes.h>
+
+
+class DivertController;
+class TamperModule;
 
 class DeviceController : public QObject
 {
@@ -15,9 +18,9 @@ public:
 	~DeviceController();
 
 signals:
+	void divertStop(QString MACAddress);
+	void divertUpdateIPAddress(QString MACAddress, QString IPAddress);
 
-	void dcUpdateDevice(QString MACAddress, QString ipAddress);
-	void dcDivertStop();
 
 public slots:
 	void onCoreAddDevice(QString MACAddress);
@@ -30,17 +33,31 @@ public slots:
 private slots:
 	void onDivertStopped(QString MACAddress);
 
+
 private:
 
-	QList<device*>deviceList;
+	struct device
+	{
+		QString MACAddress;
+		QString IPAddress;
 
-	struct LostPair
+		void* tamperModuleConfig[NUM_TAMPER_TYPES];
+		volatile bool tamperModuleActive[NUM_TAMPER_TYPES];
+		
+		DivertController* divertController;
+	};
+
+	QList<device*>deviceList;
+	QList<device*>pendingDeletionList;
+
+
+	struct MAC_IP_Pair
 	{
 		QString MACAddress;
 		QString ipAddress;
 	};
 
-	QList <LostPair*> lostPairs;
+	QList <MAC_IP_Pair*> lostPairs;
 };
 
 #endif // DEVICECONTROLLER_H

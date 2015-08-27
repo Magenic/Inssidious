@@ -53,12 +53,20 @@ void UiDeviceController::onUiAddDevice(QString MACAddress)
 	connect(deviceList.last()->tab, &TabWidget::tabClicked, this, &UiDeviceController::onTabClicked);
 
 
-
-
-
-	deviceList.last()->tamper->setParent(this->parentWidget());							
-
 	
+	/* Set the parent of the Tamper Widget to the main InssidiousUi widget */
+
+	deviceList.last()->tamper->setParent(this->parentWidget());				
+
+
+	/* Lower it in the event there is another InssidiousUi childwidget displaying.
+	   This particularly accounts for Start or any future error widgets that may be displayed */
+
+	deviceList.last()->tamper->lower();
+	
+
+	/* Pull the tamper start/stop signals up from the Tamper Widget to our controller */
+
 	connect(deviceList.last()->tamper, &TamperWidget::tamperStart, this, &UiDeviceController::onTamperStart);
 	connect(deviceList.last()->tamper, &TamperWidget::tamperStop, this, &UiDeviceController::onTamperStop);
 

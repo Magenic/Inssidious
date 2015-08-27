@@ -52,9 +52,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_DHCPController.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="TamperModules\TamperBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TamperModules\TamperHTTPCorruptedResponse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -77,6 +74,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TamperModules\TamperSpeed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,7 +125,46 @@
     <ClInclude Include="TamperTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TamperModules\TamperBase.h">
+    <ClInclude Include="TamperModules\TamperContentBlocked.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperDelay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperHTTPCorruptedResponse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperHTTPHTTPSOnly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperHTTPTimeOut.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperHTTPUnexpectedResponse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperNoDNS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperNoInternet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperNoServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperQuality.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperRedirToPortal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperSpeed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\PacketList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

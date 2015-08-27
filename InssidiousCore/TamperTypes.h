@@ -110,18 +110,3 @@ static QString TamperTypeInactiveIcon[NUM_TAMPER_TYPES]
 	QString(":/Tamper/UnimplementedInactive.png")
 };
 
-
-class DivertController;
-struct device
-{
-	QString MACAddress;
-	QString IPAddress;
-	bool started = false;
-	volatile short stop = false;
-	volatile bool updateIPAddress = false;
-
-	DivertController* divertController;
-
-	volatile bool enabled[NUM_TAMPER_TYPES];
-
-};

@@ -1,4 +1,5 @@
-#include <InssidiousCore/TamperModules/TamperBase.h>
+#include "TamperSpeed.h"
+
 
 
 #define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
@@ -13,8 +14,10 @@
 #define TIMER_RESOLUTION 4
 
 
-TamperSpeed::TamperSpeed()
+TamperSpeed::TamperSpeed(void** ppTamperConfig)
 {
+	this->ppTamperConfig = ppTamperConfig;
+
 	lagTime = LAG_DEFAULT;
 
 	if (bufHead->next == NULL && bufTail->next == NULL) {
@@ -47,6 +50,7 @@ inline short TamperSpeed::isBufEmpty()
 
 short TamperSpeed::process(PacketList* packetList)
 {
+
 	DWORD currentTime = timeGetTime();
 	Packet *pac = packetList->tail->prev;
 	// pick up all packets and fill in the current time

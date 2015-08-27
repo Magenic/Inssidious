@@ -1,9 +1,11 @@
-#include <InssidiousCore/TamperModules/TamperBase.h>
+
+#include "TamperHTTPUnexpectedResponse.h"
 
 
-TamperHTTPUnexpectedResponse::TamperHTTPUnexpectedResponse()
+
+TamperHTTPUnexpectedResponse::TamperHTTPUnexpectedResponse(void** ppTamperConfig)
 {
-
+	this->ppTamperConfig = ppTamperConfig;
 }
 
 TamperHTTPUnexpectedResponse::~TamperHTTPUnexpectedResponse()

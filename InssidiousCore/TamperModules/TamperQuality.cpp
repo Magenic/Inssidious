@@ -1,4 +1,6 @@
-#include <InssidiousCore/TamperModules/TamperBase.h>
+
+#include "TamperQuality.h"
+
 
 #define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
 
@@ -137,8 +139,9 @@ short TamperQuality::process(PacketList* packetList)
 
 }
 
-TamperQuality::TamperQuality()
+TamperQuality::TamperQuality(void** ppTamperConfig)
 {
+	this->ppTamperConfig = ppTamperConfig;
 	jitterVarianceInMs = 50;
 
 	if (bufHead->next == NULL && bufTail->next == NULL) {

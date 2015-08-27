@@ -1,4 +1,7 @@
-#include <InssidiousCore/TamperModules/TamperBase.h>
+
+#include "TamperNoInternet.h"
+
+
 
 short TamperNoInternet::process(PacketList* packetList)
 {
@@ -14,9 +17,9 @@ short TamperNoInternet::process(PacketList* packetList)
 
 }
 
-TamperNoInternet::TamperNoInternet()
+TamperNoInternet::TamperNoInternet(void** ppTamperConfig)
 {
-	
+	this->ppTamperConfig = ppTamperConfig;
 }
 
 TamperNoInternet::~TamperNoInternet()

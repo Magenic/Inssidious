@@ -1,17 +1,12 @@
-
-
-
-#ifndef PACKETCONTROLLER_H
-#define PACKETCONTROLLER_H
+#ifndef DIVERTCONTROLLER_H
+#define DIVERTCONTROLLER_H
 
 #include <QThread>						//Base of DivertController
 
-#include <Ws2tcpip.h>					//Types used with WinDivert when handling packets
-#include <Iphlpapi.h>					//Types used with WinDivert & functions to obtain the IP Address from MAC Address
-#include <mmsystem.h>					//Time APIs used during synchronization
+#include <InssidiousCore/TamperModules/PacketList.h>
 
-#include <InssidiousCore/TamperModules/TamperBase.h>
-#include <InssidiousCore/TamperTypes.h>
+
+class TamperModule;
 
 class DivertController : public QThread
 {
@@ -19,39 +14,43 @@ class DivertController : public QThread
 
 
 public:
-	DivertController(device* d);	
-
-	void createThreads();
+	DivertController(QString, void*[], volatile bool[]);	
 
 
 signals:
 	void divertStopped(QString MACAddress);
 
 public slots:
-	void onDivertStop();
+	void onDivertStop(QString MACAddress);
+	void onDivertUpdateIPAddress(QString MACAddress, QString IPAddress);
 
 private:
-	
+
 	/* QThread class calls run as the first thing executed as the new thread */
 	/* Do initialization work like identifying IP address here and opening WinDivert handle */
 
-	void run();
+	void run() override;
 
 
-	/* Pointer to the device instance with states and device info */
+	/* Copies of the values sent in the constructor */
 
-	device* parentDevice;
+	QString MACAddress;
+	void** ppTamperModulesConfig;
+	volatile bool* pTamperModulesActive;
 
 
-	/* PacketList to hold all diverted packets, TamperModule* to individual tamper classes */
+	TamperModule** ppTamperModules;
+
+
+	/* PacketList to hold all diverted packets, mutex to sychnronize read & tamper threads */
 
 	PacketList* packetList;
-	TamperModule* tamperModule[NUM_TAMPER_TYPES];
+	HANDLE mutex;
+	volatile short divertActive = 0;
 
+	/* Handles to the WinDivert instance, the divert threads, and the associated filter strings */
 
-	/* Handles to the WinDivert instance, the two threads, and the synchronization mutex */
-
-	HANDLE divertHandle, loopThread, clockThread, mutex;
+	HANDLE divertHandle, loopThread, clockThread;
 	QString inboundFilterString;
 	QString outboundFilterString;
 
@@ -74,4 +73,4 @@ private:
 
 };
 
-#endif // PACKETCONTROLLER_H
+#endif // DIVERTCONTROLLER_H

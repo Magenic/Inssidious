@@ -1,10 +1,11 @@
 #include "DeviceController.h"
-#include <QtWidgets/QLabel>
+
+#include <InssidiousCore/Controllers/DivertController.h>
+
 
 DeviceController::DeviceController()
 {
 
-	connect(this, &DeviceController::dcUpdateDevice, this, &DeviceController::onCoreUpdateDevice, Qt::DirectConnection);
 }
 
 DeviceController::~DeviceController()
@@ -18,32 +19,52 @@ void DeviceController::onCoreAddDevice(QString MACAddress)
 	/* Create a tcDevice */
 
 	deviceList.append(new device());
-	deviceList.last()->MACAddress = MACAddress;
+	device* d = deviceList.last();
+	
+	d->MACAddress = MACAddress;
+	d->IPAddress = "";
+
 	for (int i = 0; i < NUM_TAMPER_TYPES; i++)
 	{
-		deviceList.last()->enabled[i] = false;
+		d->tamperModuleConfig[i] = nullptr;
+		d->tamperModuleActive[i] = false;
 	}
-	deviceList.last()->divertController = new DivertController(deviceList.last());
+
+	d->divertController = new DivertController(d->MACAddress, d->tamperModuleConfig, d->tamperModuleActive);
+	d->divertController->start();
+
+	/* Connect the updateIPAddress, stop, and stopped signals and slots */
+
+	connect(this, &DeviceController::divertUpdateIPAddress, d->divertController, &DivertController::onDivertUpdateIPAddress);
+	connect(this, &DeviceController::divertStop, d->divertController, &DivertController::onDivertStop);
+	connect(d->divertController, &DivertController::divertStopped, this, &DeviceController::onDivertStopped);
 
 
-	/* Check if we already have an IP for device, possible race */
 
-	for (LostPair* lp : lostPairs)
+	/* Check if we already have an IP for device. Order-of-Operations-wise, 
+		we should always get the add device signal from the hosted network 
+		controller before getting an IP address from the DHCP controller, 
+		but this a potential race condition with the Qt signals so let's 
+		protect against it. */
+
+
+	for (MAC_IP_Pair* lostPair : lostPairs)
 	{
-		if (lp->MACAddress == deviceList.last()->MACAddress)
+		if (lostPair->MACAddress == d->MACAddress)
 		{
-			emit dcUpdateDevice(deviceList.last()->MACAddress, lp->ipAddress);
+			/* We had a lost MAC/IP pair. Set the info and remove the lost pair */
 
-			lostPairs.removeOne(lp);
+			d->IPAddress = lostPair->ipAddress;
+			lostPairs.removeOne(lostPair);
+
+
+			/* Signal to divert to update its IP Address */
+
+			emit divertUpdateIPAddress(d->MACAddress, d->IPAddress);
+
 			break;
 		}
-	}
-
-
-	connect(this, &DeviceController::dcDivertStop, deviceList.last()->divertController, &DivertController::onDivertStop);
-	connect(deviceList.last()->divertController, &DivertController::divertStopped, this, &DeviceController::onDivertStopped);
-
-	/* No further work until we get an IP address */
+	}	
 }
 
 
@@ -56,11 +77,16 @@ void DeviceController::onCoreDropDevice(QString MACAddress)
 	{
 		if (d->MACAddress == MACAddress)
 		{
-			/* Stop the Divert threads */
+			/* Remove the device from the deviceList and pend its deletion */
+			
+			deviceList.removeOne(d);
+			pendingDeletionList.append(d);
 
-			emit dcDivertStop();
 
-			break;
+			/* Stop the divert threads. Remaining deletion work signaled from there */
+
+			emit divertStop(MACAddress);
+			return;
 		}
 	}
 }
@@ -71,55 +97,57 @@ void DeviceController::onCoreUpdateDevice(QString MACAddress, QString ipAddress)
 
 	for (device * d : deviceList)
 	{
-		if (d->MACAddress == MACAddress && d->IPAddress != ipAddress)
+		if (d->MACAddress == MACAddress)
 		{
-			d->IPAddress = ipAddress;
-			
-			if (!d->started)
+			if (d->IPAddress == ipAddress)
 			{
-				d->divertController->start();
-				d->started = true;
+				/* We already have the right IP Address */
+
+				return;
 			}
 			else
 			{
-				d->updateIPAddress = true;
-				emit dcDivertStop();
-			}
+				/* Update the IP address */
 
-			return;
+				d->IPAddress = ipAddress;
+				emit divertUpdateIPAddress(MACAddress, ipAddress);
+
+				return;
+			}
 		}
 	}
 
 	
-	/* No matching device, store the MAC & IP for now */
+	/* We don't have this device in the deviceList yet. */
 
-	for (LostPair* lp : lostPairs)
+
+	/* Check if the MACAddress is in the lost pair list, and if so, update the IP Address */
+
+	for (MAC_IP_Pair* lostPair : lostPairs)
 	{
-		if (lp->MACAddress == MACAddress)
+		if (lostPair->MACAddress == MACAddress)
 		{
-			/* We already have this device in the LostPairs list, update the IP and return */
-
-			lp->ipAddress = ipAddress;
+			lostPair->ipAddress = ipAddress;
 			return;
 		}
 	}
 
-	/* The MAC address wasn't in the lost pair list, so add it as a new lost pair  */
 
-	lostPairs.append(new LostPair{ MACAddress, ipAddress });
+	/* This MAC is new to us, store it as a lost MAC/IP pair */
+
+	lostPairs.append(new MAC_IP_Pair{ MACAddress, ipAddress });
 	
 }
 
 
 void DeviceController::onCoreTamperStart(QString MACAddress, TamperType tamperType, void* pTamperConfig)
 {
-	/* Search through the tab list for the matching MAC address */
-
 	for (device * d : deviceList)
 	{
 		if (d->MACAddress == MACAddress)
 		{
-			d->enabled[tamperType] = true;
+			d->tamperModuleConfig[tamperType] = pTamperConfig;
+			d->tamperModuleActive[tamperType] = true;
 
 			return;
 		}
@@ -128,13 +156,11 @@ void DeviceController::onCoreTamperStart(QString MACAddress, TamperType tamperTy
 
 void DeviceController::onCoreTamperStop(QString MACAddress, TamperType tamperType)
 {
-	/* Search through the tab list for the matching MAC address */
-
 	for (device * d : deviceList)
 	{
 		if (d->MACAddress == MACAddress)
 		{
-			d->enabled[tamperType] = false;
+			d->tamperModuleActive[tamperType] = false;
 
 			return;
 		}
@@ -143,19 +169,14 @@ void DeviceController::onCoreTamperStop(QString MACAddress, TamperType tamperTyp
 
 void DeviceController::onDivertStopped(QString MACAddress)
 {
-	for (device * d : deviceList)
+	/* All packets processed, safe to delete device */
+
+	for (device * d : pendingDeletionList)
 	{
 		if (d->MACAddress == MACAddress)
 		{
-			if (d->updateIPAddress)
-			{
-				d->divertController->createThreads();
-			}
-			else
-			{
-				deviceList.removeOne(d);
-				delete d;
-			}
+			pendingDeletionList.removeOne(d);
+			delete d;
 
 			return;
 		}

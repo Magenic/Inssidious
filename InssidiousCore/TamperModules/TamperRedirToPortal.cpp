@@ -1,9 +1,11 @@
-#include <InssidiousCore/TamperModules/TamperBase.h>
+
+#include "TamperRedirToPortal.h"
 
 
-TamperRedirToPortal::TamperRedirToPortal()
+
+TamperRedirToPortal::TamperRedirToPortal(void** ppTamperConfig)
 {
-	
+	this->ppTamperConfig = ppTamperConfig;
 }
 
 TamperRedirToPortal::~TamperRedirToPortal()

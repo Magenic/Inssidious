@@ -1,4 +1,6 @@
-#include <InssidiousCore/TamperModules/TamperBase.h>
+
+#include "TamperHTTPHTTPSOnly.h"
+
 
 short TamperHTTPHTTPSOnly::process(PacketList* packetList)
 {
@@ -37,9 +39,9 @@ short TamperHTTPHTTPSOnly::process(PacketList* packetList)
 	return tampered;
 }
 
-TamperHTTPHTTPSOnly::TamperHTTPHTTPSOnly()
+TamperHTTPHTTPSOnly::TamperHTTPHTTPSOnly(void** ppTamperConfig)
 {
-	
+	this->ppTamperConfig = ppTamperConfig;
 }
 
 TamperHTTPHTTPSOnly::~TamperHTTPHTTPSOnly()
