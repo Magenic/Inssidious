@@ -9,17 +9,20 @@ public:
 	~TamperSpeed();
 	short process(PacketList* packetList) override;
 
-	volatile short lagTime;
 
 private:
-	void** ppTamperConfig;
-
-	short resolutionSet = 0;
-	Packet lagHeadNode = Packet{ 0 }, lagTailNode = Packet{ 0 };
-	Packet *bufHead = &lagHeadNode, *bufTail = &lagTailNode;
+	short isBufEmpty();
 	int bufSize = 0;
 
-	short isBufEmpty();
+	short** ppSpeedTime;
+
+	short resolutionSet = 0;
+
+	Packet speedHeadNode = Packet{ 0 }, speedTailNode = Packet{ 0 };
+	Packet *bufHead = &speedHeadNode, *bufTail = &speedTailNode;
+	
+
+	
 
 };
 

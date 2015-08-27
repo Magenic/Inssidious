@@ -1,24 +1,20 @@
 #include "TamperSpeed.h"
 
-
+#include "TamperTypes.h"
 
 #define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
 
-#define NAME "lag"
-#define LAG_MIN "0"
-#define LAG_MAX "3000"
+
 #define KEEP_AT_MOST 2000
 // send FLUSH_WHEN_FULL packets when buffer is full
 #define FLUSH_WHEN_FULL 800
-#define LAG_DEFAULT 50
 #define TIMER_RESOLUTION 4
 
 
 TamperSpeed::TamperSpeed(void** ppTamperConfig)
 {
-	this->ppTamperConfig = ppTamperConfig;
+	this->ppSpeedTime = (short**)ppTamperConfig;
 
-	lagTime = LAG_DEFAULT;
 
 	if (bufHead->next == NULL && bufTail->next == NULL) {
 		bufHead->next = bufTail;
@@ -51,38 +47,51 @@ inline short TamperSpeed::isBufEmpty()
 short TamperSpeed::process(PacketList* packetList)
 {
 
-	DWORD currentTime = timeGetTime();
-	Packet *pac = packetList->tail->prev;
-	// pick up all packets and fill in the current time
-	while (bufSize < KEEP_AT_MOST && pac != packetList->head) {
-		if (true /*checkDirection(pac->addr.Direction, lagInbound, lagOutbound)*/) {
-			packetList->insertAfter(packetList->popNode(pac), bufHead)->timestamp = timeGetTime();
-			++bufSize;
-			pac = packetList->tail->prev;
-		}
-		else {
-			pac = pac->prev;
-		}
+	if (!**ppSpeedTime || **ppSpeedTime == SPEED_MAX)
+	{
+		/* No speed type set (yet?) or it's set to max, don't process these packets */
+
+		return 0;
 	}
 
+	DWORD currentTime = timeGetTime();
+
+	Packet *pac = packetList->tail->prev;
+
+	// pick up all packets and fill in the release time
+	DWORD releaseTime = timeGetTime();
+	while (bufSize < KEEP_AT_MOST && pac != packetList->head) 
+	{
+		packetList->insertAfter(packetList->popNode(pac), bufHead)->timestamp = releaseTime;
+		++bufSize;
+		releaseTime += TamperSpeedTimes[**ppSpeedTime];
+		pac = packetList->tail->prev;
+	}
+
+
 	// try sending overdue packets from buffer tail
-	while (!isBufEmpty()) {
+	while (!isBufEmpty()) 
+	{
 		Packet *pac = bufTail->prev;
-		if (currentTime > pac->timestamp + lagTime) {
+		if (currentTime > pac->timestamp)
+		{
 			packetList->insertAfter(packetList->popNode(bufTail->prev), packetList->head); // sending queue is already empty by now
 			--bufSize;
 			//LOG("Send lagged packets.");
 		}
-		else {
+		else 
+		{
 			//LOG("Sent some lagged packets, still have %d in buf", bufSize);
 			break;
 		}
 	}
 
 	// if buffer is full just flush things out
-	if (bufSize >= KEEP_AT_MOST) {
+	if (bufSize >= KEEP_AT_MOST) 
+	{
 		int flushCnt = FLUSH_WHEN_FULL;
-		while (flushCnt-- > 0) {
+		while (flushCnt-- > 0) 
+		{
 			packetList->insertAfter(packetList->popNode(bufTail->prev), packetList->head);
 			--bufSize;
 		}
