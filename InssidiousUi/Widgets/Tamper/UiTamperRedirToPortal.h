@@ -2,6 +2,7 @@
 #define UITAMPERREDIRTOPORTAL_H
 
 #include "UiTamperModule.h"
+#include <QtWidgets/QPushButton>
 
 class UiTamperRedirToPortal : public UiTamperModule
 {
@@ -12,7 +13,8 @@ public:
 	~UiTamperRedirToPortal();
 
 private:
-	QLayout* redirLayout;
+	QGridLayout* redirToPortalLayout;
+	QPushButton* redirToPortalButton;
 };
 
 #endif // UITAMPERREDIRTOPORTAL_H

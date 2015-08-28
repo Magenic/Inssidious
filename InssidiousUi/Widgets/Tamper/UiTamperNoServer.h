@@ -2,6 +2,9 @@
 #define UITAMPERNOSERVER_H
 
 #include "UiTamperModule.h"
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QLineEdit>
 
 class UiTamperNoServer : public UiTamperModule
 {
@@ -12,7 +15,12 @@ public:
 	~UiTamperNoServer();
 
 private:
-	QLayout* noServerLayout;
+	QGridLayout* noServerLayout;
+	QPushButton* noServerButton;
+
+	QLabel* domainLabel;
+	QComboBox* domainComboBox;
+	QPushButton* domainEditButton;
 };
 
 #endif // UITAMPERNOSERVER_H

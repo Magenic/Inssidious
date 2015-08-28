@@ -2,6 +2,8 @@
 #define UITAMPERQUALITY_H
 
 #include "UiTamperModule.h"
+#include <QtWidgets/QSpinBox>
+
 
 class UiTamperQuality : public UiTamperModule
 {
@@ -12,7 +14,14 @@ public:
 	~UiTamperQuality();
 
 private:
-	QLayout* qualityLayout;
+	QGridLayout* qualityLayout;
+	QLabel* lossLabel;
+	QSpinBox* lossSpinBox;
+	QLabel* corruptionLabel;
+	QSpinBox* corruptionSpinBox;
+	QLabel* tcpResetLabel;
+	QSpinBox* tcpResetSpinBox;
+
 };
 
 #endif // UITAMPERQUALITY_H

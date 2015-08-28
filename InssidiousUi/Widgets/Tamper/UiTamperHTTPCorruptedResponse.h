@@ -2,6 +2,9 @@
 #define UITAMPERHTTPCORRUPTEDRESPONSE_H
 
 #include "UiTamperModule.h"
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QLineEdit>
 
 class UiTamperHTTPCorruptedResponse : public UiTamperModule
 {
@@ -12,7 +15,12 @@ public:
 	~UiTamperHTTPCorruptedResponse();
 
 private:
-	QLayout* httpCorruptedLayout;
+	QGridLayout* httpCorruptedLayout;
+	QPushButton* httpCorruptedButton;
+
+	QLabel* domainLabel;
+	QComboBox* domainComboBox;
+	QPushButton* domainEditButton;
 };
 
 #endif // UITAMPERHTTPCORRUPTEDRESPONSE_H

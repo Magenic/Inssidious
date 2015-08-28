@@ -2,6 +2,10 @@
 #define UITAMPERHTTPUNEXPECTEDRESPONSE_H
 
 #include "UiTamperModule.h"
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QLineEdit>
 
 class UiTamperHTTPUnexpectedResponse : public UiTamperModule
 {
@@ -12,7 +16,17 @@ public:
 	~UiTamperHTTPUnexpectedResponse();
 
 private:
-	QLayout* httpUnexpectedLayout;
+
+	QGridLayout* httpUnexpectedLayout;
+	QButtonGroup* qButtonGroup;
+	QPushButton* bHTTP200Empty;
+	QPushButton* bHTTP300Redir;
+	QPushButton* bHTTP400Auth;
+	QPushButton* bHTTP500Error;
+
+	QLabel* domainLabel;
+	QComboBox* domainComboBox;
+	QPushButton* domainEditButton;
 };
 
 #endif // UITAMPERHTTPUNEXPECTEDRESPONSE_H

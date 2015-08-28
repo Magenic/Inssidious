@@ -2,6 +2,9 @@
 #define UITAMPERCONTENTBLOCKED_H
 
 #include "UiTamperModule.h"
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QLineEdit>
 
 class UiTamperContentBlocked : public UiTamperModule
 {
@@ -12,7 +15,12 @@ public:
 	~UiTamperContentBlocked();
 
 private:
-	QLayout* contentBlockedLayout;
+	QGridLayout* contentBlockedLayout;
+	QPushButton* contentBlockedButton;
+
+	QLabel* domainLabel;
+	QComboBox* domainComboBox;
+	QPushButton* domainEditButton;
 };
 
 #endif // UITAMPERCONTENTBLOCKED_H

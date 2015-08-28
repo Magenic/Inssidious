@@ -2,6 +2,7 @@
 #define UITAMPERNOINTERNET_H
 
 #include "UiTamperModule.h"
+#include <QtWidgets/QPushButton>
 
 class UiTamperNoInternet : public UiTamperModule
 {
@@ -12,7 +13,9 @@ public:
 	~UiTamperNoInternet();
 
 private:
-	QLayout* noInternetLayout;
+	QGridLayout* noInternetLayout;
+	QPushButton* noInternetButton;
+
 };
 
 #endif // UITAMPERNOINTERNET_H
