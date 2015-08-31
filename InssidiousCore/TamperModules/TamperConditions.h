@@ -1,5 +1,6 @@
 #include "TamperModule.h"
 
+
 class TamperConditions : public TamperModule
 {
 public:
@@ -12,20 +13,63 @@ public:
 
 
 private:
-	void** ppTamperConfig;
 
-	volatile short chance = 0; // [0-10000]
-	volatile short setNextCount = 0;
+	/* UI configuration received in ppSpeedTime */
+
+	short** ppConditionsConfig;
+
+
+	/* Timer Resolution in milliseconds for timeGetTime calls */
+
+	UINT timerResolution = 4;
+	UINT delayTime = 700; /* 700ms delay for any delayed packets */
+
+	/* Keep track of how many packets we have in the buffer */
+
+	LONGLONG bufferSize = 0;
+	const LONGLONG numMaxBufferPackets = sizeof(LONGLONG);
+
+
+	/* Variables for a linked list to buffer packets in before re-injecting at a later time */
+
+	Packet conditionsHeadNode;
+	Packet conditionsTailNode;
+	Packet* bufferHead = &conditionsHeadNode;
+	Packet* bufferTail = &conditionsTailNode;
+
+
+	/* For TCP Reset, use TCP_MIN_SIZE to quickly skip non TCP packets */
 
 	const unsigned int TCP_MIN_SIZE = sizeof(WINDIVERT_IPHDR) + sizeof(WINDIVERT_TCPHDR);
 
 
-	Packet jitterHeadNode = Packet{ 0 }, jitterTailNode = Packet{ 0 };
-	Packet *bufHead = &jitterHeadNode, *bufTail = &jitterTailNode;
-	int bufSize = 0;
+	/* Assert if we've lost track of packets somehow */
 
-	short isBufEmpty();
+	inline short isBufEmpty()
+	{
+		short ret = bufferHead->next == bufferTail;
+		if (ret && !(bufferSize == 0))
+		{
+			/* We have packets that bufSize isn't accouting for */
+			DebugBreak();
+		}
+		return ret;
+	}
 
+	
+	/* Variables and function to corrupt packet data with */
+
+	int movingPatternInt = 0;
+	char patterns[8]; /* initialized in constructor */
+
+	inline void corruptPacket(char* buf, UINT len)
+	{
+		UINT ix;
+		for (ix = 0; ix < len; ++ix) 
+		{
+			buf[ix] ^= patterns[movingPatternInt++ & 0x7];
+		}
+	}
 
 };
 

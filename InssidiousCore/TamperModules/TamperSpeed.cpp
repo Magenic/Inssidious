@@ -1,14 +1,5 @@
 #include "TamperSpeed.h"
-
 #include "TamperTypes.h"
-
-#define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
-
-
-#define KEEP_AT_MOST 2000
-// send FLUSH_WHEN_FULL packets when buffer is full
-#define FLUSH_WHEN_FULL 800
-#define TIMER_RESOLUTION 4
 
 
 TamperSpeed::TamperSpeed(void** ppTamperConfig)
@@ -16,20 +7,20 @@ TamperSpeed::TamperSpeed(void** ppTamperConfig)
 	this->ppSpeedTime = (short**)ppTamperConfig;
 
 
-	if (bufHead->next == NULL && bufTail->next == NULL) {
-		bufHead->next = bufTail;
-		bufTail->prev = bufHead;
-		bufSize = 0;
-	}
-	else {
-		assert(isBufEmpty());
-	}
-	
-	if (!resolutionSet) {
-		// begin only fails when period out of range
-		timeBeginPeriod(TIMER_RESOLUTION);
-		resolutionSet = 1;
-	}
+	/* Start a linked list to buffer packets in before re-injecting at a later time */
+
+	this->speedHeadNode = Packet{ 0 };
+	this->speedTailNode = Packet{ 0 };
+	bufferHead->next = bufferTail;
+	bufferTail->prev = bufferHead;
+	bufferSize = 0;
+
+
+	/* Set a four second timer resolution for future timeGetTime calls */
+
+	timeBeginPeriod(timerResolution);
+
+
 }
 
 TamperSpeed::~TamperSpeed()
@@ -37,65 +28,69 @@ TamperSpeed::~TamperSpeed()
 	
 }
 
-inline short TamperSpeed::isBufEmpty()
-{
-		short ret = bufHead->next == bufTail;
-		if (ret) assert(bufSize == 0);
-		return ret;
-}
-
 short TamperSpeed::process(PacketList* packetList)
 {
 
 	if (!**ppSpeedTime || **ppSpeedTime == 0)
 	{
-		/* No speed type set (yet?) or it's set to max, don't process these packets */
+		/* No speed type set, don't process these packets */
 
 		return 0;
 	}
 
-	DWORD currentTime = timeGetTime();
-
-	Packet *pac = packetList->tail->prev;
-
-	// pick up all packets and fill in the release time
-	DWORD releaseTime = timeGetTime();
-	while (bufSize < KEEP_AT_MOST && pac != packetList->head) 
+	if (packetList->head == packetList->tail)
 	{
-		packetList->insertAfter(packetList->popNode(pac), bufHead)->timestamp = releaseTime;
-		++bufSize;
-		releaseTime += TamperSpeedTimes[**ppSpeedTime];
-		pac = packetList->tail->prev;
+		/* No packets */
+
+		return 0;
 	}
 
 
-	// try sending overdue packets from buffer tail
+	/* Get the current time to log with the packets */
+
+	DWORD currentTime = timeGetTime();
+	DWORD releaseTime = timeGetTime();
+
+	/* Loop through and acquire as many packets in the divert list as we can hold */
+	
+	Packet *pDivertPacket = packetList->tail->prev;	
+	while (bufferSize < numMaxBufferPackets && pDivertPacket != packetList->head)
+	{
+		packetList->insertAfter(packetList->popNode(pDivertPacket), bufferHead)->timestamp = releaseTime;
+		pDivertPacket = packetList->tail->prev;
+
+		/* Increment the buffer size and the next packet's release time */
+		++bufferSize;
+		releaseTime += TamperSpeedTimes[**ppSpeedTime]; /* enum defining millisecond values for different speed */
+		
+	}
+
+
+	/* Send any packets that are overdue to go out */
+
 	while (!isBufEmpty()) 
 	{
-		Packet *pac = bufTail->prev;
-		if (currentTime > pac->timestamp)
+		if (currentTime > bufferTail->prev->timestamp)
 		{
-			packetList->insertAfter(packetList->popNode(bufTail->prev), packetList->head); // sending queue is already empty by now
-			--bufSize;
-			//LOG("Send lagged packets.");
-		}
-		else 
-		{
-			//LOG("Sent some lagged packets, still have %d in buf", bufSize);
-			break;
+			packetList->insertAfter(packetList->popNode(bufferTail->prev), packetList->head);
+			--bufferSize;
 		}
 	}
 
+
+
+	//TODO: 
 	// if buffer is full just flush things out
-	if (bufSize >= KEEP_AT_MOST) 
+	if (bufferSize >= numMaxBufferPackets) 
 	{
-		int flushCnt = FLUSH_WHEN_FULL;
-		while (flushCnt-- > 0) 
+		while (bufferSize-- > 0) 
 		{
-			packetList->insertAfter(packetList->popNode(bufTail->prev), packetList->head);
-			--bufSize;
+			//TODO: Do we just reinsert packets or can I safely drop them?
+			DebugBreak();
+			packetList->insertAfter(packetList->popNode(bufferTail->prev), packetList->head);
 		}
 	}
 
-	return bufSize > 0;
+
+	return bufferSize > 0;
 };

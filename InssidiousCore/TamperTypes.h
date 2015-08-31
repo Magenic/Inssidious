@@ -57,3 +57,12 @@ static const short TamperSpeedTimes[5]
 	4,	 /* TIME_4G     4G/HSPA+	2.5Mbps				208pps		4ppms  */
 	2    /* TIME_LTE    LTE			7.0Mbps (in US)		583pps		2ppms  */
 };
+
+enum TamperConditionTypes
+{
+	CHANCE_NONE,
+	CHANCE_LOSS,
+	CHANCE_DELAY,
+	CHANCE_CORRUPT,
+	CHANCE_RESET
+};

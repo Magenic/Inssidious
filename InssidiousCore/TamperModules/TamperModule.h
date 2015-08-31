@@ -13,7 +13,6 @@ public:
 
 	short calcChance(short chance)
 	{
-		// notice that here we made a copy of chance, so even though it's volatile it is still ok
 		return (chance == 10000) || ((rand() % 10000) < chance);
 	}
 
