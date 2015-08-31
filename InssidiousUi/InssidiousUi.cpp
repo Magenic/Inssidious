@@ -133,9 +133,9 @@ void InssidiousUi::onCoreStarted()
 		QBrush(backgroundImageRunning));
 	this->setPalette(backgroundPalette);
 	this->uiDeviceController->show();
-	this->pushButtonClose->show();
-	this->pushButtonMinimize->show();
-	this->pushButtonSettings->show();
+	//this->pushButtonClose->show();
+	//this->pushButtonMinimize->show();
+	//this->pushButtonSettings->show();
 }
 
 

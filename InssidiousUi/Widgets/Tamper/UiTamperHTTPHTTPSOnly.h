@@ -19,6 +19,8 @@ private:
 	QPushButton* bHTTPOnly;
 	QPushButton* bHTTPSOnly;
 	QPushButton* bHTTPHTTPSOnly;
+
+	void toggleState(bool) override;
 };
 
 #endif // UITAMPERHTTPHTTPSONLY_H

@@ -82,10 +82,8 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_TamperWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperContentBlocked.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperDelay.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperConditions.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperFirewall.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperHTTPCorruptedResponse.cpp">
@@ -103,13 +101,13 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperModule.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperNoDNS.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperNoInternet.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperNoServer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperNoWebService.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperQuality.cpp">
@@ -124,10 +122,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_TamperWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperContentBlocked.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperDelay.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperFirewall.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_UiTamperHTTPCorruptedResponse.cpp">
@@ -145,13 +140,13 @@
     <ClCompile Include="GeneratedFiles\Release\moc_UiTamperModule.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperNoDNS.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_UiTamperNoInternet.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_UiTamperNoServer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperNoWebService.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_UiTamperQuality.cpp">
@@ -164,8 +159,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Widgets\Tamper\UiTamperHTTPTimeOut.cpp" />
-    <ClCompile Include="Widgets\Tamper\UiTamperContentBlocked.cpp" />
-    <ClCompile Include="Widgets\Tamper\UiTamperDelay.cpp" />
+    <ClCompile Include="Widgets\Tamper\UiTamperFirewall.cpp" />
+    <ClCompile Include="Widgets\Tamper\UiTamperConditions.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperHTTPCorruptedResponse.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperHTTPHTTPSOnly.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperHTTPUnexpectedResponse.cpp" />
@@ -205,7 +200,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Widgets\StartWidget.cpp" />
     <ClCompile Include="Widgets\TabWidget.cpp" />
-    <ClCompile Include="Widgets\Tamper\UiTamperNoDNS.cpp" />
+    <ClCompile Include="Widgets\Tamper\UiTamperNoWebService.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperNoInternet.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperNoServer.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperQuality.cpp" />
@@ -267,10 +262,21 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Background.png" />
+    <Image Include="Resources\BackgroundRunning.png" />
+    <Image Include="Resources\BackgroundStart.png" />
+    <Image Include="Resources\ButtonLeftActive.png" />
+    <Image Include="Resources\ButtonLeftInactive.png" />
+    <Image Include="Resources\ButtonMiddleActive.png" />
+    <Image Include="Resources\ButtonMiddleInactive.png" />
+    <Image Include="Resources\ButtonRightActive.png" />
+    <Image Include="Resources\ButtonRightInactive.png" />
+    <Image Include="Resources\CloseDefault.png" />
     <Image Include="Resources\HeaderSid.png" />
     <Image Include="Resources\MenuDefault.png" />
     <Image Include="Resources\MenuHover.png" />
     <Image Include="Resources\MenuPressed.png" />
+    <Image Include="Resources\MinimizeDefault.png" />
+    <Image Include="Resources\SettingsDefault.png" />
     <Image Include="Resources\StartButtonActive.png" />
     <Image Include="Resources\StartButtonDisabled.png" />
     <Image Include="Resources\StartButtonHover.png" />
@@ -290,6 +296,12 @@
     <Image Include="Resources\TamperButtonInactive.png" />
     <Image Include="Resources\TamperButtonInactiveHover.png" />
     <Image Include="Resources\TamperButtonInactivePressed.png" />
+    <Image Include="Resources\TamperCorruptActive.png" />
+    <Image Include="Resources\TamperCorruptInactive.png" />
+    <Image Include="Resources\TamperDropActive.png" />
+    <Image Include="Resources\TamperDropInactive.png" />
+    <Image Include="Resources\TamperLagActive.png" />
+    <Image Include="Resources\TamperLagInactive.png" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Widgets\TamperWidget.h">
@@ -340,7 +352,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Widgets\Tamper\UiTamperDelay.h">
+    <CustomBuild Include="Widgets\Tamper\UiTamperConditions.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing UiTamperDelay.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -376,13 +388,13 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Widgets\Tamper\UiTamperContentBlocked.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing UiTamperContentBlocked.h...</Message>
+    <CustomBuild Include="Widgets\Tamper\UiTamperFirewall.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing UiTamperFirewall.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I.\.." "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I.\Controllers" "-I.\Widgets" "-I.\Widgets\Tamper"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing UiTamperContentBlocked.h...</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing UiTamperFirewall.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I.\.." "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I.\Controllers" "-I.\Widgets" "-I.\Widgets\Tamper"</Command>
     </CustomBuild>
@@ -448,13 +460,13 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Widgets\Tamper\UiTamperNoDNS.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing UiTamperNoDNS.h...</Message>
+    <CustomBuild Include="Widgets\Tamper\UiTamperNoWebService.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing UiTamperNoWebService.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I.\.." "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I.\Controllers" "-I.\Widgets" "-I.\Widgets\Tamper"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing UiTamperNoDNS.h...</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing UiTamperNoWebService.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I.\.." "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I.\Controllers" "-I.\Widgets" "-I.\Widgets\Tamper"</Command>
     </CustomBuild>

@@ -11,33 +11,10 @@ TamperWidget::TamperWidget(QWidget *parent)
 	this->setPalette(twContainerPalette);
 	this->setGeometry(10 /* in */, 108 /* down */, 780 /* width */, 480 /* height */);
 
-	twContainerVLayout = new QVBoxLayout();
-	this->setLayout(twContainerVLayout);
-	this->twContainerVLayout->setContentsMargins(0, 0, 0, 0);
-	this->twContainerVLayout->setSpacing(0);
-
-
-
-
-	tamperClassFont.setPixelSize(16);
-	tamperClassFont.setFamily("Segoe UI Semibold");
-	tamperClassFont.setStyleStrategy(QFont::PreferAntialias);
-
-
-	for (int i = 0; i < NUM_TAMPER_CLASSES; i++)
-	{
-		tamperClassLabel[i] = new QLabel(TamperClassName[i]);
-		tamperClassLabel[i]->setFixedHeight(22);
-		tamperClassLabel[i]->setFont(tamperClassFont);
-		tamperClassLabel[i]->setStyleSheet(QString("QLabel { color : #46514B; }"));
-		tamperClassLabel[i]->setAlignment(Qt::AlignCenter);
-		this->twContainerVLayout->addWidget(this->tamperClassLabel[i], Qt::AlignHCenter);
-
-
-		tamperClassLayout[i] = new QHBoxLayout();
-		this->twContainerVLayout->addLayout(this->tamperClassLayout[i], Qt::AlignHCenter);
-	}
-
+	tamperGridLayout = new QGridLayout();
+	this->setLayout(tamperGridLayout);
+	this->tamperGridLayout->setContentsMargins(20, 10, 20, 8);
+	this->tamperGridLayout->setSpacing(20);
 
 
 	for (int i = 0; i < NUM_TAMPER_TYPES; i++)
@@ -51,21 +28,17 @@ TamperWidget::TamperWidget(QWidget *parent)
 
 	/* Add the Tamper Types to the appropriate class layouts */
 
-	this->tamperClassLayout[CONDITIONS]->addWidget(this->tamperModule[SPEED]);
-	this->tamperClassLayout[CONDITIONS]->addWidget(this->tamperModule[DELAY]);
-	this->tamperClassLayout[CONDITIONS]->addWidget(this->tamperModule[QUALITY]);
+	tamperGridLayout->addWidget(this->tamperModule[SPEED], 0, 0);
+	tamperGridLayout->addWidget(this->tamperModule[CONDITIONS], 0, 1);
+	tamperGridLayout->addWidget(this->tamperModule[FIREWALL], 0, 2);
 
-	this->tamperClassLayout[RESTRICTIONS]->addWidget(this->tamperModule[REDIR_TO_PORAL]);
-	this->tamperClassLayout[RESTRICTIONS]->addWidget(this->tamperModule[CONTENT_BLOCKED]);
-	this->tamperClassLayout[RESTRICTIONS]->addWidget(this->tamperModule[HTTP_HTTPS_ONLY]);
+	tamperGridLayout->addWidget(this->tamperModule[NO_INTERNET], 1, 0);
+	tamperGridLayout->addWidget(this->tamperModule[NO_SERVER], 1, 1);
+	tamperGridLayout->addWidget(this->tamperModule[NO_WEBSERVICE], 1, 2);
 
-	this->tamperClassLayout[NETWORK_FAILURES]->addWidget(this->tamperModule[NO_INTERNET]);
-	this->tamperClassLayout[NETWORK_FAILURES]->addWidget(this->tamperModule[NO_DNS]);
-	this->tamperClassLayout[NETWORK_FAILURES]->addWidget(this->tamperModule[NO_SERVER]);
-
-	this->tamperClassLayout[WEB_SERVICE_FAILURES]->addWidget(this->tamperModule[HTTP_TIME_OUT]);
-	this->tamperClassLayout[WEB_SERVICE_FAILURES]->addWidget(this->tamperModule[HTTP_UNEXPECTED_RESPONSE]);
-	this->tamperClassLayout[WEB_SERVICE_FAILURES]->addWidget(this->tamperModule[HTTP_CORRUPTED_RESPONSE]);
+	tamperGridLayout->addWidget(this->tamperModule[HTTP_TIME_OUT], 2, 0);
+	tamperGridLayout->addWidget(this->tamperModule[HTTP_UNEXPECTED_RESPONSE], 2, 1);
+	tamperGridLayout->addWidget(this->tamperModule[HTTP_CORRUPTED_RESPONSE], 2, 2);
 
 }
 

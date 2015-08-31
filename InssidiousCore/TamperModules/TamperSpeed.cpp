@@ -47,7 +47,7 @@ inline short TamperSpeed::isBufEmpty()
 short TamperSpeed::process(PacketList* packetList)
 {
 
-	if (!**ppSpeedTime || **ppSpeedTime == SPEED_MAX)
+	if (!**ppSpeedTime || **ppSpeedTime == 0)
 	{
 		/* No speed type set (yet?) or it's set to max, don't process these packets */
 

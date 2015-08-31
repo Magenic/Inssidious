@@ -16,11 +16,17 @@ public:
 
 private:
 	QGridLayout* noServerLayout;
+	
+	QLabel* noServerDescriptionLabel;
+	QString noServerDescriptionText = "Test functionality when a server is down";
+
 	QPushButton* noServerButton;
 
-	QLabel* domainLabel;
-	QComboBox* domainComboBox;
-	QPushButton* domainEditButton;
+	QLabel* configServersDescriptionLabel;
+	QString configServersDescriptionText = "Configure Server Block List: ";
+	QPushButton* configServersButton;
+
+	void toggleState(bool) override;
 };
 
 #endif // UITAMPERNOSERVER_H

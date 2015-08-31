@@ -21,6 +21,8 @@ private:
 	QLabel* domainLabel;
 	QComboBox* domainComboBox;
 	QPushButton* domainEditButton;
+
+	void toggleState(bool) override;
 };
 
 #endif // UITAMPERHTTPCORRUPTEDRESPONSE_H

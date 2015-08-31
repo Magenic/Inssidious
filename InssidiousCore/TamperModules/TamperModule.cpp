@@ -24,29 +24,20 @@ TamperModule* TamperModule::makeTamperModule(int tamperType, void** ppTamperConf
 
 		case SPEED:
 			return new TamperSpeed(ppTamperConfig);
-		case DELAY:
+		case CONDITIONS:
 			return new TamperDelay(ppTamperConfig);
-		case QUALITY:
+		case FIREWALL:
 			return new TamperQuality(ppTamperConfig);
-	
-		/* network restrictions */
-	
-		case REDIR_TO_PORAL:
-			return new TamperRedirToPortal(ppTamperConfig);
-		case CONTENT_BLOCKED:
-			return new TamperContentBlocked(ppTamperConfig);
-		case HTTP_HTTPS_ONLY:
-			return new TamperHTTPHTTPSOnly(ppTamperConfig);
 	
 		/* network failures */
 	
 		case NO_INTERNET:
 			return new TamperNoInternet(ppTamperConfig);
-		case NO_DNS:
-			return new TamperNoDNS(ppTamperConfig);
 		case NO_SERVER:
 			return new TamperNoServer(ppTamperConfig);
-	
+		case NO_WEBSERVICE:
+			return new TamperNoDNS(ppTamperConfig);
+
 		/* web service failures */
 	
 		case HTTP_TIME_OUT:

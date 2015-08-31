@@ -15,6 +15,8 @@ public:
 private:
 	QGridLayout* redirToPortalLayout;
 	QPushButton* redirToPortalButton;
+
+	void toggleState(bool) override;
 };
 
 #endif // UITAMPERREDIRTOPORTAL_H

@@ -3,7 +3,8 @@
 
 #include "UiTamperModule.h"
 
-#include <QtWidgets/QSlider>
+
+#include <QtWidgets/QPushButton>
 
 class UiTamperSpeed : public UiTamperModule
 {
@@ -15,13 +16,16 @@ public:
 
 private:
 	QGridLayout* speedLayout;
-	QSlider *speedSlider;
-	QLabel* sliderTextLabel;
 
-	QString sliderString = "  Edge          3g            4g           LTE          Max  ";
+	QLabel* speedDescriptionLabel;
+	QString speedDescriptionText = "Cap the speed of the network connection";
 
-private slots:
-	void onSpeedSliderChanged(int value);
+	QPushButton* buttonLeft;
+	QPushButton* buttonMiddle1;
+	QPushButton* buttonMiddle2;
+	QPushButton* buttonRight;
+
+	void toggleState(bool) override;
 
 };
 

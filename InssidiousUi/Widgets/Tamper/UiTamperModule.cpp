@@ -1,17 +1,17 @@
 #include "UiTamperModule.h"
 
-#include "UiTamperContentBlocked.h"
-#include "UiTamperDelay.h"
-#include "UiTamperHTTPCorruptedResponse.h"
-#include "UiTamperHTTPHTTPSOnly.h"
-#include "UiTamperHTTPTimeOut.h"
-#include "UiTamperHTTPUnexpectedResponse.h"
-#include "UiTamperNoDNS.h"
+#include "UiTamperSpeed.h"
+#include "UiTamperConditions.h"
+#include "UiTamperFirewall.h"
+
+#include "UiTamperNoWebService.h"
 #include "UiTamperNoInternet.h"
 #include "UiTamperNoServer.h"
-#include "UiTamperQuality.h"
-#include "UiTamperRedirToPortal.h"
-#include "UiTamperSpeed.h"
+
+#include "UiTamperHTTPCorruptedResponse.h"
+#include "UiTamperHTTPTimeOut.h"
+#include "UiTamperHTTPUnexpectedResponse.h"
+
 
 
 UiTamperModule::UiTamperModule(QWidget* parent, TamperType tamperType)
@@ -26,8 +26,8 @@ UiTamperModule::UiTamperModule(QWidget* parent, TamperType tamperType)
 	moduleLayout->setAlignment(Qt::AlignTop);
 	
 	this->setLayout(moduleLayout);
-	this->setFixedWidth(226);
-	this->setFixedHeight(70);
+	this->setFixedWidth(232);
+	this->setFixedHeight(130);
 	this->setAutoFillBackground(true);
 
 
@@ -49,12 +49,13 @@ UiTamperModule::UiTamperModule(QWidget* parent, TamperType tamperType)
 
 	/* Initialize the module name, font, and text palettes */
 
-	moduleNameFont.setFamily("Segoe UI Semibold");
-	moduleNameFont.setPixelSize(16);
-	moduleNameFont.setStyleStrategy(QFont::PreferAntialias);
+	moduleTextPaletteActive.setColor(QPalette::WindowText, QColor(255, 255, 255));
+	moduleTextPaletteInactive.setColor(QPalette::WindowText, QColor(83, 84, 85));
 
-	moduleTextPaletteActive.setColor(QPalette::WindowText, QColor(31, 31, 31));
-	moduleTextPaletteInactive.setColor(QPalette::WindowText, QColor(107, 107, 107));
+	moduleNameFont.setFamily("Segoe UI");
+	moduleNameFont.setWeight(QFont::DemiBold);
+	moduleNameFont.setPixelSize(15);
+	moduleNameFont.setStyleStrategy(QFont::PreferAntialias);
 
 	moduleNameLabel = new QLabel(TamperTypeName[tamperType]);
 	moduleNameLabel->setContentsMargins(0, 10, 0, 0);
@@ -62,10 +63,16 @@ UiTamperModule::UiTamperModule(QWidget* parent, TamperType tamperType)
 	moduleNameLabel->setFont(moduleNameFont);
 	moduleNameLabel->setPalette(moduleTextPaletteInactive);
 
+	moduleDescriptionFont.setFamily("Segoe UI Semibold");
+	moduleDescriptionFont.setPixelSize(11);
+	moduleDescriptionFont.setWeight(QFont::DemiBold);
+	moduleDescriptionFont.setStyleStrategy(QFont::PreferAntialias);
 
-	/* Add the Module Name to the layout */
+
+	/* Add the Module Name & Description to the layout */
 
 	moduleLayout->addWidget(moduleNameLabel);
+
 
 }
 
@@ -77,29 +84,19 @@ UiTamperModule* UiTamperModule::makeUiTamperModule(QWidget* parent, TamperType t
 		
 		case SPEED:
 			return new UiTamperSpeed(parent, tamperType);
-		case DELAY:
-			return new UiTamperDelay(parent, tamperType);
-		case QUALITY:
-			return new UiTamperQuality(parent, tamperType);
-
-		/* network restrictions */
-
-		case REDIR_TO_PORAL:
-			return new UiTamperRedirToPortal(parent, tamperType);
-		case CONTENT_BLOCKED:
-			return new UiTamperContentBlocked(parent, tamperType);
-		case HTTP_HTTPS_ONLY:
-			return new UiTamperHTTPHTTPSOnly(parent, tamperType);
+		case CONDITIONS:
+			return new UiTamperConditions(parent, tamperType);
+		case FIREWALL:
+			return new UiTamperFirewall(parent, tamperType);
 
 		/* network failures */
 
 		case NO_INTERNET:
 			return new UiTamperNoInternet(parent, tamperType);
-		case NO_DNS:
-			return new UiTamperNoDNS(parent, tamperType);
 		case NO_SERVER:
 			return new UiTamperNoServer(parent, tamperType);
-
+		case NO_WEBSERVICE:
+			return new UiTamperNoWebService(parent, tamperType);
 		/* web service failures */
 
 		case HTTP_TIME_OUT:
@@ -122,6 +119,7 @@ void UiTamperModule::select()
 {
 	this->setPalette(buttonPaletteActive);
 	this->moduleNameLabel->setPalette(moduleTextPaletteActive);
+	this->toggleState(true);
 	this->selected = true;
 }
 
@@ -130,6 +128,7 @@ void UiTamperModule::unselect()
 {
 	this->setPalette(buttonPaletteInactive);
 	this->moduleNameLabel->setPalette(moduleTextPaletteInactive);
+	this->toggleState(false);
 	this->selected = false;
 }
 

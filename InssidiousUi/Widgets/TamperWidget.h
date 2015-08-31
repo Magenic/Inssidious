@@ -23,15 +23,15 @@ private slots:
 
 private:
 
-	QVBoxLayout* twContainerVLayout;				//VBoxLayout to lay out the tamper widgets
-	QLabel* tamperClassLabel[NUM_TAMPER_CLASSES];
-	QHBoxLayout* tamperClassLayout[NUM_TAMPER_CLASSES];
+	QGridLayout* tamperGridLayout;				//VBoxLayout to lay out the tamper widgets
+	//QLabel* tamperClassLabel[NUM_TAMPER_CLASSES];
+	//QHBoxLayout* tamperClassLayout[NUM_TAMPER_CLASSES];
 	UiTamperModule* tamperModule[NUM_TAMPER_TYPES];
 
 
 	QPalette twContainerPalette;
 	QPixmap tcBackgroundImageDevicesPresent = QPixmap(":/Tabs/TabsDevicesPresent.png");	//Draws a bordered rectangle
-	QFont tamperClassFont;
+	//QFont tamperClassFont;
 
 };
 

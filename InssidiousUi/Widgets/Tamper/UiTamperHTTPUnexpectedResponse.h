@@ -27,6 +27,8 @@ private:
 	QLabel* domainLabel;
 	QComboBox* domainComboBox;
 	QPushButton* domainEditButton;
+
+	void toggleState(bool) override;
 };
 
 #endif // UITAMPERHTTPUNEXPECTEDRESPONSE_H

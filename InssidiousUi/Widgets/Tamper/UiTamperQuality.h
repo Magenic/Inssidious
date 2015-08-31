@@ -15,13 +15,8 @@ public:
 
 private:
 	QGridLayout* qualityLayout;
-	QLabel* lossLabel;
-	QSpinBox* lossSpinBox;
-	QLabel* corruptionLabel;
-	QSpinBox* corruptionSpinBox;
-	QLabel* tcpResetLabel;
-	QSpinBox* tcpResetSpinBox;
 
+	void toggleState(bool) override;
 };
 
 #endif // UITAMPERQUALITY_H
