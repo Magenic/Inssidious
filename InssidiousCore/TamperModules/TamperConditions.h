@@ -1,10 +1,10 @@
 #include "TamperModule.h"
 
-class TamperQuality : public TamperModule
+class TamperConditions : public TamperModule
 {
 public:
-	TamperQuality(void** ppTamperConfig);
-	~TamperQuality();
+	TamperConditions(void** ppTamperConfig);
+	~TamperConditions();
 	short process(PacketList* packetList) override;
 
 	short resolutionSet = 0;

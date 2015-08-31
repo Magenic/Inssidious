@@ -1,10 +1,10 @@
 #include "TamperModule.h"
 
-class TamperHTTPHTTPSOnly : public TamperModule
+class TamperFirewall : public TamperModule
 {
 public:
-	TamperHTTPHTTPSOnly(void** ppTamperConfig);
-	~TamperHTTPHTTPSOnly();
+	TamperFirewall(void** ppTamperConfig);
+	~TamperFirewall();
 	short process(PacketList* packetList) override;
 
 private:

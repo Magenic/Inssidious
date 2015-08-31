@@ -8,9 +8,9 @@
 #include "UiTamperNoInternet.h"
 #include "UiTamperNoServer.h"
 
-#include "UiTamperHTTPCorruptedResponse.h"
-#include "UiTamperHTTPTimeOut.h"
-#include "UiTamperHTTPUnexpectedResponse.h"
+//#include "UiTamperHTTPCorruptedResponse.h"
+//#include "UiTamperHTTPTimeOut.h"
+//#include "UiTamperHTTPUnexpectedResponse.h"
 
 
 
@@ -97,14 +97,15 @@ UiTamperModule* UiTamperModule::makeUiTamperModule(QWidget* parent, TamperType t
 			return new UiTamperNoServer(parent, tamperType);
 		case NO_WEBSERVICE:
 			return new UiTamperNoWebService(parent, tamperType);
+
 		/* web service failures */
 
-		case HTTP_TIME_OUT:
-			return new UiTamperHTTPTimeOut(parent, tamperType);
-		case HTTP_UNEXPECTED_RESPONSE:
-			return new UiTamperHTTPUnexpectedResponse(parent, tamperType);
-		case HTTP_CORRUPTED_RESPONSE:
-			return new UiTamperHTTPCorruptedResponse(parent, tamperType);
+		//case HTTP_TIME_OUT:
+		//	return new UiTamperHTTPTimeOut(parent, tamperType);
+		//case HTTP_UNEXPECTED_RESPONSE:
+		//	return new UiTamperHTTPUnexpectedResponse(parent, tamperType);
+		//case HTTP_CORRUPTED_RESPONSE:
+		//	return new UiTamperHTTPCorruptedResponse(parent, tamperType);
 
 		/* Should never reach these */
 

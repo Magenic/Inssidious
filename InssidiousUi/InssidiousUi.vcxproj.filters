@@ -50,51 +50,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_UiTamperSpeed.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\Tamper\UiTamperQuality.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperQuality.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperQuality.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\Tamper\UiTamperRedirToPortal.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperRedirToPortal.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperRedirToPortal.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\Tamper\UiTamperHTTPHTTPSOnly.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperHTTPHTTPSOnly.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperHTTPHTTPSOnly.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\Tamper\UiTamperHTTPUnexpectedResponse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperHTTPUnexpectedResponse.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperHTTPUnexpectedResponse.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\Tamper\UiTamperHTTPCorruptedResponse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperHTTPCorruptedResponse.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperHTTPCorruptedResponse.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Widgets\Tamper\UiTamperNoInternet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -112,15 +67,6 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_UiTamperNoServer.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperHTTPTimeOut.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperHTTPTimeOut.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\Tamper\UiTamperHTTPTimeOut.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Widgets\Tamper\UiTamperConditions.cpp">
       <Filter>Source Files</Filter>
@@ -164,28 +110,10 @@
     <CustomBuild Include="Widgets\Tamper\UiTamperSpeed.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Widgets\Tamper\UiTamperQuality.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Widgets\Tamper\UiTamperRedirToPortal.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Widgets\Tamper\UiTamperHTTPHTTPSOnly.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Widgets\Tamper\UiTamperHTTPUnexpectedResponse.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Widgets\Tamper\UiTamperHTTPCorruptedResponse.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="Widgets\Tamper\UiTamperNoInternet.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="Widgets\Tamper\UiTamperNoServer.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Widgets\Tamper\UiTamperHTTPTimeOut.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="Widgets\Tamper\UiTamperConditions.h">

@@ -15,9 +15,9 @@ enum TamperType
 	NO_WEBSERVICE,
 
 	/* web service failures */
-	HTTP_TIME_OUT,
-	HTTP_UNEXPECTED_RESPONSE,
-	HTTP_CORRUPTED_RESPONSE,
+	//HTTP_TIME_OUT,
+	//HTTP_UNEXPECTED_RESPONSE,
+	//HTTP_CORRUPTED_RESPONSE,
 
 	/* total*/
 	NUM_TAMPER_TYPES
@@ -31,9 +31,9 @@ static QString TamperTypeName[NUM_TAMPER_TYPES]
 	QString("Internet Access"),
 	QString("Server Access"),
 	QString("Web Service Access"),
-	QString(""),
-	QString(""),
-	QString("")
+	//QString(""),
+	//QString(""),
+	//QString("")
 };
 
 	

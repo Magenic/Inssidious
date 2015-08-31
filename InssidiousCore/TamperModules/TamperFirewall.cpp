@@ -1,8 +1,8 @@
 
-#include "TamperHTTPHTTPSOnly.h"
+#include "TamperFirewall.h"
 
 
-short TamperHTTPHTTPSOnly::process(PacketList* packetList)
+short TamperFirewall::process(PacketList* packetList)
 {
 	short tampered = FALSE;
 	Packet *pac = packetList->head->next;
@@ -39,12 +39,12 @@ short TamperHTTPHTTPSOnly::process(PacketList* packetList)
 	return tampered;
 }
 
-TamperHTTPHTTPSOnly::TamperHTTPHTTPSOnly(void** ppTamperConfig)
+TamperFirewall::TamperFirewall(void** ppTamperConfig)
 {
 	this->ppTamperConfig = ppTamperConfig;
 }
 
-TamperHTTPHTTPSOnly::~TamperHTTPHTTPSOnly()
+TamperFirewall::~TamperFirewall()
 {
 	
 }

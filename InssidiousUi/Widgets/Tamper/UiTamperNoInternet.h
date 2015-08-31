@@ -22,7 +22,7 @@ private:
 	QPushButton* noTrafficButton;
 
 	QLabel* redirDescriptionLabel;
-	QString redirDescriptionText   = "Captive Hotspot: ";
+	QString redirDescriptionText   = "Captive Portal: ";
 	QPushButton* redirButton;
 	
 

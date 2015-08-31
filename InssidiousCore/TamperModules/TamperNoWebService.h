@@ -1,10 +1,10 @@
 #include "TamperModule.h"
 
-class TamperHTTPTimeOut : public TamperModule
+class TamperNoWebService : public TamperModule
 {
 public:
-	TamperHTTPTimeOut(void** ppTamperConfig);
-	~TamperHTTPTimeOut();
+	TamperNoWebService(void** ppTamperConfig);
+	~TamperNoWebService();
 	short process(PacketList* packetList) override;
 
 private:

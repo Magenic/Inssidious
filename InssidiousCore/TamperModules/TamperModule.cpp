@@ -1,17 +1,12 @@
 #include "TamperModule.h"
 
-#include "TamperContentBlocked.h"
-#include "TamperDelay.h"
-#include "TamperHTTPCorruptedResponse.h"
-#include "TamperHTTPHTTPSOnly.h"
-#include "TamperHTTPTimeOut.h"
-#include "TamperHTTPUnexpectedResponse.h"
-#include "TamperNoDNS.h"
+#include "TamperSpeed.h"
+#include "TamperConditions.h"
+#include "TamperFirewall.h"
+
 #include "TamperNoInternet.h"
 #include "TamperNoServer.h"
-#include "TamperQuality.h"
-#include "TamperRedirToPortal.h"
-#include "TamperSpeed.h"
+#include "TamperNoWebService.h"
 
 #include "TamperTypes.h"
 
@@ -25,9 +20,9 @@ TamperModule* TamperModule::makeTamperModule(int tamperType, void** ppTamperConf
 		case SPEED:
 			return new TamperSpeed(ppTamperConfig);
 		case CONDITIONS:
-			return new TamperDelay(ppTamperConfig);
+			return new TamperConditions(ppTamperConfig);
 		case FIREWALL:
-			return new TamperQuality(ppTamperConfig);
+			return new TamperFirewall(ppTamperConfig);
 	
 		/* network failures */
 	
@@ -36,16 +31,16 @@ TamperModule* TamperModule::makeTamperModule(int tamperType, void** ppTamperConf
 		case NO_SERVER:
 			return new TamperNoServer(ppTamperConfig);
 		case NO_WEBSERVICE:
-			return new TamperNoDNS(ppTamperConfig);
+			return new TamperNoWebService(ppTamperConfig);
 
 		/* web service failures */
 	
-		case HTTP_TIME_OUT:
-			return new TamperHTTPTimeOut(ppTamperConfig);
-		case HTTP_UNEXPECTED_RESPONSE:
-			return new TamperHTTPUnexpectedResponse(ppTamperConfig);
-		case HTTP_CORRUPTED_RESPONSE:
-			return new TamperHTTPCorruptedResponse(ppTamperConfig);
+		//case HTTP_TIME_OUT:
+		//	return new TamperHTTPTimeOut(ppTamperConfig);
+		//case HTTP_UNEXPECTED_RESPONSE:
+		//	return new TamperHTTPUnexpectedResponse(ppTamperConfig);
+		//case HTTP_CORRUPTED_RESPONSE:
+		//	return new TamperHTTPCorruptedResponse(ppTamperConfig);
 	
 		/* Should never reach these */
 	

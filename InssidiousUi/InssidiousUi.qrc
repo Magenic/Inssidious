@@ -30,13 +30,8 @@
         <file alias="ButtonRightActive.png">Resources/ButtonRightActive.png</file>
         <file alias="ButtonRightInactive.png">Resources/ButtonRightInactive.png</file>     
         <file alias="ButtonDoubleWideActive.png">Resources/ButtonDoubleWideActive.png</file>
-        <file alias="ButtonDoubleWideInactive.png">Resources/ButtonDoubleWideInactive.png</file>     
-        <file alias="CorruptPacketsActive.png">Resources/TamperCorruptActive.png</file>
-        <file alias="CorruptPacketsInactive.png">Resources/TamperCorruptInactive.png</file>
-        <file alias="DropPacketsActive.png">Resources/TamperDropActive.png</file>
-        <file alias="DropPacketsInactive.png">Resources/TamperDropInactive.png</file>
-        <file alias="LagPacketsActive.png">Resources/TamperLagActive.png</file>
-        <file alias="LagPacketsInactive.png">Resources/TamperLagInactive.png</file>
+        <file alias="ButtonDoubleWideInactive.png">Resources/ButtonDoubleWideInactive.png</file>
+        <file alias="ComingSoon.png">Resources/TamperComingSoon.png</file>    
     </qresource>
     <qresource prefix="/InssidiousUi">
         <file alias="BackgroundStart.png">Resources/BackgroundStart.png</file>

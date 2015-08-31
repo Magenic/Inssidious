@@ -118,20 +118,14 @@
     <ClCompile Include="Controllers\ICSController.cpp" />
     <ClCompile Include="InssidiousCore.cpp" />
     <ClCompile Include="TamperModules\TamperModule.cpp" />
-    <ClCompile Include="TamperModules\TamperHTTPCorruptedResponse.cpp" />
-    <ClCompile Include="TamperModules\TamperQuality.cpp" />
-    <ClCompile Include="TamperModules\TamperHTTPHTTPSOnly.cpp" />
-    <ClCompile Include="TamperModules\TamperHTTPUnexpectedResponse.cpp" />
+    <ClCompile Include="TamperModules\TamperConditions.cpp" />
+    <ClCompile Include="TamperModules\TamperFirewall.cpp" />
     <ClCompile Include="TamperModules\TamperSpeed.cpp" />
-    <ClCompile Include="TamperModules\TamperNoDNS.cpp" />
+    <ClCompile Include="TamperModules\TamperNoWebService.cpp" />
     <ClCompile Include="TamperModules\TamperNoInternet.cpp" />
     <ClCompile Include="TamperModules\TamperNoServer.cpp" />
     <ClCompile Include="TamperModules\PacketList.cpp" />
     <ClCompile Include="Controllers\DivertController.cpp" />
-    <ClCompile Include="TamperModules\TamperRedirToPortal.cpp" />
-    <ClCompile Include="TamperModules\TamperHTTPTimeOut.cpp" />
-    <ClCompile Include="TamperModules\TamperContentBlocked.cpp" />
-    <ClCompile Include="TamperModules\TamperDelay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Controllers\HostedNetworkController.h">
@@ -210,17 +204,11 @@
     </CustomBuild>
     <ClInclude Include="TamperModules\PacketList.h" />
     <ClInclude Include="TamperModules\TamperModule.h" />
-    <ClInclude Include="TamperModules\TamperContentBlocked.h" />
-    <ClInclude Include="TamperModules\TamperDelay.h" />
-    <ClInclude Include="TamperModules\TamperHTTPCorruptedResponse.h" />
-    <ClInclude Include="TamperModules\TamperHTTPHTTPSOnly.h" />
-    <ClInclude Include="TamperModules\TamperHTTPTimeOut.h" />
-    <ClInclude Include="TamperModules\TamperHTTPUnexpectedResponse.h" />
-    <ClInclude Include="TamperModules\TamperNoDNS.h" />
+    <ClInclude Include="TamperModules\TamperFirewall.h" />
+    <ClInclude Include="TamperModules\TamperNoWebService.h" />
     <ClInclude Include="TamperModules\TamperNoInternet.h" />
     <ClInclude Include="TamperModules\TamperNoServer.h" />
-    <ClInclude Include="TamperModules\TamperQuality.h" />
-    <ClInclude Include="TamperModules\TamperRedirToPortal.h" />
+    <ClInclude Include="TamperModules\TamperConditions.h" />
     <ClInclude Include="TamperModules\TamperSpeed.h" />
     <ClInclude Include="TamperTypes.h" />
   </ItemGroup>

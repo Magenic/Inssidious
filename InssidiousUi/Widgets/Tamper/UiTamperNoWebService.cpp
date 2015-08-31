@@ -41,7 +41,7 @@ UiTamperNoWebService::UiTamperNoWebService(QWidget *parent, TamperType tamperTyp
 	noWebServiceLayout->addWidget(noWebServiceButton, 3, 0, 1, 3, Qt::AlignHCenter);
 	noWebServiceLayout->addItem(new QSpacerItem(0, 10), 4, 0);
 	noWebServiceLayout->addWidget(configWebServicesDescriptionLabel, 5, 0, 1, 2, Qt::AlignLeft);
-	noWebServiceLayout->addWidget(configWebServicesButton, 5, 2);
+	noWebServiceLayout->addWidget(configWebServicesButton, 5, 2, Qt::AlignLeft);
 
 	moduleLayout->addLayout(noWebServiceLayout);
 }

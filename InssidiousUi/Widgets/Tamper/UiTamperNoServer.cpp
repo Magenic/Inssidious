@@ -41,8 +41,8 @@ UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 	noServerLayout->addItem(new QSpacerItem(0, 12), 2, 0);
 	noServerLayout->addWidget(noServerButton, 3, 0, 1, 3, Qt::AlignHCenter);
 	noServerLayout->addItem(new QSpacerItem(0, 10), 4, 0);
-	noServerLayout->addWidget(configServersDescriptionLabel, 5, 0, 1, 2);
-	noServerLayout->addWidget(configServersButton, 5, 2);
+	noServerLayout->addWidget(configServersDescriptionLabel, 5, 0, 1, 2, Qt::AlignLeft);
+	noServerLayout->addWidget(configServersButton, 5, 2, Qt::AlignLeft);
 
 	moduleLayout->addLayout(noServerLayout);
 }
