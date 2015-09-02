@@ -30,14 +30,14 @@ enum TamperType
 static QString TamperTypeName[NUM_TAMPER_TYPES]
 {
 	QString("Network Speed"),
-		QString("Network Conditions"),
-		QString("Network Firewall"),
-		QString("Internet Access"),
-		QString("Server Access"),
-		QString("Web Service Access"),
-		//QString(""),
-		//QString(""),
-		//QString("")
+	QString("Network Conditions"),
+	QString("Network Firewall"),
+	QString("Internet Access"),
+	QString("Server Access"),
+	QString("Web Service Access"),
+	//QString(""),
+	//QString(""),
+	//QString("")
 };
 
 

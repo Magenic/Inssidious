@@ -32,7 +32,7 @@ private:
 
 
 	QPalette twContainerPalette;
-	QPixmap tcBackgroundImageDevicesPresent = QPixmap(":/Tabs/TabsDevicesPresent.png");	
+	QPixmap tcBackgroundImageDevicesPresent = QPixmap(":/Tamper/TamperWidgetBackground.png");	
 
 
 };

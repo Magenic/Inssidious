@@ -15,7 +15,7 @@ TamperFirewall::~TamperFirewall()
 short TamperFirewall::process(PacketList* packetList)
 {
 
-	if (packetList->head == packetList->tail)
+	if (packetList->head->next == packetList->tail)
 	{
 		/* No packets */
 
@@ -26,7 +26,7 @@ short TamperFirewall::process(PacketList* packetList)
 	/* Loop and drop any packets traveling over blocked ports */
 
 	Packet *pDivertPacket = packetList->head->next;
-	while (pDivertPacket->next != packetList->tail)
+	while (pDivertPacket != packetList->tail)
 	{
 		WINDIVERT_TCPHDR *tcphdr = NULL;
 		WINDIVERT_UDPHDR *udphdr = NULL;
@@ -36,11 +36,13 @@ short TamperFirewall::process(PacketList* packetList)
 		{
 			if (tcphdr->DstPort == 80 && (*ppFirewallConfig)->allowHTTP)
 			{
+				pDivertPacket = pDivertPacket->next;
 				continue;
 			}
 
 			if (tcphdr->DstPort == 443 && (*ppFirewallConfig)->allowHTTPS)
 			{
+				pDivertPacket = pDivertPacket->next;
 				continue;
 			}
 		}
@@ -49,11 +51,13 @@ short TamperFirewall::process(PacketList* packetList)
 		{
 			if (udphdr->DstPort == 80 && (*ppFirewallConfig)->allowHTTP)
 			{
+				pDivertPacket = pDivertPacket->next;
 				continue;
 			}
 
 			if (udphdr->DstPort == 443 && (*ppFirewallConfig)->allowHTTPS)
 			{
+				pDivertPacket = pDivertPacket->next;
 				continue;
 			}
 		}

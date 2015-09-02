@@ -50,6 +50,12 @@ private:
 	QPushButton *pushButtonMinimize;
 	QPushButton *pushButtonSettings;
 
+	QLabel networkName;
+	QLabel networkNameIcon;
+	QLabel networkPassword;
+	QLabel networkPasswordIcon;
+	QPalette textPalette;
+
 	/* Inssidious creates instances of the core backend, Start Widget, and Tab Controller */
 
 	InssidiousCore* inssidiousCore;

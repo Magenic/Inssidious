@@ -1,10 +1,6 @@
 <RCC>
     <qresource prefix="/Start">
         <file alias="StartLogo.png">Resources/StartLogo.png</file>
-        <file alias="StartButtonActive.png">Resources/StartButtonActive.png</file>
-        <file alias="StartButtonDisabled.png">Resources/StartButtonDisabled.png</file>
-        <file alias="StartButtonHover.png">Resources/StartButtonHover.png</file>
-        <file alias="StartButtonPressed.png">Resources/StartButtonPressed.png</file>
     </qresource>
     <qresource prefix="/Tabs">
         <file alias="TabActive.png">Resources/TabActive.png</file>
@@ -13,36 +9,9 @@
         <file alias="TabInactive.png">Resources/TabInactive.png</file>
         <file alias="TabInactiveHover.png">Resources/TabInactiveHover.png</file>
         <file alias="TabInactivePressed.png">Resources/TabInactivePressed.png</file>
-        <file alias="TabsDevicesPresent.png">Resources/TabsDevicesPresent.png</file>
-        <file alias="TabsNoDevices.png">Resources/TabsNoDevices.png</file>
-    </qresource>
-    <qresource prefix="Device">
-      <file alias="SetButtonActive.png">Resources/Device/SetButtonActive.png</file>
-      <file alias="SetButtonInactive.png">Resources/Device/SetButtonInactive.png</file>
-      <file alias="SetButtonHover.png">Resources/Device/SetButtonHover.png</file>
-      <file alias="SetButtonPressed.png">Resources/Device/SetButtonPressed.png</file>
-      <file alias="NewDeviceActive.png">Resources/Device/NewDeviceActive.png</file>
-      <file alias="NewDeviceInactive.png">Resources/Device/NewDeviceInactive.png</file>
-      <file alias="iPhoneActive.png">Resources/Device/iPhoneActive.png</file>
-      <file alias="iPhoneInactive.png">Resources/Device/iPhoneInactive.png</file>
-      <file alias="AndroidActive.png">Resources/Device/AndroidActive.png</file>
-      <file alias="AndroidInactive.png">Resources/Device/AndroidInactive.png</file>
-      <file alias="WindowsPhoneActive.png">Resources/Device/WindowsPhoneActive.png</file>
-      <file alias="WindowsPhoneInactive.png">Resources/Device/WindowsPhoneInactive.png</file>
-      <file alias="iPadActive.png">Resources/Device/iPadActive.png</file>
-      <file alias="iPadInactive.png">Resources/Device/iPadInactive.png</file>
-      <file alias="AndroidTabletActive.png">Resources/Device/AndroidTabletActive.png</file>
-      <file alias="AndroidTabletInactive.png">Resources/Device/AndroidTabletInactive.png</file>
-      <file alias="WindowsTabletActive.png">Resources/Device/WindowsTabletActive.png</file>
-      <file alias="WindowsTabletInactive.png">Resources/Device/WindowsTabletInactive.png</file>
-      <file alias="MacBookActive.png">Resources/Device/MacBookActive.png</file>
-      <file alias="MacBookInactive.png">Resources/Device/MacBookInactive.png</file>
-      <file alias="ChromebookActive.png">Resources/Device/ChromebookActive.png</file>
-      <file alias="ChromebookInactive.png">Resources/Device/ChromebookInactive.png</file>
-      <file alias="WindowsLaptopActive.png">Resources/Device/WindowsLaptopActive.png</file>
-      <file alias="WindowsLaptopInactive.png">Resources/Device/WindowsLaptopInactive.png</file>
     </qresource>
     <qresource prefix="/Tamper">
+        <file alias="TamperWidgetBackground.png">Resources/TamperWidgetBackground.png</file>
         <file alias="TamperButtonActive.png">Resources/TamperButtonActive.png</file>
         <file alias="TamperButtonActiveHover.png">Resources/TamperButtonActiveHover.png</file>
         <file alias="TamperButtonActivePressed.png">Resources/TamperButtonActivePressed.png</file>
@@ -55,13 +24,13 @@
         <file alias="ButtonMiddleInactive.png">Resources/ButtonMiddleInactive.png</file>
         <file alias="ButtonRightActive.png">Resources/ButtonRightActive.png</file>
         <file alias="ButtonRightInactive.png">Resources/ButtonRightInactive.png</file>     
-        <file alias="ButtonDoubleWideActive.png">Resources/ButtonDoubleWideActive.png</file>
-        <file alias="ButtonDoubleWideInactive.png">Resources/ButtonDoubleWideInactive.png</file>
         <file alias="ComingSoon.png">Resources/TamperComingSoon.png</file>    
     </qresource>
     <qresource prefix="/InssidiousUi">
         <file alias="BackgroundStart.png">Resources/BackgroundStart.png</file>
         <file alias="BackgroundRunning.png">Resources/BackgroundRunning.png</file>
+        <file alias="NetworkNameIcon.png">Resources/NetworkNameIcon.png</file>
+        <file alias="NetworkPasswordIcon.png">Resources/NetworkPasswordIcon.png</file>
         <file alias="CloseDefault.png">Resources/CloseDefault.png</file>
         <file alias="MinimizeDefault.png">Resources/MinimizeDefault.png</file>
         <file alias="SettingsDefault.png">Resources/SettingsDefault.png</file>

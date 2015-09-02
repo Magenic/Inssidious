@@ -27,7 +27,7 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 		40,														//40 pixels from the top to clear room for the header
 		800 - 16 - 16,											//Use width of the parent - 16 to account for extended frame for widget width 
 		600 - 40 - 16);											//Use height of the parent - 16 to account for extended frame for widget height
-	this->layout()->addItem(new QSpacerItem(0, 70));			//Pad down from the top before any other items are added
+	this->layout()->addItem(new QSpacerItem(0, 50));			//Pad down from the top before any other items are added
 	this->setAutoFillBackground(false);							//Don't fill in a background color
 	this->setParent(parent);									//Display the widget on top of Inssidious widget
 	descriptionTextPalette.setColor(QPalette::WindowText,		//Set the default description Window text 
@@ -49,7 +49,7 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 	networkNameLabel = new QLabel();							//Initialize the QLabel pointer
 	networkNameLabel->setText(networkNameText);					//Set the text
 	networkNameLabel->setPalette(descriptionTextPalette);		//Set the text color
-	networkNameLabel->setContentsMargins(0, 35, 0, 4);			//Pad the label down 35 from the logo and up 4 from the next object
+	networkNameLabel->setContentsMargins(0, 55, 0, 4);			//Pad the label down 55 from the logo and up 4 from the next object
 	networkNameLabel->setAlignment(Qt::AlignCenter);			//Center the text within the QLabel
 	networkNameInput = new QLineEdit();							//Initialize the QLineEdit pointer
 	networkNameInput->setText("Inssidious - Ian");				//Set the text
@@ -115,10 +115,11 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 
 	startButton = new QPushButton();						//Initialize the Start button pointer
 	startButton->setStyleSheet(startButtonStyleSheet);		//Set the style sheet to get the background images for button states
-	startButton->setFixedSize(104, 30);						//Set a fixed button size (#s from the dimensions of the button images)
+	startButton->setFixedSize(90, 30);						//Set a fixed button size (#s from the dimensions of the button images)
+	startButton->setText("Start");
 	connect(startButton, SIGNAL(clicked()),					//To react to button clicks, connect the Start button's clicked signal
 		this, SLOT(onStartButtonClicked()));				//To the onStartButtonClicked function in this class
-	this->layout()->addItem(new QSpacerItem(0, 15));		//Pad down from the internet connection combo box
+	this->layout()->addItem(new QSpacerItem(0, 24));		//Pad down from the internet connection combo box
 	this->layout()->addWidget(startButton);					//Add the start button to the Start widget layout
 	this->layout()->setAlignment(startButton, Qt::AlignHCenter);	//And align it in the center of the layout
 	

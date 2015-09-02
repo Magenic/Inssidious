@@ -23,7 +23,7 @@ UiTamperNoInternet::UiTamperNoInternet(QWidget *parent, TamperType tamperType)
 
 	noTrafficButton = new QPushButton();
 	noTrafficButton->setCheckable(true);
-	noTrafficButton->setStyleSheet(buttonDoubleWideStyleSheet);
+	noTrafficButton->setStyleSheet(buttonStyleSheet);
 	noTrafficButton->setFixedSize(120, 24);
 	noTrafficButton->setText("No Internet Access");
 	noTrafficButton->setDisabled(true);
@@ -38,7 +38,7 @@ UiTamperNoInternet::UiTamperNoInternet(QWidget *parent, TamperType tamperType)
 
 	redirButton = new QPushButton();
 	redirButton->setCheckable(true);
-	redirButton->setStyleSheet(buttonDoubleWideStyleSheet);
+	redirButton->setStyleSheet(buttonStyleSheet);
 	redirButton->setFixedSize(120, 24);
 	redirButton->setText("Redirect to Portal");
 	redirButton->setDisabled(true);

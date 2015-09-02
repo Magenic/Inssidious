@@ -24,15 +24,14 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	httpButton = new QPushButton();
 	httpsButton = new QPushButton();
 
-	httpButton->setStyleSheet(buttonLeftStyleSheet);
-	httpsButton->setStyleSheet(buttonRightStyleSheet);
+	httpButton->setStyleSheet(buttonStyleSheet);
+	httpsButton->setStyleSheet(buttonStyleSheet);
 	httpButton->setText("HTTP");
-	httpsButton->setText("HTTPS");
 	httpsButton->setText("HTTPS");
 	httpButton->setFont(moduleDescriptionFont);
 	httpsButton->setFont(moduleDescriptionFont);
-	httpButton->setFixedSize(60, 24);
-	httpsButton->setFixedSize(60, 24);
+	httpButton->setFixedSize(48, 24);
+	httpsButton->setFixedSize(48, 24);
 	httpButton->setCheckable(true);
 	httpsButton->setCheckable(true);
 	httpButton->setDisabled(true);
@@ -48,10 +47,10 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	filterDescriptionLabel->setPalette(moduleTextPaletteInactive);
 
 	filterButton = new QPushButton();
-	filterButton->setStyleSheet(buttonDoubleWideStyleSheet);
+	filterButton->setStyleSheet(buttonStyleSheet);
 	filterButton->setText("Block All Content");
 	filterButton->setFont(moduleDescriptionFont);
-	filterButton->setFixedSize(120, 24);
+	filterButton->setFixedSize(106, 24);
 	filterButton->setCheckable(true);
 	filterButton->setDisabled(true);
 

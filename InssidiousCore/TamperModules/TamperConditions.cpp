@@ -44,7 +44,7 @@ TamperConditions::~TamperConditions()
 short TamperConditions::process(PacketList* packetList)
 {
 
-	if (packetList->head == packetList->tail)
+	if (packetList->head->next == packetList->tail)
 	{
 		/* No packets */
 
@@ -54,7 +54,7 @@ short TamperConditions::process(PacketList* packetList)
 	/* Loop through all packets in the list */
 
 	Packet* pDivertPacket = packetList->head;
-	while (pDivertPacket->next != packetList->tail)
+	while (pDivertPacket != packetList->tail)
 	{
 		if (calcChance((*ppConditionsConfig)->chanceLoss))
 		{
@@ -66,7 +66,7 @@ short TamperConditions::process(PacketList* packetList)
 			/* Pull this packet into the delay buffer */
 
 			packetList->insertAfter(packetList->popNode(pDivertPacket), bufferHead)->timestamp = timeGetTime() + delayTime;
-			pDivertPacket = packetList->tail->prev;
+			pDivertPacket = pDivertPacket->next;
 
 			/* Increment the buffer size and the next packet's release time */
 
@@ -100,6 +100,8 @@ short TamperConditions::process(PacketList* packetList)
 
 				//Perhaps offer the evil version, recalculating this, this one day
 				//WinDivertHelperCalcChecksums(pDivertPacket->packet, pDivertPacket->packetLen, 0);
+				
+				pDivertPacket = pDivertPacket->next;
 			}
 		}
 		else if (pDivertPacket->packetLen > TCP_MIN_SIZE && calcChance((*ppConditionsConfig)->chanceReset))
@@ -114,12 +116,14 @@ short TamperConditions::process(PacketList* packetList)
 				pTcpHdr->Rst = 1;
 				WinDivertHelperCalcChecksums(pDivertPacket->packet, pDivertPacket->packetLen, 0);
 			}
+
+			pDivertPacket = pDivertPacket->next;
 		}
 		else
 		{
 			/* This packet survives */
 
-			pDivertPacket = packetList->head->next;
+			pDivertPacket = pDivertPacket->next;
 		}
 	}
 

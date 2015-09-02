@@ -38,7 +38,7 @@ short TamperSpeed::process(PacketList* packetList)
 		return 0;
 	}
 
-	if (packetList->head == packetList->tail)
+	if (packetList->head->next == packetList->tail)
 	{
 		/* No packets */
 

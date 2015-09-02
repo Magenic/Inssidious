@@ -14,8 +14,8 @@ UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 
 	noServerButton = new QPushButton();
 	noServerButton->setCheckable(true);
-	noServerButton->setStyleSheet(buttonDoubleWideStyleSheet);
-	noServerButton->setFixedSize(120, 24);
+	noServerButton->setStyleSheet(buttonStyleSheet);
+	noServerButton->setFixedSize(100, 24);
 	noServerButton->setText("Block Servers");
 	noServerButton->setDisabled(true);
 
@@ -28,7 +28,7 @@ UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 				
 	configServersButton = new QPushButton();
 	configServersButton->setCheckable(true);
-	configServersButton->setStyleSheet(buttonMiddleStyleSheet);
+	configServersButton->setStyleSheet(buttonStyleSheet);
 	configServersButton->setFixedSize(16, 16);
 	configServersButton->setText("");
 	configServersButton->setDisabled(true);

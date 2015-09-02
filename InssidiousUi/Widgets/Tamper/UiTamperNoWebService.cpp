@@ -14,7 +14,7 @@ UiTamperNoWebService::UiTamperNoWebService(QWidget *parent, TamperType tamperTyp
 
 	noWebServiceButton = new QPushButton();
 	noWebServiceButton->setCheckable(true);
-	noWebServiceButton->setStyleSheet(buttonDoubleWideStyleSheet);
+	noWebServiceButton->setStyleSheet(buttonStyleSheet);
 	noWebServiceButton->setFixedSize(120, 24);
 	noWebServiceButton->setText("Block Web Services");
 	noWebServiceButton->setDisabled(true);
@@ -28,7 +28,7 @@ UiTamperNoWebService::UiTamperNoWebService(QWidget *parent, TamperType tamperTyp
 
 	configWebServicesButton = new QPushButton();
 	configWebServicesButton->setCheckable(true);
-	configWebServicesButton->setStyleSheet(buttonMiddleStyleSheet);
+	configWebServicesButton->setStyleSheet(buttonStyleSheet);
 	configWebServicesButton->setFixedSize(16, 16);
 	configWebServicesButton->setText("");
 	configWebServicesButton->setDisabled(true);

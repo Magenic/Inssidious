@@ -48,21 +48,45 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	pushButtonMinimize->setIcon(QIcon(":/InssidiousUi/MinimizeDefault.png"));
 	pushButtonSettings->setIcon(QIcon(":/InssidiousUi/SettingsDefault.png"));
 
-	pushButtonClose->setIconSize(QSize(33, 20));
-	pushButtonMinimize->setIconSize(QSize(33, 20));
-	pushButtonSettings->setIconSize(QSize(32, 20));
+	pushButtonClose->setIconSize(QSize(33, 21));
+	pushButtonMinimize->setIconSize(QSize(33, 21));
+	pushButtonSettings->setIconSize(QSize(33, 21));
 
-	pushButtonClose->setGeometry(766, 2, 33, 20);
-	pushButtonMinimize->setGeometry(733, 2, 33, 20);
-	pushButtonSettings->setGeometry(701, 2, 32, 20);
+	pushButtonClose->setGeometry(766, 1, 33, 21);
+	pushButtonMinimize->setGeometry(733, 1, 33, 21);
+	pushButtonSettings->setGeometry(700, 1, 33, 21);
 
 	connect(pushButtonClose, SIGNAL(clicked()), this, SLOT(pushButtonCloseClicked()));
 	connect(pushButtonMinimize, SIGNAL(clicked()), this, SLOT(pushButtonMinimizeClicked()));
 	connect(pushButtonSettings, SIGNAL(clicked()), this, SLOT(pushButtonSettingsClicked()));
 
-	pushButtonClose->hide();
-	pushButtonMinimize->hide();
-	pushButtonSettings->hide();
+
+	/* Draw and hide the network name and password labels */
+
+	this->networkName.setParent(this);
+	this->networkNameIcon.setParent(this);
+	this->networkPassword.setParent(this);
+	this->networkPasswordIcon.setParent(this);
+	
+	this->networkName.setGeometry(32, 4, 100, 16);
+	this->networkNameIcon.setGeometry(10, 4, 16, 16);
+	this->networkPassword.setGeometry(32, 22, 100, 16);
+	this->networkPasswordIcon.setGeometry(10, 22, 16, 16);
+
+	textPalette.setColor(QPalette::WindowText, QColor(230, 230, 230));
+	this->networkName.setPalette(textPalette);
+	this->networkPassword.setPalette(textPalette);
+
+	this->networkName.setFont(QFont("Segoe UI", 8, QFont::Normal, false));
+	this->networkPassword.setFont(QFont("Segoe UI", 8, QFont::Normal, true));
+
+	this->networkNameIcon.setPixmap(QPixmap(":/InssidiousUi/NetworkNameIcon.png"));
+	this->networkPasswordIcon.setPixmap(QPixmap(":/InssidiousUi/NetworkPasswordIcon.png"));
+
+	this->networkName.hide();
+	this->networkNameIcon.hide();
+	this->networkPassword.hide();
+	this->networkPasswordIcon.hide();
 
 
 	/* Initialize the core backend and start the thread */
@@ -110,6 +134,9 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 
 void InssidiousUi::onUiStartCore(QString networkName, QString networkPassword, QString networkAdapter)
 {
+	this->networkName.setText(networkName);
+	this->networkPassword.setText(networkPassword);
+
 	emit coreStart(networkName, networkPassword, networkAdapter);
 }
 
@@ -133,9 +160,15 @@ void InssidiousUi::onCoreStarted()
 		QBrush(backgroundImageRunning));
 	this->setPalette(backgroundPalette);
 	this->uiDeviceController->show();
-	//this->pushButtonClose->show();
-	//this->pushButtonMinimize->show();
-	//this->pushButtonSettings->show();
+
+
+	/* Show the Network Name and Password in the upper left */
+
+	this->networkName.show();
+	this->networkPassword.show();
+	this->networkNameIcon.show();
+	this->networkPasswordIcon.show();
+
 }
 
 

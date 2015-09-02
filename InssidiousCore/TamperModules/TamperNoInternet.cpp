@@ -17,7 +17,7 @@ TamperNoInternet::~TamperNoInternet()
 short TamperNoInternet::process(PacketList* packetList)
 {
 
-	if (packetList->head == packetList->tail)
+	if (packetList->head->next == packetList->tail)
 	{
 		/* No packets */
 
