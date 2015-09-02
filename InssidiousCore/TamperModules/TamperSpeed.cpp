@@ -1,10 +1,10 @@
 #include "TamperSpeed.h"
-#include "TamperTypes.h"
 
 
 TamperSpeed::TamperSpeed(void** ppTamperConfig)
 {
-	this->ppSpeedTime = (short**)ppTamperConfig;
+
+	this->ppTamperSpeedConfig = (TamperSpeedConfig**)ppTamperConfig;
 
 
 	/* Start a linked list to buffer packets in before re-injecting at a later time */
@@ -31,9 +31,9 @@ TamperSpeed::~TamperSpeed()
 short TamperSpeed::process(PacketList* packetList)
 {
 
-	if (!**ppSpeedTime || **ppSpeedTime == 0)
+	if ((*ppTamperSpeedConfig)->speedType == SPEED_MAX)
 	{
-		/* No speed type set, don't process these packets */
+		/* Don't process these packets */
 
 		return 0;
 	}
@@ -61,7 +61,7 @@ short TamperSpeed::process(PacketList* packetList)
 
 		/* Increment the buffer size and the next packet's release time */
 		++bufferSize;
-		releaseTime += TamperSpeedTimes[**ppSpeedTime]; /* enum defining millisecond values for different speed */
+		releaseTime += TamperSpeedPacketDelay[(*ppTamperSpeedConfig)->speedType]; /* enum defining millisecond values for different speed */
 		
 	}
 

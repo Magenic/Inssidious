@@ -1,5 +1,5 @@
 #include "TamperModule.h"
-
+#include "TamperTypes.h"
 
 class TamperConditions : public TamperModule
 {
@@ -8,15 +8,12 @@ public:
 	~TamperConditions();
 	short process(PacketList* packetList) override;
 
-	short resolutionSet = 0;
-	volatile short jitterVarianceInMs;
-
 
 private:
 
 	/* UI configuration received in ppSpeedTime */
 
-	short** ppConditionsConfig;
+	TamperConditionsConfig** ppConditionsConfig;
 
 
 	/* Timer Resolution in milliseconds for timeGetTime calls */

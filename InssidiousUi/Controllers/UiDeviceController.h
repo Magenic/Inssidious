@@ -16,7 +16,7 @@
 
 #include "Widgets\TabWidget.h"				//
 #include "Widgets\TamperWidget.h"
-
+#include "Widgets\NewDeviceWidget.h"
 
 class UiDeviceController : public QWidget
 {
@@ -39,6 +39,7 @@ public slots:
 
 private slots:
 	void onTabClicked(TabWidget* tab);						//Receive notifications to switch to a different active tab
+	void onSetDeviceInfo(QString MACAddress, QString deviceName, QPixmap deviceImage);
 	void onTamperStart(TamperWidget*, TamperType, void* pTamperConfig);
 	void onTamperStop(TamperWidget* , TamperType);
 
@@ -50,6 +51,9 @@ private:
 		QString MAC;									//MAC Address as the unique identifier
 		TabWidget* tab;									//Tab widget to sit in the side bar
 		TamperWidget* tamper;
+		NewDeviceWidget* newDevice;
+		QString deviceName;
+		QPixmap deviceImage;
 	};
 	
 	QList<device*> deviceList;

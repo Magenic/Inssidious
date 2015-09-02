@@ -97,6 +97,7 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 
 	internetConnectionComboBox->setEditable(true);											
 	internetConnectionComboBox->lineEdit()->setReadOnly(true);
+	internetConnectionComboBox->lineEdit()->setContentsMargins(18, 0, 0, 0);
 	internetConnectionComboBox->lineEdit()->setAlignment(Qt::AlignCenter);					//Only possible when LineEdit is editable
 	internetConnectionComboBox->lineEdit()->setAttribute(Qt::WA_TransparentForMouseEvents);	//Allows QComboBox to still display dropdown on click
 

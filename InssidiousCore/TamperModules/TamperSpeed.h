@@ -2,6 +2,7 @@
 #define TAMPERSPEED_H
 
 #include "TamperModule.h"
+#include "TamperTypes.h"
 
 class TamperSpeed : public TamperModule
 {
@@ -17,7 +18,8 @@ private:
 
 	/* UI configuration received in ppSpeedTime */
 
-	short** ppSpeedTime;
+	TamperSpeedConfig** ppTamperSpeedConfig;
+
 
 	/* Timer Resolution in milliseconds for timeGetTime calls */
 

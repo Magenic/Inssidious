@@ -9,7 +9,7 @@ short TamperNoServer::process(PacketList* packetList)
 
 TamperNoServer::TamperNoServer(void** ppTamperConfig)
 {
-	this->ppTamperConfig = ppTamperConfig;
+	this->ppTamperConfig = (TamperNoServerConfig**)ppTamperConfig;
 }
 
 TamperNoServer::~TamperNoServer()

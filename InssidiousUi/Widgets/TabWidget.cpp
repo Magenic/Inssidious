@@ -35,17 +35,31 @@ TabWidget::TabWidget(QWidget* parent)
 
 
 	tabDeviceIconLabel.setFixedSize(32, 32);
-	tabDeviceNameLabel.setFont(QFont("Segoe UI Semibold", 12));
-	//tabDeviceNameLabel.setText("New Device");
-	tabDeviceNameLabel.setContentsMargins(10, 0, 0, 0);				/*indent text from device avatar*/
+	QFont tabNameFont;
+	QPalette tabNamePalette;
+
+	tabNamePalette.setColor(QPalette::WindowText, QColor(255, 255, 255));
+	//moduleTextPaletteInactive.setColor(QPalette::WindowText, QColor(83, 84, 85));
+
+	tabNameFont.setFamily("Segoe UI");
+	//tabNameFont.setWeight(QFont::DemiBold);
+	tabNameFont.setPixelSize(15);
+	tabNameFont.setStyleStrategy(QFont::PreferAntialias);
 
 
-	this->layout()->addItem(new QSpacerItem(5, 0));
-	this->layout()->addWidget(&tabDeviceIconLabel);
-	this->layout()->addItem(new QSpacerItem(2, 0));
+	tabDeviceNameLabel.setFont(tabNameFont);
+	tabDeviceNameLabel.setText("New Device");
+	tabDeviceNameLabel.setPalette(tabNamePalette);
+	tabDeviceNameLabel.setContentsMargins(0, 0, 0, 0);
+	tabDeviceNameLabel.setAlignment(Qt::AlignCenter);
+
+
+	//this->layout()->addItem(new QSpacerItem(5, 0));
+	//this->layout()->addWidget(&tabDeviceIconLabel);
+	//this->layout()->addItem(new QSpacerItem(2, 0));
 	this->layout()->addWidget(&tabDeviceNameLabel);
-	this->layout()->addItem(new QSpacerItem(5, 0));
-	this->layout()->addWidget(&tabTamperCount);
+	//this->layout()->addItem(new QSpacerItem(5, 0));
+	//this->layout()->addWidget(&tabTamperCount);
 
 
 }
@@ -65,6 +79,13 @@ void TabWidget::unselect()
 	this->selected = false;
 
 }
+
+void TabWidget::setName(QString name)
+{
+	this->tabDeviceNameLabel.setText(name);
+
+}
+
 
 
 void TabWidget::mouseReleaseEvent(QMouseEvent *e)

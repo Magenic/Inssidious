@@ -92,6 +92,15 @@
     <ClCompile Include="Widgets\Tamper\UiTamperNoWebService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Widgets\NewDeviceWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_NewDeviceWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_NewDeviceWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="InssidiousUi.h" />
@@ -123,6 +132,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="Widgets\Tamper\UiTamperNoWebService.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\NewDeviceWidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -168,6 +180,7 @@
     <Image Include="Resources\TamperDropInactive.png" />
     <Image Include="Resources\TamperLagActive.png" />
     <Image Include="Resources\TamperLagInactive.png" />
+    <Image Include="Inssidious.ico" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -195,5 +208,13 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="InssidiousUi.rc" />
   </ItemGroup>
 </Project>

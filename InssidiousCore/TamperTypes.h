@@ -1,3 +1,6 @@
+#ifndef TAMPERTYPES_H
+#define TAMPERTYPES_H
+
 
 #include <QString>
 
@@ -23,46 +26,87 @@ enum TamperType
 	NUM_TAMPER_TYPES
 };
 
+
 static QString TamperTypeName[NUM_TAMPER_TYPES]
 {
 	QString("Network Speed"),
-	QString("Network Conditions"),
-	QString("Network Firewall"),
-	QString("Internet Access"),
-	QString("Server Access"),
-	QString("Web Service Access"),
-	//QString(""),
-	//QString(""),
-	//QString("")
+		QString("Network Conditions"),
+		QString("Network Firewall"),
+		QString("Internet Access"),
+		QString("Server Access"),
+		QString("Web Service Access"),
+		//QString(""),
+		//QString(""),
+		//QString("")
 };
 
-	
 
 
-enum TamperSpeedTypes
+enum TamperSpeedType
 {
 	SPEED_EDGE,
 	SPEED_3G,
 	SPEED_4G,
-	SPEED_LTE
+	SPEED_LTE,
+	SPEED_MAX
 };
 
-static const short TamperSpeedTimes[5]
+struct TamperSpeedConfig
+{
+	volatile TamperSpeedType speedType;
+};
+
+
+
+static const short TamperSpeedPacketDelay[5]
 {
 	/* Average speeds pulled from http://opensignal.com/reports/2015/02/state-of-lte-q1-2015/ */
-	/* Speed in Bytes Per Second divided by a Maximum Transmission Unit of 1500 Bytes == Rough Packet Per Second */
+	/* Bytes Per Second -> Packets Per Second by dividing by an average Maximum Transmission Unit of 1500 bytes */
+	/* Packets Per Second -> Milliseconds Per Packet to get the amount of time to lag each packet */
 
-	40,	 /* TIME_EDGE	2G/Edge		0.3Mbps				25pps		40ppms */
-	8,	 /* TIME_3G		3G			1.5Mbps				125pps		8ppms  */
-	4,	 /* TIME_4G     4G/HSPA+	2.5Mbps				208pps		4ppms  */
-	2    /* TIME_LTE    LTE			7.0Mbps (in US)		583pps		2ppms  */
+	40,	 /* SPEED_EDGE		2G/Edge		0.3Mbps				25pps		40mspp  */
+	8,	 /* SPEED_3G		3G			1.5Mbps				125pps		8pmspp  */
+	4,	 /* SPEED_4G	    4G/HSPA+	2.5Mbps				208pps		4pmspp  */
+	2,   /* SPEED_LTE		LTE			7.0Mbps (in US)		583pps		2mspp   */
+	0    /* SPEED_MAX														    */
 };
 
-enum TamperConditionTypes
+
+
+struct TamperConditionsConfig
 {
-	CHANCE_NONE,
-	CHANCE_LOSS,
-	CHANCE_DELAY,
-	CHANCE_CORRUPT,
-	CHANCE_RESET
+	volatile short chanceLoss;
+	volatile short chanceDelay;
+	volatile short chanceCorrupt;
+	volatile short chanceReset;
 };
+
+
+struct TamperFirewallConfig
+{
+	volatile bool allowHTTP;
+	volatile bool allowHTTPS;
+	volatile bool contentBlocked;
+};
+
+
+struct TamperNoInternetConfig
+{
+	volatile bool localNetwork;
+	volatile bool redirToPortal;
+};
+
+
+struct TamperNoServerConfig
+{
+	volatile bool blockServers;
+};
+
+
+struct TamperNoWebServiceConfig
+{
+	volatile bool blockWebService;
+};
+
+
+#endif

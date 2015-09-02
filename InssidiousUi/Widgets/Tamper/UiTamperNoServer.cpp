@@ -3,6 +3,7 @@
 UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
+	pTamperConfig = (void*)new TamperNoServerConfig{ false };
 
 	noServerDescriptionLabel = new QLabel();
 	noServerDescriptionLabel->setText(noServerDescriptionText);

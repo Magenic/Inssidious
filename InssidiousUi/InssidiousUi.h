@@ -13,7 +13,6 @@
 
 #include <InssidiousCore/InssidiousCore.h>	//Inssidious creates an instance of the Core backend to drive non-UI work
 
-#include <QtWidgets/QApplication>			//Qt GUI Application with widget support
 #include <QThread>							//Qt Threading library to move Inssidious core to its own thread
 #include <QtWidgets/QWidget>				//QWidgets 
 #include <QtWidgets/QLayout>				//Layouts for QWidgets

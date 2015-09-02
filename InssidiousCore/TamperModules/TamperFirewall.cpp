@@ -2,49 +2,74 @@
 #include "TamperFirewall.h"
 
 
-short TamperFirewall::process(PacketList* packetList)
-{
-	short tampered = FALSE;
-	Packet *pac = packetList->head->next;
-	while (pac != packetList->tail) 
-	{
-		if (/*checkDirection(pac->addr.Direction, tamperInbound, tamperOutbound)*/
-			/*&& */calcChance(chance)) 
-		{
-			WINDIVERT_TCPHDR *tcphdr = NULL;
-			WINDIVERT_UDPHDR *udphdr = NULL;
-			WinDivertHelperParsePacket(pac->packet, pac->packetLen, NULL, NULL, NULL, NULL, &tcphdr, &udphdr, NULL, NULL);
-
-			if (tcphdr)
-			{
-				if (tcphdr->DstPort != 80 || tcphdr->DstPort != 443)
-				{
-					packetList->freeNode(packetList->popNode(pac));
-					tampered = TRUE;
-				}
-			}
-
-			if (udphdr)
-			{
-				if (udphdr->DstPort != 80 || udphdr->DstPort != 443)
-				{
-					packetList->freeNode(packetList->popNode(pac));
-					tampered = TRUE;
-				}
-			}
-
-		}
-		pac = pac->next;
-	}
-	return tampered;
-}
-
 TamperFirewall::TamperFirewall(void** ppTamperConfig)
 {
-	this->ppTamperConfig = ppTamperConfig;
+	this->ppFirewallConfig = (TamperFirewallConfig**)ppTamperConfig;
 }
 
 TamperFirewall::~TamperFirewall()
 {
-	
+
+}
+
+short TamperFirewall::process(PacketList* packetList)
+{
+
+	if (packetList->head == packetList->tail)
+	{
+		/* No packets */
+
+		return 0;
+	}
+
+
+	/* Loop and drop any packets traveling over blocked ports */
+
+	Packet *pDivertPacket = packetList->head->next;
+	while (pDivertPacket->next != packetList->tail)
+	{
+		WINDIVERT_TCPHDR *tcphdr = NULL;
+		WINDIVERT_UDPHDR *udphdr = NULL;
+		WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen, 0, 0, 0, 0, &tcphdr, &udphdr, 0, 0);
+
+		if (tcphdr)
+		{
+			if (tcphdr->DstPort == 80 && (*ppFirewallConfig)->allowHTTP)
+			{
+				continue;
+			}
+
+			if (tcphdr->DstPort == 443 && (*ppFirewallConfig)->allowHTTPS)
+			{
+				continue;
+			}
+		}
+
+		if (udphdr)
+		{
+			if (udphdr->DstPort == 80 && (*ppFirewallConfig)->allowHTTP)
+			{
+				continue;
+			}
+
+			if (udphdr->DstPort == 443 && (*ppFirewallConfig)->allowHTTPS)
+			{
+				continue;
+			}
+		}
+
+
+		/* Drop the packet */
+
+		packetList->freeNode(packetList->popNode(pDivertPacket));
+	}
+
+
+	//TODO: Content blocked
+	//if ((*ppFirewallConfig)->contentBlocked)
+	//{
+	//	
+	//}
+
+	return 0;
 }

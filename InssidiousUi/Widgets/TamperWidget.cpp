@@ -6,15 +6,14 @@ TamperWidget::TamperWidget(QWidget *parent)
 	/* Initialize the Tamper Widget Container */
 
 	this->setAutoFillBackground(true);
-	twContainerPalette.setBrush(QPalette::Background,		//Set a background image for the devices present palette
-		QBrush(tcBackgroundImageDevicesPresent));				//With the tab container area background image
+	twContainerPalette.setBrush(QPalette::Background, QBrush(tcBackgroundImageDevicesPresent));
 	this->setPalette(twContainerPalette);
 	this->setGeometry(10 /* in */, 108 /* down */, 780 /* width */, 480 /* height */);
 
-	tamperGridLayout = new QGridLayout();
-	this->setLayout(tamperGridLayout);
+	this->tamperGridLayout = new QGridLayout();
 	this->tamperGridLayout->setContentsMargins(20, 10, 20, 8);
 	this->tamperGridLayout->setSpacing(20);
+	this->setLayout(tamperGridLayout);
 
 
 	for (int i = 0; i < NUM_TAMPER_TYPES; i++)
@@ -26,7 +25,6 @@ TamperWidget::TamperWidget(QWidget *parent)
 
 
 
-	/* Add the Tamper Types to the appropriate class layouts */
 
 	tamperGridLayout->addWidget(this->tamperModule[SPEED], 0, 0);
 	tamperGridLayout->addWidget(this->tamperModule[CONDITIONS], 0, 1);
@@ -36,6 +34,10 @@ TamperWidget::TamperWidget(QWidget *parent)
 	tamperGridLayout->addWidget(this->tamperModule[NO_SERVER], 1, 1);
 	tamperGridLayout->addWidget(this->tamperModule[NO_WEBSERVICE], 1, 2);
 
+
+
+
+
 	QWidget* tempHTTPComingSoon = new QWidget();
 	tempHTTPComingSoon->setFixedWidth(738);
 	tempHTTPComingSoon->setFixedHeight(130);
@@ -43,6 +45,7 @@ TamperWidget::TamperWidget(QWidget *parent)
 	QPalette comingSoonPalette;
 	comingSoonPalette.setBrush(QPalette::Background, QBrush(QPixmap(":/Tamper/ComingSoon.png")));
 	tempHTTPComingSoon->setPalette(comingSoonPalette);
+
 
 	tamperGridLayout->addWidget(tempHTTPComingSoon, 2, 0, 1, 3);
 	//tamperGridLayout->addWidget(this->tamperModule[HTTP_TIME_OUT], 2, 0);
@@ -55,6 +58,13 @@ TamperWidget::~TamperWidget()
 {
 
 }
+
+void TamperWidget::setImage(QPixmap deviceImage)
+{
+	
+	return;
+}
+
 
 void TamperWidget::onTamperModuleClicked(UiTamperModule* signaled, void * pTamperConfig)
 {

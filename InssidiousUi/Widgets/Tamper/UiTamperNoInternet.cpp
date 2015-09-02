@@ -4,6 +4,8 @@ UiTamperNoInternet::UiTamperNoInternet(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
 	
+	pTamperConfig = (void*)new TamperNoInternetConfig{ false, false };
+
 	noInternetDescriptionLabel = new QLabel();
 	noInternetDescriptionLabel->setText(noInternetText);
 	noInternetDescriptionLabel->setFixedHeight(12);

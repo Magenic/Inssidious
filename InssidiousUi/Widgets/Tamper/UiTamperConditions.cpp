@@ -3,6 +3,7 @@
 UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
+	pTamperConfig = (void*)new TamperConditionsConfig{0, 0, 0, 0};
 
 	conditionsDescriptionLabel = new QLabel();
 	conditionsDescriptionLabel->setText(conditionsDescriptionText);

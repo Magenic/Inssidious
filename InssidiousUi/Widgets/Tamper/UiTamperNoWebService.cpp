@@ -3,6 +3,7 @@
 UiTamperNoWebService::UiTamperNoWebService(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
+	pTamperConfig = (void*)new TamperNoWebServiceConfig{ false };
 
 	noWebServiceDescriptionLabel = new QLabel();
 	noWebServiceDescriptionLabel->setText(noWebServiceDescriptionText);

@@ -1,4 +1,5 @@
 #include "TamperModule.h"
+#include "TamperTypes.h"
 
 class TamperFirewall : public TamperModule
 {
@@ -8,7 +9,7 @@ public:
 	short process(PacketList* packetList) override;
 
 private:
-	void** ppTamperConfig;
-	volatile short chance = 1000; // [0 - 10000]
+	TamperFirewallConfig** ppFirewallConfig;
+
 };
 

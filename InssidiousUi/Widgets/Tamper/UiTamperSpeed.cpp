@@ -3,7 +3,7 @@
 UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
-	pTamperConfig = (void*)(new volatile short(0));
+	pTamperConfig = (void*)new TamperSpeedConfig{SPEED_MAX};
 
 	speedDescriptionLabel = new QLabel();
 	speedDescriptionLabel->setText(speedDescriptionText);

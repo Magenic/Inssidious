@@ -40,9 +40,12 @@ void UiDeviceController::onUiAddDevice(QString MACAddress)
 
 	deviceList.append(new device(
 		{
-			MACAddress, 
-			new TabWidget(this), 
+			MACAddress,
+			new TabWidget(this),
 			new TamperWidget(this),
+			new NewDeviceWidget(this, MACAddress),
+			QString(),
+			QPixmap()
 		}
 	));
 	
@@ -53,33 +56,33 @@ void UiDeviceController::onUiAddDevice(QString MACAddress)
 	connect(deviceList.last()->tab, &TabWidget::tabClicked, this, &UiDeviceController::onTabClicked);
 
 
-	
-	/* Set the parent of the Tamper Widget to the main InssidiousUi widget */
+	/* Set the parent of the Tamper & New Device Widgets to the main InssidiousUi widget */
 
-	deviceList.last()->tamper->setParent(this->parentWidget());				
+	deviceList.last()->tamper->setParent(this->parentWidget());
+	deviceList.last()->newDevice->setParent(this->parentWidget());
 
 
-	/* Lower it in the event there is another InssidiousUi childwidget displaying.
-	   This particularly accounts for Start or any future error widgets that may be displayed */
-
-	deviceList.last()->tamper->lower();
-	
-
-	/* Pull the tamper start/stop signals up from the Tamper Widget to our controller */
+	/* Connect signals and slots */
 
 	connect(deviceList.last()->tamper, &TamperWidget::tamperStart, this, &UiDeviceController::onTamperStart);
 	connect(deviceList.last()->tamper, &TamperWidget::tamperStop, this, &UiDeviceController::onTamperStop);
+	connect(deviceList.last()->newDevice, &NewDeviceWidget::setDeviceInfo, this, &UiDeviceController::onSetDeviceInfo);
 
 
-
-
-
-	/* If this is the first tab we've added, select it to default it to active and change the background image */
+	/* If this is the first tab we've added, select it to default it to active */
 
 	if (deviceList.count() == 1) 
 	{
 		deviceList.last()->tab->select();
-		deviceList.last()->tamper->show();
+		deviceList.last()->newDevice->show();
+		
+		/* Lower both widgets just in case there is another InssidiousUi childwidget displaying.
+		   This particularly accounts for Start or any future error widgets that may be displayed */
+
+		deviceList.last()->tab->lower();
+		deviceList.last()->newDevice->lower();
+
+
 	}
 
 }
@@ -130,12 +133,26 @@ void UiDeviceController::onTabClicked(TabWidget* tab)
 		if (d->tab == tab)
 		{
 			tab->select();
-			d->tamper->show();
+			if (d->deviceName.isEmpty())
+			{
+				d->newDevice->show();
+			}
+			else
+			{
+				d->tamper->show();
+			}
 		}
 		else
 		{
 			d->tab->unselect();
-			d->tamper->hide();
+			if (d->deviceName.isEmpty())
+			{
+				d->newDevice->hide();
+			}
+			else
+			{
+				d->tamper->hide();
+			}
 		}
 	}
 }
@@ -161,6 +178,33 @@ void UiDeviceController::onTamperStop(TamperWidget* signaled, TamperType type)
 		if (d->tamper == signaled)
 		{
 			emit uiTamperStop(d->MAC, TamperType(type));
+			return;
+		}
+	}
+}
+
+
+void UiDeviceController::onSetDeviceInfo(QString MACAddress, QString deviceName, QPixmap deviceImage)
+{
+	for (device* d : deviceList)
+	{
+		if (d->MAC == MACAddress)
+		{
+			d->deviceName = deviceName;
+			d->deviceImage = deviceImage;
+
+			/* Hide and Delete the new device widget */
+
+			d->newDevice->hide();
+			d->newDevice->deleteLater();
+
+
+			/* Show the tamper widget and update the tab widget */
+
+			d->tab->setName(deviceName);
+			d->tamper->setImage(deviceImage);
+			d->tamper->show();
+
 			return;
 		}
 	}

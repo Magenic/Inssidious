@@ -3,6 +3,8 @@
 UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
+	pTamperConfig = (void*)new TamperFirewallConfig{ false, false, false };
+
 	firewallDescriptionLabel = new QLabel();
 	firewallDescriptionLabel->setText(firewallDescriptionText);
 	firewallDescriptionLabel->setFixedHeight(12);

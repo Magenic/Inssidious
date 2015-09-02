@@ -27,6 +27,7 @@ public:
 	
 	void select();
 	void unselect();
+	void setName(QString name);
 	bool selected;
 	
 
@@ -45,15 +46,10 @@ private:
 	QLabel tabDeviceNameLabel;							//QLabel for the device name
 	QLabel tabTamperCount;								//Count of active tamper items
 
-	QString tabDeviceNameText;							//QString for device name
-
 	QPixmap tabDeviceIconActive;						//QPixmap for active icon
 	QPixmap tabDeviceIconInactive;						//QPixmap for inactive icon
 
-
-
-
-
+	
 	QPalette tabPaletteActive;
 	QPalette tabPaletteActiveHover;
 	QPalette tabPaletteActivePressed;

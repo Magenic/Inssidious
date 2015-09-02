@@ -1,4 +1,5 @@
 #include "TamperModule.h"
+#include "TamperTypes.h"
 
 class TamperNoServer : public TamperModule
 {
@@ -8,6 +9,6 @@ public:
 	short process(PacketList* packetList) override;
 
 private:
-	void** ppTamperConfig;
+	TamperNoServerConfig** ppTamperConfig;
 };
 

@@ -16,7 +16,7 @@ public:
 	char *packet;
 	UINT packetLen;
 	WINDIVERT_ADDRESS addr;
-	DWORD timestamp; // ! timestamp isn't filled when creating node since it's only needed for lag
+	DWORD timestamp; 
 	Packet *prev, *next;
 };
 
