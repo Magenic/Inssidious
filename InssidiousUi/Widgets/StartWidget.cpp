@@ -13,6 +13,19 @@
 
 #include "StartWidget.h"
 
+class IComboBox : public QComboBox
+{
+
+public:
+
+	/* Show pop up on all mouseReleaseEvents received by QComboBox */
+
+	void IComboBox::mouseReleaseEvent(QMouseEvent *event)
+	{
+		IComboBox::showPopup();
+	}
+
+};
 
 StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescriptions)
 	: QWidget(parent)
@@ -27,7 +40,7 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 		40,														//40 pixels from the top to clear room for the header
 		800 - 16 - 16,											//Use width of the parent - 16 to account for extended frame for widget width 
 		600 - 40 - 16);											//Use height of the parent - 16 to account for extended frame for widget height
-	this->layout()->addItem(new QSpacerItem(0, 50));			//Pad down from the top before any other items are added
+	//this->layout()->addItem(new QSpacerItem(0, 20));			//Pad down from the top before any other items are added
 	this->setAutoFillBackground(false);							//Don't fill in a background color
 	this->setParent(parent);									//Display the widget on top of Inssidious widget
 	descriptionTextPalette.setColor(QPalette::WindowText,		//Set the default description Window text 
@@ -48,12 +61,14 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 
 	networkNameLabel = new QLabel();							//Initialize the QLabel pointer
 	networkNameLabel->setText(networkNameText);					//Set the text
+	networkNameLabel->setFont(QFont("Segoe UI", 11));
 	networkNameLabel->setPalette(descriptionTextPalette);		//Set the text color
-	networkNameLabel->setContentsMargins(0, 55, 0, 4);			//Pad the label down 55 from the logo and up 4 from the next object
+	networkNameLabel->setContentsMargins(0, 60, 0, 6);			//Pad the label down 40 from the logo and up 4 from the next object
 	networkNameLabel->setAlignment(Qt::AlignCenter);			//Center the text within the QLabel
 	networkNameInput = new QLineEdit();							//Initialize the QLineEdit pointer
 	networkNameInput->setText("Inssidious - Ian");				//Set the text
-	networkNameInput->setFixedSize(300, 20);					//Set a fixed size for the field
+	networkNameInput->setFont(QFont("Segoe UI", 10));
+	networkNameInput->setFixedWidth(300);						//Set a fixed size for the field
 	networkNameInput->setAlignment(Qt::AlignCenter);			//Center the text within the field
 	this->layout()->addWidget(networkNameLabel);				//Add it to the Start widget layout
 	this->layout()->addWidget(networkNameInput);				//Add it to the Start widget layout
@@ -65,12 +80,14 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 
 	networkPasswordLabel = new QLabel();						//Initialize the QLabel pointer
 	networkPasswordLabel->setText(networkPasswordText);			//Set the text
+	networkPasswordLabel->setFont(QFont("Segoe UI", 11));
 	networkPasswordLabel->setPalette(descriptionTextPalette);	//Set the text color
-	networkPasswordLabel->setContentsMargins(0, 15, 0, 4); 		//Pad the label down 15 from the line edit and up 4 from the next object
+	networkPasswordLabel->setContentsMargins(0, 20, 0, 6); 		//Pad the label down 15 from the line edit and up 4 from the next object
 	networkPasswordLabel->setAlignment(Qt::AlignCenter);		//Center the text within the QLabel
 	networkPasswordInput = new QLineEdit();						//Initialize the QLineEdit pointer
 	networkPasswordInput->setText("inssidious");				//Set the text
-	networkPasswordInput->setFixedSize(300, 20); 				//Set a fixed size for the field
+	networkPasswordInput->setFont(QFont("Segoe UI", 10));
+	networkPasswordInput->setFixedWidth(300);	 				//Set a fixed size for the field
 	networkPasswordInput->setAlignment(Qt::AlignCenter);		//Center the text within the field
 	this->layout()->addWidget(networkPasswordLabel);			//Add it to the Start widget layout
 	this->layout()->addWidget(networkPasswordInput);			//Add it to the Start widget layout
@@ -82,10 +99,12 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 
 	internetConnectionLabel = new QLabel();						//Initialize the QLabel pointer
 	internetConnectionLabel->setText(internetConnectionText);	//Set the text
+	internetConnectionLabel->setFont(QFont("Segoe UI", 11));
 	internetConnectionLabel->setPalette(descriptionTextPalette);//Set the text color
-	internetConnectionLabel->setContentsMargins(0, 15, 0, 4); 	//Pad the label down 15 from the line edit and up 4 from the next object
+	internetConnectionLabel->setContentsMargins(0, 20, 0, 6); 	//Pad the label down 15 from the line edit and up 4 from the next object
 	internetConnectionLabel->setAlignment(Qt::AlignCenter);		//Center the text within the QLabel
 	internetConnectionComboBox = new IComboBox();				//Initialize the QComboBox pointer
+	internetConnectionComboBox->setFont(QFont("Segoe UI", 10));
 	internetConnectionComboBox->setFixedWidth(300);				//Set a fixed size for the field
 	this->layout()->addWidget(internetConnectionLabel);			//Add it to the Start widget layout
 	this->layout()->addWidget(internetConnectionComboBox);		//Add it to the Start widget layout
@@ -115,7 +134,7 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 
 	startButton = new QPushButton();						//Initialize the Start button pointer
 	startButton->setStyleSheet(startButtonStyleSheet);		//Set the style sheet to get the background images for button states
-	startButton->setFixedSize(90, 30);						//Set a fixed button size (#s from the dimensions of the button images)
+	startButton->setFixedSize(100, 30);						//Set a fixed button size (#s from the dimensions of the button images)
 	startButton->setText("Start");
 	connect(startButton, SIGNAL(clicked()),					//To react to button clicks, connect the Start button's clicked signal
 		this, SLOT(onStartButtonClicked()));				//To the onStartButtonClicked function in this class

@@ -41,13 +41,6 @@ public:
 
 	/* Used by child classes for displayed buttons */
 
-	QString buttonLeftStyleSheet = "QPushButton { image: url(:/Tamper/ButtonLeftInactive.png); border: none;}QPushButton:hover { image: url(:/Tamper/ButtonLeftInactive.png); border: none;}QPushButton:on { image: url(:/Tamper/ButtonLeftActive.png); border: none;}QPushButton:pressed { image: url(:/Tamper/ButtonLeftActive.png); border: none;}";
-	QString buttonMiddleStyleSheet = "QPushButton { image: url(:/Tamper/ButtonMiddleInactive.png); border: none;}QPushButton:hover { image: url(:/Tamper/ButtonMiddleInactive.png); border: none;}QPushButton:on { image: url(:/Tamper/ButtonMiddleActive.png); border: none;}QPushButton:pressed { image: url(:/Tamper/ButtonMiddleActive.png); border: none;}";
-	QString buttonRightStyleSheet = "QPushButton { image: url(:/Tamper/ButtonRightInactive.png); border: none;}QPushButton:hover { image: url(:/Tamper/ButtonRightInactive.png); border: none;}QPushButton:on { image: url(:/Tamper/ButtonRightActive.png); border: none;}QPushButton:pressed { image: url(:/Tamper/ButtonRightActive.png); border: none;}";
-	QString buttonDoubleWideStyleSheet = "QPushButton { image: url(:/Tamper/ButtonDoubleWideInactive.png); border: none;}QPushButton:hover { image: url(:/Tamper/ButtonDoubleWideInactive.png); border: none;}QPushButton:on { image: url(:/Tamper/ButtonDoubleWideActive.png); border: none;}QPushButton:pressed { image: url(:/Tamper/ButtonDoubleWideActive.png); border: none;}";
-
-
-
 	QString buttonStyleSheet = 
 	   "QPushButton{ border: 1px solid #72C55D; border-radius: 2px; background-color: #FDFDFD; color:#444444; font-family: 'Segoe UI'; font-size:11px; font-weight:400; text-decoration:none; }\
 		QPushButton:!enabled{ border: 1px solid #ABABAB; background-color: #F0F0F0; color:#B0ADB0; }\

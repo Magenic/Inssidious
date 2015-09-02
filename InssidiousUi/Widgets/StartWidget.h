@@ -22,7 +22,6 @@
 #include <QObject>
 #include <QtCore/QEvent>
 
-class IComboBox;
 
 class StartWidget : public QWidget
 {
@@ -70,8 +69,8 @@ private:
 
 	/* Define the description text strings as const QString */
 
-	const QString networkNameText = "Specify the name of the Inssidious wireless network:";
-	const QString networkPasswordText = "Specify the password for the Inssidious wireless network:";
+	const QString networkNameText = "Set a name for the Inssidious wireless network:";
+	const QString networkPasswordText = "Set a password for the network:";
 	const QString internetConnectionText = "Select an Internet Connection:";
 
 
@@ -79,7 +78,7 @@ private:
 
 	QPushButton* startButton;								//Start button
 	QString startButtonStyleSheet =							//Style sheet for the background images of the button in different states
-	   "QPushButton{ border: 1px solid #72C55D; border-radius: 2px; background-color: #72C55D; color:#333333; font-family: 'Segoe UI Semibold'; font-size:15px; font-weight:400; text-decoration:none; }\
+	   "QPushButton{ border: 1px solid #72C55D; border-radius: 2px; background-color: #72C55D; color:#333333; font-family: 'Segoe UI Semibold'; font-size:16px; font-weight:400; text-decoration:none; }\
 		QPushButton:!enabled{ background-color: #F0F0F0; color:#444444; }\
 		QPushButton:pressed{ background-color: #64B450; color:#333333;}\
 		QPushButton:hover{ background-color: #82B678; }\
@@ -93,21 +92,5 @@ private slots:
 
 };
 
-
-
-class IComboBox : public QComboBox
-{
-	Q_OBJECT
-
-public:
-
-	/* Show pop up on all mouseReleaseEvents received by QComboBox */
-
-	void IComboBox::mouseReleaseEvent(QMouseEvent *event)
-	{
-		IComboBox::showPopup();
-	}
-
-};
 
 #endif // START_H

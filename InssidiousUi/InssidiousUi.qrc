@@ -34,5 +34,11 @@
         <file alias="CloseDefault.png">Resources/CloseDefault.png</file>
         <file alias="MinimizeDefault.png">Resources/MinimizeDefault.png</file>
         <file alias="SettingsDefault.png">Resources/SettingsDefault.png</file>
+        <file alias="CloseHover.png">Resources/CloseHover.png</file>
+        <file alias="MinimizeHover.png">Resources/MinimizeHover.png</file>
+        <file alias="SettingsHover.png">Resources/SettingsHover.png</file>
+        <file alias="ClosePressed.png">Resources/ClosePressed.png</file>
+        <file alias="MinimizePressed.png">Resources/MinimizePressed.png</file>
+        <file alias="SettingsPressed.png">Resources/SettingsPressed.png</file>
     </qresource>
 </RCC>

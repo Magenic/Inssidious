@@ -44,9 +44,9 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	pushButtonMinimize->setAutoFillBackground(true);			//Don't fill in a background color
 	pushButtonSettings->setAutoFillBackground(true);			//Don't fill in a background color
 
-	pushButtonClose->setIcon(QIcon(":/InssidiousUi/CloseDefault.png"));
-	pushButtonMinimize->setIcon(QIcon(":/InssidiousUi/MinimizeDefault.png"));
-	pushButtonSettings->setIcon(QIcon(":/InssidiousUi/SettingsDefault.png"));
+	pushButtonClose->setStyleSheet(closeStyleSheet);
+	pushButtonMinimize->setStyleSheet(minimizeStyleSheet);
+	pushButtonSettings->setStyleSheet(settingsStyleSheet);
 
 	pushButtonClose->setIconSize(QSize(33, 21));
 	pushButtonMinimize->setIconSize(QSize(33, 21));
@@ -56,9 +56,9 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	pushButtonMinimize->setGeometry(733, 1, 33, 21);
 	pushButtonSettings->setGeometry(700, 1, 33, 21);
 
-	connect(pushButtonClose, SIGNAL(clicked()), this, SLOT(pushButtonCloseClicked()));
-	connect(pushButtonMinimize, SIGNAL(clicked()), this, SLOT(pushButtonMinimizeClicked()));
-	connect(pushButtonSettings, SIGNAL(clicked()), this, SLOT(pushButtonSettingsClicked()));
+	connect(pushButtonClose, &QPushButton::clicked, this, &InssidiousUi::close);
+	connect(pushButtonMinimize, &QPushButton::clicked, this, &InssidiousUi::onMinimizeClicked);
+	connect(pushButtonSettings, &QPushButton::clicked, this, &InssidiousUi::onSettingsClicked);
 
 
 	/* Draw and hide the network name and password labels */
@@ -245,7 +245,7 @@ bool InssidiousUi::nativeEvent(const QByteArray& eventType, void* message, long*
 
 			//If the mouse is within the title bar area, allow dragging the window
 			if (abs(y - winrect.top) <= GetSystemMetrics(SM_CYCAPTION) /* SM_CYCAPTION is title bar height */
-				&& abs(x - winrect.left) > 100 /* first 100 pixels reserved for Insiddious menu */)
+				&& abs(x - winrect.left) < 701 /* last 99 pixels reserved for Insiddious settings, minimize and close icons */)
 			{
 				*result = HTCAPTION;
 				return true;
@@ -256,3 +256,18 @@ bool InssidiousUi::nativeEvent(const QByteArray& eventType, void* message, long*
 	//Pass the event on if it wasn't for us to react to
 	return QWidget::nativeEvent(eventType, message, result);
 }
+
+void InssidiousUi::onMinimizeClicked()
+{
+	this->setWindowState(Qt::WindowMinimized);
+}
+
+void InssidiousUi::onSettingsClicked()
+{
+	
+}
+
+
+
+
+

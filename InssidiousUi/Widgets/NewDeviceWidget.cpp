@@ -1,5 +1,6 @@
 #include "NewDeviceWidget.h"
 
+#include "Windows.h"
 
 enum DEVICE_TYPES
 {
@@ -18,6 +19,7 @@ enum DEVICE_TYPES
 
 static const QString DeviceNames[NUM_DEVICE_TYPES]
 {
+	QString("Other"),
 	QString("Android Phone"),
 	QString("Android Tablet"),
 	QString("Chromebook"),
@@ -26,21 +28,19 @@ static const QString DeviceNames[NUM_DEVICE_TYPES]
 	QString("Mac"),
 	QString("Windows Phone"),
 	QString("Windows Tablet"),
-	QString("Windows PC"),
-	QString("Other")
+	QString("Windows PC")
 };
 
-class IComboBox : public QComboBox
+class NComboBox : public QComboBox
 {
-	Q_OBJECT
 
 public:
 
 	/* Show pop up on all mouseReleaseEvents received by QComboBox */
 
-	void IComboBox::mouseReleaseEvent(QMouseEvent *event)
+	void NComboBox::mouseReleaseEvent(QMouseEvent *event)
 	{
-		IComboBox::showPopup();
+		NComboBox::showPopup();
 	}
 
 };
@@ -69,12 +69,14 @@ NewDeviceWidget::NewDeviceWidget(QWidget *parent, QString MACAddress)
 
 	deviceNameLabel = new QLabel();										//Initialize the QLabel pointer
 	deviceNameLabel->setText(deviceNameText);							//Set the text
+	deviceNameLabel->setFont(QFont("Segoe UI", 12));
 	deviceNameLabel->setPalette(descriptionTextPalette);				//Set the text color
-	deviceNameLabel->setContentsMargins(0, 100, 0, 4);					//Pad the label down 100 from the logo and up 4 from the next object
+	deviceNameLabel->setContentsMargins(0, 100, 0, 6);					//Pad the label down 100 from the logo and up 4 from the next object
 	deviceNameLabel->setAlignment(Qt::AlignCenter);						//Center the text within the QLabel
 	deviceNameInput = new QLineEdit();									//Initialize the QLineEdit pointer
 	deviceNameInput->setText("");										//Set the text
-	deviceNameInput->setFixedSize(200, 20);								//Set a fixed size for the field
+	deviceNameInput->setFont(QFont("Segoe UI", 10));
+	deviceNameInput->setFixedWidth(200);								//Set a fixed size for the field
 	deviceNameInput->setAlignment(Qt::AlignCenter);						//Center the text within the field
 	this->layout()->addWidget(deviceNameLabel);							//Add it to the Start widget layout
 	this->layout()->addWidget(deviceNameInput);							//Add it to the Start widget layout
@@ -86,11 +88,13 @@ NewDeviceWidget::NewDeviceWidget(QWidget *parent, QString MACAddress)
 
 	deviceTypeLabel = new QLabel();										//Initialize the QLabel pointer
 	deviceTypeLabel->setText(deviceTypeText);							//Set the text
+	deviceTypeLabel->setFont(QFont("Segoe UI", 12));
 	deviceTypeLabel->setPalette(descriptionTextPalette);				//Set the text color
-	deviceTypeLabel->setContentsMargins(0, 20, 0, 4); 					//Pad the label down 20 from the line edit and up 4 from the next object
+	deviceTypeLabel->setContentsMargins(0, 20, 0, 6); 					//Pad the label down 20 from the line edit and up 4 from the next object
 	deviceTypeLabel->setAlignment(Qt::AlignCenter);						//Center the text within the QLabel
-	deviceTypeComboBox = new IComboBox();								//Initialize the QComboBox pointer
+	deviceTypeComboBox = new NComboBox();								//Initialize the QComboBox pointer
 	deviceTypeComboBox->setFixedWidth(200);								//Set a fixed size for the field
+	deviceTypeComboBox->setFont(QFont("Segoe UI", 10));
 	this->layout()->addWidget(deviceTypeLabel);							//Add it to the Start widget layout
 	this->layout()->addWidget(deviceTypeComboBox);						//Add it to the Start widget layout
 	this->layout()->setAlignment(deviceTypeLabel, Qt::AlignHCenter);	//And align it in the center of the widget
@@ -122,12 +126,56 @@ NewDeviceWidget::NewDeviceWidget(QWidget *parent, QString MACAddress)
 	setButton->setFixedSize(90, 30);						//Set a fixed button size (#s from the dimensions of the button images)
 	setButton->setText("Save");
 	connect(setButton, &QPushButton::clicked, this, &NewDeviceWidget::onSetButtonClicked);
-	this->layout()->addItem(new QSpacerItem(0, 24));		//Pad down from the internet connection combo box
+	this->layout()->addItem(new QSpacerItem(0, 30));		//Pad down from the internet connection combo box
 	this->layout()->addWidget(setButton);					//Add the start button to the Start widget layout
 	this->layout()->setAlignment(setButton, Qt::AlignHCenter);	//And align it in the center of the layout
 
 
+
+
+	/* Open a handle to the Inssidious Registry key and read in known device names and types */
+	bool haveName = false;
+	bool haveType = false;
+	HKEY inssidiousDevicePairsHKCU;
+	if (ERROR_SUCCESS == RegCreateKeyEx(HKEY_CURRENT_USER, L"Software\\Inssidious\\DevicePairs", 0, 0, 0, KEY_WRITE | KEY_QUERY_VALUE, 0, &inssidiousDevicePairsHKCU, 0))
+	{
+		DWORD numValues = 0;
+		if (ERROR_SUCCESS == RegQueryInfoKey(inssidiousDevicePairsHKCU, 0, 0, 0, 0, 0, 0, &numValues, 0, 0, 0, 0))
+		{
+			for (int i = 0; i < numValues; i++)
+			{
+				wchar_t valueName[MAX_PATH];
+				wchar_t valueData[MAX_PATH];
+				DWORD valueNameCount = MAX_PATH;
+				DWORD valueDataCount = MAX_PATH;
+
+				HRESULT result = RegEnumValue(inssidiousDevicePairsHKCU, i, valueName, &valueNameCount, 0, 0, (LPBYTE)valueData, &valueDataCount);
+
+				if (result == ERROR_SUCCESS || result == ERROR_MORE_DATA)
+				{
+					if (QString::fromWCharArray(valueName) == (MAC + "-Name"))
+					{
+						deviceNameInput->setText(QString::fromWCharArray(valueData, valueDataCount/2));
+						haveName = true;
+					}
+					else if (QString::fromWCharArray(valueName) == (MAC + "-Type"))
+					{
+						deviceTypeComboBox->setCurrentText(QString::fromWCharArray(valueData, valueDataCount/2));
+						haveType = true;
+					}
+				}
+			}
+
+
+			if (haveName && haveType)
+			{
+				
+			}
+		}
+	}
+
 	/* No further work is performed until we receive a clicked signal */
+
 }
 
 NewDeviceWidget::~NewDeviceWidget()
@@ -147,8 +195,36 @@ void NewDeviceWidget::onSetButtonClicked()
 	}
 	else
 	{
-		//Set the device name and type values
-		emit setDeviceInfo(MAC, deviceNameInput->text(), deviceTypeComboBox->currentText().remove(" ")); /* remove spaces to line up device types with icon names */
+		 
+		/* Save this Device Name and Type to the Registry */
+
+		HKEY inssidiousHKCU;
+		if (ERROR_SUCCESS == RegCreateKeyEx(HKEY_CURRENT_USER, L"Software\\Inssidious\\DevicePairs", 0, 0, 0, KEY_WRITE, 0, &inssidiousHKCU, 0))
+		{
+			RegSetValueEx(
+				inssidiousHKCU,
+				QString(MAC + "-Name").toStdWString().c_str(),
+				0,
+				REG_SZ,
+				(LPBYTE)deviceNameInput->text().utf16(),
+				deviceNameInput->text().size() * sizeof(wchar_t)
+			);
+
+
+			RegSetValueEx(
+				inssidiousHKCU,
+				QString(MAC + "-Type").toStdWString().c_str(),
+				0,
+				REG_SZ,
+				(LPBYTE)deviceTypeComboBox->currentText().utf16(),
+				deviceTypeComboBox->currentText().size() * sizeof(wchar_t)
+				);
+		}
+
+
+		/* Send out the name and type values */
+
+		emit setDeviceInfo(MAC, deviceNameInput->text(), deviceTypeComboBox->currentText());
 
 	}
 

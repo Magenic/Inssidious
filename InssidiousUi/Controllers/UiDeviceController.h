@@ -39,7 +39,7 @@ public slots:
 
 private slots:
 	void onTabClicked(TabWidget* tab);						//Receive notifications to switch to a different active tab
-	void onSetDeviceInfo(QString MACAddress, QString deviceName, QPixmap deviceImage);
+	void onSetDeviceInfo(QString MACAddress, QString deviceName, QString deviceType);
 	void onTamperStart(TamperWidget*, TamperType, void* pTamperConfig);
 	void onTamperStop(TamperWidget* , TamperType);
 
@@ -53,7 +53,7 @@ private:
 		TamperWidget* tamper;
 		NewDeviceWidget* newDevice;
 		QString deviceName;
-		QPixmap deviceImage;
+		QString deviceType;
 	};
 	
 	QList<device*> deviceList;

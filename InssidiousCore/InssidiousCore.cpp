@@ -91,6 +91,7 @@ void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword,
 
 		emit coreStarting("Unable to start Internet Connection Sharing. Error:\n"
 			+ QString::fromWCharArray(_com_error(ics->result).ErrorMessage()), true);
+
 		return;
 	}
 

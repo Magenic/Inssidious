@@ -50,6 +50,22 @@ private:
 	QPushButton *pushButtonMinimize;
 	QPushButton *pushButtonSettings;
 
+	QString closeStyleSheet = 
+		"QPushButton{image: url(:/InssidiousUi/CloseDefault.png); border: none;}\
+		QPushButton:hover{image: url(:/InssidiousUi/CloseHover.png); border: none; }\
+		QPushButton:pressed{image: url(:/InssidiousUi/ClosePressed.png); border: none; }";
+
+	QString minimizeStyleSheet = 
+		"QPushButton{image: url(:/InssidiousUi/MinimizeDefault.png); border: none;}\
+		QPushButton:hover{image: url(:/InssidiousUi/MinimizeHover.png); border: none; }\
+		QPushButton:pressed{image: url(:/InssidiousUi/MinimizePressed.png); border: none; }";
+
+	QString settingsStyleSheet = 
+		"QPushButton{image: url(:/InssidiousUi/SettingsDefault.png); border: none;}\
+		QPushButton:hover{image: url(:/InssidiousUi/SettingsHover.png); border: none; }\
+		QPushButton:pressed{image: url(:/InssidiousUi/SettingsPressed.png); border: none; }";
+
+
 	QLabel networkName;
 	QLabel networkNameIcon;
 	QLabel networkPassword;
@@ -80,6 +96,9 @@ private slots:
 	
 	void onUiTamperStart(QString MACAddress, TamperType tamperType, void* pTamperConfig);
 	void onUiTamperStop(QString MACAddress, TamperType tamperType);
+
+	void onMinimizeClicked();
+	void onSettingsClicked();
 
 signals:
 	void coreStart(QString networkName, QString networkPassword, QString networkAdapter);

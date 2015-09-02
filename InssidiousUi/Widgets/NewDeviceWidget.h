@@ -2,13 +2,13 @@
 #define NEWDEVICEWIDGET_H
 
 #include <QWidget>
-#include <QListView>
-#include <QStandardItemModel>
 #include <QtWidgets/QLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QComboBox>
+
+
 
 class NewDeviceWidget : public QWidget
 {
@@ -19,7 +19,7 @@ public:
 	~NewDeviceWidget();
 
 signals:
-	void setDeviceInfo(QString MACAddress, QString deviceName, QPixmap deviceImage);
+	void setDeviceInfo(QString MACAddress, QString deviceName, QString deviceType);
 
 
 private:

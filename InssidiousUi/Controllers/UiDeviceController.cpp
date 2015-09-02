@@ -9,6 +9,7 @@
 */
 
 #include "UiDeviceController.h"
+#include "Windows.h"
 
 UiDeviceController::UiDeviceController(QWidget *parent)
 	: QWidget(parent)
@@ -23,6 +24,7 @@ UiDeviceController::UiDeviceController(QWidget *parent)
 	this->setAutoFillBackground(false);							//And enable filling in the  background
 	this->setParent(parent);									//Display the widget on top of Inssidious widget
 	this->setGeometry(10 /* in */, 64 /* down */, 480 /* width */, 44 /* height */);
+
 
 }
 
@@ -45,7 +47,7 @@ void UiDeviceController::onUiAddDevice(QString MACAddress)
 			new TamperWidget(this),
 			new NewDeviceWidget(this, MACAddress),
 			QString(),
-			QPixmap()
+			QString()
 		}
 	));
 	
@@ -184,14 +186,14 @@ void UiDeviceController::onTamperStop(TamperWidget* signaled, TamperType type)
 }
 
 
-void UiDeviceController::onSetDeviceInfo(QString MACAddress, QString deviceName, QPixmap deviceImage)
+void UiDeviceController::onSetDeviceInfo(QString MACAddress, QString deviceName, QString deviceType)
 {
 	for (device* d : deviceList)
 	{
 		if (d->MAC == MACAddress)
 		{
 			d->deviceName = deviceName;
-			d->deviceImage = deviceImage;
+			d->deviceType = deviceType;
 
 			/* Hide and Delete the new device widget */
 
@@ -202,7 +204,7 @@ void UiDeviceController::onSetDeviceInfo(QString MACAddress, QString deviceName,
 			/* Show the tamper widget and update the tab widget */
 
 			d->tab->setName(deviceName);
-			d->tamper->setImage(deviceImage);
+			d->tamper->setImage(deviceType);
 			d->tamper->show();
 
 			return;
