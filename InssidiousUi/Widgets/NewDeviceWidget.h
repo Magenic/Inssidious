@@ -18,6 +18,10 @@ public:
 	NewDeviceWidget(QWidget *parent, QString MACAddress);
 	~NewDeviceWidget();
 
+	bool knownDevice = false;
+	QString knownDeviceName = "";
+	QString knownDeviceType = "";
+
 signals:
 	void setDeviceInfo(QString MACAddress, QString deviceName, QString deviceType);
 

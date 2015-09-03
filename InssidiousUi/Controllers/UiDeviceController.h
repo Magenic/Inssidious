@@ -52,8 +52,7 @@ private:
 		TabWidget* tab;									//Tab widget to sit in the side bar
 		TamperWidget* tamper;
 		NewDeviceWidget* newDevice;
-		QString deviceName;
-		QString deviceType;
+		bool named;
 	};
 	
 	QList<device*> deviceList;

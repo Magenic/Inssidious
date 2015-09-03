@@ -169,7 +169,9 @@ NewDeviceWidget::NewDeviceWidget(QWidget *parent, QString MACAddress)
 
 			if (haveName && haveType)
 			{
-				
+				knownDevice = true;
+				knownDeviceName = deviceNameInput->text();
+				knownDeviceType = deviceTypeComboBox->currentText();
 			}
 		}
 	}

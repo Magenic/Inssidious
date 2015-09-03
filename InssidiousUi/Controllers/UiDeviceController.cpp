@@ -46,8 +46,7 @@ void UiDeviceController::onUiAddDevice(QString MACAddress)
 			new TabWidget(this),
 			new TamperWidget(this),
 			new NewDeviceWidget(this, MACAddress),
-			QString(),
-			QString()
+			false
 		}
 	));
 	
@@ -71,20 +70,38 @@ void UiDeviceController::onUiAddDevice(QString MACAddress)
 	connect(deviceList.last()->newDevice, &NewDeviceWidget::setDeviceInfo, this, &UiDeviceController::onSetDeviceInfo);
 
 
+	/* Check if the NewDeviceWidget already knew about this device */
+
+	if(deviceList.last()->newDevice->knownDevice)
+	{
+
+		/* Update the tab and tamper widgets */
+
+		deviceList.last()->tab->setName(deviceList.last()->newDevice->knownDeviceName);
+		deviceList.last()->tamper->setImage(deviceList.last()->newDevice->knownDeviceType);
+		
+		deviceList.last()->named = true;
+	}
+
+
 	/* If this is the first tab we've added, select it to default it to active */
 
 	if (deviceList.count() == 1) 
 	{
 		deviceList.last()->tab->select();
-		deviceList.last()->newDevice->show();
-		
-		/* Lower both widgets just in case there is another InssidiousUi childwidget displaying.
-		   This particularly accounts for Start or any future error widgets that may be displayed */
-
 		deviceList.last()->tab->lower();
-		deviceList.last()->newDevice->lower();
 
-
+		if (deviceList.last()->named)
+		{
+			deviceList.last()->tamper->show();
+			deviceList.last()->tamper->lower();
+		}
+		else
+		{
+			deviceList.last()->newDevice->show();
+			deviceList.last()->newDevice->lower();
+		}
+		
 	}
 
 }
@@ -109,6 +126,7 @@ void UiDeviceController::onUiDropDevice(QString MACAddress)
 				deviceList.removeOne(d);
 				d->tab->deleteLater();
 				d->tamper->deleteLater();
+				d->newDevice->deleteLater();
 				deviceList.first()->tab->select();
 				deviceList.first()->tamper->show();
 				break;
@@ -118,6 +136,7 @@ void UiDeviceController::onUiDropDevice(QString MACAddress)
 				deviceList.removeOne(d);
 				d->tab->deleteLater();
 				d->tamper->deleteLater();
+				d->newDevice->deleteLater();
 				break;
 			}
 		}
@@ -135,25 +154,25 @@ void UiDeviceController::onTabClicked(TabWidget* tab)
 		if (d->tab == tab)
 		{
 			tab->select();
-			if (d->deviceName.isEmpty())
+			if (d->named)
 			{
-				d->newDevice->show();
+				d->tamper->show();
 			}
 			else
 			{
-				d->tamper->show();
+				d->newDevice->show();
 			}
 		}
 		else
 		{
 			d->tab->unselect();
-			if (d->deviceName.isEmpty())
+			if (d->named)
 			{
-				d->newDevice->hide();
+				d->tamper->hide();
 			}
 			else
 			{
-				d->tamper->hide();
+				d->newDevice->hide();
 			}
 		}
 	}
@@ -192,14 +211,11 @@ void UiDeviceController::onSetDeviceInfo(QString MACAddress, QString deviceName,
 	{
 		if (d->MAC == MACAddress)
 		{
-			d->deviceName = deviceName;
-			d->deviceType = deviceType;
+			d->named = true;
 
-			/* Hide and Delete the new device widget */
+			/* Hide the new device widget */
 
 			d->newDevice->hide();
-			d->newDevice->deleteLater();
-
 
 			/* Show the tamper widget and update the tab widget */
 
