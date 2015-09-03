@@ -237,12 +237,20 @@
     <Image Include="Resources\ButtonRightActive.png" />
     <Image Include="Resources\ButtonRightInactive.png" />
     <Image Include="Resources\CloseDefault.png" />
+    <Image Include="Resources\CloseHover.png" />
+    <Image Include="Resources\ClosePressed.png" />
     <Image Include="Resources\HeaderSid.png" />
     <Image Include="Resources\MenuDefault.png" />
     <Image Include="Resources\MenuHover.png" />
     <Image Include="Resources\MenuPressed.png" />
     <Image Include="Resources\MinimizeDefault.png" />
+    <Image Include="Resources\MinimizeHover.png" />
+    <Image Include="Resources\MinimizePressed.png" />
+    <Image Include="Resources\NetworkNameIcon.png" />
+    <Image Include="Resources\NetworkPasswordIcon.png" />
     <Image Include="Resources\SettingsDefault.png" />
+    <Image Include="Resources\SettingsHover.png" />
+    <Image Include="Resources\SettingsPressed.png" />
     <Image Include="Resources\StartButtonActive.png" />
     <Image Include="Resources\StartButtonDisabled.png" />
     <Image Include="Resources\StartButtonHover.png" />
@@ -262,12 +270,14 @@
     <Image Include="Resources\TamperButtonInactive.png" />
     <Image Include="Resources\TamperButtonInactiveHover.png" />
     <Image Include="Resources\TamperButtonInactivePressed.png" />
+    <Image Include="Resources\TamperComingSoon.png" />
     <Image Include="Resources\TamperCorruptActive.png" />
     <Image Include="Resources\TamperCorruptInactive.png" />
     <Image Include="Resources\TamperDropActive.png" />
     <Image Include="Resources\TamperDropInactive.png" />
     <Image Include="Resources\TamperLagActive.png" />
     <Image Include="Resources\TamperLagInactive.png" />
+    <Image Include="Resources\TamperWidgetBackground.png" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Widgets\TamperWidget.h">

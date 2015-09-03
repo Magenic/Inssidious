@@ -20,6 +20,7 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	lossSpinBox->setSingleStep(5);
 	lossSpinBox->setFixedWidth(62);
 	lossSpinBox->setDisabled(true);
+	lossSpinBox->setFont(moduleDescriptionFont);
 	lossSpinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
 	delaySpinBox = new QSpinBox();
@@ -29,6 +30,7 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	delaySpinBox->setSingleStep(5);
 	delaySpinBox->setFixedWidth(65);
 	delaySpinBox->setDisabled(true);
+	delaySpinBox->setFont(moduleDescriptionFont);
 	delaySpinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
 	junkSpinBox = new QSpinBox();
@@ -38,6 +40,7 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	junkSpinBox->setSingleStep(5);
 	junkSpinBox->setFixedWidth(62);
 	junkSpinBox->setDisabled(true);
+	junkSpinBox->setFont(moduleDescriptionFont);
 	junkSpinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
 	tcpResetSpinBox = new QSpinBox();
@@ -47,6 +50,7 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	tcpResetSpinBox->setSingleStep(1);
 	tcpResetSpinBox->setFixedWidth(65);
 	tcpResetSpinBox->setDisabled(true);
+	tcpResetSpinBox->setFont(moduleDescriptionFont);
 	tcpResetSpinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
 	randomizeConditions = new QPushButton();

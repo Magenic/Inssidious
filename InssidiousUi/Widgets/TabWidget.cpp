@@ -57,6 +57,7 @@ TabWidget::TabWidget(QWidget* parent)
 	//this->layout()->addItem(new QSpacerItem(5, 0));
 	//this->layout()->addWidget(&tabDeviceIconLabel);
 	//this->layout()->addItem(new QSpacerItem(2, 0));
+	this->layout()->setAlignment(Qt::AlignHCenter);
 	this->layout()->addWidget(&tabDeviceNameLabel);
 	//this->layout()->addItem(new QSpacerItem(5, 0));
 	//this->layout()->addWidget(&tabTamperCount);

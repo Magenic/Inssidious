@@ -27,6 +27,9 @@ private:
 	
 
 	void toggleState(bool) override;
+
+private slots:
+	void onNoTrafficButtonClicked();
 };
 
 #endif // UITAMPERNOINTERNET_H

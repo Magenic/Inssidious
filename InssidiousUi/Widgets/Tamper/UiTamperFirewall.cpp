@@ -1,4 +1,5 @@
 #include "UiTamperFirewall.h"
+#include <QtWidgets/QAbstractItemView>
 
 class FComboBox : public QComboBox
 {
@@ -37,12 +38,20 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 
 	httpComboBox = new FComboBox();
 	httpComboBox->setFixedSize(106, 24);
-	httpComboBox->setFont(moduleDescriptionFont);
-	httpComboBox->setPalette(moduleTextPaletteInactive);
 	httpComboBox->setEditable(true);
 	httpComboBox->lineEdit()->setReadOnly(true);
 	httpComboBox->lineEdit()->setFont(moduleDescriptionFont);
+	httpComboBox->view()->setFont(moduleDescriptionFont);
+	lineEditPaletteInactive = QPalette(moduleTextPaletteInactive);
+	lineEditPaletteActive = QPalette(moduleTextPaletteActive);
+	lineEditPaletteInactive.setColor(QPalette::Inactive, QPalette::Base, QColor(240, 240, 240));
+	lineEditPaletteActive.setColor(QPalette::Active, QPalette::Base, QColor(114, 197, 93));
+	lineEditPaletteActive.setColor(QPalette::Inactive, QPalette::Base, QColor(114, 197, 93));
 	httpComboBox->lineEdit()->setPalette(moduleTextPaletteInactive);
+	httpComboBox->setStyleSheet("QComboBox:disabled { border: 1px solid #ABABAB; border-radius: 2px; background-color: #F0F0F0; color: gray; } QComboBox {	border: 1px solid #72C55D; border-radius: 2px; background-color: #FDFDFD; color:#444444; font-family: 'Segoe UI Semibold'; font-size:11px; font-weight:400; text-decoration:none;}QComboBox:hover {    border: 2px solid #72C55D;}QComboBox:!editable:hover {    border: 2px solid #72C55D;}QComboBox:on {    background-color: #72C55D; color:#333333;}QComboBox::down-arrow:disabled { width: 24px;    height: 24px;	image: url(:/InssidiousUi/DownArrowDisabled.png); } QComboBox::down-arrow {  width: 24px;    height: 24px;	image: url(:/InssidiousUi/DownArrow.png);}QComboBox::drop-down {    subcontrol-origin: margin;    subcontrol-position: top right;    width: 20px;    border-style: none;    border-image: none;}");
+	
+
+
 	httpComboBox->lineEdit()->setContentsMargins(0, 0, 0, 0);
 	httpComboBox->lineEdit()->setAlignment(Qt::AlignCenter);					//Only possible when LineEdit is editable
 	httpComboBox->lineEdit()->setAttribute(Qt::WA_TransparentForMouseEvents);	//Allows QComboBox to still display dropdown on click
@@ -52,8 +61,8 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	httpComboBox->setItemData(0, Qt::AlignCenter, Qt::TextAlignmentRole);
 	httpComboBox->setItemData(1, Qt::AlignCenter, Qt::TextAlignmentRole);
 	httpComboBox->setItemData(2, Qt::AlignCenter, Qt::TextAlignmentRole);
+	httpComboBox->lineEdit()->setDisabled(true);
 	httpComboBox->setDisabled(true);
-
 
 	filterDescriptionLabel = new QLabel();
 	filterDescriptionLabel->setText(filterDescriptionText);
@@ -105,15 +114,16 @@ void UiTamperFirewall::toggleState(bool active)
 		firewallDescriptionLabel->setPalette(this->moduleTextPaletteActive);
 		httpDescriptionLabel->setPalette(this->moduleTextPaletteActive);
 		filterDescriptionLabel->setPalette(this->moduleTextPaletteActive);
-		httpComboBox->setPalette(this->moduleTextPaletteActive);
+		httpComboBox->lineEdit()->setPalette(this->lineEditPaletteActive);
 		httpComboBox->setEnabled(true);
+		httpComboBox->lineEdit()->setEnabled(true);
 		filterButton->setEnabled(true);
 	}
 	else
 	{
 		firewallDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
 		httpDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
-		httpComboBox->setPalette(this->moduleTextPaletteInactive);
+		httpComboBox->lineEdit()->setPalette(this->lineEditPaletteInactive);
 		filterDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
 
 		if (filterButton->isChecked())
@@ -122,6 +132,7 @@ void UiTamperFirewall::toggleState(bool active)
 			filterButton->clicked();
 		}
 
+		httpComboBox->lineEdit()->setDisabled(true);
 		httpComboBox->setDisabled(true);
 		filterButton->setDisabled(true);
 	}

@@ -56,6 +56,9 @@ UiTamperNoInternet::UiTamperNoInternet(QWidget *parent, TamperType tamperType)
 	noInternetLayout->addWidget(redirDescriptionLabel, 5, 0);
 	noInternetLayout->addWidget(redirButton, 5, 1);
 
+
+	connect(noTrafficButton, &QPushButton::clicked, this, &UiTamperNoInternet::onNoTrafficButtonClicked);
+
 	moduleLayout->addLayout(noInternetLayout);
 }
 
@@ -78,7 +81,26 @@ void UiTamperNoInternet::toggleState(bool active)
 		noInternetDescriptionLabel->setPalette(moduleTextPaletteInactive);
 		noTrafficDescriptionLabel->setPalette(moduleTextPaletteInactive);
 		redirDescriptionLabel->setPalette(moduleTextPaletteInactive);
+
+		if (noTrafficButton->isChecked())
+		{
+			noTrafficButton->setChecked(false);
+			noTrafficButton->clicked();
+		}
+
 		noTrafficButton->setDisabled(true);
 		redirButton->setDisabled(true);
+	}
+}
+
+void UiTamperNoInternet::onNoTrafficButtonClicked()
+{
+	if (noTrafficButton->isChecked())
+	{
+		((TamperNoInternetConfig*)pTamperConfig)->localNetwork = true;
+	}
+	else
+	{
+		((TamperNoInternetConfig*)pTamperConfig)->localNetwork = false;
 	}
 }

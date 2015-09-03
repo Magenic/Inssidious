@@ -40,5 +40,7 @@
         <file alias="ClosePressed.png">Resources/ClosePressed.png</file>
         <file alias="MinimizePressed.png">Resources/MinimizePressed.png</file>
         <file alias="SettingsPressed.png">Resources/SettingsPressed.png</file>
+        <file alias="DownArrow.png">Resources/DownArrow.png</file>
+        <file alias="DownArrowDisabled.png">Resources/DownArrowDisabled.png</file>
     </qresource>
 </RCC>

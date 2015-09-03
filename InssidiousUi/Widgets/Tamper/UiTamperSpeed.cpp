@@ -33,6 +33,11 @@ UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 	buttonMiddle2->setFixedSize(53, 26);
 	buttonRight->setFixedSize(53, 26);
 
+	buttonLeft->setFont(moduleDescriptionFont);
+	buttonMiddle1->setFont(moduleDescriptionFont);
+	buttonMiddle2->setFont(moduleDescriptionFont);
+	buttonRight->setFont(moduleDescriptionFont);
+
 	buttonLeft->setCheckable(true);
 	buttonMiddle1->setCheckable(true);
 	buttonMiddle2->setCheckable(true);
