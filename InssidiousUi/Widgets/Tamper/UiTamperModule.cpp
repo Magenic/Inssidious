@@ -50,6 +50,7 @@ UiTamperModule::UiTamperModule(QWidget* parent, TamperType tamperType)
 	/* Initialize the module name, font, and text palettes */
 
 	moduleTextPaletteActive.setColor(QPalette::WindowText, QColor(255, 255, 255));
+	moduleTextPaletteActive.setColor(QPalette::ButtonText, QColor(0, 0, 0));
 	moduleTextPaletteInactive.setColor(QPalette::WindowText, QColor(83, 84, 85));
 
 	moduleNameFont.setFamily("Segoe UI");

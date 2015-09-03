@@ -184,6 +184,16 @@
     <Image Include="Resources\TamperLagActive.png" />
     <Image Include="Resources\TamperLagInactive.png" />
     <Image Include="Inssidious.ico" />
+    <Image Include="Resources\CloseHover.png" />
+    <Image Include="Resources\ClosePressed.png" />
+    <Image Include="Resources\MinimizeHover.png" />
+    <Image Include="Resources\MinimizePressed.png" />
+    <Image Include="Resources\NetworkNameIcon.png" />
+    <Image Include="Resources\NetworkPasswordIcon.png" />
+    <Image Include="Resources\SettingsHover.png" />
+    <Image Include="Resources\SettingsPressed.png" />
+    <Image Include="Resources\TamperWidgetBackground.png" />
+    <Image Include="Resources\TamperComingSoon.png" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
