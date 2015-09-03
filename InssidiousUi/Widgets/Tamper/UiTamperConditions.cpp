@@ -1,6 +1,5 @@
 #include "UiTamperConditions.h"
-#include <QtWidgets/QPushButton>
-
+#include <ctime>
 
 UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
@@ -15,7 +14,7 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	conditionsDescriptionLabel->setPalette(moduleTextPaletteInactive);
 
 	lossSpinBox = new QSpinBox();
-	lossSpinBox->setRange(0, 50);
+	lossSpinBox->setRange(0, 100);
 	lossSpinBox->setPrefix(lossText);
 	lossSpinBox->setSuffix("%");
 	lossSpinBox->setSingleStep(5);
@@ -33,7 +32,7 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	delaySpinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
 	junkSpinBox = new QSpinBox();
-	junkSpinBox->setRange(0, 50);
+	junkSpinBox->setRange(0, 100);
 	junkSpinBox->setPrefix(junkText);
 	junkSpinBox->setSuffix("%");
 	junkSpinBox->setSingleStep(5);
@@ -42,7 +41,7 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	junkSpinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
 	tcpResetSpinBox = new QSpinBox();
-	tcpResetSpinBox->setRange(0, 20);
+	tcpResetSpinBox->setRange(0, 100);
 	tcpResetSpinBox->setPrefix(tcpResetText);
 	tcpResetSpinBox->setSuffix("%");
 	tcpResetSpinBox->setSingleStep(1);
@@ -115,8 +114,9 @@ void UiTamperConditions::toggleState(bool active)
 
 void UiTamperConditions::onRandomizeConditionsClicked()
 {
-	lossSpinBox->setValue(rand() % 50);
-	junkSpinBox->setValue(rand() % 50);
+	srand(time(nullptr));
+	lossSpinBox->setValue(rand() % 30);
+	junkSpinBox->setValue(rand() % 30);
 	delaySpinBox->setValue(rand() % 100);
 	tcpResetSpinBox->setValue(rand() % 20);
 }

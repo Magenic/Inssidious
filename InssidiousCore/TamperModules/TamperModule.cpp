@@ -9,10 +9,15 @@
 #include "TamperNoWebService.h"
 
 #include "TamperTypes.h"
+#include <ctime>
 
 
 TamperModule* TamperModule::makeTamperModule(int tamperType, void** ppTamperConfig)
 {
+	/* Tamper modules use rand(), so this will ensure a unique-ish seed */
+
+	srand(time(nullptr));
+
 	switch (tamperType)
 	{
 		/* network condition */

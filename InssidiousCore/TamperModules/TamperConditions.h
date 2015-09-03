@@ -23,8 +23,8 @@ private:
 
 	/* Keep track of how many packets we have in the buffer */
 
-	LONGLONG bufferSize = 0;
-	const LONGLONG numMaxBufferPackets = sizeof(LONGLONG);
+	unsigned __int64 bufferSize = 0;
+	const unsigned __int64 numMaxBufferPackets = ULLONG_MAX;
 
 
 	/* Variables for a linked list to buffer packets in before re-injecting at a later time */

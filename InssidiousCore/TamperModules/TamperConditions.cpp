@@ -53,7 +53,7 @@ short TamperConditions::process(PacketList* packetList)
 
 	/* Loop through all packets in the list */
 
-	Packet* pDivertPacket = packetList->head;
+	Packet* pDivertPacket = packetList->head->next;
 	while (pDivertPacket != packetList->tail)
 	{
 		if (calcChance((*ppConditionsConfig)->chanceLoss))
@@ -131,9 +131,10 @@ short TamperConditions::process(PacketList* packetList)
 
 	/* Send any packets that are overdue to go out from the delay chance */
 
+	DWORD currentTime = timeGetTime();
 	while (!isBufEmpty())
 	{
-		if (timeGetTime() > bufferTail->prev->timestamp)
+		if (currentTime > bufferTail->prev->timestamp)
 		{
 			packetList->insertAfter(packetList->popNode(bufferTail->prev), packetList->head);
 			--bufferSize;
