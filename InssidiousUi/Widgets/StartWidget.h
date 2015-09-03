@@ -81,7 +81,7 @@ private:
 	   "QPushButton{ border: 1px solid #72C55D; border-radius: 2px; background-color: #72C55D; color:#333333; font-family: 'Segoe UI Semibold'; font-size:16px; font-weight:400; text-decoration:none; }\
 		QPushButton:!enabled{ background-color: #F0F0F0; color:#444444; }\
 		QPushButton:pressed{ background-color: #64B450; color:#333333;}\
-		QPushButton:hover{ background-color: #82B678; }\
+		QPushButton:hover:!pressed{ background-color: #82B678; }\
 		QPushButton:on{ background-color: #72C55D; color:#333333;}\
 		QPushButton:focus{ outline: none; }";
 
