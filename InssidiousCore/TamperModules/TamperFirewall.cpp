@@ -5,6 +5,9 @@
 TamperFirewall::TamperFirewall(void** ppTamperConfig)
 {
 	this->ppFirewallConfig = (TamperFirewallConfig**)ppTamperConfig;
+
+	port80 = htons(80);
+	port443 = htons(443);
 }
 
 TamperFirewall::~TamperFirewall()
@@ -28,19 +31,21 @@ short TamperFirewall::process(PacketList* packetList)
 	Packet *pDivertPacket = packetList->head->next;
 	while (pDivertPacket != packetList->tail)
 	{
+
+		WINDIVERT_IPHDR *iphdr;
 		WINDIVERT_TCPHDR *tcphdr = NULL;
 		WINDIVERT_UDPHDR *udphdr = NULL;
-		WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen, 0, 0, 0, 0, &tcphdr, &udphdr, 0, 0);
+		WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen, &iphdr, 0, 0, 0, &tcphdr, &udphdr, 0, 0);
 
 		if (tcphdr)
 		{
-			if (tcphdr->DstPort == 80 && (*ppFirewallConfig)->allowHTTP)
+			if ((tcphdr->DstPort == port80 || tcphdr->SrcPort == port80) && (*ppFirewallConfig)->allowHTTP)
 			{
 				pDivertPacket = pDivertPacket->next;
 				continue;
 			}
 
-			if (tcphdr->DstPort == 443 && (*ppFirewallConfig)->allowHTTPS)
+			if ((tcphdr->DstPort == port443 || tcphdr->SrcPort == port443) && (*ppFirewallConfig)->allowHTTPS)
 			{
 				pDivertPacket = pDivertPacket->next;
 				continue;
@@ -49,13 +54,13 @@ short TamperFirewall::process(PacketList* packetList)
 
 		if (udphdr)
 		{
-			if (udphdr->DstPort == 80 && (*ppFirewallConfig)->allowHTTP)
+			if ((udphdr->DstPort == port80 || udphdr->SrcPort == port80) && (*ppFirewallConfig)->allowHTTP)
 			{
 				pDivertPacket = pDivertPacket->next;
 				continue;
 			}
 
-			if (udphdr->DstPort == 443 && (*ppFirewallConfig)->allowHTTPS)
+			if ((udphdr->DstPort == port443 || udphdr->SrcPort == port443) && (*ppFirewallConfig)->allowHTTPS)
 			{
 				pDivertPacket = pDivertPacket->next;
 				continue;
@@ -64,8 +69,8 @@ short TamperFirewall::process(PacketList* packetList)
 
 
 		/* Drop the packet */
-
-		packetList->freeNode(packetList->popNode(pDivertPacket));
+		pDivertPacket = pDivertPacket->next;
+		packetList->freeNode(packetList->popNode(pDivertPacket->prev));
 	}
 
 

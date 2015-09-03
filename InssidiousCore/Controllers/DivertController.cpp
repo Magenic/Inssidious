@@ -53,20 +53,31 @@ void DivertController::run()
 	QThread::exec();
 }
 
-DWORD DivertController::StaticReadLoopThreadStart(void* pDivertControllerInstance)
+DWORD DivertController::DivertReadLoop1(void* pDivertControllerInstance)
 {
 	DivertController* This = (DivertController*)pDivertControllerInstance;
-	return This->divertReadLoop();
+
+	return This->divertReadLoop(This->divertHandleLayerNetwork);
+
 }
 
-DWORD DivertController::StaticClockLoopThreadStart(void* pDivertControllerInstance)
+DWORD DivertController::DivertReadLoop2(void* pDivertControllerInstance)
+{
+	DivertController* This = (DivertController*)pDivertControllerInstance;
+
+	return This->divertReadLoop(This->divertHandleLayerNetworkForward);
+
+}
+
+DWORD DivertController::DivertClockLoop(void* pDivertControllerInstance)
 {
 	DivertController* This = (DivertController*)pDivertControllerInstance;
 	return This->divertClockLoop();
 }
 
 
-int DivertController::sendAllListPackets() {
+int DivertController::sendAllListPackets() 
+{
 	// send packet from tail to head and remove sent ones
 	int sendCount = 0;
 	UINT sendLen;
@@ -82,13 +93,14 @@ int DivertController::sendAllListPackets() {
 	assert(p == packetList->tail);
 #endif
 
-	while (!packetList->isListEmpty()) {
+	while (!packetList->isListEmpty()) 
+	{
 		pnode = packetList->popNode(packetList->tail->prev);
 		sendLen = 0;
 		assert(pnode != packetList->head);
 		// FIXME inbound injection on any kind of packet is failing with a very high percentage
 		//       need to contact windivert auther and wait for next release
-		if (!WinDivertSend(divertHandle, pnode->packet, pnode->packetLen, &(pnode->addr), &sendLen)) {
+		if (!WinDivertSend(divertHandleLayerNetwork, pnode->packet, pnode->packetLen, &(pnode->addr), &sendLen)) {
 			//LOG("Failed to send a packet. (%lu)", GetLastError());
 			assert(true);
 		}
@@ -114,7 +126,8 @@ int DivertController::sendAllListPackets() {
 }
 
 // step function to let module process and consume all packets on the list
-void DivertController::divertConsumeStep() {
+void DivertController::divertConsumeStep() 
+{
 
 #ifdef _DEBUG
 	DWORD startTick = GetTickCount(), dt;
@@ -133,7 +146,8 @@ void DivertController::divertConsumeStep() {
 
 #ifdef _DEBUG
 	dt = GetTickCount() - startTick;
-	if (dt > DIVERT_CLOCK_WAIT_MS / 2) {
+	if (dt > DIVERT_CLOCK_WAIT_MS / 2) 
+	{
 		//LOG("Costy consume step: %lu ms, sent %d packets", GetTickCount() - startTick, cnt);
 	}
 #endif
@@ -210,7 +224,9 @@ DWORD DivertController::divertClockLoop() {
 				//LOG("Lastly sent %d packets. Closing...", lastSendCount);
 
 				// terminate recv loop by closing handler. handle related error in recv loop to quit
-				closed = WinDivertClose(divertHandle);
+				closed = WinDivertClose(divertHandleLayerNetwork);
+				assert(closed);
+				closed = WinDivertClose(divertHandleLayerNetworkForward);
 				assert(closed);
 
 				// release to let read loop exit properly
@@ -227,7 +243,7 @@ DWORD DivertController::divertClockLoop() {
 	}
 }
 
-DWORD DivertController::divertReadLoop() 
+DWORD DivertController::divertReadLoop(HANDLE divertHandle) 
 {
 	char packetBuf[DIVERT_MAX_PACKETSIZE];
 	WINDIVERT_ADDRESS addrBuf;
@@ -236,9 +252,10 @@ DWORD DivertController::divertReadLoop()
 	DWORD waitResult;
 
 
-	for (;;) {
+	for (;;) 
+	{
 		// each step must fully consume the list
-		assert(packetList->isListEmpty()); // FIXME has failed this assert before. don't know why
+		//assert(packetList->isListEmpty()); // FIXME has failed this assert before. don't know why
 		if (!WinDivertRecv(divertHandle, packetBuf, DIVERT_MAX_PACKETSIZE, &addrBuf, &readLen)) 
 		{
 			DWORD lastError = GetLastError();
@@ -269,7 +286,8 @@ DWORD DivertController::divertReadLoop()
 			{
 				//LOG("Lost last recved packet but user stopped. Stop read loop.");
 				/***************** leave critical region ************************/
-				if (!ReleaseMutex(mutex)) {
+				if (!ReleaseMutex(mutex)) 
+				{
 					//LOG("Fatal: Failed to release mutex on stopping (%lu). Will stop anyway.", GetLastError());
 					assert(true);
 				}
@@ -278,7 +296,7 @@ DWORD DivertController::divertReadLoop()
 			// create node and put it into the list
 			pnode = packetList->createNode(packetBuf, readLen, &addrBuf);
 			packetList->appendNode(pnode);
-			divertConsumeStep();
+			//divertConsumeStep();
 			/***************** leave critical region ************************/
 			if (!ReleaseMutex(mutex)) {
 				//LOG("Fatal: Failed to release mutex (%lu)", GetLastError());
@@ -308,16 +326,17 @@ void DivertController::onDivertStop(QString MACAddress)
 		return;
 	}
 
-	HANDLE threads[2];
-	threads[0] = loopThread;
-	threads[1] = clockThread;
+	HANDLE threads[3];
+	threads[0] = readLoop1;
+	threads[1] = readLoop2;
+	threads[2] = clockThread;
 
 
 	if (this->divertActive)
 	{
 		InterlockedDecrement16(&this->divertActive);
 
-		WaitForMultipleObjects(2, threads, TRUE, INFINITE);
+		WaitForMultipleObjects(3, threads, TRUE, INFINITE);
 	}
 
 
@@ -337,13 +356,14 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 	{
 		/* We're currently running. Stop the threads before restarting */
 
-		HANDLE threads[2];
-		threads[0] = loopThread;
-		threads[1] = clockThread;
+		HANDLE threads[3];
+		threads[0] = readLoop1;
+		threads[1] = readLoop2;
+		threads[2] = clockThread;
 
 		InterlockedDecrement16(&divertActive);
 
-		WaitForMultipleObjects(2, threads, TRUE, INFINITE);
+		WaitForMultipleObjects(3, threads, TRUE, INFINITE);
 
 	}
 
@@ -353,10 +373,19 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 	outboundFilterString = QString("ip.SrcAddr == " + IPAddress + " and ip.DstAddr != 192.168.25.1");
 
 
-	/* Open a WinDivert handle */
+	/* Open WinDivert handles */
 
-	divertHandle = WinDivertOpen(inboundFilterString.toLocal8Bit(), WINDIVERT_LAYER_NETWORK, 0, 0);
-	if (divertHandle == INVALID_HANDLE_VALUE)
+	divertHandleLayerNetwork = WinDivertOpen(inboundFilterString.toLocal8Bit(), WINDIVERT_LAYER_NETWORK, 0, 0);
+	if (divertHandleLayerNetwork == INVALID_HANDLE_VALUE)
+	{
+		HRESULT result = GetLastError();
+
+		//TODO: Handle this error
+		return;
+	}
+
+	divertHandleLayerNetworkForward = WinDivertOpen(outboundFilterString.toLocal8Bit(), WINDIVERT_LAYER_NETWORK_FORWARD, 1, 0);
+	if (divertHandleLayerNetworkForward == INVALID_HANDLE_VALUE)
 	{
 		HRESULT result = GetLastError();
 
@@ -367,16 +396,17 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 
 	/* Max the WinDivert queue length and time */
 
-	WinDivertSetParam(divertHandle, WINDIVERT_PARAM_QUEUE_LEN, DIVERT_QUEUE_LEN_MAX);
-	WinDivertSetParam(divertHandle, WINDIVERT_PARAM_QUEUE_TIME, DIVERT_QUEUE_TIME_MAX);
-
+	WinDivertSetParam(divertHandleLayerNetwork, WINDIVERT_PARAM_QUEUE_LEN, DIVERT_QUEUE_LEN_MAX);
+	WinDivertSetParam(divertHandleLayerNetwork, WINDIVERT_PARAM_QUEUE_TIME, DIVERT_QUEUE_TIME_MAX);
+	WinDivertSetParam(divertHandleLayerNetworkForward, WINDIVERT_PARAM_QUEUE_LEN, DIVERT_QUEUE_LEN_MAX);
+	WinDivertSetParam(divertHandleLayerNetworkForward, WINDIVERT_PARAM_QUEUE_TIME, DIVERT_QUEUE_TIME_MAX);
 
 	/* Start the Read and Tamper threads */
 
 	InterlockedIncrement16(&this->divertActive);
 
-	loopThread = CreateThread(NULL, 1, (LPTHREAD_START_ROUTINE)StaticReadLoopThreadStart, this, 0, NULL);
-	if (loopThread == NULL)
+	readLoop1 = CreateThread(NULL, 1, (LPTHREAD_START_ROUTINE)DivertReadLoop1, this, 0, NULL);
+	if (readLoop1 == NULL)
 	{
 		HRESULT result = GetLastError();
 		InterlockedDecrement16(&this->divertActive);
@@ -385,7 +415,18 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 		return;
 	}
 
-	clockThread = CreateThread(NULL, 1, (LPTHREAD_START_ROUTINE)StaticClockLoopThreadStart, this, 0, NULL);
+	readLoop2 = CreateThread(NULL, 1, (LPTHREAD_START_ROUTINE)DivertReadLoop2, this, 0, NULL);
+	if (readLoop2 == NULL)
+	{
+		HRESULT result = GetLastError();
+		InterlockedDecrement16(&this->divertActive);
+
+		//TODO: Handle this error
+		return;
+	}
+	
+
+	clockThread = CreateThread(NULL, 1, (LPTHREAD_START_ROUTINE)DivertClockLoop, this, 0, NULL);
 	if (clockThread == NULL)
 	{
 		HRESULT result = GetLastError();
@@ -394,4 +435,6 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 		//TODO: Handle this error
 		return;
 	}
+
+	
 }

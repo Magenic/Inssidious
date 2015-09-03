@@ -42,7 +42,7 @@ public:
 	/* Used by child classes for displayed buttons */
 
 	QString buttonStyleSheet = 
-	   "QPushButton{ border: 1px solid #72C55D; border-radius: 2px; background-color: #FDFDFD; color:#444444; font-family: 'Segoe UI'; font-size:11px; font-weight:400; text-decoration:none; }\
+	   "QPushButton{ margin: 0px; padding: 0px; border: 1px solid #72C55D; border-radius: 2px; background-color: #FDFDFD; color:#444444; font-family: 'Segoe UI'; font-size:11px; font-weight:400; text-decoration:none; }\
 		QPushButton:!enabled{ border: 1px solid #ABABAB; background-color: #F0F0F0; color:#B0ADB0; }\
 		QPushButton:pressed{ background-color: #64B450; color:#333333;}\
 		QPushButton:hover{ background-color: #82B678; }\

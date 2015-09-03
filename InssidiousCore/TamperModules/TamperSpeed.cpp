@@ -75,6 +75,11 @@ short TamperSpeed::process(PacketList* packetList)
 			packetList->insertAfter(packetList->popNode(bufferTail->prev), packetList->head);
 			--bufferSize;
 		}
+		else
+		{
+			/* Leave the loop, remaining packets are not ready to go */
+			break;
+		}
 	}
 
 

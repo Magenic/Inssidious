@@ -3,6 +3,7 @@
 
 #include "UiTamperModule.h"
 #include <QtWidgets/QSpinBox>
+#include <QtWidgets/QPushButton>
 
 class UiTamperConditions : public UiTamperModule
 {
@@ -14,24 +15,34 @@ public:
 
 private:
 	QGridLayout* conditionsLayout;
+	QGridLayout* spinboxChildLayout;
 
 	QLabel* conditionsDescriptionLabel;
 	QString conditionsDescriptionText = "Introduce intermittent network problems";
 
-	QLabel* lossLabel;
-	QString lossText = "Loss:  ";
+	
+	QString lossText = "Loss: ";
+	QString delayText = "Delay: ";
+	QString junkText = "Junk: ";
+	QString tcpResetText = "Reset: ";
+	
 	QSpinBox* lossSpinBox;
-	QLabel* delayLabel;
-	QString delayText = "Delay:  ";
 	QSpinBox* delaySpinBox;
-	QLabel* corruptionLabel;
-	QString corruptionText = "Corrupt:  ";
-	QSpinBox* corruptionSpinBox;
-	QLabel* tcpResetLabel;
-	QString tcpResetText = "Reset:  ";
+	QSpinBox* junkSpinBox;
 	QSpinBox* tcpResetSpinBox;
 
+	QPushButton* randomizeConditions;
+
 	void toggleState(bool) override;
+
+
+private slots:
+	void onRandomizeConditionsClicked();
+	void onLossSpinBoxChange(int value);
+	void onJunkSpinBoxChange(int value);
+	void onDelaySpinBoxChange(int value);
+	void onResetSpinBoxChange(int value);
+
 };
 
 #endif // UITAMPERCONDITIONS_H

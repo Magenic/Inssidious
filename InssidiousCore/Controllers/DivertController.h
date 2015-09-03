@@ -50,7 +50,8 @@ private:
 
 	/* Handles to the WinDivert instance, the divert threads, and the associated filter strings */
 
-	HANDLE divertHandle, loopThread, clockThread;
+	HANDLE divertHandleLayerNetwork, divertHandleLayerNetworkForward;
+	HANDLE readLoop1, readLoop2, clockThread;
 	QString inboundFilterString;
 	QString outboundFilterString;
 
@@ -58,9 +59,10 @@ private:
 	/* Functions to create threads to process packets captured by WinDivert */
 	/* Static functions to pass to CreateThread that fire the instance-specific function */
 
-	static DWORD StaticReadLoopThreadStart(void* pDivertControllerInstance);
-	static DWORD StaticClockLoopThreadStart(void* pDivertControllerInstance);
-	DWORD divertReadLoop();
+	static DWORD DivertReadLoop1(void* pDivertControllerInstance);
+	static DWORD DivertReadLoop2(void* pDivertControllerInstance);
+	static DWORD DivertClockLoop(void* pDivertControllerInstance);
+	DWORD divertReadLoop(HANDLE divertHandle);
 	DWORD divertClockLoop();
 
 

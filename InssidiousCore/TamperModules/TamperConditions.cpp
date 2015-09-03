@@ -59,14 +59,15 @@ short TamperConditions::process(PacketList* packetList)
 		if (calcChance((*ppConditionsConfig)->chanceLoss))
 		{
 			/* Drop this packet */
-			packetList->freeNode(packetList->popNode(pDivertPacket));
+			pDivertPacket = pDivertPacket->next;
+			packetList->freeNode(packetList->popNode(pDivertPacket->prev));
 		}
 		else if (calcChance((*ppConditionsConfig)->chanceDelay))
 		{
 			/* Pull this packet into the delay buffer */
-
-			packetList->insertAfter(packetList->popNode(pDivertPacket), bufferHead)->timestamp = timeGetTime() + delayTime;
 			pDivertPacket = pDivertPacket->next;
+			packetList->insertAfter(packetList->popNode(pDivertPacket->prev), bufferHead)->timestamp = timeGetTime() + delayTime;
+			
 
 			/* Increment the buffer size and the next packet's release time */
 

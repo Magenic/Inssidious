@@ -11,5 +11,7 @@ public:
 private:
 	TamperFirewallConfig** ppFirewallConfig;
 
+	u_short port80;
+	u_short port443;
 };
 

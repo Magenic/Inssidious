@@ -5,6 +5,7 @@
 
 
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QButtonGroup>
 
 class UiTamperSpeed : public UiTamperModule
 {
@@ -27,6 +28,7 @@ private:
 	QString buttonDoubleWideStyleSheet = "QPushButton { image: url(:/Tamper/ButtonDoubleWideInactive.png); border: none;}QPushButton:hover { image: url(:/Tamper/ButtonDoubleWideInactive.png); border: none;}QPushButton:on { image: url(:/Tamper/ButtonDoubleWideActive.png); border: none;}QPushButton:pressed { image: url(:/Tamper/ButtonDoubleWideActive.png); border: none;}";
 
 
+	QButtonGroup* buttonGroup;
 	QPushButton* buttonLeft;
 	QPushButton* buttonMiddle1;
 	QPushButton* buttonMiddle2;
@@ -34,6 +36,8 @@ private:
 
 	void toggleState(bool) override;
 
+private slots:
+	void onButtonClicked(int);
 };
 
 #endif // UITAMPERSPEED_H

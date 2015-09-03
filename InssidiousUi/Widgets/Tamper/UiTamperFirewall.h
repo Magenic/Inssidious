@@ -3,6 +3,8 @@
 
 #include "UiTamperModule.h"
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QLineEdit>
 
 class UiTamperFirewall : public UiTamperModule
 {
@@ -20,18 +22,22 @@ private:
 
 
 	QLabel* httpDescriptionLabel;
-	QString httpDescriptionText = "Allow Traffic Over:";
-	QPushButton* httpButton;
-	QPushButton* httpsButton;
+	QString httpDescriptionText = "Allow Traffic Over: ";
+	QComboBox* httpComboBox;
 
 
 	QLabel* filterDescriptionLabel;
-	QString filterDescriptionText = "Website Filtering:";
+	QString filterDescriptionText = "Website Filtering: ";
 	QPushButton* filterButton;
 
-
-
 	void toggleState(bool) override;
+
+
+private slots:
+
+	void onHTTPComboBoxChanged(int index);
+	void onFilterButtonClicked();
+
 };
 
 #endif // UITAMPERFIREWALL_H

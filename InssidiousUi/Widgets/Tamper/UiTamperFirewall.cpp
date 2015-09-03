@@ -1,9 +1,23 @@
 #include "UiTamperFirewall.h"
 
+class FComboBox : public QComboBox
+{
+
+public:
+
+	/* Show pop up on all mouseReleaseEvents received by QComboBox */
+
+	void FComboBox::mouseReleaseEvent(QMouseEvent *event)
+	{
+		FComboBox::showPopup();
+	}
+
+};
+
 UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
-	pTamperConfig = (void*)new TamperFirewallConfig{ false, false, false };
+	pTamperConfig = (void*)new TamperFirewallConfig{ true, true, false };
 
 	firewallDescriptionLabel = new QLabel();
 	firewallDescriptionLabel->setText(firewallDescriptionText);
@@ -21,21 +35,24 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	httpDescriptionLabel->setFont(moduleDescriptionFont);
 	httpDescriptionLabel->setPalette(moduleTextPaletteInactive);
 
-	httpButton = new QPushButton();
-	httpsButton = new QPushButton();
-
-	httpButton->setStyleSheet(buttonStyleSheet);
-	httpsButton->setStyleSheet(buttonStyleSheet);
-	httpButton->setText("HTTP");
-	httpsButton->setText("HTTPS");
-	httpButton->setFont(moduleDescriptionFont);
-	httpsButton->setFont(moduleDescriptionFont);
-	httpButton->setFixedSize(48, 24);
-	httpsButton->setFixedSize(48, 24);
-	httpButton->setCheckable(true);
-	httpsButton->setCheckable(true);
-	httpButton->setDisabled(true);
-	httpsButton->setDisabled(true);
+	httpComboBox = new FComboBox();
+	httpComboBox->setFixedSize(106, 24);
+	httpComboBox->setFont(moduleDescriptionFont);
+	httpComboBox->setPalette(moduleTextPaletteInactive);
+	httpComboBox->setEditable(true);
+	httpComboBox->lineEdit()->setReadOnly(true);
+	httpComboBox->lineEdit()->setFont(moduleDescriptionFont);
+	httpComboBox->lineEdit()->setPalette(moduleTextPaletteInactive);
+	httpComboBox->lineEdit()->setContentsMargins(0, 0, 0, 0);
+	httpComboBox->lineEdit()->setAlignment(Qt::AlignCenter);					//Only possible when LineEdit is editable
+	httpComboBox->lineEdit()->setAttribute(Qt::WA_TransparentForMouseEvents);	//Allows QComboBox to still display dropdown on click
+	httpComboBox->addItem("HTTP & HTTPS");
+	httpComboBox->addItem("HTTPS Only");
+	httpComboBox->addItem("HTTP Only");
+	httpComboBox->setItemData(0, Qt::AlignCenter, Qt::TextAlignmentRole);
+	httpComboBox->setItemData(1, Qt::AlignCenter, Qt::TextAlignmentRole);
+	httpComboBox->setItemData(2, Qt::AlignCenter, Qt::TextAlignmentRole);
+	httpComboBox->setDisabled(true);
 
 
 	filterDescriptionLabel = new QLabel();
@@ -63,11 +80,14 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	firewallLayout->addWidget(firewallDescriptionLabel, 1, 0, 1, 3);
 	firewallLayout->addItem(new QSpacerItem(0, 12), 2, 0);
 	firewallLayout->addWidget(httpDescriptionLabel, 3, 0);
-	firewallLayout->addWidget(httpButton, 3, 1, Qt::AlignCenter);
-	firewallLayout->addWidget(httpsButton, 3, 2, Qt::AlignCenter);
+	firewallLayout->addWidget(httpComboBox, 3, 1, 1, 2, Qt::AlignCenter);
 	firewallLayout->addItem(new QSpacerItem(0, 2), 4, 0);
 	firewallLayout->addWidget(filterDescriptionLabel, 5, 0);
 	firewallLayout->addWidget(filterButton, 5, 1, 1, 2, Qt::AlignCenter);
+
+
+	connect(httpComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &UiTamperFirewall::onHTTPComboBoxChanged);
+	connect(filterButton, &QPushButton::clicked, this, &UiTamperFirewall::onFilterButtonClicked);
 
 
 	moduleLayout->addLayout(firewallLayout);
@@ -85,17 +105,59 @@ void UiTamperFirewall::toggleState(bool active)
 		firewallDescriptionLabel->setPalette(this->moduleTextPaletteActive);
 		httpDescriptionLabel->setPalette(this->moduleTextPaletteActive);
 		filterDescriptionLabel->setPalette(this->moduleTextPaletteActive);
-		httpButton->setEnabled(true);
-		httpsButton->setEnabled(true);
+		httpComboBox->setPalette(this->moduleTextPaletteActive);
+		httpComboBox->setEnabled(true);
 		filterButton->setEnabled(true);
 	}
 	else
 	{
 		firewallDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
 		httpDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
+		httpComboBox->setPalette(this->moduleTextPaletteInactive);
 		filterDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
-		httpButton->setDisabled(true);
-		httpsButton->setDisabled(true);
+
+		if (filterButton->isChecked())
+		{
+			filterButton->setChecked(false);
+			filterButton->clicked();
+		}
+
+		httpComboBox->setDisabled(true);
 		filterButton->setDisabled(true);
 	}
 }
+
+
+void UiTamperFirewall::onHTTPComboBoxChanged(int index)
+{
+	switch (index)
+	{
+	case 0:
+		((TamperFirewallConfig*)pTamperConfig)->allowHTTP = true;
+		((TamperFirewallConfig*)pTamperConfig)->allowHTTPS = true;
+		break;
+
+	case 1:
+		((TamperFirewallConfig*)pTamperConfig)->allowHTTP = false;
+		((TamperFirewallConfig*)pTamperConfig)->allowHTTPS = true;
+		break;
+
+	case 2:
+		((TamperFirewallConfig*)pTamperConfig)->allowHTTP = true;
+		((TamperFirewallConfig*)pTamperConfig)->allowHTTPS = false;
+		break;
+	}
+}
+
+void UiTamperFirewall::onFilterButtonClicked()
+{
+	if (filterButton->isChecked())
+	{
+		((TamperFirewallConfig*)pTamperConfig)->contentBlocked = true;
+	}
+	else
+	{
+		((TamperFirewallConfig*)pTamperConfig)->contentBlocked = false;
+	}
+}
+

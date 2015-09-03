@@ -12,6 +12,7 @@ UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 	speedDescriptionLabel->setFont(moduleDescriptionFont);
 	speedDescriptionLabel->setPalette(moduleTextPaletteInactive);
 
+	buttonGroup = new QButtonGroup();
 	buttonLeft = new QPushButton();
 	buttonMiddle1 = new QPushButton();
 	buttonMiddle2 = new QPushButton();
@@ -53,6 +54,13 @@ UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 	speedLayout->addWidget(buttonMiddle2, 1, 2);
 	speedLayout->addWidget(buttonRight, 1, 3);
 
+	buttonGroup->setExclusive(true);
+	buttonGroup->addButton(buttonLeft, 0);
+	buttonGroup->addButton(buttonMiddle1, 1);
+	buttonGroup->addButton(buttonMiddle2, 2);
+	buttonGroup->addButton(buttonRight, 3);
+
+	connect(buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &UiTamperSpeed::onButtonClicked);
 
 	moduleLayout->addLayout(speedLayout);
 }
@@ -71,13 +79,56 @@ void UiTamperSpeed::toggleState(bool active)
 		buttonMiddle1->setEnabled(true);
 		buttonMiddle2->setEnabled(true);
 		buttonRight->setEnabled(true);
+		buttonRight->setChecked(true);
+		onButtonClicked(-1);
 	}
 	else
 	{
 		speedDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
+
+		/* Uncheck all buttons */
+
+		buttonGroup->setExclusive(false);
+		buttonLeft->setChecked(false);
+		buttonMiddle1->setChecked(false);
+		buttonMiddle2->setChecked(false);
+		buttonRight->setChecked(false);
+		buttonGroup->setExclusive(true);
+
 		buttonLeft->setDisabled(true);
 		buttonMiddle1->setDisabled(true);
 		buttonMiddle2->setDisabled(true);
 		buttonRight->setDisabled(true);
+
+		onButtonClicked(-1);
+	}
+}
+
+
+void UiTamperSpeed::onButtonClicked(int button)
+{
+	
+	switch (buttonGroup->checkedId())
+	{
+	case -1:
+		/* No Button Checked */
+		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_MAX;
+		break;
+	case SPEED_EDGE:
+		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_EDGE;
+		break;
+	case SPEED_3G:
+		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_3G;
+		break;
+	case SPEED_4G:
+		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_4G;
+		break;
+	case SPEED_LTE:
+		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_LTE;
+		break;
+	case SPEED_MAX:
+	default:
+		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_MAX;
+		break;
 	}
 }
