@@ -24,6 +24,7 @@ private:
 	/* Timer Resolution in milliseconds for timeGetTime calls */
 
 	UINT timerResolution = 4;
+	DWORD lastReleaseTime = 0;
 
 
 	/* Keep track of how many packets we have in the buffer */

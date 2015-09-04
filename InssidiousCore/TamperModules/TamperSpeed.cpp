@@ -47,9 +47,19 @@ short TamperSpeed::process(PacketList* packetList)
 
 
 	/* Get the current time to log with the packets */
-
+	
+	DWORD releaseTime;
 	DWORD currentTime = timeGetTime();
-	DWORD releaseTime = timeGetTime();
+
+	if (lastReleaseTime > currentTime)
+	{
+		releaseTime = lastReleaseTime;
+	}
+	else
+	{
+		releaseTime = currentTime;
+	}
+
 
 	/* Loop through and acquire as many packets in the divert list as we can hold */
 	
@@ -96,6 +106,8 @@ short TamperSpeed::process(PacketList* packetList)
 		}
 	}
 
+
+	lastReleaseTime = releaseTime;
 
 	return bufferSize > 0;
 };
