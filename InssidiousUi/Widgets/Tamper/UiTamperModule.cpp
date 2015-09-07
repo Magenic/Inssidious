@@ -70,6 +70,14 @@ UiTamperModule::UiTamperModule(QWidget* parent, TamperType tamperType)
 	moduleDescriptionFont.setStyleStrategy(QFont::PreferAntialias);
 
 
+	lineEditPaletteInactive = QPalette(moduleTextPaletteInactive);
+	lineEditPaletteActive = QPalette(moduleTextPaletteActive);
+	lineEditPaletteInactive.setColor(QPalette::Inactive, QPalette::Base, QColor(240, 240, 240));
+	lineEditPaletteActive.setColor(QPalette::Active, QPalette::Base, QColor(114, 197, 93));
+	lineEditPaletteActive.setColor(QPalette::Inactive, QPalette::Base, QColor(114, 197, 93));
+
+
+
 	/* Add the Module Name & Description to the layout */
 
 	moduleLayout->addWidget(moduleNameLabel);

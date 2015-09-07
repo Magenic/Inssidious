@@ -143,6 +143,11 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 	this->layout()->setAlignment(startButton, Qt::AlignHCenter);	//And align it in the center of the layout
 	
 
+	/* Make sure the network name input field has focus */
+
+	networkNameInput->setFocus();
+
+
 	/* No further work is performed until we receive a clicked signal */
 
 }

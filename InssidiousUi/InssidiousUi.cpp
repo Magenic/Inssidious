@@ -126,7 +126,7 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	connect(this, &InssidiousUi::coreStartTamper, inssidiousCore, &InssidiousCore::onUiTamperStart, Qt::QueuedConnection);
 	connect(this, &InssidiousUi::coreStopTamper, inssidiousCore, &InssidiousCore::onUiTamperStop, Qt::QueuedConnection);
 
-
+	
 	/* No further work until we receive signals */
 
 }
@@ -244,8 +244,8 @@ bool InssidiousUi::nativeEvent(const QByteArray& eventType, void* message, long*
 			long x = GET_X_LPARAM(msg->lParam);
 
 			//If the mouse is within the title bar area, allow dragging the window
-			if (abs(y - winrect.top) <= GetSystemMetrics(SM_CYCAPTION) /* SM_CYCAPTION is title bar height */
-				&& abs(x - winrect.left) < 701 /* last 99 pixels reserved for Insiddious settings, minimize and close icons */)
+			if (abs(y - winrect.top) <= 42 /* height of top area of Inssidious background */
+				&& abs(x - winrect.left) < 701 /* right 99 pixels reserved for Insiddious settings, minimize and close icons */)
 			{
 				*result = HTCAPTION;
 				return true;

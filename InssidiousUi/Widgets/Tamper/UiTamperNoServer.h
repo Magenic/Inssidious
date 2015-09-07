@@ -4,7 +4,7 @@
 #include "UiTamperModule.h"
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QLineEdit>
+
 
 class UiTamperNoServer : public UiTamperModule
 {
@@ -14,6 +14,7 @@ public:
 	UiTamperNoServer(QWidget *parent, TamperType tamperType);
 	~UiTamperNoServer();
 
+
 private:
 	QGridLayout* noServerLayout;
 	
@@ -21,12 +22,15 @@ private:
 	QString noServerDescriptionText = "Test functionality when a server is down";
 
 	QPushButton* noServerButton;
-
-	QLabel* configServersDescriptionLabel;
-	QString configServersDescriptionText = "Configure Server Block List: ";
+	int blockedServersCount = 0;
+	QString blockedServerFirstItemText = "  Server Count:  ";
+	QComboBox* blockedServersComboBox;
 	QPushButton* configServersButton;
 
 	void toggleState(bool) override;
+
+private slots:
+	void onConfigureServers();
 };
 
 #endif // UITAMPERNOSERVER_H

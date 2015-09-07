@@ -101,6 +101,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_NewDeviceWidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Widgets\Tamper\ConfigureServersDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigureServersDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ConfigureServersDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="InssidiousUi.h" />
@@ -139,6 +148,9 @@
     </CustomBuild>
     <CustomBuild Include="GeneratedFiles\Debug\StartWidget.moc">
       <Filter>Generated Files\Debug</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\Tamper\ConfigureServersDialog.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

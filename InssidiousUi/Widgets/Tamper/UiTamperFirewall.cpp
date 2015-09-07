@@ -42,13 +42,8 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	httpComboBox->lineEdit()->setReadOnly(true);
 	httpComboBox->lineEdit()->setFont(moduleDescriptionFont);
 	httpComboBox->view()->setFont(moduleDescriptionFont);
-	lineEditPaletteInactive = QPalette(moduleTextPaletteInactive);
-	lineEditPaletteActive = QPalette(moduleTextPaletteActive);
-	lineEditPaletteInactive.setColor(QPalette::Inactive, QPalette::Base, QColor(240, 240, 240));
-	lineEditPaletteActive.setColor(QPalette::Active, QPalette::Base, QColor(114, 197, 93));
-	lineEditPaletteActive.setColor(QPalette::Inactive, QPalette::Base, QColor(114, 197, 93));
-	httpComboBox->lineEdit()->setPalette(moduleTextPaletteInactive);
-	httpComboBox->setStyleSheet("QComboBox:disabled { border: 1px solid #ABABAB; border-radius: 2px; background-color: #F0F0F0; color: gray; } QComboBox {	border: 1px solid #72C55D; border-radius: 2px; background-color: #FDFDFD; color:#444444; font-family: 'Segoe UI Semibold'; font-size:11px; font-weight:400; text-decoration:none;}QComboBox:hover {    border: 2px solid #72C55D;}QComboBox:!editable:hover {    border: 2px solid #72C55D;}QComboBox:on {    background-color: #72C55D; color:#333333;}QComboBox::down-arrow:disabled { width: 24px;    height: 24px;	image: url(:/InssidiousUi/DownArrowDisabled.png); } QComboBox::down-arrow {  width: 24px;    height: 24px;	image: url(:/InssidiousUi/DownArrow.png);}QComboBox::drop-down {    subcontrol-origin: margin;    subcontrol-position: top right;    width: 20px;    border-style: none;    border-image: none;}");
+	httpComboBox->lineEdit()->setPalette(lineEditPaletteInactive);
+	httpComboBox->setStyleSheet(comboBoxStyleSheet);
 	
 
 

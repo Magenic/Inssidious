@@ -28,6 +28,8 @@ public:
 	QFont moduleDescriptionFont;
 	QPalette moduleTextPaletteActive;
 	QPalette moduleTextPaletteInactive;
+	QPalette lineEditPaletteActive;
+	QPalette lineEditPaletteInactive;
 
 	/* Used by child classes to add their unique widgets to */
 	
@@ -49,6 +51,15 @@ public:
 		QPushButton:on{ background-color: #72C55D; color:#333333;}\
 		QPushButton:focus{ outline: none; }";
 
+	QString comboBoxStyleSheet =
+		"QComboBox:disabled { border: 1px solid #ABABAB; border-radius: 2px; background-color: #F0F0F0; color: gray; }\
+		 QComboBox { border: 1px solid #72C55D; border-radius: 2px; background-color: #FDFDFD; color:#444444; font-family: 'Segoe UI Semibold'; font-size:11px; font-weight:400; text-decoration:none;}\
+		 QComboBox:hover { border: 2px solid #72C55D;}\
+		 QComboBox:!editable:hover { border: 2px solid #72C55D;}\
+		 QComboBox:on { background-color: #72C55D; color:#333333;}\
+		 QComboBox::down-arrow:disabled { width: 24px;    height: 24px;	image: url(:/InssidiousUi/DownArrowDisabled.png); }\
+		 QComboBox::down-arrow { width: 24px; height: 24px;	image: url(:/InssidiousUi/DownArrow.png);}\
+		 QComboBox::drop-down { subcontrol-origin: margin; subcontrol-position: top right; width: 20px; border-style: none; border-image: none;}";
 
 signals:
 	void tamperButtonClicked(UiTamperModule* signaled, void * pTamperConfig);

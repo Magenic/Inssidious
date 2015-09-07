@@ -27,6 +27,7 @@
         <file alias="ComingSoon.png">Resources/TamperComingSoon.png</file>    
     </qresource>
     <qresource prefix="/InssidiousUi">
+        <file alias="Inssidious.ico">Inssidious.ico</file>
         <file alias="BackgroundStart.png">Resources/BackgroundStart.png</file>
         <file alias="BackgroundRunning.png">Resources/BackgroundRunning.png</file>
         <file alias="NetworkNameIcon.png">Resources/NetworkNameIcon.png</file>

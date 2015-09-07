@@ -25,9 +25,6 @@ private:
 	QString httpDescriptionText = "Allow Traffic Over: ";
 	QComboBox* httpComboBox;
 
-	QPalette lineEditPaletteInactive;
-	QPalette lineEditPaletteActive;
-
 	QLabel* filterDescriptionLabel;
 	QString filterDescriptionText = "Website Filtering: ";
 	QPushButton* filterButton;
