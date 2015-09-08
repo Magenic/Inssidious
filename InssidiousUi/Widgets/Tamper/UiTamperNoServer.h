@@ -26,7 +26,7 @@ private:
 	QString blockedServerTextBack = " Servers";
 	QPushButton* configServersButton;
 
-	void toggleState(bool) override;
+	void setActive(bool) override;
 
 private slots:
 	void onConfigureServers();

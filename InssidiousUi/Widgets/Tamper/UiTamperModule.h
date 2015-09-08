@@ -18,21 +18,20 @@ public:
 	/* Used by TamperWidget to create and check state of the individual tamper modules */
 
 	static UiTamperModule* makeUiTamperModule(QWidget* parent, TamperType);
-	void select();
-	void unselect();
-	bool selected;
 
 
+	/* Used when switching between active/inactive states */
 
+	virtual void setActive(bool) = 0;
+	QPalette moduleBackgroundPaletteActive;
+	QPalette moduleBackgroundPaletteInactive;
 
 
 	/* Used by child classes to keep consistent font size and colors */
 	
-	QFont moduleDescriptionFont;
-	QPalette moduleTextPaletteActive;
-	QPalette moduleTextPaletteInactive;
-	QPalette lineEditPaletteActive;
-	QPalette lineEditPaletteInactive;
+	QFont moduleTextFont;
+	QPalette moduleTextPalette;
+	
 
 	/* Used by child classes to add their unique widgets to */
 	
@@ -48,7 +47,7 @@ public:
 
 	QString buttonStyleSheet = 
 	   "QPushButton{ margin: 0px; padding: 0px; border: 1px solid #CCCCCC; background-color: #FFFFFF; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none; }\
-		QPushButton:!enabled{ border: 1px solid #ABABAB; background-color: #F0F0F0; color:#B0ADB0; }\
+		QPushButton:!enabled{ border: 1px solid #B0ADB0; background-color: #FFFFFF; color:#B0ADB0; }\
 		QPushButton:pressed{ border: 1px solid #72C55D; background-color: #4E9E38; color:#333333;}\
 		QPushButton:hover:!pressed{ border: 1px solid #72C55D; background-color: #D5EDCF; }\
 		QPushButton:on{ border: 1px solid #72C55D; background-color: #72C55D; color:#333333;}\
@@ -57,7 +56,7 @@ public:
 
 	QString comboBoxStyleSheet =
 		"QComboBox { border: 1px solid #CCCCCC; border-radius: 2px; background-color: #FFFFFF; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;}\
-		 QComboBox:disabled { border: 1px solid #ABABAB; border-radius: 2px; background-color: #F0F0F0; color: #444444; }\
+		 QComboBox:disabled { border: 1px solid #B0ADB0; background-color: #FFFFFF; color:#B0ADB0; }\
 		 QComboBox:hover { border: 2px solid #72C55D;}\
 		 QComboBox:!editable:hover { border: 2px solid #72C55D;}\
 		 QComboBox:on { background-color: #FFFFFF; color:#333333;}\
@@ -66,10 +65,12 @@ public:
 		 QComboBox::drop-down { subcontrol-origin: margin; subcontrol-position: top right; width: 20px; border-style: none; border-image: none;}";
 
 	QString spinBoxStyleSheet = 
-		"QSpinBox { margin: 0px; padding: 0px; border: 1px solid #CCCCCC; background-color: #FFFFFF; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none; }";
+		"QSpinBox { margin: 0px; padding: 0px; border: 1px solid #CCCCCC; background-color: #FFFFFF; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none; }\
+		 QSpinBox:!enabled{ margin: 0px; padding: 0px; border: 1px solid #B0ADB0; background-color: #FFFFFF; color:#B0ADB0; }";
 
 signals:
-	void tamperButtonClicked(UiTamperModule* signaled, void * pTamperConfig);
+	void tamperStart(UiTamperModule* signaled, void * pTamperConfig);
+	void tamperStop(UiTamperModule* signaled);
 
 
 private:
@@ -87,16 +88,19 @@ private:
 
 	/* Palettes and Pixmaps for the Active/Inactive states */
 
-	QPalette tamperModulePaletteActive;
-	QPalette tamperModulePaletteInactive;
+	QPalette moduleBackgroundPaletteActiveHover;
+	QPalette moduleBackgroundPaletteActivePressed;
+	QPalette moduleBackgroundPaletteInactiveHover;
+	QPalette moduleBackgroundPaletteInactivePressed;
 
-	QPixmap tamperModuleImageActive = QPixmap(":/Tamper/TamperModuleActive.png");						//QPixmap for active device tampers 
-	QPixmap tamperModuleImageInactive = QPixmap(":/Tamper/TamperModuleInactive.png");					//QPixmap for inactive device tampers 
+	QPixmap moduleImageActive = QPixmap(":/Tamper/TamperModuleActive.png");
+	QPixmap moduleImageActiveHover = QPixmap(":/Tamper/TamperModuleActiveHover.png");
+	QPixmap moduleImageActivePressed = QPixmap(":/Tamper/TamperModuleActivePressed.png");
+	QPixmap moduleImageInactive = QPixmap(":/Tamper/TamperModuleInactive.png");
+	QPixmap moduleImageInactiveHover = QPixmap(":/Tamper/TamperModuleInactiveHover.png");
+	QPixmap moduleImageInactivePressed = QPixmap(":/Tamper/TamperModuleInactivePressed.png");
 
 
-	/* Ensure the child classes update as their palettes & states as well */
-
-	virtual void toggleState(bool) = 0;
 };
 
 #endif // TAMPERWIDGET_H

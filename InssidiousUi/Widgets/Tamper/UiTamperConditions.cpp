@@ -10,8 +10,8 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	conditionsDescriptionLabel->setText(conditionsDescriptionText);
 	conditionsDescriptionLabel->setContentsMargins(0, 6, 0, 12);
 	conditionsDescriptionLabel->setAlignment(Qt::AlignHCenter);
-	conditionsDescriptionLabel->setFont(moduleDescriptionFont);
-	conditionsDescriptionLabel->setPalette(moduleTextPaletteInactive);
+	conditionsDescriptionLabel->setFont(moduleTextFont);
+	conditionsDescriptionLabel->setPalette(moduleTextPalette);
 
 	lossSpinBox = new QSpinBox();
 	lossSpinBox->setRange(0, 100);
@@ -52,19 +52,10 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	randomizeConditions = new QPushButton();
 	randomizeConditions->setStyleSheet(buttonStyleSheet);
 	randomizeConditions->setText("Randomize Conditions");
-	randomizeConditions->setFont(moduleDescriptionFont);
+	randomizeConditions->setFont(moduleTextFont);
 	randomizeConditions->setFixedSize(130, 30);
 	randomizeConditions->setContentsMargins(0, 0, 0, 0);
 
-	//resetConditions = new QPushButton();
-	//resetConditions->setStyleSheet(buttonStyleSheet);
-	//resetConditions->setText("Reset Conditions");
-	//resetConditions->setFont(moduleDescriptionFont);
-	//resetConditions->setFixedSize(130, 30);
-	//resetConditions->setDisabled(true);
-	//resetConditions->setContentsMargins(0, 0, 0, 0);
-
-	
 	spinboxChildLayout = new QGridLayout();
 	spinboxChildLayout->setSpacing(4);
 	spinboxChildLayout->addWidget(lossSpinBox, 0, 0, Qt::AlignCenter);
@@ -74,8 +65,6 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 
 	conditionsLayout = new QGridLayout();
 	conditionsLayout->setHorizontalSpacing(20);
-	//conditionsLayout->setColumnMinimumWidth(1, 146);
-	//conditionsLayout->setColumnMinimumWidth(2, 146);
 	conditionsLayout->addWidget(conditionsDescriptionLabel, 1, 1, 1, 2, Qt::AlignCenter);
 	conditionsLayout->addWidget(randomizeConditions, 2, 1, 2, 1, Qt::AlignCenter);	
 	conditionsLayout->addItem(spinboxChildLayout, 2, 2, 1, 1, Qt::AlignCenter);
@@ -95,34 +84,61 @@ UiTamperConditions::~UiTamperConditions()
 {
 
 }
-void UiTamperConditions::toggleState(bool active)
+void UiTamperConditions::setActive(bool active)
 {
 	if (active)
 	{
-		conditionsDescriptionLabel->setPalette(moduleTextPaletteActive);
+		/* Show the module as active */
+
+		this->setPalette(moduleBackgroundPaletteActive);
+
+
+		/* Enable the buttons */
 		
+		lossSpinBox->setEnabled(true);
+		delaySpinBox->setEnabled(true);
+		junkSpinBox->setEnabled(true);
+		tcpResetSpinBox->setEnabled(true);
+
+		randomizeConditions->setEnabled(true);
 		onRandomizeConditionsClicked();
+
+
+		/* Notify Core */
+
+		emit tamperStart(this, pTamperConfig);
 	}
 	else
 	{
-		conditionsDescriptionLabel->setPalette(moduleTextPaletteInactive);
+		/* Show the module as inactive */
+
+		this->setPalette(moduleBackgroundPaletteInactive);
+
+
+		/* Clear and disable all buttons */
 
 		lossSpinBox->setValue(0);
 		delaySpinBox->setValue(0);
 		junkSpinBox->setValue(0);
 		tcpResetSpinBox->setValue(0);
+
+		lossSpinBox->setDisabled(true);
+		delaySpinBox->setDisabled(true);
+		junkSpinBox->setDisabled(true);
+		tcpResetSpinBox->setDisabled(true);
+
+		randomizeConditions->setDisabled(true);
+
+		/* Notify core to stop */
+
+		emit tamperStop(this);
+
 	}
 }
 
 
 void UiTamperConditions::onRandomizeConditionsClicked()
 {
-	if (!selected)
-	{
-		emit tamperButtonClicked(this, pTamperConfig);
-		return;
-	}
-
 	srand(time(nullptr));
 	lossSpinBox->setValue(rand() % 30);
 	junkSpinBox->setValue(rand() % 30);

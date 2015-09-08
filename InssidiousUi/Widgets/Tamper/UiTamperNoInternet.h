@@ -26,7 +26,7 @@ private:
 	QPushButton* redirButton;
 	
 
-	void toggleState(bool) override;
+	void setActive(bool) override;
 
 private slots:
 	void onNoTrafficButtonClicked();

@@ -11,15 +11,15 @@ UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 	noServerDescriptionLabel->setText(noServerDescriptionText);
 	noServerDescriptionLabel->setContentsMargins(0, 6, 0, 20);
 	noServerDescriptionLabel->setAlignment(Qt::AlignHCenter);
-	noServerDescriptionLabel->setFont(moduleDescriptionFont);
-	noServerDescriptionLabel->setPalette(moduleTextPaletteInactive);
+	noServerDescriptionLabel->setFont(moduleTextFont);
+	noServerDescriptionLabel->setPalette(moduleTextPalette);
 
 	noServerButton = new QPushButton();
 	noServerButton->setCheckable(true);
 	noServerButton->setStyleSheet(buttonStyleSheet);
 	noServerButton->setFixedSize(130, 30);
 	noServerButton->setText(blockedServerTextFront + QString::number(blockedServersCount) + blockedServerTextBack);
-
+	noServerButton->setAttribute(Qt::WA_TransparentForMouseEvents);
 
 	configServersButton = new QPushButton();
 	configServersButton->setStyleSheet(buttonStyleSheet);
@@ -46,21 +46,58 @@ UiTamperNoServer::~UiTamperNoServer()
 {
 
 }
-void UiTamperNoServer::toggleState(bool active)
+void UiTamperNoServer::setActive(bool active)
 {
 	if (active)
 	{
-		noServerDescriptionLabel->setPalette(this->moduleTextPaletteActive);
+		/* Show the module as active */
+
+		this->setPalette(moduleBackgroundPaletteActive);
+
+
+		/* Enable the buttons */
+
 		noServerButton->setEnabled(true);
 		configServersButton->setEnabled(true);
+		
+		
+		/* Set the config value to true and the block button to checked */
+
+		noServerButton->setChecked(true);
+		((TamperNoServerConfig*)pTamperConfig)->blockServers = true;
+
+
+		/* Notify Core */
+
+		emit tamperStart(this, pTamperConfig);
+
 	}
 	else
 	{
-		noServerDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
+		/* Show the module as inactive */
+
+		this->setPalette(moduleBackgroundPaletteInactive);
+
+
+		/* Uncheck and disable all buttons */
+
+		noServerButton->setChecked(false);
+
 		noServerButton->setDisabled(true);
 		configServersButton->setDisabled(true);
+
+
+		/* Set the config value to false */
+
+		((TamperNoServerConfig*)pTamperConfig)->blockServers = false;
+
+
+		/* Notify Core */
+
+		emit tamperStop(this);
 	}
 }
+
 
 void UiTamperNoServer::onConfigureServers()
 {

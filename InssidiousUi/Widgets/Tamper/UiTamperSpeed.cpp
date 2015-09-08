@@ -9,8 +9,8 @@ UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 	speedDescriptionLabel->setText(speedDescriptionText);
 	speedDescriptionLabel->setContentsMargins(0, 6, 0, 20);
 	speedDescriptionLabel->setAlignment(Qt::AlignHCenter);
-	speedDescriptionLabel->setFont(moduleDescriptionFont);
-	speedDescriptionLabel->setPalette(moduleTextPaletteInactive);
+	speedDescriptionLabel->setFont(moduleTextFont);
+	speedDescriptionLabel->setPalette(moduleTextPalette);
 
 	buttonGroup = new QButtonGroup();
 	buttonLeft = new QPushButton();
@@ -33,10 +33,10 @@ UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 	buttonMiddle2->setFixedSize(60, 30);
 	buttonRight->setFixedSize(60, 30);
 
-	buttonLeft->setFont(moduleDescriptionFont);
-	buttonMiddle1->setFont(moduleDescriptionFont);
-	buttonMiddle2->setFont(moduleDescriptionFont);
-	buttonRight->setFont(moduleDescriptionFont);
+	buttonLeft->setFont(moduleTextFont);
+	buttonMiddle1->setFont(moduleTextFont);
+	buttonMiddle2->setFont(moduleTextFont);
+	buttonRight->setFont(moduleTextFont);
 
 	buttonLeft->setCheckable(true);
 	buttonMiddle1->setCheckable(true);
@@ -69,47 +69,73 @@ UiTamperSpeed::~UiTamperSpeed()
 
 }
 
-void UiTamperSpeed::toggleState(bool active)
+void UiTamperSpeed::setActive(bool active)
 {
 	if (active)
 	{
-		speedDescriptionLabel->setPalette(this->moduleTextPaletteActive);
+		/* Show the module as active */
+
+		this->setPalette(moduleBackgroundPaletteActive);
+
+
+		/* Enable the buttons */
+
 		buttonLeft->setEnabled(true);
 		buttonMiddle1->setEnabled(true);
 		buttonMiddle2->setEnabled(true);
 		buttonRight->setEnabled(true);
 		
+
+		/* Set the speed to SPEED_LTE & check the button */
+
 		if (buttonGroup->checkedId() == -1)
 		{
 			onButtonClicked(SPEED_LTE);
 		}
+
+
+		/* Notify Core */
+
+		emit tamperStart(this, pTamperConfig);
 	}
 	else
 	{
-		speedDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
+		/* Show the module as inactive */
 
-		/* Uncheck all buttons */
+		this->setPalette(moduleBackgroundPaletteInactive);
+		
+		
+		/* Uncheck and disable all buttons */
 
 		buttonGroup->setExclusive(false);
+
 		buttonLeft->setChecked(false);
 		buttonMiddle1->setChecked(false);
 		buttonMiddle2->setChecked(false);
 		buttonRight->setChecked(false);
+
+		buttonLeft->setDisabled(true);
+		buttonMiddle1->setDisabled(true);
+		buttonMiddle2->setDisabled(true);
+		buttonRight->setDisabled(true);
+
 		buttonGroup->setExclusive(true);
 
+
+		/* Set the speed back to MAX */
+
 		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_MAX;
+
+
+		/* Notify core to stop */
+
+		emit tamperStop(this);
 	}
 }
 
 
 void UiTamperSpeed::onButtonClicked(int button)
 {
-	if (!selected)
-	{
-		emit tamperButtonClicked(this, pTamperConfig);
-		return;
-	}
-
 	switch (buttonGroup->checkedId())
 	{
 	case -1:

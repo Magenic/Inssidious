@@ -25,7 +25,7 @@ private:
 	QPushButton* blockWebServicesButton;
 	QPushButton* configWebServicesButton;
 
-	void toggleState(bool) override;
+	void setActive(bool) override;
 };
 
 #endif // UITAMPERNOWEBSERVICE_H

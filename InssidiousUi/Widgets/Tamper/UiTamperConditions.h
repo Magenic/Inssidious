@@ -34,7 +34,7 @@ private:
 	QPushButton* randomizeConditions;
 	QPushButton* resetConditions;
 
-	void toggleState(bool) override;
+	void setActive(bool) override;
 
 
 private slots:

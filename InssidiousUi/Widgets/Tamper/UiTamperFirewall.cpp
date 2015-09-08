@@ -24,8 +24,8 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	firewallDescriptionLabel->setText(firewallDescriptionText);
 	firewallDescriptionLabel->setFixedHeight(16);
 	firewallDescriptionLabel->setAlignment(Qt::AlignHCenter);
-	firewallDescriptionLabel->setFont(moduleDescriptionFont);
-	firewallDescriptionLabel->setPalette(moduleTextPaletteInactive);
+	firewallDescriptionLabel->setFont(moduleTextFont);
+	firewallDescriptionLabel->setPalette(moduleTextPalette);
 
 
 	httpDescriptionLabel = new QLabel();
@@ -33,16 +33,15 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	httpDescriptionLabel->setFixedHeight(24);
 	httpDescriptionLabel->setWordWrap(true);
 	httpDescriptionLabel->setAlignment(Qt::AlignCenter);
-	httpDescriptionLabel->setFont(moduleDescriptionFont);
-	httpDescriptionLabel->setPalette(moduleTextPaletteInactive);
+	httpDescriptionLabel->setFont(moduleTextFont);
+	httpDescriptionLabel->setPalette(moduleTextPalette);
 
 	httpComboBox = new FComboBox();
 	httpComboBox->setFixedSize(130, 30);
 	httpComboBox->setEditable(true);
 	httpComboBox->lineEdit()->setReadOnly(true);
-	httpComboBox->lineEdit()->setFont(moduleDescriptionFont);
-	httpComboBox->view()->setFont(moduleDescriptionFont);
-	httpComboBox->lineEdit()->setPalette(lineEditPaletteInactive);
+	httpComboBox->lineEdit()->setFont(moduleTextFont);
+	httpComboBox->view()->setFont(moduleTextFont);
 	httpComboBox->setStyleSheet(comboBoxStyleSheet);
 	
 
@@ -63,13 +62,13 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	filterDescriptionLabel->setFixedHeight(24);
 	filterDescriptionLabel->setWordWrap(true);
 	filterDescriptionLabel->setAlignment(Qt::AlignCenter);
-	filterDescriptionLabel->setFont(moduleDescriptionFont);
-	filterDescriptionLabel->setPalette(moduleTextPaletteInactive);
+	filterDescriptionLabel->setFont(moduleTextFont);
+	filterDescriptionLabel->setPalette(moduleTextPalette);
 
 	filterButton = new QPushButton();
 	filterButton->setStyleSheet(buttonStyleSheet);
 	filterButton->setText("Block All Content");
-	filterButton->setFont(moduleDescriptionFont);
+	filterButton->setFont(moduleTextFont);
 	filterButton->setFixedSize(130, 30);
 	filterButton->setCheckable(true);
 
@@ -77,8 +76,6 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 
 	firewallLayout = new QGridLayout();
 	firewallLayout->setHorizontalSpacing(20);
-	//firewallLayout->setColumnMinimumWidth(0, 160);
-	//firewallLayout->setColumnMinimumWidth(1, 160);
 	firewallLayout->setAlignment(Qt::AlignHCenter);
 	firewallLayout->addItem(new QSpacerItem(0, 6), 0, 0);
 	firewallLayout->addWidget(firewallDescriptionLabel, 1, 0, 1, 2);
@@ -101,24 +98,34 @@ UiTamperFirewall::~UiTamperFirewall()
 
 }
 
-void UiTamperFirewall::toggleState(bool active)
+void UiTamperFirewall::setActive(bool active)
 {
 	if (active)
 	{
-		firewallDescriptionLabel->setPalette(this->moduleTextPaletteActive);
-		httpDescriptionLabel->setPalette(this->moduleTextPaletteActive);
-		filterDescriptionLabel->setPalette(this->moduleTextPaletteActive);
-		httpComboBox->lineEdit()->setPalette(this->lineEditPaletteActive);
+		/* Show the module as active */
+
+		this->setPalette(moduleBackgroundPaletteActive);
+
+
+		/* Enable the buttons */
+
 		httpComboBox->setEnabled(true);
 		httpComboBox->lineEdit()->setEnabled(true);
 		filterButton->setEnabled(true);
+
+
+		/* Notify Core */
+
+		emit tamperStart(this, pTamperConfig);
 	}
 	else
 	{
-		firewallDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
-		httpDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
-		httpComboBox->lineEdit()->setPalette(this->lineEditPaletteInactive);
-		filterDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
+		/* Show the module as inactive */
+
+		this->setPalette(moduleBackgroundPaletteInactive);
+
+
+		/* Uncheck and disable all buttons */
 
 		if (filterButton->isChecked())
 		{
@@ -129,6 +136,12 @@ void UiTamperFirewall::toggleState(bool active)
 		httpComboBox->lineEdit()->setDisabled(true);
 		httpComboBox->setDisabled(true);
 		filterButton->setDisabled(true);
+
+
+
+		/* Notify core to stop */
+
+		emit tamperStop(this);
 	}
 }
 

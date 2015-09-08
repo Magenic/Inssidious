@@ -33,51 +33,41 @@ UiTamperModule::UiTamperModule(QWidget* parent, TamperType tamperType)
 
 	/* Initialize the button palettes for the various states */
 
-	tamperModulePaletteActive.setBrush(QPalette::Background, QBrush(tamperModuleImageActive));
-	tamperModulePaletteInactive.setBrush(QPalette::Background, QBrush(tamperModuleImageInactive));
-
-
-	/* Start as an inactive button */
-
-	this->setPalette(tamperModulePaletteInactive);
-	this->selected = false;
+	moduleBackgroundPaletteActive.setBrush(QPalette::Background, QBrush(moduleImageActive));
+	moduleBackgroundPaletteActiveHover.setBrush(QPalette::Background, QBrush(moduleImageActiveHover));
+	moduleBackgroundPaletteActivePressed.setBrush(QPalette::Background, QBrush(moduleImageActivePressed));
+	moduleBackgroundPaletteInactive.setBrush(QPalette::Background, QBrush(moduleImageInactive));
+	moduleBackgroundPaletteInactiveHover.setBrush(QPalette::Background, QBrush(moduleImageInactiveHover));
+	moduleBackgroundPaletteInactivePressed.setBrush(QPalette::Background, QBrush(moduleImageInactivePressed));
 
 
 	/* Initialize the module name, font, and text palettes */
 
-	moduleTextPaletteActive.setColor(QPalette::WindowText, QColor(51, 51, 51));
-	moduleTextPaletteActive.setColor(QPalette::ButtonText, QColor(0, 0, 0));
-	moduleTextPaletteInactive.setColor(QPalette::WindowText, QColor(51, 51, 51));
-
 	moduleNameFont.setFamily("Segoe UI");
-	//moduleNameFont.setWeight(QFont::DemiBold);
 	moduleNameFont.setPixelSize(16);
 	moduleNameFont.setStyleStrategy(QFont::PreferAntialias);
+
+	moduleTextFont.setFamily("Segoe UI");
+	moduleTextFont.setPixelSize(12);
+	moduleTextFont.setStyleStrategy(QFont::PreferAntialias);
+
+	moduleTextPalette.setColor(QPalette::WindowText, QColor(51, 51, 51));
+
+
+	/* Add the Module Name to the layout */
 
 	moduleNameLabel = new QLabel(TamperTypeName[tamperType]);
 	moduleNameLabel->setContentsMargins(0, 10, 0, 0);
 	moduleNameLabel->setAlignment(Qt::AlignHCenter);
 	moduleNameLabel->setFont(moduleNameFont);
-	moduleNameLabel->setPalette(moduleTextPaletteInactive);
-
-	moduleDescriptionFont.setFamily("Segoe UI");
-	moduleDescriptionFont.setPixelSize(12);
-	//moduleDescriptionFont.setWeight(QFont::DemiBold);
-	moduleDescriptionFont.setStyleStrategy(QFont::PreferAntialias);
-
-
-	lineEditPaletteInactive = QPalette(moduleTextPaletteInactive);
-	lineEditPaletteActive = QPalette(moduleTextPaletteActive);
-	lineEditPaletteInactive.setColor(QPalette::Inactive, QPalette::Base, QColor(240, 240, 240));
-	lineEditPaletteActive.setColor(QPalette::Active, QPalette::Base, QColor(114, 197, 93));
-	lineEditPaletteActive.setColor(QPalette::Inactive, QPalette::Base, QColor(114, 197, 93));
-
-
-
-	/* Add the Module Name & Description to the layout */
+	moduleNameLabel->setPalette(moduleTextPalette);
 
 	moduleLayout->addWidget(moduleNameLabel);
 
+
+	/* Start as an inactive button */
+
+	this->setPalette(moduleBackgroundPaletteInactive);
 
 }
 
@@ -121,77 +111,56 @@ UiTamperModule* UiTamperModule::makeUiTamperModule(QWidget* parent, TamperType t
 	}
 }
 
-void UiTamperModule::select()
-{
-	this->selected = true;
-	this->setPalette(tamperModulePaletteActive);
-	this->moduleNameLabel->setPalette(moduleTextPaletteActive);
-	this->toggleState(true);
-	
-}
-
-
-void UiTamperModule::unselect()
-{
-	this->selected = false;
-	this->setPalette(tamperModulePaletteInactive);
-	this->moduleNameLabel->setPalette(moduleTextPaletteInactive);
-	this->toggleState(false);
-	
-}
-
 
 void UiTamperModule::mouseReleaseEvent(QMouseEvent *e)
 {
-	//if (this->palette().background() == buttonPaletteActivePressed.background())
-	//{
-	//	this->setPalette(buttonPaletteActive);
-	//}
-	//else if (this->palette().background() == buttonPaletteInactivePressed.background())
-	//{
-	//	this->setPalette(buttonPaletteInactive);
-	//}
-
-	emit tamperButtonClicked(this, pTamperConfig);
+	if (this->palette().background() == moduleBackgroundPaletteActivePressed.background())
+	{
+		this->setActive(false);
+	}
+	else if (this->palette().background() == moduleBackgroundPaletteInactivePressed.background())
+	{
+		this->setActive(true);
+	}
 }
 
 void UiTamperModule::mousePressEvent(QMouseEvent *e)
 {
-	//if ((e->buttons() & Qt::LeftButton) == Qt::LeftButton)
-	//{
-	//	if (this->palette().background() == buttonPaletteActive.background() || this->palette().background() == buttonPaletteActiveHover.background())
-	//	{
-	//		this->setPalette(buttonPaletteActivePressed);
-	//	}
-	//	else if (this->palette().background() == buttonPaletteInactive.background() || this->palette().background() == buttonPaletteInactiveHover.background())
-	//	{
-	//		this->setPalette(buttonPaletteInactivePressed);
-	//	}
-	//}
+	if ((e->buttons() & Qt::LeftButton) == Qt::LeftButton)
+	{
+		if (this->palette().background() == moduleBackgroundPaletteActive.background() || this->palette().background() == moduleBackgroundPaletteActiveHover.background())
+		{
+			this->setPalette(moduleBackgroundPaletteActivePressed);
+		}
+		else if (this->palette().background() == moduleBackgroundPaletteInactive.background() || this->palette().background() == moduleBackgroundPaletteInactiveHover.background())
+		{
+			this->setPalette(moduleBackgroundPaletteInactivePressed);
+		}
+	}
 }
 
 
 void UiTamperModule::enterEvent(QEvent *e)
 {
-	//if (this->palette().background() == buttonPaletteActive.background())
-	//{
-	//	this->setPalette(buttonPaletteActiveHover);
-	//}
-	//else if (this->palette().background() == buttonPaletteInactive.background())
-	//{
-	//	this->setPalette(buttonPaletteInactiveHover);
-	//}
+	if (this->palette().background() == moduleBackgroundPaletteActive.background())
+	{
+		this->setPalette(moduleBackgroundPaletteActiveHover);
+	}
+	else if (this->palette().background() == moduleBackgroundPaletteInactive.background())
+	{
+		this->setPalette(moduleBackgroundPaletteInactiveHover);
+	}
 }
 
 
 void UiTamperModule::leaveEvent(QEvent *e)
 {
-	//if (this->palette().background() == buttonPaletteActiveHover.background() || this->palette().background() == buttonPaletteActivePressed.background())
-	//{
-	//	this->setPalette(buttonPaletteActive);
-	//}
-	//else if (this->palette().background() == buttonPaletteInactiveHover.background() || this->palette().background() == buttonPaletteInactivePressed.background())
-	//{
-	//	this->setPalette(buttonPaletteInactive);
-	//}
+	if (this->palette().background() == moduleBackgroundPaletteActiveHover.background() || this->palette().background() == moduleBackgroundPaletteActivePressed.background())
+	{
+		this->setPalette(moduleBackgroundPaletteActive);
+	}
+	else if (this->palette().background() == moduleBackgroundPaletteInactiveHover.background() || this->palette().background() == moduleBackgroundPaletteInactivePressed.background())
+	{
+		this->setPalette(moduleBackgroundPaletteInactive);
+	}
 }

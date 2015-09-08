@@ -5,19 +5,25 @@
     <qresource prefix="/Tabs">
     </qresource>
     <qresource prefix="/Tamper">
-        <file alias="BackgroundGrid.png">Resources/BackgroundGrid.png</file>
         <file alias="TamperModuleActive.png">Resources/TamperModuleActive.png</file>
+        <file alias="TamperModuleActiveHover.png">Resources/TamperModuleActiveHover.png</file>
+        <file alias="TamperModuleActivePressed.png">Resources/TamperModuleActivePressed.png</file>
         <file alias="TamperModuleInactive.png">Resources/TamperModuleInactive.png</file>
+        <file alias="TamperModuleInactiveHover.png">Resources/TamperModuleInactiveHover.png</file>
+        <file alias="TamperModuleInactivePressed.png">Resources/TamperModuleInactivePressed.png</file>
+        <file alias="ButtonLeftDisabled.png">Resources/ButtonGroup/ButtonLeftDisabled.png</file>
         <file alias="ButtonLeftActive.png">Resources/ButtonGroup/ButtonLeftActive.png</file>
         <file alias="ButtonLeftActiveHover.png">Resources/ButtonGroup/ButtonLeftActiveHover.png</file>
         <file alias="ButtonLeftInactive.png">Resources/ButtonGroup/ButtonLeftInactive.png</file>
         <file alias="ButtonLeftInactiveHover.png">Resources/ButtonGroup/ButtonLeftInactiveHover.png</file>
-        <file alias="ButtonLeftPressed.png">Resources/ButtonGroup/ButtonLeftPressed.png</file>  
+        <file alias="ButtonLeftPressed.png">Resources/ButtonGroup/ButtonLeftPressed.png</file>
+        <file alias="ButtonMiddleDisabled.png">Resources/ButtonGroup/ButtonMiddleDisabled.png</file>
         <file alias="ButtonMiddleActive.png">Resources/ButtonGroup/ButtonMiddleActive.png</file>
         <file alias="ButtonMiddleActiveHover.png">Resources/ButtonGroup/ButtonMiddleActiveHover.png</file>
         <file alias="ButtonMiddleInactive.png">Resources/ButtonGroup/ButtonMiddleInactive.png</file>
         <file alias="ButtonMiddleInactiveHover.png">Resources/ButtonGroup/ButtonMiddleInactiveHover.png</file>
         <file alias="ButtonMiddlePressed.png">Resources/ButtonGroup/ButtonMiddlePressed.png</file>
+        <file alias="ButtonRightDisabled.png">Resources/ButtonGroup/ButtonRightDisabled.png</file>
         <file alias="ButtonRightActive.png">Resources/ButtonGroup/ButtonRightActive.png</file>
         <file alias="ButtonRightActiveHover.png">Resources/ButtonGroup/ButtonRightActiveHover.png</file>
         <file alias="ButtonRightInactive.png">Resources/ButtonGroup/ButtonRightInactive.png</file>

@@ -14,15 +14,17 @@ public:
 	TamperWidget(QWidget *parent);
 	~TamperWidget();
 
-	void setImage(QPixmap deviceImage);
 
+	void setImage(QPixmap deviceImage);
 
 signals:
 	void tamperStop(TamperWidget*, TamperType);
 	void tamperStart(TamperWidget*, TamperType, void* pTamperConfig);
 
 private slots:
-	void onTamperModuleClicked(UiTamperModule* signaled, void* pTamperConfig);
+	void onTamperModuleStart(UiTamperModule* signaled, void * pTamperConfig);
+	void onTamperModuleStop(UiTamperModule* signaled);
+
 
 private:
 
@@ -30,10 +32,7 @@ private:
 
 	UiTamperModule* tamperModule[NUM_TAMPER_TYPES];
 
-
 	QPalette containerPalette;
-	QPixmap backgroundGrid = QPixmap(":/Tamper/BackgroundGrid.png");	
-
 
 };
 

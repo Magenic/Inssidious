@@ -39,7 +39,6 @@ TabWidget::TabWidget(QWidget* parent)
 	QPalette tabNamePalette;
 
 	tabNamePalette.setColor(QPalette::WindowText, QColor(51, 51, 51));
-	//moduleTextPaletteInactive.setColor(QPalette::WindowText, QColor(83, 84, 85));
 
 	tabNameFont.setFamily("Segoe UI");
 	//tabNameFont.setWeight(QFont::DemiBold);

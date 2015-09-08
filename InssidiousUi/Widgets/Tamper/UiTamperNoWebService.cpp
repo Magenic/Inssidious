@@ -9,15 +9,17 @@ UiTamperNoWebService::UiTamperNoWebService(QWidget *parent, TamperType tamperTyp
 	noWebServiceDescriptionLabel->setText(noWebServiceDescriptionText);
 	noWebServiceDescriptionLabel->setContentsMargins(0, 6, 0, 20);
 	noWebServiceDescriptionLabel->setAlignment(Qt::AlignHCenter);
-	noWebServiceDescriptionLabel->setFont(moduleDescriptionFont);
-	noWebServiceDescriptionLabel->setPalette(moduleTextPaletteInactive);
+	noWebServiceDescriptionLabel->setFont(moduleTextFont);
+	noWebServiceDescriptionLabel->setPalette(moduleTextPalette);
+
 
 	blockWebServicesButton = new QPushButton();
 	blockWebServicesButton->setCheckable(true);
 	blockWebServicesButton->setStyleSheet(buttonStyleSheet);
 	blockWebServicesButton->setFixedSize(130, 30);
 	blockWebServicesButton->setText(blockedServiceTextFront + QString::number(blockedServicesCount) + blockedServiceTextBack);
-		
+	blockWebServicesButton->setAttribute(Qt::WA_TransparentForMouseEvents);
+
 
 	configWebServicesButton = new QPushButton();
 	configWebServicesButton->setStyleSheet(buttonStyleSheet);
@@ -41,18 +43,54 @@ UiTamperNoWebService::~UiTamperNoWebService()
 {
 
 }
-void UiTamperNoWebService::toggleState(bool active)
+void UiTamperNoWebService::setActive(bool active)
 {
 	if (active)
 	{
-		noWebServiceDescriptionLabel->setPalette(this->moduleTextPaletteActive);
+		/* Show the module as active */
+
+		this->setPalette(moduleBackgroundPaletteActive);
+
+
+		/* Enable the buttons */
+
 		blockWebServicesButton->setEnabled(true);
 		configWebServicesButton->setEnabled(true);
+
+
+		/* Set the config value to true and the block button to checked */
+
+		blockWebServicesButton->setChecked(true);
+		((TamperNoWebServiceConfig*)pTamperConfig)->blockWebService = true;
+
+
+		/* Notify Core */
+
+		emit tamperStart(this, pTamperConfig);
+
 	}
 	else
 	{
-		noWebServiceDescriptionLabel->setPalette(this->moduleTextPaletteInactive);
+		/* Show the module as inactive */
+
+		this->setPalette(moduleBackgroundPaletteInactive);
+
+
+		/* Uncheck and disable all buttons */
+
+		blockWebServicesButton->setChecked(false);
+
 		blockWebServicesButton->setDisabled(true);
 		configWebServicesButton->setDisabled(true);
+
+		
+		/* Set the config value to false */
+
+		((TamperNoWebServiceConfig*)pTamperConfig)->blockWebService = false;
+
+
+		/* Notify Core */
+
+		emit tamperStop(this);
 	}
 }

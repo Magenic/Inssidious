@@ -10,15 +10,15 @@ UiTamperNoInternet::UiTamperNoInternet(QWidget *parent, TamperType tamperType)
 	noInternetDescriptionLabel->setText(noInternetText);
 	noInternetDescriptionLabel->setContentsMargins(0, 6, 0, 20);
 	noInternetDescriptionLabel->setAlignment(Qt::AlignHCenter);
-	noInternetDescriptionLabel->setFont(moduleDescriptionFont);
-	noInternetDescriptionLabel->setPalette(moduleTextPaletteInactive);
+	noInternetDescriptionLabel->setFont(moduleTextFont);
+	noInternetDescriptionLabel->setPalette(moduleTextPalette);
 
 	noTrafficDescriptionLabel = new QLabel();
 	noTrafficDescriptionLabel->setText(noTrafficDescriptionText);
 	noTrafficDescriptionLabel->setFixedHeight(20);
 	noTrafficDescriptionLabel->setAlignment(Qt::AlignCenter);
-	noTrafficDescriptionLabel->setFont(moduleDescriptionFont);
-	noTrafficDescriptionLabel->setPalette(moduleTextPaletteInactive);
+	noTrafficDescriptionLabel->setFont(moduleTextFont);
+	noTrafficDescriptionLabel->setPalette(moduleTextPalette);
 
 
 	noTrafficButton = new QPushButton();
@@ -26,14 +26,14 @@ UiTamperNoInternet::UiTamperNoInternet(QWidget *parent, TamperType tamperType)
 	noTrafficButton->setStyleSheet(buttonStyleSheet);
 	noTrafficButton->setFixedSize(156, 30);
 	noTrafficButton->setText("Block Internet Access");
-
+	noTrafficButton->setAttribute(Qt::WA_TransparentForMouseEvents);
 
 	redirDescriptionLabel = new QLabel();
 	redirDescriptionLabel->setText(redirDescriptionText);
 	redirDescriptionLabel->setFixedHeight(20);
 	redirDescriptionLabel->setAlignment(Qt::AlignCenter);
-	redirDescriptionLabel->setFont(moduleDescriptionFont);
-	redirDescriptionLabel->setPalette(moduleTextPaletteInactive);
+	redirDescriptionLabel->setFont(moduleTextFont);
+	redirDescriptionLabel->setPalette(moduleTextPalette);
 
 
 	redirButton = new QPushButton();
@@ -61,35 +61,67 @@ UiTamperNoInternet::~UiTamperNoInternet()
 {
 
 }
-void UiTamperNoInternet::toggleState(bool active)
+void UiTamperNoInternet::setActive(bool active)
 {
 	if (active)
 	{
-		noInternetDescriptionLabel->setPalette(moduleTextPaletteActive);
-		noTrafficDescriptionLabel->setPalette(moduleTextPaletteActive);
-		redirDescriptionLabel->setPalette(moduleTextPaletteActive);
+		/* Show the module as active */
+
+		this->setPalette(moduleBackgroundPaletteActive);
+
+
+		/* Enable the buttons */
+
 		noTrafficButton->setEnabled(true);
 		noTrafficButton->setChecked(true);
 		redirButton->setEnabled(true);
 
 		noTrafficButton->setText("Blocking Internet Access");
+
+
+		/* Set the config value to true */
+
 		((TamperNoInternetConfig*)pTamperConfig)->localNetwork = true;
+
+
+		/* Notify Core */
+
+		emit tamperStart(this, pTamperConfig);
 	}
 	else
 	{
-		noInternetDescriptionLabel->setPalette(moduleTextPaletteInactive);
-		noTrafficDescriptionLabel->setPalette(moduleTextPaletteInactive);
-		redirDescriptionLabel->setPalette(moduleTextPaletteInactive);
+		/* Show the module as inactive */
 
+		this->setPalette(moduleBackgroundPaletteInactive);
+
+
+		/* Uncheck and disable all buttons */
 
 		noTrafficButton->setChecked(false);
 		noTrafficButton->setText("Block Internet Access");
+		noTrafficButton->setDisabled(true); 
+		redirButton->setDisabled(true);
+
+
+		/* Set the config value to false */
+
 		((TamperNoInternetConfig*)pTamperConfig)->localNetwork = false;
 
+
+		/* Notify Core */
+
+		emit tamperStop(this);
 	}
 }
 
 void UiTamperNoInternet::onNoTrafficButtonClicked()
 {
-	emit tamperButtonClicked(this, pTamperConfig);
+	if (noTrafficButton->isChecked())
+	{
+		this->setActive(true);
+	}
+	else
+	{
+		this->setActive(false);
+	}
 }

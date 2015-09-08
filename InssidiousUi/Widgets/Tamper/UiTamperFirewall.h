@@ -29,7 +29,7 @@ private:
 	QString filterDescriptionText = "Website Filtering: ";
 	QPushButton* filterButton;
 
-	void toggleState(bool) override;
+	void setActive(bool) override;
 
 
 private slots:
