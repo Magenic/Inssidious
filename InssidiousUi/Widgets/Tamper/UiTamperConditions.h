@@ -32,6 +32,7 @@ private:
 	QSpinBox* tcpResetSpinBox;
 
 	QPushButton* randomizeConditions;
+	QPushButton* resetConditions;
 
 	void toggleState(bool) override;
 

@@ -16,10 +16,10 @@ TabWidget::TabWidget(QWidget* parent)
 {
 	/* Initialize tab palettes for the various states */
 
-	tabPaletteActive.setBrush(QPalette::Background, QBrush(tabImageActive));
+	tabPaletteActive.setBrush(QPalette::Background, QColor(234, 237, 242));
 	tabPaletteActiveHover.setBrush(QPalette::Background, QBrush(tabImageActiveHover));
 	tabPaletteActivePressed.setBrush(QPalette::Background, QBrush(tabImageActivePressed));
-	tabPaletteInactive.setBrush(QPalette::Background, QBrush(tabImageInactive));
+	tabPaletteInactive.setBrush(QPalette::Background, QColor(250, 250, 250));
 	tabPaletteInactiveHover.setBrush(QPalette::Background, QBrush(tabImageInactiveHover));
 	tabPaletteInactivePressed.setBrush(QPalette::Background, QBrush(tabImageInactivePressed));
 
@@ -29,8 +29,8 @@ TabWidget::TabWidget(QWidget* parent)
 	this->setLayout(new QHBoxLayout());
 	this->setAutoFillBackground(true);
 	this->setPalette(tabPaletteInactive);
-	this->setFixedWidth(146);
-	this->setFixedHeight(44);
+	this->setFixedWidth(160);
+	this->setFixedHeight(40);
 	this->setParent(parent);
 
 
@@ -38,7 +38,7 @@ TabWidget::TabWidget(QWidget* parent)
 	QFont tabNameFont;
 	QPalette tabNamePalette;
 
-	tabNamePalette.setColor(QPalette::WindowText, QColor(255, 255, 255));
+	tabNamePalette.setColor(QPalette::WindowText, QColor(51, 51, 51));
 	//moduleTextPaletteInactive.setColor(QPalette::WindowText, QColor(83, 84, 85));
 
 	tabNameFont.setFamily("Segoe UI");

@@ -39,7 +39,7 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 	this->setGeometry(16,										//Start 16 pixels in from the left to account for extended frame 
 		40,														//40 pixels from the top to clear room for the header
 		800 - 16 - 16,											//Use width of the parent - 16 to account for extended frame for widget width 
-		600 - 40 - 16);											//Use height of the parent - 16 to account for extended frame for widget height
+		640 - 40 - 16);											//Use height of the parent - 16 to account for extended frame for widget height
 	//this->layout()->addItem(new QSpacerItem(0, 20));			//Pad down from the top before any other items are added
 	this->setAutoFillBackground(false);							//Don't fill in a background color
 	this->setParent(parent);									//Display the widget on top of Inssidious widget

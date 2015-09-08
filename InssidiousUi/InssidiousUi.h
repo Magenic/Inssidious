@@ -43,12 +43,11 @@ public:
 private:
 
 	QPalette backgroundPalette;
-	QPixmap backgroundImageStart = QPixmap(":/InssidiousUi/BackgroundStart.png");
+	QPixmap backgroundImageLaunch = QPixmap(":/InssidiousUi/BackgroundLaunch.png");
 	QPixmap backgroundImageRunning = QPixmap(":/InssidiousUi/BackgroundRunning.png");
 
 	QPushButton *pushButtonClose;
 	QPushButton *pushButtonMinimize;
-	QPushButton *pushButtonSettings;
 
 	QString closeStyleSheet = 
 		"QPushButton{image: url(:/InssidiousUi/CloseDefault.png); border: none;}\
@@ -59,11 +58,6 @@ private:
 		"QPushButton{image: url(:/InssidiousUi/MinimizeDefault.png); border: none;}\
 		QPushButton:hover{image: url(:/InssidiousUi/MinimizeHover.png); border: none; }\
 		QPushButton:pressed{image: url(:/InssidiousUi/MinimizePressed.png); border: none; }";
-
-	QString settingsStyleSheet = 
-		"QPushButton{image: url(:/InssidiousUi/SettingsDefault.png); border: none;}\
-		QPushButton:hover{image: url(:/InssidiousUi/SettingsHover.png); border: none; }\
-		QPushButton:pressed{image: url(:/InssidiousUi/SettingsPressed.png); border: none; }";
 
 
 	QLabel networkName;

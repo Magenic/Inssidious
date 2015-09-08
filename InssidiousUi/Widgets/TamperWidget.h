@@ -31,8 +31,8 @@ private:
 	UiTamperModule* tamperModule[NUM_TAMPER_TYPES];
 
 
-	QPalette twContainerPalette;
-	QPixmap tcBackgroundImageDevicesPresent = QPixmap(":/Tamper/TamperWidgetBackground.png");	
+	QPalette containerPalette;
+	QPixmap backgroundGrid = QPixmap(":/Tamper/BackgroundGrid.png");	
 
 
 };

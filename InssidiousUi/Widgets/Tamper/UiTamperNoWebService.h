@@ -18,10 +18,11 @@ private:
 	QLabel* noWebServiceDescriptionLabel;
 	QString noWebServiceDescriptionText = "Test functionality when a service times out";
 
-	QPushButton* noWebServiceButton;
 
-	QLabel* configWebServicesDescriptionLabel;
-	QString configWebServicesDescriptionText = "Configure Service Block List: ";
+	int blockedServicesCount = 0;
+	QString blockedServiceTextFront = "Blocking ";
+	QString blockedServiceTextBack = " Services";
+	QPushButton* blockWebServicesButton;
 	QPushButton* configWebServicesButton;
 
 	void toggleState(bool) override;

@@ -22,7 +22,7 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 
 	firewallDescriptionLabel = new QLabel();
 	firewallDescriptionLabel->setText(firewallDescriptionText);
-	firewallDescriptionLabel->setFixedHeight(12);
+	firewallDescriptionLabel->setFixedHeight(16);
 	firewallDescriptionLabel->setAlignment(Qt::AlignHCenter);
 	firewallDescriptionLabel->setFont(moduleDescriptionFont);
 	firewallDescriptionLabel->setPalette(moduleTextPaletteInactive);
@@ -30,14 +30,14 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 
 	httpDescriptionLabel = new QLabel();
 	httpDescriptionLabel->setText(httpDescriptionText);
-	httpDescriptionLabel->setFixedHeight(30);
+	httpDescriptionLabel->setFixedHeight(24);
 	httpDescriptionLabel->setWordWrap(true);
-	httpDescriptionLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+	httpDescriptionLabel->setAlignment(Qt::AlignCenter);
 	httpDescriptionLabel->setFont(moduleDescriptionFont);
 	httpDescriptionLabel->setPalette(moduleTextPaletteInactive);
 
 	httpComboBox = new FComboBox();
-	httpComboBox->setFixedSize(106, 24);
+	httpComboBox->setFixedSize(130, 30);
 	httpComboBox->setEditable(true);
 	httpComboBox->lineEdit()->setReadOnly(true);
 	httpComboBox->lineEdit()->setFont(moduleDescriptionFont);
@@ -56,14 +56,13 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	httpComboBox->setItemData(0, Qt::AlignCenter, Qt::TextAlignmentRole);
 	httpComboBox->setItemData(1, Qt::AlignCenter, Qt::TextAlignmentRole);
 	httpComboBox->setItemData(2, Qt::AlignCenter, Qt::TextAlignmentRole);
-	httpComboBox->lineEdit()->setDisabled(true);
-	httpComboBox->setDisabled(true);
+
 
 	filterDescriptionLabel = new QLabel();
 	filterDescriptionLabel->setText(filterDescriptionText);
-	filterDescriptionLabel->setFixedHeight(30);
+	filterDescriptionLabel->setFixedHeight(24);
 	filterDescriptionLabel->setWordWrap(true);
-	filterDescriptionLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+	filterDescriptionLabel->setAlignment(Qt::AlignCenter);
 	filterDescriptionLabel->setFont(moduleDescriptionFont);
 	filterDescriptionLabel->setPalette(moduleTextPaletteInactive);
 
@@ -71,23 +70,23 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	filterButton->setStyleSheet(buttonStyleSheet);
 	filterButton->setText("Block All Content");
 	filterButton->setFont(moduleDescriptionFont);
-	filterButton->setFixedSize(106, 24);
+	filterButton->setFixedSize(130, 30);
 	filterButton->setCheckable(true);
-	filterButton->setDisabled(true);
 
 
 
 	firewallLayout = new QGridLayout();
+	firewallLayout->setHorizontalSpacing(20);
+	//firewallLayout->setColumnMinimumWidth(0, 160);
+	//firewallLayout->setColumnMinimumWidth(1, 160);
 	firewallLayout->setAlignment(Qt::AlignHCenter);
-	firewallLayout->setSpacing(0);
 	firewallLayout->addItem(new QSpacerItem(0, 6), 0, 0);
-	firewallLayout->addWidget(firewallDescriptionLabel, 1, 0, 1, 3);
-	firewallLayout->addItem(new QSpacerItem(0, 12), 2, 0);
+	firewallLayout->addWidget(firewallDescriptionLabel, 1, 0, 1, 2);
+	firewallLayout->addItem(new QSpacerItem(0, 6), 2, 0);
 	firewallLayout->addWidget(httpDescriptionLabel, 3, 0);
-	firewallLayout->addWidget(httpComboBox, 3, 1, 1, 2, Qt::AlignCenter);
-	firewallLayout->addItem(new QSpacerItem(0, 2), 4, 0);
-	firewallLayout->addWidget(filterDescriptionLabel, 5, 0);
-	firewallLayout->addWidget(filterButton, 5, 1, 1, 2, Qt::AlignCenter);
+	firewallLayout->addWidget(httpComboBox, 4, 0, Qt::AlignHCenter);
+	firewallLayout->addWidget(filterDescriptionLabel, 3, 1);
+	firewallLayout->addWidget(filterButton, 4, 1, Qt::AlignHCenter);
 
 
 	connect(httpComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &UiTamperFirewall::onHTTPComboBoxChanged);

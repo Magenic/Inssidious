@@ -3,7 +3,6 @@
 
 #include "UiTamperModule.h"
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QComboBox>
 
 
 class UiTamperNoServer : public UiTamperModule
@@ -23,8 +22,8 @@ private:
 
 	QPushButton* noServerButton;
 	int blockedServersCount = 0;
-	QString blockedServerFirstItemText = "  Server Count:  ";
-	QComboBox* blockedServersComboBox;
+	QString blockedServerTextFront = "Blocking ";
+	QString blockedServerTextBack = " Servers";
 	QPushButton* configServersButton;
 
 	void toggleState(bool) override;

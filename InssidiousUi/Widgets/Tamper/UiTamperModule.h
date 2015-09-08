@@ -23,6 +23,9 @@ public:
 	bool selected;
 
 
+
+
+
 	/* Used by child classes to keep consistent font size and colors */
 	
 	QFont moduleDescriptionFont;
@@ -44,22 +47,26 @@ public:
 	/* Used by child classes for displayed buttons */
 
 	QString buttonStyleSheet = 
-	   "QPushButton{ margin: 0px; padding: 0px; border: 1px solid #72C55D; border-radius: 2px; background-color: #FDFDFD; color:#444444; font-family: 'Segoe UI'; font-size:11px; font-weight:400; text-decoration:none; }\
+	   "QPushButton{ margin: 0px; padding: 0px; border: 1px solid #CCCCCC; background-color: #FFFFFF; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none; }\
 		QPushButton:!enabled{ border: 1px solid #ABABAB; background-color: #F0F0F0; color:#B0ADB0; }\
-		QPushButton:pressed{ background-color: #64B450; color:#333333;}\
-		QPushButton:hover:!pressed{ background-color: #82B678; }\
-		QPushButton:on{ background-color: #72C55D; color:#333333;}\
+		QPushButton:pressed{ border: 1px solid #72C55D; background-color: #4E9E38; color:#333333;}\
+		QPushButton:hover:!pressed{ border: 1px solid #72C55D; background-color: #D5EDCF; }\
+		QPushButton:on{ border: 1px solid #72C55D; background-color: #72C55D; color:#333333;}\
+		QPushButton:on:hover:!pressed{ border: 1px solid #72C55D; background-color: #50B235; color:#333333; }\
 		QPushButton:focus{ outline: none; }";
 
 	QString comboBoxStyleSheet =
-		"QComboBox:disabled { border: 1px solid #ABABAB; border-radius: 2px; background-color: #F0F0F0; color: gray; }\
-		 QComboBox { border: 1px solid #72C55D; border-radius: 2px; background-color: #FDFDFD; color:#444444; font-family: 'Segoe UI Semibold'; font-size:11px; font-weight:400; text-decoration:none;}\
+		"QComboBox { border: 1px solid #CCCCCC; border-radius: 2px; background-color: #FFFFFF; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;}\
+		 QComboBox:disabled { border: 1px solid #ABABAB; border-radius: 2px; background-color: #F0F0F0; color: #444444; }\
 		 QComboBox:hover { border: 2px solid #72C55D;}\
 		 QComboBox:!editable:hover { border: 2px solid #72C55D;}\
-		 QComboBox:on { background-color: #72C55D; color:#333333;}\
-		 QComboBox::down-arrow:disabled { width: 24px;    height: 24px;	image: url(:/InssidiousUi/DownArrowDisabled.png); }\
-		 QComboBox::down-arrow { width: 24px; height: 24px;	image: url(:/InssidiousUi/DownArrow.png);}\
+		 QComboBox:on { background-color: #FFFFFF; color:#333333;}\
+		 QComboBox::down-arrow:disabled { width: 30px;    height: 30px;	image: url(:/InssidiousUi/DownArrowDisabled.png); }\
+		 QComboBox::down-arrow { width: 30px; height: 30px;	image: url(:/InssidiousUi/DownArrow.png);}\
 		 QComboBox::drop-down { subcontrol-origin: margin; subcontrol-position: top right; width: 20px; border-style: none; border-image: none;}";
+
+	QString spinBoxStyleSheet = 
+		"QSpinBox { margin: 0px; padding: 0px; border: 1px solid #CCCCCC; background-color: #FFFFFF; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none; }";
 
 signals:
 	void tamperButtonClicked(UiTamperModule* signaled, void * pTamperConfig);
@@ -78,21 +85,13 @@ private:
 	QLabel* moduleNameLabel;
 
 
-	/* Palettes and Pixmaps for the Active/Inactive/Hover/Pressed button states */
+	/* Palettes and Pixmaps for the Active/Inactive states */
 
-	QPalette buttonPaletteActive;
-	QPalette buttonPaletteActiveHover;
-	QPalette buttonPaletteActivePressed;
-	QPalette buttonPaletteInactive;
-	QPalette buttonPaletteInactiveHover;
-	QPalette buttonPaletteInactivePressed;
+	QPalette tamperModulePaletteActive;
+	QPalette tamperModulePaletteInactive;
 
-	QPixmap buttonImageActive = QPixmap(":/Tamper/TamperButtonActive.png");						//QPixmap for active device tampers 
-	QPixmap buttonImageActiveHover = QPixmap(":/Tamper/TamperButtonActiveHover.png");			//QPixmap for active device tampers  while hovered over
-	QPixmap buttonImageActivePressed = QPixmap(":/Tamper/TamperButtonActivePressed.png");		//QPixmap for active device tampers while pressed
-	QPixmap buttonImageInactive = QPixmap(":/Tamper/TamperButtonInactive.png");					//QPixmap for inactive device tampers 
-	QPixmap buttonImageInactiveHover = QPixmap(":/Tamper/TamperButtonInactiveHover.png");		//QPixmap for active device tampers while hovered over
-	QPixmap buttonImageInactivePressed = QPixmap(":/Tamper/TamperButtonInactivePressed.png");	//QPixmap for active device tampers while pressed
+	QPixmap tamperModuleImageActive = QPixmap(":/Tamper/TamperModuleActive.png");						//QPixmap for active device tampers 
+	QPixmap tamperModuleImageInactive = QPixmap(":/Tamper/TamperModuleInactive.png");					//QPixmap for inactive device tampers 
 
 
 	/* Ensure the child classes update as their palettes & states as well */

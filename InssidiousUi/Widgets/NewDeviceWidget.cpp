@@ -50,7 +50,7 @@ NewDeviceWidget::NewDeviceWidget(QWidget *parent, QString MACAddress)
 {
 
 	MAC = MACAddress;
-	backgroundPalette.setBrush(QPalette::Background, QBrush(backgroundImage));
+	backgroundPalette.setBrush(QPalette::Background, QColor(255, 255, 255));
 	descriptionTextPalette.setColor(QPalette::WindowText, QColor(230, 230, 230));
 	errorTextPalette.setColor(QPalette::WindowText,	QColor(255, 150, 0, 255));
 
@@ -62,7 +62,7 @@ NewDeviceWidget::NewDeviceWidget(QWidget *parent, QString MACAddress)
 	this->layout()->setAlignment(Qt::AlignTop);					//Align layout contents at the top of the widget
 	this->setAutoFillBackground(true);							//Don't fill in a background color
 	this->setPalette(backgroundPalette);
-	this->setGeometry(10 /* in */, 108 /* down */, 780 /* width */, 480 /* height */);
+	this->setGeometry(1 /* in */, 100 /* down */, 798 /* width */, 539 /* height */);
 
 
 	/* Draw the Device Name text label and input field */

@@ -23,7 +23,7 @@ UiDeviceController::UiDeviceController(QWidget *parent)
 	this->layout()->setAlignment(Qt::AlignLeft);				//Align the child widgets up against the left of the widget
 	this->setAutoFillBackground(false);							//And enable filling in the  background
 	this->setParent(parent);									//Display the widget on top of Inssidious widget
-	this->setGeometry(10 /* in */, 64 /* down */, 480 /* width */, 44 /* height */);
+	this->setGeometry(1 /* in */, 60 /* down */, 798 /* width */, 40 /* height */);
 
 
 }

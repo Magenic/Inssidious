@@ -28,10 +28,10 @@ UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 	buttonMiddle2->setText("4G");
 	buttonRight->setText("LTE");
 
-	buttonLeft->setFixedSize(53,26);
-	buttonMiddle1->setFixedSize(53, 26);
-	buttonMiddle2->setFixedSize(53, 26);
-	buttonRight->setFixedSize(53, 26);
+	buttonLeft->setFixedSize(60, 30);
+	buttonMiddle1->setFixedSize(60, 30);
+	buttonMiddle2->setFixedSize(60, 30);
+	buttonRight->setFixedSize(60, 30);
 
 	buttonLeft->setFont(moduleDescriptionFont);
 	buttonMiddle1->setFont(moduleDescriptionFont);
@@ -43,13 +43,7 @@ UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 	buttonMiddle2->setCheckable(true);
 	buttonRight->setCheckable(true);
 
-	buttonLeft->setDisabled(true);
-	buttonMiddle1->setDisabled(true);
-	buttonMiddle2->setDisabled(true);
-	buttonRight->setDisabled(true);
-
 	speedLayout = new QGridLayout();
-	speedLayout->setAlignment(Qt::AlignHCenter);
 	speedLayout->setSpacing(0);
 	
 	speedLayout->addWidget(speedDescriptionLabel, 0, 0, 1, 4);
@@ -84,8 +78,11 @@ void UiTamperSpeed::toggleState(bool active)
 		buttonMiddle1->setEnabled(true);
 		buttonMiddle2->setEnabled(true);
 		buttonRight->setEnabled(true);
-		buttonRight->setChecked(true);
-		onButtonClicked(-1);
+		
+		if (buttonGroup->checkedId() == -1)
+		{
+			onButtonClicked(SPEED_LTE);
+		}
 	}
 	else
 	{
@@ -100,19 +97,19 @@ void UiTamperSpeed::toggleState(bool active)
 		buttonRight->setChecked(false);
 		buttonGroup->setExclusive(true);
 
-		buttonLeft->setDisabled(true);
-		buttonMiddle1->setDisabled(true);
-		buttonMiddle2->setDisabled(true);
-		buttonRight->setDisabled(true);
-
-		onButtonClicked(-1);
+		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_MAX;
 	}
 }
 
 
 void UiTamperSpeed::onButtonClicked(int button)
 {
-	
+	if (!selected)
+	{
+		emit tamperButtonClicked(this, pTamperConfig);
+		return;
+	}
+
 	switch (buttonGroup->checkedId())
 	{
 	case -1:

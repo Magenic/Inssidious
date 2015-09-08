@@ -19,8 +19,8 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	/* Initialize default window settings */
 
 	this->backgroundPalette.setBrush(QPalette::Background,			//Set the brush of the Background palette
-		QBrush(backgroundImageStart));								//To use our background image
-	this->setFixedSize(800, 600);									//Set an initial window size
+		QBrush(backgroundImageLaunch));								//To use our background image
+	this->setFixedSize(800, 640);									//Set an initial window size
 	this->setPalette(backgroundPalette);							//Apply the background palette
 	this->setWindowFlags(Qt::FramelessWindowHint);					//Remove the window frame
 	this->winId();													//And force Qt to acquire the Windows window handle for the widget
@@ -30,35 +30,24 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 
 	pushButtonClose = new QPushButton("", this);
 	pushButtonMinimize = new QPushButton("", this);
-	pushButtonSettings = new QPushButton("", this);
 
-	pushButtonClose->setObjectName("pushButtonClose");
-	pushButtonMinimize->setObjectName("pushButtonMinimize");
-	pushButtonSettings->setObjectName("pushButtonSettings");
+	pushButtonClose->setParent(this);							
+	pushButtonMinimize->setParent(this);						
 
-	pushButtonClose->setParent(this);							//Display the widget on top of Inssidious widget
-	pushButtonMinimize->setParent(this);						//Display the widget on top of Inssidious widget
-	pushButtonSettings->setParent(this);						//Display the widget on top of Inssidious widget
-
-	pushButtonClose->setAutoFillBackground(true);				//Don't fill in a background color
-	pushButtonMinimize->setAutoFillBackground(true);			//Don't fill in a background color
-	pushButtonSettings->setAutoFillBackground(true);			//Don't fill in a background color
+	pushButtonClose->setAutoFillBackground(true);				
+	pushButtonMinimize->setAutoFillBackground(true);			
 
 	pushButtonClose->setStyleSheet(closeStyleSheet);
 	pushButtonMinimize->setStyleSheet(minimizeStyleSheet);
-	pushButtonSettings->setStyleSheet(settingsStyleSheet);
 
-	pushButtonClose->setIconSize(QSize(33, 21));
-	pushButtonMinimize->setIconSize(QSize(33, 21));
-	pushButtonSettings->setIconSize(QSize(33, 21));
+	pushButtonClose->setIconSize(QSize(46, 31));
+	pushButtonMinimize->setIconSize(QSize(46, 31));
 
-	pushButtonClose->setGeometry(766, 1, 33, 21);
-	pushButtonMinimize->setGeometry(733, 1, 33, 21);
-	pushButtonSettings->setGeometry(700, 1, 33, 21);
+	pushButtonClose->setGeometry(753, 1, 46, 31);
+	pushButtonMinimize->setGeometry(706, 1, 46, 31);
 
 	connect(pushButtonClose, &QPushButton::clicked, this, &InssidiousUi::close);
 	connect(pushButtonMinimize, &QPushButton::clicked, this, &InssidiousUi::onMinimizeClicked);
-	connect(pushButtonSettings, &QPushButton::clicked, this, &InssidiousUi::onSettingsClicked);
 
 
 	/* Draw and hide the network name and password labels */
@@ -67,13 +56,13 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	this->networkNameIcon.setParent(this);
 	this->networkPassword.setParent(this);
 	this->networkPasswordIcon.setParent(this);
-	
-	this->networkName.setGeometry(32, 4, 100, 16);
-	this->networkNameIcon.setGeometry(10, 4, 16, 16);
-	this->networkPassword.setGeometry(32, 22, 100, 16);
-	this->networkPasswordIcon.setGeometry(10, 22, 16, 16);
 
-	textPalette.setColor(QPalette::WindowText, QColor(230, 230, 230));
+	this->networkNameIcon.setGeometry(8, 8, 16, 16);
+	this->networkPasswordIcon.setGeometry(8, 32, 16, 16);
+	this->networkName.setGeometry(32, 8, 100, 16);
+	this->networkPassword.setGeometry(32, 32, 100, 16);
+
+	textPalette.setColor(QPalette::WindowText, QColor(51, 51, 51));
 	this->networkName.setPalette(textPalette);
 	this->networkPassword.setPalette(textPalette);
 
