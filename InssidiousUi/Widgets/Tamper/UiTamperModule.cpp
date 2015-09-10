@@ -3,15 +3,12 @@
 #include "UiTamperSpeed.h"
 #include "UiTamperConditions.h"
 #include "UiTamperFirewall.h"
+#include "UiTamperSecurity.h"
 
 #include "UiTamperNoWebService.h"
 #include "UiTamperNoInternet.h"
 #include "UiTamperNoServer.h"
-
-//#include "UiTamperHTTPCorruptedResponse.h"
-//#include "UiTamperHTTPTimeOut.h"
-//#include "UiTamperHTTPUnexpectedResponse.h"
-
+#include "UiTamperNoContent.h"
 
 
 UiTamperModule::UiTamperModule(QWidget* parent, TamperType tamperType)
@@ -54,7 +51,7 @@ UiTamperModule::UiTamperModule(QWidget* parent, TamperType tamperType)
 	moduleTextPalette.setColor(QPalette::WindowText, QColor(51, 51, 51));
 
 
-	/* Add the Module Name to the layout */
+	/* Add the Module Name and Description to the layout */
 
 	moduleNameLabel = new QLabel(TamperTypeName[tamperType]);
 	moduleNameLabel->setContentsMargins(0, 10, 0, 0);
@@ -62,7 +59,14 @@ UiTamperModule::UiTamperModule(QWidget* parent, TamperType tamperType)
 	moduleNameLabel->setFont(moduleNameFont);
 	moduleNameLabel->setPalette(moduleTextPalette);
 
+	moduleDescriptionLabel = new QLabel(TamperTypeDescription[tamperType]);
+	moduleDescriptionLabel->setContentsMargins(0, 6, 0, 20);
+	moduleDescriptionLabel->setAlignment(Qt::AlignHCenter);
+	moduleDescriptionLabel->setFont(moduleTextFont);
+	moduleDescriptionLabel->setPalette(moduleTextPalette);
+
 	moduleLayout->addWidget(moduleNameLabel);
+	moduleLayout->addWidget(moduleDescriptionLabel);
 
 
 	/* Start as an inactive button */
@@ -75,7 +79,7 @@ UiTamperModule* UiTamperModule::makeUiTamperModule(QWidget* parent, TamperType t
 {
 	switch (tamperType)
 	{
-		/* network condition */
+		/* scenarios */
 		
 		case SPEED:
 			return new UiTamperSpeed(parent, tamperType);
@@ -83,26 +87,23 @@ UiTamperModule* UiTamperModule::makeUiTamperModule(QWidget* parent, TamperType t
 			return new UiTamperConditions(parent, tamperType);
 		case FIREWALL:
 			return new UiTamperFirewall(parent, tamperType);
+		case SECURITY:
+			return new UiTamperSecurity(parent, tamperType);
 
-		/* network failures */
+
+		/* failures */
 
 		case NO_INTERNET:
 			return new UiTamperNoInternet(parent, tamperType);
 		case NO_SERVER:
 			return new UiTamperNoServer(parent, tamperType);
+		case NO_CONTENT:
+			return new UiTamperNoContent(parent, tamperType);
 		case NO_WEBSERVICE:
 			return new UiTamperNoWebService(parent, tamperType);
 
-		/* web service failures */
 
-		//case HTTP_TIME_OUT:
-		//	return new UiTamperHTTPTimeOut(parent, tamperType);
-		//case HTTP_UNEXPECTED_RESPONSE:
-		//	return new UiTamperHTTPUnexpectedResponse(parent, tamperType);
-		//case HTTP_CORRUPTED_RESPONSE:
-		//	return new UiTamperHTTPCorruptedResponse(parent, tamperType);
-
-		/* Should never reach these */
+		/* Should never reach */
 
 		case NUM_TAMPER_TYPES:
 		default:

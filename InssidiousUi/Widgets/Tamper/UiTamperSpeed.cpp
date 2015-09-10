@@ -5,23 +5,16 @@ UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 {
 	pTamperConfig = (void*)new TamperSpeedConfig{SPEED_MAX};
 
-	speedDescriptionLabel = new QLabel();
-	speedDescriptionLabel->setText(speedDescriptionText);
-	speedDescriptionLabel->setContentsMargins(0, 6, 0, 20);
-	speedDescriptionLabel->setAlignment(Qt::AlignHCenter);
-	speedDescriptionLabel->setFont(moduleTextFont);
-	speedDescriptionLabel->setPalette(moduleTextPalette);
-
 	buttonGroup = new QButtonGroup();
 	buttonLeft = new QPushButton();
 	buttonMiddle1 = new QPushButton();
 	buttonMiddle2 = new QPushButton();
 	buttonRight = new QPushButton();
 
-	buttonLeft->setStyleSheet(buttonLeftStyleSheet);
-	buttonMiddle1->setStyleSheet(buttonMiddleStyleSheet);
-	buttonMiddle2->setStyleSheet(buttonMiddleStyleSheet);
-	buttonRight->setStyleSheet(buttonRightStyleSheet);
+	buttonLeft->setStyleSheet(buttonLeftStyleSheet60);
+	buttonMiddle1->setStyleSheet(buttonMiddleStyleSheet60);
+	buttonMiddle2->setStyleSheet(buttonMiddleStyleSheet60);
+	buttonRight->setStyleSheet(buttonRightStyleSheet60);
 
 	buttonLeft->setText("Edge");
 	buttonMiddle1->setText("3G");
@@ -46,18 +39,21 @@ UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 	speedLayout = new QGridLayout();
 	speedLayout->setSpacing(0);
 	
-	speedLayout->addWidget(speedDescriptionLabel, 0, 0, 1, 4);
-
-	speedLayout->addWidget(buttonLeft, 1, 0);
-	speedLayout->addWidget(buttonMiddle1, 1, 1);
-	speedLayout->addWidget(buttonMiddle2, 1, 2);
-	speedLayout->addWidget(buttonRight, 1, 3);
+	speedLayout->addWidget(buttonLeft, 0, 0);
+	speedLayout->addWidget(buttonMiddle1, 0, 1);
+	speedLayout->addWidget(buttonMiddle2, 0, 2);
+	speedLayout->addWidget(buttonRight, 0, 3);
 
 	buttonGroup->setExclusive(true);
 	buttonGroup->addButton(buttonLeft, 0);
 	buttonGroup->addButton(buttonMiddle1, 1);
 	buttonGroup->addButton(buttonMiddle2, 2);
 	buttonGroup->addButton(buttonRight, 3);
+
+	buttonLeft->setDisabled(true);
+	buttonMiddle1->setDisabled(true);
+	buttonMiddle2->setDisabled(true);
+	buttonRight->setDisabled(true);
 
 	connect(buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &UiTamperSpeed::onButtonClicked);
 
@@ -90,6 +86,7 @@ void UiTamperSpeed::setActive(bool active)
 
 		if (buttonGroup->checkedId() == -1)
 		{
+			buttonRight->setChecked(true);
 			onButtonClicked(SPEED_LTE);
 		}
 

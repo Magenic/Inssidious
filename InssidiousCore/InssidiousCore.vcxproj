@@ -120,6 +120,8 @@
     <ClCompile Include="TamperModules\TamperModule.cpp" />
     <ClCompile Include="TamperModules\TamperConditions.cpp" />
     <ClCompile Include="TamperModules\TamperFirewall.cpp" />
+    <ClCompile Include="TamperModules\TamperNoContent.cpp" />
+    <ClCompile Include="TamperModules\TamperSecurity.cpp" />
     <ClCompile Include="TamperModules\TamperSpeed.cpp" />
     <ClCompile Include="TamperModules\TamperNoWebService.cpp" />
     <ClCompile Include="TamperModules\TamperNoInternet.cpp" />
@@ -205,10 +207,12 @@
     <ClInclude Include="TamperModules\PacketList.h" />
     <ClInclude Include="TamperModules\TamperModule.h" />
     <ClInclude Include="TamperModules\TamperFirewall.h" />
+    <ClInclude Include="TamperModules\TamperNoContent.h" />
     <ClInclude Include="TamperModules\TamperNoWebService.h" />
     <ClInclude Include="TamperModules\TamperNoInternet.h" />
     <ClInclude Include="TamperModules\TamperNoServer.h" />
     <ClInclude Include="TamperModules\TamperConditions.h" />
+    <ClInclude Include="TamperModules\TamperSecurity.h" />
     <ClInclude Include="TamperModules\TamperSpeed.h" />
     <ClInclude Include="TamperTypes.h" />
   </ItemGroup>

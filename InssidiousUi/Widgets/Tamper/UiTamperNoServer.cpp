@@ -7,33 +7,16 @@ UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 {
 	pTamperConfig = (void*)new TamperNoServerConfig{ false };
 
-	noServerDescriptionLabel = new QLabel();
-	noServerDescriptionLabel->setText(noServerDescriptionText);
-	noServerDescriptionLabel->setContentsMargins(0, 6, 0, 20);
-	noServerDescriptionLabel->setAlignment(Qt::AlignHCenter);
-	noServerDescriptionLabel->setFont(moduleTextFont);
-	noServerDescriptionLabel->setPalette(moduleTextPalette);
-
-	noServerButton = new QPushButton();
-	noServerButton->setCheckable(true);
-	noServerButton->setStyleSheet(buttonStyleSheet);
-	noServerButton->setFixedSize(130, 30);
-	noServerButton->setText(blockedServerTextFront + QString::number(blockedServersCount) + blockedServerTextBack);
-	noServerButton->setAttribute(Qt::WA_TransparentForMouseEvents);
-
 	configServersButton = new QPushButton();
 	configServersButton->setStyleSheet(buttonStyleSheet);
 	configServersButton->setFixedSize(130, 30);
-	configServersButton->setText("Configure Block List");
+	configServersButton->setText("???");
 
 
 	noServerLayout = new QGridLayout();
-	noServerLayout->setHorizontalSpacing(20);
+	noServerLayout->setSpacing(0);
 	noServerLayout->setAlignment(Qt::AlignHCenter);
-	noServerLayout->setContentsMargins(10, 0, 10, 0);
-	noServerLayout->addWidget(noServerDescriptionLabel, 1, 0, 1, 2);
-	noServerLayout->addWidget(noServerButton, 2, 0, Qt::AlignHCenter);
-	noServerLayout->addWidget(configServersButton, 2, 1, Qt::AlignHCenter);
+	//noServerLayout->addWidget(configServersButton, 0, 0, Qt::AlignHCenter);
 
 
 
@@ -57,13 +40,11 @@ void UiTamperNoServer::setActive(bool active)
 
 		/* Enable the buttons */
 
-		noServerButton->setEnabled(true);
 		configServersButton->setEnabled(true);
 		
 		
 		/* Set the config value to true and the block button to checked */
 
-		noServerButton->setChecked(true);
 		((TamperNoServerConfig*)pTamperConfig)->blockServers = true;
 
 
@@ -81,9 +62,6 @@ void UiTamperNoServer::setActive(bool active)
 
 		/* Uncheck and disable all buttons */
 
-		noServerButton->setChecked(false);
-
-		noServerButton->setDisabled(true);
 		configServersButton->setDisabled(true);
 
 

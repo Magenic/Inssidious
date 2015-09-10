@@ -44,7 +44,7 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 	this->setAutoFillBackground(false);							//Don't fill in a background color
 	this->setParent(parent);									//Display the widget on top of Inssidious widget
 	descriptionTextPalette.setColor(QPalette::WindowText,		//Set the default description Window text 
-									QColor(230, 230, 230));		//To a light grey
+									QColor(51, 51, 51));		//To a light grey
 	errorTextPalette.setColor(QPalette::WindowText,				//Set the error description Window text 
 								QColor(255, 150, 0, 255));		//To a bright red
 

@@ -61,6 +61,12 @@
     <ClCompile Include="TamperModules\TamperNoWebService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TamperModules\TamperNoContent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TamperModules\TamperSecurity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Controllers\HostedNetworkController.h" />
@@ -129,6 +135,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TamperModules\TamperNoWebService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperNoContent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TamperModules\TamperSecurity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

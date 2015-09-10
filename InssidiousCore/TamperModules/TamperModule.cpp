@@ -3,9 +3,11 @@
 #include "TamperSpeed.h"
 #include "TamperConditions.h"
 #include "TamperFirewall.h"
+#include "TamperSecurity.h"
 
 #include "TamperNoInternet.h"
 #include "TamperNoServer.h"
+#include "TamperNoContent.h"
 #include "TamperNoWebService.h"
 
 #include "TamperTypes.h"
@@ -20,7 +22,7 @@ TamperModule* TamperModule::makeTamperModule(int tamperType, void** ppTamperConf
 
 	switch (tamperType)
 	{
-		/* network condition */
+		/* scenarios */
 
 		case SPEED:
 			return new TamperSpeed(ppTamperConfig);
@@ -28,26 +30,23 @@ TamperModule* TamperModule::makeTamperModule(int tamperType, void** ppTamperConf
 			return new TamperConditions(ppTamperConfig);
 		case FIREWALL:
 			return new TamperFirewall(ppTamperConfig);
+		case SECURITY:
+			return new TamperSecurity(ppTamperConfig);
 	
-		/* network failures */
+
+		/* failures */
 	
 		case NO_INTERNET:
 			return new TamperNoInternet(ppTamperConfig);
 		case NO_SERVER:
 			return new TamperNoServer(ppTamperConfig);
+		case NO_CONTENT:
+			return new TamperNoContent(ppTamperConfig);
 		case NO_WEBSERVICE:
 			return new TamperNoWebService(ppTamperConfig);
 
-		/* web service failures */
 	
-		//case HTTP_TIME_OUT:
-		//	return new TamperHTTPTimeOut(ppTamperConfig);
-		//case HTTP_UNEXPECTED_RESPONSE:
-		//	return new TamperHTTPUnexpectedResponse(ppTamperConfig);
-		//case HTTP_CORRUPTED_RESPONSE:
-		//	return new TamperHTTPCorruptedResponse(ppTamperConfig);
-	
-		/* Should never reach these */
+		/* Should never reach */
 	
 		case NUM_TAMPER_TYPES:
 		default:

@@ -14,15 +14,8 @@ public:
 
 private:
 	QGridLayout* noInternetLayout;
-	QLabel* noInternetDescriptionLabel;
-	QString noInternetText = "Emulate a local network without internet";
 
-	QLabel* noTrafficDescriptionLabel;
-	QString noTrafficDescriptionText = "Local Network: ";
 	QPushButton* noTrafficButton;
-
-	QLabel* redirDescriptionLabel;
-	QString redirDescriptionText   = "Captive Portal: ";
 	QPushButton* redirButton;
 	
 

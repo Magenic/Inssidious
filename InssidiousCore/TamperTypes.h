@@ -7,20 +7,17 @@
 
 enum TamperType
 {
-	/* network condition */
+	/* scenarios */
 	SPEED,
 	CONDITIONS,
 	FIREWALL,
+	SECURITY,
 
-	/* network failures */
+	/* failures */
 	NO_INTERNET,
 	NO_SERVER,
+	NO_CONTENT,
 	NO_WEBSERVICE,
-
-	/* web service failures */
-	//HTTP_TIME_OUT,
-	//HTTP_UNEXPECTED_RESPONSE,
-	//HTTP_CORRUPTED_RESPONSE,
 
 	/* total*/
 	NUM_TAMPER_TYPES
@@ -32,15 +29,24 @@ static QString TamperTypeName[NUM_TAMPER_TYPES]
 	QString("Network Speed"),
 	QString("Network Conditions"),
 	QString("Network Firewall"),
-	QString("Internet Access"),
-	QString("Server Access"),
-	QString("Web Service Access"),
-	//QString(""),
-	//QString(""),
-	//QString("")
+	QString(" ??? "),
+	QString("No Internet"),
+	QString("No Server"),
+	QString("No Content"),
+	QString("No Web Service")
 };
 
-
+static QString TamperTypeDescription[NUM_TAMPER_TYPES]
+{
+	QString("Cap the speed of the network connection."),
+	QString("Introduce intermittent problems with the network connection."),
+	QString("Replicate restrictive network connections."),
+	QString(" ??? "),
+	QString("Test functionality without internet access."),
+	QString("Test functionality when a server is unreachable."),
+	QString("Test functionality when content is blocked by the network."),
+	QString("Test functionality when a web service responds with an error.")
+};
 
 enum TamperSpeedType
 {
@@ -90,6 +96,12 @@ struct TamperFirewallConfig
 };
 
 
+struct TamperSecurityConfig
+{
+	volatile bool something;
+};
+
+
 struct TamperNoInternetConfig
 {
 	volatile bool localNetwork;
@@ -100,6 +112,11 @@ struct TamperNoInternetConfig
 struct TamperNoServerConfig
 {
 	volatile bool blockServers;
+};
+
+struct TamperNoContentConfig
+{
+	volatile bool something;
 };
 
 

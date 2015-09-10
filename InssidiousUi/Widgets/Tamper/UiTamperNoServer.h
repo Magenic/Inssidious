@@ -17,13 +17,6 @@ public:
 private:
 	QGridLayout* noServerLayout;
 	
-	QLabel* noServerDescriptionLabel;
-	QString noServerDescriptionText = "Test functionality when a server is down";
-
-	QPushButton* noServerButton;
-	int blockedServersCount = 0;
-	QString blockedServerTextFront = "Blocking ";
-	QString blockedServerTextBack = " Servers";
 	QPushButton* configServersButton;
 
 	void setActive(bool) override;

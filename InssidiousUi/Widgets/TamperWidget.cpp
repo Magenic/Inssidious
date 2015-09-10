@@ -33,25 +33,13 @@ TamperWidget::TamperWidget(QWidget *parent)
 	tamperGridLayout->addWidget(this->tamperModule[SPEED], 0, 0);
 	tamperGridLayout->addWidget(this->tamperModule[CONDITIONS], 1, 0);
 	tamperGridLayout->addWidget(this->tamperModule[FIREWALL], 2, 0);
+	tamperGridLayout->addWidget(this->tamperModule[SECURITY], 3, 0);
 
 	tamperGridLayout->addWidget(this->tamperModule[NO_INTERNET], 0, 1);
 	tamperGridLayout->addWidget(this->tamperModule[NO_SERVER], 1, 1);
-	tamperGridLayout->addWidget(this->tamperModule[NO_WEBSERVICE], 2, 1);
+	tamperGridLayout->addWidget(this->tamperModule[NO_CONTENT], 2, 1);
+	tamperGridLayout->addWidget(this->tamperModule[NO_WEBSERVICE], 3, 1);
 
-
-	QWidget* tempHTTPComingSoon = new QWidget();
-	tempHTTPComingSoon->setFixedWidth(798);
-	tempHTTPComingSoon->setFixedHeight(124);
-	tempHTTPComingSoon->setAutoFillBackground(true);
-	QPalette comingSoonPalette;
-	comingSoonPalette.setBrush(QPalette::Background, QBrush(QPixmap(":/Tamper/ComingSoon.png")));
-	tempHTTPComingSoon->setPalette(comingSoonPalette);
-
-
-	tamperGridLayout->addWidget(tempHTTPComingSoon, 3, 0, 1, 2);
-	//tamperGridLayout->addWidget(this->tamperModule[HTTP_TIME_OUT], 2, 0);
-	//tamperGridLayout->addWidget(this->tamperModule[HTTP_UNEXPECTED_RESPONSE], 2, 1);
-	//tamperGridLayout->addWidget(this->tamperModule[HTTP_CORRUPTED_RESPONSE], 2, 2);
 
 }
 

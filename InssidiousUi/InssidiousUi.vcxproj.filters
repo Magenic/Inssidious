@@ -13,7 +13,6 @@
     <ClCompile Include="InssidiousUi.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Widgets\StartWidget.cpp" />
-    <ClCompile Include="Widgets\TabWidget.cpp" />
     <ClCompile Include="Controllers\UiDeviceController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -110,12 +109,29 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ConfigureServersDialog.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Widgets\Tamper\UiTamperSecurity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperSecurity.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperSecurity.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\Tamper\UiTamperNoContent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperNoContent.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperNoContent.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="InssidiousUi.h" />
     <CustomBuild Include="inssidiousui.qrc" />
     <CustomBuild Include="Widgets\StartWidget.h" />
-    <CustomBuild Include="Widgets\TabWidget.h" />
     <CustomBuild Include="Controllers\UiDeviceController.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -150,6 +166,12 @@
       <Filter>Generated Files\Debug</Filter>
     </CustomBuild>
     <CustomBuild Include="Widgets\Tamper\ConfigureServersDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\Tamper\UiTamperSecurity.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\Tamper\UiTamperNoContent.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

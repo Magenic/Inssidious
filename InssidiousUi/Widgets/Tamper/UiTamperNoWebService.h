@@ -3,6 +3,7 @@
 
 #include "UiTamperModule.h"
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QButtonGroup>
 
 class UiTamperNoWebService : public UiTamperModule
 {
@@ -15,17 +16,20 @@ public:
 private:
 	QGridLayout* noWebServiceLayout;
 
-	QLabel* noWebServiceDescriptionLabel;
-	QString noWebServiceDescriptionText = "Test functionality when a service times out";
-
-
-	int blockedServicesCount = 0;
-	QString blockedServiceTextFront = "Blocking ";
-	QString blockedServiceTextBack = " Services";
-	QPushButton* blockWebServicesButton;
 	QPushButton* configWebServicesButton;
 
+	QButtonGroup* buttonGroup;
+	QPushButton* buttonLeft;
+	QPushButton* buttonMiddle1;
+	QPushButton* buttonMiddle2;
+	QPushButton* buttonMiddle3;
+	QPushButton* buttonRight;
+
+
 	void setActive(bool) override;
+
+private slots:
+	void onButtonClicked(int);
 };
 
 #endif // UITAMPERNOWEBSERVICE_H

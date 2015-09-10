@@ -6,12 +6,6 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 {
 	pTamperConfig = (void*)new TamperConditionsConfig{0, 0, 0, 0};
 
-	conditionsDescriptionLabel = new QLabel();
-	conditionsDescriptionLabel->setText(conditionsDescriptionText);
-	conditionsDescriptionLabel->setContentsMargins(0, 6, 0, 12);
-	conditionsDescriptionLabel->setAlignment(Qt::AlignHCenter);
-	conditionsDescriptionLabel->setFont(moduleTextFont);
-	conditionsDescriptionLabel->setPalette(moduleTextPalette);
 
 	lossSpinBox = new QSpinBox();
 	lossSpinBox->setRange(0, 100);
@@ -65,9 +59,15 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 
 	conditionsLayout = new QGridLayout();
 	conditionsLayout->setHorizontalSpacing(20);
-	conditionsLayout->addWidget(conditionsDescriptionLabel, 1, 1, 1, 2, Qt::AlignCenter);
-	conditionsLayout->addWidget(randomizeConditions, 2, 1, 2, 1, Qt::AlignCenter);	
-	conditionsLayout->addItem(spinboxChildLayout, 2, 2, 1, 1, Qt::AlignCenter);
+	conditionsLayout->addWidget(randomizeConditions, 0, 1, 2, 1, Qt::AlignVCenter | Qt::AlignRight);	
+	conditionsLayout->addItem(spinboxChildLayout, 0, 2, 1, 1, Qt::AlignCenter);
+
+	lossSpinBox->setDisabled(true);
+	delaySpinBox->setDisabled(true);
+	junkSpinBox->setDisabled(true);
+	tcpResetSpinBox->setDisabled(true);
+
+	randomizeConditions->setDisabled(true);
 
 
 	connect(randomizeConditions, &QPushButton::clicked, this, &UiTamperConditions::onRandomizeConditionsClicked);
@@ -76,7 +76,7 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	connect(delaySpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &UiTamperConditions::onDelaySpinBoxChange);
 	connect(tcpResetSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &UiTamperConditions::onResetSpinBoxChange);
 
-
+	moduleDescriptionLabel->setContentsMargins(0, 6, 0, 12);
 	moduleLayout->addLayout(conditionsLayout);
 }
 

@@ -16,10 +16,6 @@ public:
 private:
 	QGridLayout* conditionsLayout;
 	QGridLayout* spinboxChildLayout;
-
-	QLabel* conditionsDescriptionLabel;
-	QString conditionsDescriptionText = "Introduce intermittent network problems";
-
 	
 	QString lossText = "Loss: ";
 	QString delayText = "Delay: ";

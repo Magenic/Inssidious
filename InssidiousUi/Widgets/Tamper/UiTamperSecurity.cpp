@@ -1,41 +1,45 @@
-#include "UiTamperNoInternet.h"
+#include "UiTamperSecurity.h"
 
-UiTamperNoInternet::UiTamperNoInternet(QWidget *parent, TamperType tamperType)
+UiTamperSecurity::UiTamperSecurity(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
-	
-	pTamperConfig = (void*)new TamperNoInternetConfig{ false, false };
+
+	pTamperConfig = (void*)new TamperSecurityConfig{ false };
+
 
 	noTrafficButton = new QPushButton();
 	noTrafficButton->setCheckable(true);
 	noTrafficButton->setStyleSheet(buttonLeftStyleSheet90);
 	noTrafficButton->setFixedSize(90, 30);
-	noTrafficButton->setText("Local Network Only");
+	noTrafficButton->setText("???");
 
 	redirButton = new QPushButton();
 	redirButton->setCheckable(true);
 	redirButton->setStyleSheet(buttonRightStyleSheet90);
 	redirButton->setFixedSize(90, 30);
-	redirButton->setText("Captive Portal");
+	redirButton->setText("???");
 
 
-	noInternetLayout = new QGridLayout();
-	noInternetLayout->setSpacing(0);
-	noInternetLayout->setAlignment(Qt::AlignHCenter);
-	//noInternetLayout->addWidget(noTrafficButton, 0, 0, Qt::AlignHCenter);
-	//noInternetLayout->addWidget(redirButton, 0, 1, Qt::AlignHCenter);
+	securityLayout = new QGridLayout();
+	securityLayout->setSpacing(0);
+	securityLayout->setAlignment(Qt::AlignHCenter);
+	securityLayout->addWidget(noTrafficButton, 0, 0, Qt::AlignHCenter);
+	securityLayout->addWidget(redirButton, 0, 1, Qt::AlignHCenter);
 
 
-	connect(noTrafficButton, &QPushButton::clicked, this, &UiTamperNoInternet::onNoTrafficButtonClicked);
+	noTrafficButton->setDisabled(true);
+	redirButton->setDisabled(true);
 
-	moduleLayout->addLayout(noInternetLayout);
+	connect(noTrafficButton, &QPushButton::clicked, this, &UiTamperSecurity::onNoTrafficButtonClicked);
+
+	moduleLayout->addLayout(securityLayout);
 }
 
-UiTamperNoInternet::~UiTamperNoInternet()
+UiTamperSecurity::~UiTamperSecurity()
 {
 
 }
-void UiTamperNoInternet::setActive(bool active)
+void UiTamperSecurity::setActive(bool active)
 {
 	if (active)
 	{
@@ -50,12 +54,10 @@ void UiTamperNoInternet::setActive(bool active)
 		noTrafficButton->setChecked(true);
 		redirButton->setEnabled(true);
 
-		//noTrafficButton->setText("Blocking Internet Access");
-
 
 		/* Set the config value to true */
 
-		((TamperNoInternetConfig*)pTamperConfig)->localNetwork = true;
+		((TamperSecurityConfig*)pTamperConfig)->something = true;
 
 
 		/* Notify Core */
@@ -72,14 +74,13 @@ void UiTamperNoInternet::setActive(bool active)
 		/* Uncheck and disable all buttons */
 
 		noTrafficButton->setChecked(false);
-		//noTrafficButton->setText("Block Internet Access");
-		noTrafficButton->setDisabled(true); 
+		noTrafficButton->setDisabled(true);
 		redirButton->setDisabled(true);
 
 
 		/* Set the config value to false */
 
-		((TamperNoInternetConfig*)pTamperConfig)->localNetwork = false;
+		((TamperSecurityConfig*)pTamperConfig)->something = false;
 
 
 		/* Notify Core */
@@ -88,7 +89,7 @@ void UiTamperNoInternet::setActive(bool active)
 	}
 }
 
-void UiTamperNoInternet::onNoTrafficButtonClicked()
+void UiTamperSecurity::onNoTrafficButtonClicked()
 {
 	if (noTrafficButton->isChecked())
 	{
