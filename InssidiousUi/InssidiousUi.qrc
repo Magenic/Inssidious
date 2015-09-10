@@ -11,6 +11,12 @@
         <file alias="TamperModuleInactive.png">Resources/TamperModuleInactive.png</file>
         <file alias="TamperModuleInactiveHover.png">Resources/TamperModuleInactiveHover.png</file>
         <file alias="TamperModuleInactivePressed.png">Resources/TamperModuleInactivePressed.png</file>
+        <file alias="TamperNoInternetActive.png">Resources/TamperNoInternetActive.png</file>
+        <file alias="TamperNoInternetInactive.png">Resources/TamperNoInternetInactive.png</file>
+        <file alias="TamperNoServerActive.png">Resources/TamperNoServerActive.png</file>
+        <file alias="TamperNoServerInactive.png">Resources/TamperNoServerInactive.png</file>
+        <file alias="TamperNoContentActive.png">Resources/TamperNoContentActive.png</file>
+        <file alias="TamperNoContentInactive.png">Resources/TamperNoContentInactive.png</file>
         <file alias="ButtonLeftDisabled60.png">Resources/ButtonGroup60/ButtonLeftDisabled.png</file>
         <file alias="ButtonLeftActive60.png">Resources/ButtonGroup60/ButtonLeftActive.png</file>
         <file alias="ButtonLeftActiveHover60.png">Resources/ButtonGroup60/ButtonLeftActiveHover.png</file>

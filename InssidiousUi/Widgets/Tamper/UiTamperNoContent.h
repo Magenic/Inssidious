@@ -17,6 +17,12 @@ private:
 
 	QPushButton* noContentButton;
 
+
+
+	QLabel* buttonImage;
+	QPalette buttonImagePaletteActive;
+	QPalette buttonImagePaletteInactive;
+
 	void setActive(bool) override;
 
 private slots:

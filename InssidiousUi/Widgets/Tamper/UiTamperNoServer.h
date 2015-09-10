@@ -17,6 +17,10 @@ public:
 private:
 	QGridLayout* noServerLayout;
 	
+	QLabel* buttonImage;
+	QPalette buttonImagePaletteActive;
+	QPalette buttonImagePaletteInactive;
+
 	QPushButton* configServersButton;
 
 	void setActive(bool) override;

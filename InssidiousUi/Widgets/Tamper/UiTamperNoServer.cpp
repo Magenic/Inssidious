@@ -19,6 +19,15 @@ UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 	//noServerLayout->addWidget(configServersButton, 0, 0, Qt::AlignHCenter);
 
 
+	buttonImagePaletteActive.setBrush(QPalette::Background, QBrush(QPixmap(":/Tamper/TamperNoServerActive.png")));
+	buttonImagePaletteInactive.setBrush(QPalette::Background, QBrush(QPixmap(":/Tamper/TamperNoServerInactive.png")));
+
+	buttonImage = new QLabel(this);
+	buttonImage->setPalette(buttonImagePaletteInactive);
+	buttonImage->setAutoFillBackground(true);
+	buttonImage->setGeometry(0, 0, 380, 120);
+	buttonImage->setAttribute(Qt::WA_TransparentForMouseEvents);
+	buttonImage->show();
 
 	connect(configServersButton, &QPushButton::clicked, this, &UiTamperNoServer::onConfigureServers);
 
@@ -36,7 +45,7 @@ void UiTamperNoServer::setActive(bool active)
 		/* Show the module as active */
 
 		this->setPalette(moduleBackgroundPaletteActive);
-
+		this->buttonImage->setPalette(buttonImagePaletteActive);
 
 		/* Enable the buttons */
 
@@ -58,7 +67,7 @@ void UiTamperNoServer::setActive(bool active)
 		/* Show the module as inactive */
 
 		this->setPalette(moduleBackgroundPaletteInactive);
-
+		this->buttonImage->setPalette(buttonImagePaletteInactive);
 
 		/* Uncheck and disable all buttons */
 

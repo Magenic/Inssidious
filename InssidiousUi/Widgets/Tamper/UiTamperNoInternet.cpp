@@ -26,6 +26,18 @@ UiTamperNoInternet::UiTamperNoInternet(QWidget *parent, TamperType tamperType)
 	//noInternetLayout->addWidget(redirButton, 0, 1, Qt::AlignHCenter);
 
 
+	buttonImagePaletteActive.setBrush(QPalette::Background, QBrush(QPixmap(":/Tamper/TamperNoInternetActive.png")));
+	buttonImagePaletteInactive.setBrush(QPalette::Background, QBrush(QPixmap(":/Tamper/TamperNoInternetInactive.png")));
+
+	buttonImage = new QLabel(this);
+	buttonImage->setPalette(buttonImagePaletteInactive);
+	buttonImage->setAutoFillBackground(true);
+	buttonImage->setGeometry(0, 0, 380, 120);
+	buttonImage->setAttribute(Qt::WA_TransparentForMouseEvents);
+	buttonImage->show();
+
+
+
 	connect(noTrafficButton, &QPushButton::clicked, this, &UiTamperNoInternet::onNoTrafficButtonClicked);
 
 	moduleLayout->addLayout(noInternetLayout);
@@ -42,6 +54,7 @@ void UiTamperNoInternet::setActive(bool active)
 		/* Show the module as active */
 
 		this->setPalette(moduleBackgroundPaletteActive);
+		this->buttonImage->setPalette(buttonImagePaletteActive);
 
 
 		/* Enable the buttons */
@@ -67,6 +80,7 @@ void UiTamperNoInternet::setActive(bool active)
 		/* Show the module as inactive */
 
 		this->setPalette(moduleBackgroundPaletteInactive);
+		this->buttonImage->setPalette(buttonImagePaletteInactive);
 
 
 		/* Uncheck and disable all buttons */

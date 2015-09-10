@@ -19,6 +19,10 @@ private:
 	QPushButton* redirButton;
 	
 
+	QLabel* buttonImage;
+	QPalette buttonImagePaletteActive;
+	QPalette buttonImagePaletteInactive;
+
 	void setActive(bool) override;
 
 private slots:
