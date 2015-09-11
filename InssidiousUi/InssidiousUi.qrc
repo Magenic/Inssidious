@@ -2,21 +2,7 @@
     <qresource prefix="/Start">
         <file alias="StartLogo.png">Resources/StartLogo.png</file>
     </qresource>
-    <qresource prefix="/Tabs">
-    </qresource>
-    <qresource prefix="/Tamper">
-        <file alias="TamperModuleActive.png">Resources/TamperModuleActive.png</file>
-        <file alias="TamperModuleActiveHover.png">Resources/TamperModuleActiveHover.png</file>
-        <file alias="TamperModuleActivePressed.png">Resources/TamperModuleActivePressed.png</file>
-        <file alias="TamperModuleInactive.png">Resources/TamperModuleInactive.png</file>
-        <file alias="TamperModuleInactiveHover.png">Resources/TamperModuleInactiveHover.png</file>
-        <file alias="TamperModuleInactivePressed.png">Resources/TamperModuleInactivePressed.png</file>
-        <file alias="TamperNoInternetActive.png">Resources/TamperNoInternetActive.png</file>
-        <file alias="TamperNoInternetInactive.png">Resources/TamperNoInternetInactive.png</file>
-        <file alias="TamperNoServerActive.png">Resources/TamperNoServerActive.png</file>
-        <file alias="TamperNoServerInactive.png">Resources/TamperNoServerInactive.png</file>
-        <file alias="TamperNoContentActive.png">Resources/TamperNoContentActive.png</file>
-        <file alias="TamperNoContentInactive.png">Resources/TamperNoContentInactive.png</file>
+    <qresource prefix="/Button">
         <file alias="ButtonLeftDisabled60.png">Resources/ButtonGroup60/ButtonLeftDisabled.png</file>
         <file alias="ButtonLeftActive60.png">Resources/ButtonGroup60/ButtonLeftActive.png</file>
         <file alias="ButtonLeftActiveHover60.png">Resources/ButtonGroup60/ButtonLeftActiveHover.png</file>
@@ -53,6 +39,20 @@
         <file alias="ButtonRightInactive90.png">Resources/ButtonGroup90/ButtonRightInactive.png</file>
         <file alias="ButtonRightInactiveHover90.png">Resources/ButtonGroup90/ButtonRightInactiveHover.png</file>
         <file alias="ButtonRightPressed90.png">Resources/ButtonGroup90/ButtonRightPressed.png</file>
+    </qresource>
+    <qresource prefix="/Tamper">
+        <file alias="TamperModuleActive.png">Resources/TamperModuleActive.png</file>
+        <file alias="TamperModuleActiveHover.png">Resources/TamperModuleActiveHover.png</file>
+        <file alias="TamperModuleActivePressed.png">Resources/TamperModuleActivePressed.png</file>
+        <file alias="TamperModuleInactive.png">Resources/TamperModuleInactive.png</file>
+        <file alias="TamperModuleInactiveHover.png">Resources/TamperModuleInactiveHover.png</file>
+        <file alias="TamperModuleInactivePressed.png">Resources/TamperModuleInactivePressed.png</file>
+        <file alias="TamperNoInternetActive.png">Resources/TamperNoInternetActive.png</file>
+        <file alias="TamperNoInternetInactive.png">Resources/TamperNoInternetInactive.png</file>
+        <file alias="TamperNoServerActive.png">Resources/TamperNoServerActive.png</file>
+        <file alias="TamperNoServerInactive.png">Resources/TamperNoServerInactive.png</file>
+        <file alias="TamperNoWebContentActive.png">Resources/TamperNoWebContentActive.png</file>
+        <file alias="TamperNoWebContentInactive.png">Resources/TamperNoWebContentInactive.png</file>
     </qresource>
     <qresource prefix="/InssidiousUi">
         <file alias="Inssidious.ico">Inssidious.ico</file>

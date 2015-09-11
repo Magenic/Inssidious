@@ -11,13 +11,13 @@ enum TamperType
 	SPEED,
 	CONDITIONS,
 	FIREWALL,
-	SECURITY,
+	DAMAGE,
 
 	/* failures */
 	NO_INTERNET,
 	NO_SERVER,
-	NO_CONTENT,
-	NO_WEBSERVICE,
+	NO_WEB_CONTENT,
+	WEBSERVICE_FAILURES,
 
 	/* total*/
 	NUM_TAMPER_TYPES
@@ -29,11 +29,11 @@ static QString TamperTypeName[NUM_TAMPER_TYPES]
 	QString("Network Speed"),
 	QString("Network Conditions"),
 	QString("Network Firewall"),
-	QString(" ??? "),
+	QString("Network Damage"),
 	QString("No Internet"),
 	QString("No Server"),
-	QString("No Content"),
-	QString("No Web Service")
+	QString("No Web Content"),
+	QString("Web Service Failures")
 };
 
 static QString TamperTypeDescription[NUM_TAMPER_TYPES]
@@ -41,11 +41,11 @@ static QString TamperTypeDescription[NUM_TAMPER_TYPES]
 	QString("Cap the speed of the network connection."),
 	QString("Introduce intermittent problems with the network connection."),
 	QString("Replicate restrictive network connections."),
-	QString(" ??? "),
+	QString("Intentionally corrupt data to generate interesting errors."),
 	QString("Test functionality without internet access."),
-	QString("Test functionality when a server is unreachable."),
-	QString("Test functionality when content is blocked by the network."),
-	QString("Test functionality when a web service responds with an error.")
+	QString("Test functionality when servers are unreachable."),
+	QString("Test functionality when web requests time out."),
+	QString("Reply to web requests with specific errors.")
 };
 
 enum TamperSpeedType
@@ -96,9 +96,9 @@ struct TamperFirewallConfig
 };
 
 
-struct TamperSecurityConfig
+struct TamperDamageConfig
 {
-	volatile bool something;
+	volatile short chanceDamage;
 };
 
 
@@ -114,13 +114,13 @@ struct TamperNoServerConfig
 	volatile bool blockServers;
 };
 
-struct TamperNoContentConfig
+struct TamperNoWebContentConfig
 {
 	volatile bool something;
 };
 
 
-struct TamperNoWebServiceConfig
+struct TamperWebServiceFailuresConfig
 {
 	volatile bool blockWebService;
 };

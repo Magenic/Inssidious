@@ -15,9 +15,6 @@ public:
 private:
 	QGridLayout* noInternetLayout;
 
-	QPushButton* noTrafficButton;
-	QPushButton* redirButton;
-	
 
 	QLabel* buttonImage;
 	QPalette buttonImagePaletteActive;
@@ -25,8 +22,6 @@ private:
 
 	void setActive(bool) override;
 
-private slots:
-	void onNoTrafficButtonClicked();
 };
 
 #endif // UITAMPERNOINTERNET_H

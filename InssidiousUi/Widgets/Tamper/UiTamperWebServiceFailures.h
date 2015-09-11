@@ -1,20 +1,20 @@
-#ifndef UITAMPERNOWEBSERVICE_H
-#define UITAMPERNOWEBSERVICE_H
+#ifndef UITAMPERWEBSERVICEFAILURES_H
+#define UITAMPERWEBSERVICEFAILURES_H
 
 #include "UiTamperModule.h"
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QButtonGroup>
 
-class UiTamperNoWebService : public UiTamperModule
+class UiTamperWebServiceFailures : public UiTamperModule
 {
 	Q_OBJECT
 
 public:
-	UiTamperNoWebService(QWidget *parent, TamperType tamperType);
-	~UiTamperNoWebService();
+	UiTamperWebServiceFailures(QWidget *parent, TamperType tamperType);
+	~UiTamperWebServiceFailures();
 
 private:
-	QGridLayout* noWebServiceLayout;
+	QGridLayout* webServiceFailuresLayout;
 
 	QPushButton* configWebServicesButton;
 
@@ -22,7 +22,6 @@ private:
 	QPushButton* buttonLeft;
 	QPushButton* buttonMiddle1;
 	QPushButton* buttonMiddle2;
-	QPushButton* buttonMiddle3;
 	QPushButton* buttonRight;
 
 
@@ -32,4 +31,4 @@ private slots:
 	void onButtonClicked(int);
 };
 
-#endif // UITAMPERNOWEBSERVICE_H
+#endif // UITAMPERWEBSERVICEFAILURES_H

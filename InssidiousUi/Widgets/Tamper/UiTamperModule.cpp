@@ -3,13 +3,13 @@
 #include "UiTamperSpeed.h"
 #include "UiTamperConditions.h"
 #include "UiTamperFirewall.h"
-#include "UiTamperSecurity.h"
+#include "UiTamperDamage.h"
 
-#include "UiTamperNoWebService.h"
+
 #include "UiTamperNoInternet.h"
 #include "UiTamperNoServer.h"
-#include "UiTamperNoContent.h"
-
+#include "UiTamperNoWebContent.h"
+#include "UiTamperWebServiceFailures.h"
 
 UiTamperModule::UiTamperModule(QWidget* parent, TamperType tamperType)
 	: QWidget(parent)
@@ -87,8 +87,8 @@ UiTamperModule* UiTamperModule::makeUiTamperModule(QWidget* parent, TamperType t
 			return new UiTamperConditions(parent, tamperType);
 		case FIREWALL:
 			return new UiTamperFirewall(parent, tamperType);
-		case SECURITY:
-			return new UiTamperSecurity(parent, tamperType);
+		case DAMAGE:
+			return new UiTamperDamage(parent, tamperType);
 
 
 		/* failures */
@@ -97,10 +97,10 @@ UiTamperModule* UiTamperModule::makeUiTamperModule(QWidget* parent, TamperType t
 			return new UiTamperNoInternet(parent, tamperType);
 		case NO_SERVER:
 			return new UiTamperNoServer(parent, tamperType);
-		case NO_CONTENT:
-			return new UiTamperNoContent(parent, tamperType);
-		case NO_WEBSERVICE:
-			return new UiTamperNoWebService(parent, tamperType);
+		case NO_WEB_CONTENT:
+			return new UiTamperNoWebContent(parent, tamperType);
+		case WEBSERVICE_FAILURES:
+			return new UiTamperWebServiceFailures(parent, tamperType);
 
 
 		/* Should never reach */

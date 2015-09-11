@@ -58,13 +58,13 @@
     <ClCompile Include="TamperModules\TamperFirewall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TamperModules\TamperNoWebService.cpp">
+    <ClCompile Include="TamperModules\TamperDamage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TamperModules\TamperNoContent.cpp">
+    <ClCompile Include="TamperModules\TamperWebServiceFailures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TamperModules\TamperSecurity.cpp">
+    <ClCompile Include="TamperModules\TamperNoWebContent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,13 +134,13 @@
     <ClInclude Include="TamperModules\TamperFirewall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TamperModules\TamperNoWebService.h">
+    <ClInclude Include="TamperModules\TamperDamage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TamperModules\TamperNoContent.h">
+    <ClInclude Include="TamperModules\TamperWebServiceFailures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TamperModules\TamperSecurity.h">
+    <ClInclude Include="TamperModules\TamperNoWebContent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

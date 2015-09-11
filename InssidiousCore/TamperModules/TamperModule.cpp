@@ -3,12 +3,12 @@
 #include "TamperSpeed.h"
 #include "TamperConditions.h"
 #include "TamperFirewall.h"
-#include "TamperSecurity.h"
+#include "TamperDamage.h"
 
 #include "TamperNoInternet.h"
 #include "TamperNoServer.h"
-#include "TamperNoContent.h"
-#include "TamperNoWebService.h"
+#include "TamperNoWebContent.h"
+#include "TamperWebServiceFailures.h"
 
 #include "TamperTypes.h"
 #include <ctime>
@@ -30,8 +30,8 @@ TamperModule* TamperModule::makeTamperModule(int tamperType, void** ppTamperConf
 			return new TamperConditions(ppTamperConfig);
 		case FIREWALL:
 			return new TamperFirewall(ppTamperConfig);
-		case SECURITY:
-			return new TamperSecurity(ppTamperConfig);
+		case DAMAGE:
+			return new TamperDamage(ppTamperConfig);
 	
 
 		/* failures */
@@ -40,10 +40,10 @@ TamperModule* TamperModule::makeTamperModule(int tamperType, void** ppTamperConf
 			return new TamperNoInternet(ppTamperConfig);
 		case NO_SERVER:
 			return new TamperNoServer(ppTamperConfig);
-		case NO_CONTENT:
-			return new TamperNoContent(ppTamperConfig);
-		case NO_WEBSERVICE:
-			return new TamperNoWebService(ppTamperConfig);
+		case NO_WEB_CONTENT:
+			return new TamperNoWebContent(ppTamperConfig);
+		case WEBSERVICE_FAILURES:
+			return new TamperWebServiceFailures(ppTamperConfig);
 
 	
 		/* Should never reach */

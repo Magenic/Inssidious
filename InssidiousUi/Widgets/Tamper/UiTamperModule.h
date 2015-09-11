@@ -70,50 +70,50 @@ public:
 
 
 	QString buttonLeftStyleSheet60 = 
-		"QPushButton { margin: 0px; padding: 0px; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;image: url(:/Tamper/ButtonLeftInactive60.png); border: none;}\
-		QPushButton:!enabled { image: url(:/Tamper/ButtonLeftDisabled60.png); border: none;color:#B0ADB0;}\
-		QPushButton:hover:!pressed { image: url(:/Tamper/ButtonLeftInactiveHover60.png); border: none;}\
-		QPushButton:on { image: url(:/Tamper/ButtonLeftActive60.png); border: none;}\
-		QPushButton:on:hover:!pressed{ image: url(:/Tamper/ButtonLeftActiveHover60.png); border: none;}\
-		QPushButton:pressed{ image: url(:/Tamper/ButtonLeftPressed60.png); border: none;}";
+		"QPushButton { margin: 0px; padding: 0px; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;image: url(:/Button/ButtonLeftInactive60.png); border: none;}\
+		QPushButton:!enabled { image: url(:/Button/ButtonLeftDisabled60.png); border: none;color:#B0ADB0;}\
+		QPushButton:hover:!pressed { image: url(:/Button/ButtonLeftInactiveHover60.png); border: none;}\
+		QPushButton:on { image: url(:/Button/ButtonLeftActive60.png); border: none;}\
+		QPushButton:on:hover:!pressed{ image: url(:/Button/ButtonLeftActiveHover60.png); border: none;}\
+		QPushButton:pressed{ image: url(:/Button/ButtonLeftPressed60.png); border: none;}";
 	QString buttonMiddleStyleSheet60 = 
-		"QPushButton { margin: 0px; padding: 0px; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;image: url(:/Tamper/ButtonMiddleInactive60.png); border: none;}\
-		QPushButton:!enabled { image: url(:/Tamper/ButtonMiddleDisabled60.png); border: none;color:#B0ADB0;}\
-		QPushButton:hover:!pressed { image: url(:/Tamper/ButtonMiddleInactiveHover60.png); border: none;}\
-		QPushButton:on { image: url(:/Tamper/ButtonMiddleActive60.png); border: none;}\
-		QPushButton:on:hover:!pressed { image: url(:/Tamper/ButtonMiddleActiveHover60.png); border: none;}\
-		QPushButton:pressed { image: url(:/Tamper/ButtonMiddlePressed60.png); border: none;}";
+		"QPushButton { margin: 0px; padding: 0px; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;image: url(:/Button/ButtonMiddleInactive60.png); border: none;}\
+		QPushButton:!enabled { image: url(:/Button/ButtonMiddleDisabled60.png); border: none;color:#B0ADB0;}\
+		QPushButton:hover:!pressed { image: url(:/Button/ButtonMiddleInactiveHover60.png); border: none;}\
+		QPushButton:on { image: url(:/Button/ButtonMiddleActive60.png); border: none;}\
+		QPushButton:on:hover:!pressed { image: url(:/Button/ButtonMiddleActiveHover60.png); border: none;}\
+		QPushButton:pressed { image: url(:/Button/ButtonMiddlePressed60.png); border: none;}";
 	QString buttonRightStyleSheet60 = 
-		"QPushButton { margin: 0px; padding: 0px; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;image: url(:/Tamper/ButtonRightInactive60.png); border: none;}\
-		QPushButton:!enabled { image: url(:/Tamper/ButtonRightDisabled60.png); border: none;color:#B0ADB0;}\
-		QPushButton:hover { image: url(:/Tamper/ButtonRightInactiveHover60.png); border: none;}\
-		QPushButton:on { image: url(:/Tamper/ButtonRightActive60.png); border: none;}\
-		QPushButton:on:hover:!pressed { image: url(:/Tamper/ButtonRightActiveHover60.png); border: none;}\
-		QPushButton:pressed { image: url(:/Tamper/ButtonRightPressed60.png); border: none;}";
+		"QPushButton { margin: 0px; padding: 0px; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;image: url(:/Button/ButtonRightInactive60.png); border: none;}\
+		QPushButton:!enabled { image: url(:/Button/ButtonRightDisabled60.png); border: none;color:#B0ADB0;}\
+		QPushButton:hover { image: url(:/Button/ButtonRightInactiveHover60.png); border: none;}\
+		QPushButton:on { image: url(:/Button/ButtonRightActive60.png); border: none;}\
+		QPushButton:on:hover:!pressed { image: url(:/Button/ButtonRightActiveHover60.png); border: none;}\
+		QPushButton:pressed { image: url(:/Button/ButtonRightPressed60.png); border: none;}";
 
 
 
 	QString buttonLeftStyleSheet90 = 
-		"QPushButton { margin: 0px; padding: 0px; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;image: url(:/Tamper/ButtonLeftInactive90.png); border: none;}\
-		QPushButton:!enabled { image: url(:/Tamper/ButtonLeftDisabled90.png); border: none;color:#B0ADB0;}\
-		QPushButton:hover:!pressed { image: url(:/Tamper/ButtonLeftInactiveHover90.png); border: none;}\
-		QPushButton:on { image: url(:/Tamper/ButtonLeftActive90.png); border: none;}\
-		QPushButton:on:hover:!pressed{ image: url(:/Tamper/ButtonLeftActiveHover90.png); border: none;}\
-		QPushButton:pressed{ image: url(:/Tamper/ButtonLeftPressed90.png); border: none;}";
+		"QPushButton { margin: 0px; padding: 0px; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;image: url(:/Button/ButtonLeftInactive90.png); border: none;}\
+		QPushButton:!enabled { image: url(:/Button/ButtonLeftDisabled90.png); border: none;color:#B0ADB0;}\
+		QPushButton:hover:!pressed { image: url(:/Button/ButtonLeftInactiveHover90.png); border: none;}\
+		QPushButton:on { image: url(:/Button/ButtonLeftActive90.png); border: none;}\
+		QPushButton:on:hover:!pressed{ image: url(:/Button/ButtonLeftActiveHover90.png); border: none;}\
+		QPushButton:pressed{ image: url(:/Button/ButtonLeftPressed90.png); border: none;}";
 	QString buttonMiddleStyleSheet90 = 
-		"QPushButton { margin: 0px; padding: 0px; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;image: url(:/Tamper/ButtonMiddleInactive90.png); border: none;}\
-		QPushButton:!enabled { image: url(:/Tamper/ButtonMiddleDisabled90.png); border: none;color:#B0ADB0;}\
-		QPushButton:hover:!pressed { image: url(:/Tamper/ButtonMiddleInactiveHover90.png); border: none;}\
-		QPushButton:on { image: url(:/Tamper/ButtonMiddleActive90.png); border: none;}\
-		QPushButton:on:hover:!pressed { image: url(:/Tamper/ButtonMiddleActiveHover90.png); border: none;}\
-		QPushButton:pressed { image: url(:/Tamper/ButtonMiddlePressed90.png); border: none;}";
+		"QPushButton { margin: 0px; padding: 0px; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;image: url(:/Button/ButtonMiddleInactive90.png); border: none;}\
+		QPushButton:!enabled { image: url(:/Button/ButtonMiddleDisabled90.png); border: none;color:#B0ADB0;}\
+		QPushButton:hover:!pressed { image: url(:/Button/ButtonMiddleInactiveHover90.png); border: none;}\
+		QPushButton:on { image: url(:/Button/ButtonMiddleActive90.png); border: none;}\
+		QPushButton:on:hover:!pressed { image: url(:/Button/ButtonMiddleActiveHover90.png); border: none;}\
+		QPushButton:pressed { image: url(:/Button/ButtonMiddlePressed90.png); border: none;}";
 	QString buttonRightStyleSheet90 = 
-		"QPushButton { margin: 0px; padding: 0px; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;image: url(:/Tamper/ButtonRightInactive90.png); border: none;}\
-		QPushButton:!enabled { image: url(:/Tamper/ButtonRightDisabled90.png); border: none;color:#B0ADB0;}\
-		QPushButton:hover { image: url(:/Tamper/ButtonRightInactiveHover90.png); border: none;}\
-		QPushButton:on { image: url(:/Tamper/ButtonRightActive90.png); border: none;}\
-		QPushButton:on:hover:!pressed { image: url(:/Tamper/ButtonRightActiveHover90.png); border: none;}\
-		QPushButton:pressed { image: url(:/Tamper/ButtonRightPressed90.png); border: none;}";
+		"QPushButton { margin: 0px; padding: 0px; color:#333333; font-family: 'Segoe UI'; font-size:12px; font-weight:400; text-decoration:none;image: url(:/Button/ButtonRightInactive90.png); border: none;}\
+		QPushButton:!enabled { image: url(:/Button/ButtonRightDisabled90.png); border: none;color:#B0ADB0;}\
+		QPushButton:hover { image: url(:/Button/ButtonRightInactiveHover90.png); border: none;}\
+		QPushButton:on { image: url(:/Button/ButtonRightActive90.png); border: none;}\
+		QPushButton:on:hover:!pressed { image: url(:/Button/ButtonRightActiveHover90.png); border: none;}\
+		QPushButton:pressed { image: url(:/Button/ButtonRightPressed90.png); border: none;}";
 
 
 signals:

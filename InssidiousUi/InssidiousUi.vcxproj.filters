@@ -3,12 +3,10 @@
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\Debug\moc_inssidiousui.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_StartWidget.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_TabWidget.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_TamperWidget.cpp" />
     <ClCompile Include="GeneratedFiles\qrc_inssidiousui.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_inssidiousui.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_StartWidget.cpp" />
-    <ClCompile Include="GeneratedFiles\Release\moc_TabWidget.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_TamperWidget.cpp" />
     <ClCompile Include="InssidiousUi.cpp" />
     <ClCompile Include="main.cpp" />
@@ -82,15 +80,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_UiTamperFirewall.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperNoWebService.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperNoWebService.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\Tamper\UiTamperNoWebService.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Widgets\NewDeviceWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -109,23 +98,32 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ConfigureServersDialog.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\Tamper\UiTamperSecurity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperSecurity.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperDamage.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperSecurity.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperDamage.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\Tamper\UiTamperNoContent.cpp">
+    <ClCompile Include="Widgets\Tamper\UiTamperDamage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperNoContent.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperWebServiceFailures.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperNoContent.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperWebServiceFailures.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\Tamper\UiTamperWebServiceFailures.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperNoWebContent.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperNoWebContent.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\Tamper\UiTamperNoWebContent.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -156,9 +154,6 @@
     <CustomBuild Include="Widgets\Tamper\UiTamperFirewall.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Widgets\Tamper\UiTamperNoWebService.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="Widgets\NewDeviceWidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -168,10 +163,13 @@
     <CustomBuild Include="Widgets\Tamper\ConfigureServersDialog.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Widgets\Tamper\UiTamperSecurity.h">
+    <CustomBuild Include="Widgets\Tamper\UiTamperDamage.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Widgets\Tamper\UiTamperNoContent.h">
+    <CustomBuild Include="Widgets\Tamper\UiTamperWebServiceFailures.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\Tamper\UiTamperNoWebContent.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
