@@ -13,30 +13,48 @@ UiTamperDamage::UiTamperDamage(QWidget *parent, TamperType tamperType)
 	damageSpinBox->setPrefix(damageText);
 	damageSpinBox->setSuffix("%");
 	damageSpinBox->setSingleStep(5);
-	damageSpinBox->setFixedSize(82, 24);
+	damageSpinBox->setFixedSize(100, 22);
 	damageSpinBox->setStyleSheet(spinBoxStyleSheet);
 	damageSpinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
+	tcpCloseSpinBox = new QSpinBox();
+	tcpCloseSpinBox->setRange(0, 100);
+	tcpCloseSpinBox->setPrefix(tcpCloseText);
+	tcpCloseSpinBox->setSuffix("%");
+	tcpCloseSpinBox->setSingleStep(5);
+	tcpCloseSpinBox->setFixedSize(100, 22);
+	tcpCloseSpinBox->setStyleSheet(spinBoxStyleSheet);
+	tcpCloseSpinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
+
 	randomizeConditions = new QPushButton();
 	randomizeConditions->setStyleSheet(buttonStyleSheet);
-	randomizeConditions->setText("Randomize");
+	randomizeConditions->setText("Randomize Conditions");
 	randomizeConditions->setFont(moduleTextFont);
-	randomizeConditions->setFixedSize(90, 30);
+	randomizeConditions->setFixedSize(130, 30);
 	randomizeConditions->setContentsMargins(0, 0, 0, 0);
+
+	spinboxChildLayout = new QGridLayout();
+	spinboxChildLayout->setSpacing(4);
+	spinboxChildLayout->addWidget(damageSpinBox, 0, 0, Qt::AlignCenter);
+	spinboxChildLayout->addWidget(tcpCloseSpinBox, 1, 0, Qt::AlignCenter);
 
 	damageLayout = new QGridLayout();
 	damageLayout->setHorizontalSpacing(20);
-	damageLayout->addWidget(randomizeConditions, 0, 0, Qt::AlignVCenter | Qt::AlignRight);
-	damageLayout->addWidget(damageSpinBox, 0, 1, Qt::AlignVCenter | Qt::AlignLeft);
+	damageLayout->addWidget(randomizeConditions, 0, 1, 2, 1, Qt::AlignVCenter | Qt::AlignRight);
+	damageLayout->addItem(spinboxChildLayout, 0, 2, 1, 1, Qt::AlignCenter);
+
 
 	damageSpinBox->setDisabled(true);
+	tcpCloseSpinBox->setDisabled(true);
 	randomizeConditions->setDisabled(true);
 
 
 	connect(randomizeConditions, &QPushButton::clicked, this, &UiTamperDamage::onRandomizeConditionsClicked);
 	connect(damageSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &UiTamperDamage::onDamageSpinBoxChange);
+	connect(tcpCloseSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &UiTamperDamage::onTCPCloseSpinBoxChange);
 
 
+	moduleDescriptionLabel->setContentsMargins(0, 6, 0, 12);
 	moduleLayout->addLayout(damageLayout);
 }
 
@@ -56,6 +74,7 @@ void UiTamperDamage::setActive(bool active)
 		/* Enable the buttons */
 
 		damageSpinBox->setEnabled(true);
+		tcpCloseSpinBox->setEnabled(true);
 
 		randomizeConditions->setEnabled(true);
 		onRandomizeConditionsClicked();
@@ -75,8 +94,10 @@ void UiTamperDamage::setActive(bool active)
 		/* Clear and disable all buttons */
 
 		damageSpinBox->setValue(0);
+		tcpCloseSpinBox->setValue(0);
 
 		damageSpinBox->setDisabled(true);
+		tcpCloseSpinBox->setDisabled(true);
 		randomizeConditions->setDisabled(true);
 
 		/* Notify core to stop */
@@ -91,9 +112,15 @@ void UiTamperDamage::onRandomizeConditionsClicked()
 {
 	srand(time(nullptr));
 	damageSpinBox->setValue(rand() % 30);
+	tcpCloseSpinBox->setValue(rand() % 15);
 }
 
 void UiTamperDamage::onDamageSpinBoxChange(int value)
 {
 	((TamperDamageConfig*)pTamperConfig)->chanceDamage = value;
+}
+
+void UiTamperDamage::onTCPCloseSpinBoxChange(int value)
+{
+	((TamperDamageConfig*)pTamperConfig)->chanceClose = value;
 }

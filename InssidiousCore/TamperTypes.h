@@ -41,7 +41,7 @@ static QString TamperTypeDescription[NUM_TAMPER_TYPES]
 	QString("Cap the speed of the network connection."),
 	QString("Introduce intermittent problems with the network connection."),
 	QString("Replicate restrictive network connections."),
-	QString("Intentionally corrupt data to generate interesting errors."),
+	QString("Intentionally damage traffic to generate interesting errors."),
 	QString("Test functionality without internet access."),
 	QString("Test functionality when servers are unreachable."),
 	QString("Test functionality when web requests time out."),
@@ -99,6 +99,7 @@ struct TamperFirewallConfig
 struct TamperDamageConfig
 {
 	volatile short chanceDamage;
+	volatile short chanceClose;
 };
 
 

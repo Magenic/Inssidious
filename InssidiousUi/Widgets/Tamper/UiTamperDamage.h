@@ -15,9 +15,14 @@ public:
 
 private:
 	QGridLayout* damageLayout;
+	QGridLayout* spinboxChildLayout;
 
-	QString damageText = "Corrupt: ";
+
+	QString damageText =   "Corrupt Data: ";
 	QSpinBox* damageSpinBox;
+	QString tcpCloseText = "TCP Close: ";
+	QSpinBox* tcpCloseSpinBox;
+
 
 	QPushButton* randomizeConditions;
 
@@ -28,5 +33,6 @@ private:
 private slots:
 	void onRandomizeConditionsClicked();
 	void onDamageSpinBoxChange(int value);
+	void onTCPCloseSpinBoxChange(int value);
 };
 #endif // UITAMPERDAMAGE_H
