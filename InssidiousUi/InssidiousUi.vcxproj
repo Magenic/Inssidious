@@ -66,6 +66,8 @@
 xcopy "$(QTDIR)\bin\Qt5Cored.dll" "$(OutDir)" /Y
 xcopy "$(QTDIR)\bin\Qt5Gui.dll" "$(OutDir)" /Y
 xcopy "$(QTDIR)\bin\Qt5Guid.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5Network.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5Networkd.dll" "$(OutDir)" /Y
 xcopy "$(QTDIR)\bin\Qt5Widgets.dll" "$(OutDir)" /Y
 xcopy "$(QTDIR)\bin\Qt5Widgetsd.dll" "$(OutDir)" /Y
 xcopy "$(QTDIR)\bin\Qt5WinExtras.dll" "$(OutDir)" /Y
@@ -103,6 +105,7 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y</Command>
     <PostBuildEvent>
       <Command>xcopy "$(QTDIR)\bin\Qt5Core.dll" "$(OutDir)" /Y
 xcopy "$(QTDIR)\bin\Qt5Gui.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5Network.dll" "$(OutDir)" /Y
 xcopy "$(QTDIR)\bin\Qt5Widgets.dll" "$(OutDir)" /Y
 xcopy "$(QTDIR)\bin\Qt5WinExtras.dll" "$(OutDir)" /Y
 xcopy "$(QTDIR)\bin\libEGL.dll" "$(OutDir)" /Y
