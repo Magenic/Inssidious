@@ -33,6 +33,16 @@ UiTamperNoWebContent::UiTamperNoWebContent(QWidget *parent, TamperType tamperTyp
 
 	connect(noWebContentButton, &QPushButton::clicked, this, &UiTamperNoWebContent::onNoTrafficButtonClicked);
 
+
+
+	/* 'Disable' this widget for now, functionality not implemented */
+
+	this->moduleTextPalette.setColor(QPalette::WindowText, QColor(175, 175, 175));
+	this->moduleDescriptionLabel->setPalette(moduleTextPalette);
+	this->moduleNameLabel->setPalette(moduleTextPalette);
+	this->setAttribute(Qt::WA_TransparentForMouseEvents);
+
+
 	moduleLayout->addLayout(noWebContentLayout);
 }
 

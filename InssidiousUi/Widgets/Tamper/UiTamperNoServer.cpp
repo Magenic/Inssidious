@@ -7,16 +7,9 @@ UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 {
 	pTamperConfig = static_cast<void*>(new TamperNoServerConfig{ false });
 
-	configServersButton = new QPushButton();
-	configServersButton->setStyleSheet(buttonStyleSheet);
-	configServersButton->setFixedSize(130, 30);
-	configServersButton->setText("???");
-
-
 	noServerLayout = new QGridLayout();
 	noServerLayout->setSpacing(0);
 	noServerLayout->setAlignment(Qt::AlignHCenter);
-	//noServerLayout->addWidget(configServersButton, 0, 0, Qt::AlignHCenter);
 
 
 	buttonImagePaletteActive.setBrush(QPalette::Background, QBrush(QPixmap(":/Tamper/TamperNoServerActive.png")));
@@ -28,8 +21,6 @@ UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 	buttonImage->setGeometry(0, 0, 380, 120);
 	buttonImage->setAttribute(Qt::WA_TransparentForMouseEvents);
 	buttonImage->show();
-
-	connect(configServersButton, &QPushButton::clicked, this, &UiTamperNoServer::onConfigureServers);
 
 	moduleLayout->addLayout(noServerLayout);
 }
@@ -43,12 +34,14 @@ void UiTamperNoServer::setActive(bool active)
 
 		this->setPalette(moduleBackgroundPaletteActive);
 		this->buttonImage->setPalette(buttonImagePaletteActive);
-
-		/* Enable the buttons */
-
-		configServersButton->setEnabled(true);
 		
+
+		QList<QString> stringList;
+		ConfigureServersDialog* dialog = new ConfigureServersDialog(this->parentWidget(), &stringList);
+		dialog->exec();
+		delete dialog;
 		
+
 		/* Set the config value to true and the block button to checked */
 
 		static_cast<TamperNoServerConfig*>(pTamperConfig)->blockServers = true;
@@ -66,10 +59,6 @@ void UiTamperNoServer::setActive(bool active)
 		this->setPalette(moduleBackgroundPaletteInactive);
 		this->buttonImage->setPalette(buttonImagePaletteInactive);
 
-		/* Uncheck and disable all buttons */
-
-		configServersButton->setDisabled(true);
-
 
 		/* Set the config value to false */
 
@@ -86,12 +75,11 @@ void UiTamperNoServer::setActive(bool active)
 void UiTamperNoServer::onConfigureServers()
 {
 	
-	QList<QString> stringList;
-	QPoint global = this->mapToGlobal(rect().center());
-	ConfigureServersDialog* dialog = new ConfigureServersDialog(global, &stringList);
-	dialog->exec();
-	delete dialog;
-
+	//QList<QString> stringList;
+	//QPoint global = this->mapToGlobal(rect().center());
+	//ConfigureServersDialog* dialog = new ConfigureServersDialog(&stringList);
+	//dialog->exec();
+	//delete dialog;
 	//if (stringList.count() > 0)
 	//{
 	//	//TODO: get this to the tamper module	

@@ -31,9 +31,9 @@ static QString TamperTypeName[NUM_TAMPER_TYPES]
 	QString("Network Firewall"),
 	QString("Network Damage"),
 	QString("No Internet"),
-	QString("No Server"),
-	QString("No Web Content"),
-	QString("Web Service Failures")
+	QString("Block Servers"),
+	QString("Block Web Content (Coming Soon)"),
+	QString("Web Service Failures (Coming Soon)")
 };
 
 static QString TamperTypeDescription[NUM_TAMPER_TYPES]

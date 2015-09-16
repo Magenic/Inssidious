@@ -13,35 +13,36 @@ class ConfigureServersDialog : public QDialog
 	Q_OBJECT
 
 public:
-	ConfigureServersDialog(QPoint global, QList<QString> *ipList);
+	ConfigureServersDialog(QWidget* parent, QList<QString> *ipList);
 
 private:
 	QGridLayout* dialogGridLayout;
 
 	QLabel* dialogTitle;
-	QString dialogTitleText = "Configure Blocked Servers";
+	QString dialogTitleText = "You can add and remove blocked servers for this device. All servers listed in this list will be not be reachable nor heard from while enabled.";
 	QList<QString> *saveList;
 	QPoint global;
 
 	QLabel* listWidgetDescription;
 	QListWidget* listWidget;
-	QString listWidgetStyleSheet = 
-		"QListWidget{ border-width:1px;	border-radius: 2px; border-color: #2D2F31; background-color: #FDFDFD;}";
+	QString listWidgetStyleSheet =
+		"QListWidget{ border-style: solid; border-width:1px; border-radius: 0px; border-color: #828790; background-color: #FDFDFD;}";
 	/*QListWidget::item { border-style: solid; border-width:1px;	border-color:black; background-color: green; }\
 		QListWidget::item:selected { background-color: red; }\*/
 
 	QFont dialogFont;
 	QPalette dialogPalette;
 	QString dialogStyleSheet =
-		"QDialog{ border: 2px solid #72C55D; border-radius: 5px; background-color: #3F4649;}";
+		"QDialog{ margin: 0px; padding: 0px; border: none; background-color: #F0F0F0;}";
 
 	QLabel* dialogInstructions;
-	QString dialogInstructionsText = "Add a Domain or IP Address: ";
+	QString dialogInstructionsText = "Add Servers: ";
 
 	QLineEdit* input;
 
 	QPushButton* buttonAdd;
 	QPushButton* buttonRemove;
+	QPushButton* buttonClear;
 	QPushButton* buttonSave;
 	QPushButton* buttonCancel;
 

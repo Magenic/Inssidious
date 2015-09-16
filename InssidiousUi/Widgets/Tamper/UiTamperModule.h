@@ -37,6 +37,7 @@ public:
 	
 	QVBoxLayout* moduleLayout;
 	QLabel* moduleDescriptionLabel;
+	QLabel* moduleNameLabel;
 
 	/* Used by child classes to pass parameters to InssidiousCore */
 	
@@ -131,7 +132,8 @@ private:
 	/* Name Font and Name Label are private from child classes */
 	
 	QFont moduleNameFont;
-	QLabel* moduleNameLabel;
+	//QLabel* moduleNameLabel;
+	//QLabel* moduleDescriptionLabel;
 
 	/* Palettes and Pixmaps for the Active/Inactive states */
 

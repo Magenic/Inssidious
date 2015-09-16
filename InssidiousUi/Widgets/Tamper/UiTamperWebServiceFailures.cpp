@@ -67,6 +67,13 @@ UiTamperWebServiceFailures::UiTamperWebServiceFailures(QWidget *parent, TamperTy
 	webServiceFailuresLayout->addWidget(buttonRight, 0, 3);
 
 
+	/* 'Disable' this widget for now, functionality not implemented */
+
+	this->moduleTextPalette.setColor(QPalette::WindowText, QColor(175, 175, 175));
+	this->moduleDescriptionLabel->setPalette(moduleTextPalette);
+	this->moduleNameLabel->setPalette(moduleTextPalette);
+	this->setAttribute(Qt::WA_TransparentForMouseEvents);
+
 
 	moduleLayout->addLayout(webServiceFailuresLayout);
 }

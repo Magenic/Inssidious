@@ -128,6 +128,10 @@ int DivertController::sendAllListPackets()
 // step function to let module process and consume all packets on the list
 void DivertController::divertConsumeStep() 
 {
+	if (packetList->isListEmpty())
+	{
+		return;
+	}
 
 #ifdef _DEBUG
 	ULONGLONG startTick = GetTickCount64(), dt;
