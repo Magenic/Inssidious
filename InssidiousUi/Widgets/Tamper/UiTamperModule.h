@@ -122,10 +122,10 @@ signals:
 
 
 private:
-	void mousePressEvent(QMouseEvent *e);
-	void mouseReleaseEvent(QMouseEvent *e);
-	void enterEvent(QEvent *e);
-	void leaveEvent(QEvent *e);
+	void mousePressEvent(QMouseEvent *e) override;
+	void mouseReleaseEvent(QMouseEvent *e) override;
+	void enterEvent(QEvent *e) override;
+	void leaveEvent(QEvent *e) override;
 
 
 	/* Name Font and Name Label are private from child classes */

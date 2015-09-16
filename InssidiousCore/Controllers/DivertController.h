@@ -50,8 +50,8 @@ private:
 
 	/* Handles to the WinDivert instance, the divert threads, and the associated filter strings */
 
-	HANDLE divertHandleLayerNetwork, divertHandleLayerNetworkForward;
-	HANDLE readLoop1, readLoop2, clockThread;
+	HANDLE divertHandleLayerNetwork, divertHandleLayerNetworkForward = 0;
+	HANDLE readLoop1, readLoop2, clockThread = 0;
 	QString inboundFilterString;
 	QString outboundFilterString;
 

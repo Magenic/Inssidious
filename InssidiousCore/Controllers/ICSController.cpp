@@ -136,7 +136,7 @@ bool ICSController::isICSAllowed()
 	/* Open the Registry key that contains the value we need to check */
 	
 	HKEY  hAllowICSRegKey = nullptr;		//Handle to the registry key that contains the value we need to check
-	DWORD result = ERROR_SUCCESS;		//Result DWORD to check for API call errors
+	DWORD result = ERROR_SUCCESS;			//Result DWORD to check for API call errors
 
 	result = RegOpenKeyEx(
 		HKEY_LOCAL_MACHINE,

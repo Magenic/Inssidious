@@ -30,12 +30,7 @@ DHCPController::DHCPController(QObject *parent)
 
 void DHCPController::run()
 {
-	unsigned char packet[0xFFFF];
-	UINT packet_len;
 	WINDIVERT_ADDRESS addr;
-	unsigned char* data;
-	UINT data_len;
-
 
 	while (true)
 	{

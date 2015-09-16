@@ -31,6 +31,12 @@ private:
 	const int DHCPMessageTypeOption = 53;
 	const int DHCPACK = 5;
 	const QString dhcpMagicCookie = "63825363";
+
+
+	unsigned char packet[0xFFFF];
+	UINT packet_len;
+	unsigned char* data;
+	UINT data_len;
 };
 
 #endif // DHCPCONTROLLER_H

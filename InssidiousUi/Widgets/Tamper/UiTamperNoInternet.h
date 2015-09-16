@@ -2,7 +2,7 @@
 #define UITAMPERNOINTERNET_H
 
 #include "UiTamperModule.h"
-#include <QtWidgets/QPushButton>
+
 
 class UiTamperNoInternet : public UiTamperModule
 {

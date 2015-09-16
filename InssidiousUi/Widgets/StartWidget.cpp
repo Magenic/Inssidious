@@ -20,7 +20,7 @@ public:
 
 	/* Show pop up on all mouseReleaseEvents received by QComboBox */
 
-	void IComboBox::mouseReleaseEvent(QMouseEvent *event)
+	void IComboBox::mouseReleaseEvent(QMouseEvent *event) override
 	{
 		IComboBox::showPopup();
 	}

@@ -1,5 +1,10 @@
 #include "ConfigureServersDialog.h"
 
+#include <WS2tcpip.h>
+#include <QtNetwork/QHostInfo>
+#pragma comment(lib, "Qt5Network.lib")	
+
+
 ConfigureServersDialog::ConfigureServersDialog(QPoint global, QList<QString> *ipList)
 {
 	saveList = ipList;
@@ -107,7 +112,7 @@ void ConfigureServersDialog::onAdd()
 		for (QHostAddress addr : addressList)
 		{
 			_Uint32t addrAsUint32 = addr.toIPv4Address();
-			wchar_t strbuff[256];
+			wchar_t strbuff[512];
 			InetNtop(AF_INET, &addrAsUint32, strbuff, sizeof(strbuff));
 
 			listWidget->addItem(QString::fromWCharArray(strbuff) + QString(" - ") + input->text());

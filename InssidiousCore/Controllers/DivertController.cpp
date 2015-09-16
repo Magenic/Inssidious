@@ -7,7 +7,7 @@
 
 #define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
 #define DIVERT_MAX_PACKETSIZE 0xFFFF
-#define DIVERT_CLOCK_WAIT_MS 100
+#define DIVERT_CLOCK_WAIT_MS 40
 #define DIVERT_QUEUE_LEN_MAX 8192
 #define DIVERT_QUEUE_TIME_MAX 2048
 
@@ -130,7 +130,7 @@ void DivertController::divertConsumeStep()
 {
 
 #ifdef _DEBUG
-	DWORD startTick = GetTickCount(), dt;
+	ULONGLONG startTick = GetTickCount64(), dt;
 #endif
 
 	for (int i = 0; i < NUM_TAMPER_TYPES - 1; i++)
@@ -145,7 +145,7 @@ void DivertController::divertConsumeStep()
 	int cnt = sendAllListPackets();
 
 #ifdef _DEBUG
-	dt = GetTickCount() - startTick;
+	dt = GetTickCount64() - startTick;
 	if (dt > DIVERT_CLOCK_WAIT_MS / 2) 
 	{
 		//LOG("Costy consume step: %lu ms, sent %d packets", GetTickCount() - startTick, cnt);
@@ -220,7 +220,7 @@ DWORD DivertController::divertClockLoop() {
 				//	}
 				//}
 				//LOG("Send all packets upon closing");
-				lastSendCount = sendAllListPackets();
+				//lastSendCount = sendAllListPackets();
 				//LOG("Lastly sent %d packets. Closing...", lastSendCount);
 
 				// terminate recv loop by closing handler. handle related error in recv loop to quit
@@ -231,13 +231,15 @@ DWORD DivertController::divertClockLoop() {
 
 				// release to let read loop exit properly
 				/***************** leave critical region ************************/
-				if (!ReleaseMutex(mutex)) {
+				if (!ReleaseMutex(mutex)) 
+				{
 					//LOG("Fatal: Failed to release mutex (%lu)", GetLastError());
 					assert(true);
 					//ABORT();
 				}
+				
+				
 				return 0;
-				break;
 			}
 		}
 	}
@@ -307,7 +309,6 @@ DWORD DivertController::divertReadLoop(HANDLE divertHandle)
 		case WAIT_TIMEOUT:
 			//LOG("Acquire timeout, dropping one read packet");
 			continue;
-			break;
 		case WAIT_ABANDONED:
 			//LOG("Acquire abandoned.");
 			return 0;
