@@ -12,7 +12,6 @@ class TamperWidget : public QWidget
 
 public:
 	TamperWidget(QWidget *parent);
-	~TamperWidget();
 
 
 	void setImage(QPixmap deviceImage);

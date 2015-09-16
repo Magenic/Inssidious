@@ -19,10 +19,7 @@ HostedNetworkController::HostedNetworkController(QObject *parent)
 
 }
 
-HostedNetworkController::~HostedNetworkController()
-{
 
-}
 
 
 //Performs legwork of configuring and starting the wireless hosted network

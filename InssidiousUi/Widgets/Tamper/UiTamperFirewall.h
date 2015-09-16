@@ -11,7 +11,6 @@ class UiTamperFirewall : public UiTamperModule
 
 public:
 	UiTamperFirewall(QWidget *parent, TamperType tamperType);
-	~UiTamperFirewall();
 
 private:
 	QGridLayout* firewallLayout;

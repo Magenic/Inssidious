@@ -69,14 +69,12 @@ ICSController::ICSController(QObject *parent)
 
 ICSController::~ICSController()
 {
-	/* 
+	 
 	delete pICSManager;
 	pICSManager = NULL;
 
 	::CoUninitialize();
 	NSModDeinit();
-	
-	*/
 }
 
 

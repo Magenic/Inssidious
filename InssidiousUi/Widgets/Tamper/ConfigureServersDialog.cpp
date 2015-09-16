@@ -82,11 +82,6 @@ ConfigureServersDialog::ConfigureServersDialog(QPoint global, QList<QString> *ip
 
 }
 
-ConfigureServersDialog::~ConfigureServersDialog()
-{
-
-}
-
 void ConfigureServersDialog::onAdd()
 {
 	input->setDisabled(true);

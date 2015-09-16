@@ -27,10 +27,6 @@ DHCPController::DHCPController(QObject *parent)
 
 }
 
-DHCPController::~DHCPController()
-{
-
-}
 
 void DHCPController::run()
 {

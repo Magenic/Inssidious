@@ -9,7 +9,7 @@ class TamperModule
 
 public:
 	virtual short process(PacketList* packetList) = 0;
-	virtual ~TamperModule() {}
+	//virtual ~TamperModule() {}
 
 	short calcChance(short chance)
 	{

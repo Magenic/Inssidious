@@ -8,11 +8,6 @@ TamperNoWebContent::TamperNoWebContent(void** ppTamperConfig)
 	this->ppNoWebContentConfig = (TamperNoWebContentConfig**)ppTamperConfig;
 }
 
-TamperNoWebContent::~TamperNoWebContent()
-{
-
-}
-
 
 short TamperNoWebContent::process(PacketList* packetList)
 {

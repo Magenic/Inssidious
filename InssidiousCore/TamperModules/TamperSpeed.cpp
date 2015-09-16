@@ -23,10 +23,6 @@ TamperSpeed::TamperSpeed(void** ppTamperConfig)
 
 }
 
-TamperSpeed::~TamperSpeed()
-{
-	
-}
 
 short TamperSpeed::process(PacketList* packetList)
 {

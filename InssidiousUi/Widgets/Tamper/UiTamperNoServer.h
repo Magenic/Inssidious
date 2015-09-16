@@ -11,7 +11,7 @@ class UiTamperNoServer : public UiTamperModule
 
 public:
 	UiTamperNoServer(QWidget *parent, TamperType tamperType);
-	~UiTamperNoServer();
+
 
 
 private:

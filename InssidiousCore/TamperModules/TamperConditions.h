@@ -5,7 +5,7 @@ class TamperConditions : public TamperModule
 {
 public:
 	TamperConditions(void** ppTamperConfig);
-	~TamperConditions();
+
 	short process(PacketList* packetList) override;
 
 

@@ -46,11 +46,6 @@ UiDeviceController::UiDeviceController(QWidget *parent)
 
 }
 
-UiDeviceController::~UiDeviceController()
-{
-
-}
-
 
 //Receives notifications to create a tab when a device has connected
 void UiDeviceController::onUiAddDevice(QString MACAddress)

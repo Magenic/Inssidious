@@ -8,10 +8,7 @@ TamperNoInternet::TamperNoInternet(void** ppTamperConfig)
 	this->ppNoInternetConfig = (TamperNoInternetConfig**)ppTamperConfig;
 }
 
-TamperNoInternet::~TamperNoInternet()
-{
 
-}
 
 
 short TamperNoInternet::process(PacketList* packetList)

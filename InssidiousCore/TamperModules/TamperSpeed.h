@@ -9,7 +9,6 @@ class TamperSpeed : public TamperModule
 
 public:
 	TamperSpeed(void** ppTamperConfig);
-	~TamperSpeed();
 
 	short process(PacketList* packetList) override;
 

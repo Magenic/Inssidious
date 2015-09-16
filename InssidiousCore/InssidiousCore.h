@@ -27,7 +27,7 @@ class InssidiousCore : public QThread
 
 public:
 	InssidiousCore();
-	~InssidiousCore();
+
 
 	QList<QString>* pNetworkConnectionNames;						//Public list of network connection names to share with Startup widget
 

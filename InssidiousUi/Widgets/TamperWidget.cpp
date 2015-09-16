@@ -43,10 +43,6 @@ TamperWidget::TamperWidget(QWidget *parent)
 
 }
 
-TamperWidget::~TamperWidget()
-{
-
-}
 
 void TamperWidget::setImage(QPixmap deviceImage)
 {

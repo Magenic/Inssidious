@@ -34,10 +34,7 @@ UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 	moduleLayout->addLayout(noServerLayout);
 }
 
-UiTamperNoServer::~UiTamperNoServer()
-{
 
-}
 void UiTamperNoServer::setActive(bool active)
 {
 	if (active)

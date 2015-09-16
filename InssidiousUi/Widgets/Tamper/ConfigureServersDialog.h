@@ -18,7 +18,6 @@ class ConfigureServersDialog : public QDialog
 
 public:
 	ConfigureServersDialog(QPoint global, QList<QString> *ipList);
-	~ConfigureServersDialog();
 
 private:
 	QGridLayout* dialogGridLayout;

@@ -35,12 +35,6 @@ TamperConditions::TamperConditions(void** ppTamperConfig)
 }
 
 
-TamperConditions::~TamperConditions()
-{
-
-}
-
-
 short TamperConditions::process(PacketList* packetList)
 {
 

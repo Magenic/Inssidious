@@ -10,7 +10,7 @@ class UiTamperNoWebContent : public UiTamperModule
 
 public:
 	UiTamperNoWebContent(QWidget *parent, TamperType tamperType);
-	~UiTamperNoWebContent();
+
 
 private:
 	QGridLayout* noWebContentLayout;

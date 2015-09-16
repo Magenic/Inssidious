@@ -10,7 +10,6 @@ class UiTamperNoInternet : public UiTamperModule
 
 public:
 	UiTamperNoInternet(QWidget *parent, TamperType tamperType);
-	~UiTamperNoInternet();
 
 private:
 	QGridLayout* noInternetLayout;

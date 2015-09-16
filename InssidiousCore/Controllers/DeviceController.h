@@ -15,7 +15,6 @@ class DeviceController : public QObject
 
 public:
 	DeviceController();
-	~DeviceController();
 
 signals:
 	void divertStop(QString MACAddress);

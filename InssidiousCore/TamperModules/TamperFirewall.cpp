@@ -10,10 +10,6 @@ TamperFirewall::TamperFirewall(void** ppTamperConfig)
 	port443 = htons(443);
 }
 
-TamperFirewall::~TamperFirewall()
-{
-
-}
 
 short TamperFirewall::process(PacketList* packetList)
 {

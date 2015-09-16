@@ -40,7 +40,6 @@ class HostedNetworkController : public QObject
 
 public:
 	HostedNetworkController(QObject* parent);
-	~HostedNetworkController();
 
 	//Performs legwork of configuring and starting the wireless hosted network
 	bool initialize(QString networkName, QString networkPassword);

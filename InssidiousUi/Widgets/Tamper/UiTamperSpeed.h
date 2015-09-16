@@ -13,7 +13,7 @@ class UiTamperSpeed : public UiTamperModule
 
 public:
 	UiTamperSpeed(QWidget *parent, TamperType tamperType);
-	~UiTamperSpeed();
+
 
 private:
 	QGridLayout* speedLayout;

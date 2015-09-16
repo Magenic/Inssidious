@@ -60,10 +60,7 @@ UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 	moduleLayout->addLayout(speedLayout);
 }
 
-UiTamperSpeed::~UiTamperSpeed()
-{
 
-}
 
 void UiTamperSpeed::setActive(bool active)
 {

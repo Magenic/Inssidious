@@ -16,7 +16,7 @@ class NewDeviceWidget : public QWidget
 
 public:
 	NewDeviceWidget(QWidget *parent, QString MACAddress);
-	~NewDeviceWidget();
+
 
 	bool knownDevice = false;
 	QString knownDeviceName = "";

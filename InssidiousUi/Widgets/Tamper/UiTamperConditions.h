@@ -11,7 +11,7 @@ class UiTamperConditions : public UiTamperModule
 
 public:
 	UiTamperConditions(QWidget *parent, TamperType tamperType);
-	~UiTamperConditions();
+
 
 private:
 	QGridLayout* conditionsLayout;

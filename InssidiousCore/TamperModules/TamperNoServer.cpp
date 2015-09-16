@@ -11,8 +11,3 @@ TamperNoServer::TamperNoServer(void** ppTamperConfig)
 {
 	this->ppTamperConfig = (TamperNoServerConfig**)ppTamperConfig;
 }
-
-TamperNoServer::~TamperNoServer()
-{
-	
-}

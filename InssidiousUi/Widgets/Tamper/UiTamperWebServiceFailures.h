@@ -11,7 +11,7 @@ class UiTamperWebServiceFailures : public UiTamperModule
 
 public:
 	UiTamperWebServiceFailures(QWidget *parent, TamperType tamperType);
-	~UiTamperWebServiceFailures();
+
 
 private:
 	QGridLayout* webServiceFailuresLayout;

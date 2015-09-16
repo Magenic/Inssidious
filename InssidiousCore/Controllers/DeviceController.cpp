@@ -8,10 +8,6 @@ DeviceController::DeviceController()
 
 }
 
-DeviceController::~DeviceController()
-{
-
-}
 
 void DeviceController::onCoreAddDevice(QString MACAddress)
 {
@@ -176,6 +172,7 @@ void DeviceController::onDivertStopped(QString MACAddress)
 		if (d->MACAddress == MACAddress)
 		{
 			pendingDeletionList.removeOne(d);
+			delete d->divertController;
 			delete d;
 
 			return;

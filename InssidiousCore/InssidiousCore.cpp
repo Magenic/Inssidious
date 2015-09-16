@@ -49,10 +49,7 @@ InssidiousCore::InssidiousCore()
 
 }
 
-InssidiousCore::~InssidiousCore()
-{
 
-}
 
 
 //Calls QThread exec() to start the thread's event loop

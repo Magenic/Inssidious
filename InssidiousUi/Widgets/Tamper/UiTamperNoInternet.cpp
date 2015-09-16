@@ -27,10 +27,7 @@ UiTamperNoInternet::UiTamperNoInternet(QWidget *parent, TamperType tamperType)
 	moduleLayout->addLayout(noInternetLayout);
 }
 
-UiTamperNoInternet::~UiTamperNoInternet()
-{
 
-}
 void UiTamperNoInternet::setActive(bool active)
 {
 	if (active)

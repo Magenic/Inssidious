@@ -44,10 +44,6 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	moduleLayout->addLayout(firewallLayout);
 }
 
-UiTamperFirewall::~UiTamperFirewall()
-{
-
-}
 
 void UiTamperFirewall::setActive(bool active)
 {

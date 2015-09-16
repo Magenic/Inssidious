@@ -24,7 +24,6 @@ class UiDeviceController : public QWidget
 
 public:
 	UiDeviceController(QWidget *parent);
-	~UiDeviceController();
 
 
 signals:

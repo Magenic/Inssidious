@@ -71,10 +71,7 @@ UiTamperWebServiceFailures::UiTamperWebServiceFailures(QWidget *parent, TamperTy
 	moduleLayout->addLayout(webServiceFailuresLayout);
 }
 
-UiTamperWebServiceFailures::~UiTamperWebServiceFailures()
-{
 
-}
 void UiTamperWebServiceFailures::setActive(bool active)
 {
 	if (active)

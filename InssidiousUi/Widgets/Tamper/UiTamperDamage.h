@@ -11,7 +11,7 @@ class UiTamperDamage : public UiTamperModule
 
 public:
 	UiTamperDamage(QWidget *parent, TamperType tamperType);
-	~UiTamperDamage();
+
 
 private:
 	QGridLayout* damageLayout;

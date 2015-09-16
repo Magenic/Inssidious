@@ -58,10 +58,7 @@ UiTamperDamage::UiTamperDamage(QWidget *parent, TamperType tamperType)
 	moduleLayout->addLayout(damageLayout);
 }
 
-UiTamperDamage::~UiTamperDamage()
-{
 
-}
 void UiTamperDamage::setActive(bool active)
 {
 	if (active)

@@ -10,7 +10,7 @@ class DHCPController : public QThread
 
 public:
 	DHCPController(QObject *parent);
-	~DHCPController();
+
 
 signals: 
 	void ipAddressAssigned(QString MACAddress, QString ipAddress);

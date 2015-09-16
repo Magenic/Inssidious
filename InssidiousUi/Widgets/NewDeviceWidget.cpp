@@ -180,10 +180,7 @@ NewDeviceWidget::NewDeviceWidget(QWidget *parent, QString MACAddress)
 
 }
 
-NewDeviceWidget::~NewDeviceWidget()
-{
 
-}
 
 void NewDeviceWidget::onSetButtonClicked()
 {

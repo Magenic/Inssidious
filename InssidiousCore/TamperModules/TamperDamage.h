@@ -5,7 +5,7 @@ class TamperDamage : public TamperModule
 {
 public:
 	TamperDamage(void** ppTamperConfig);
-	~TamperDamage();
+
 	short process(PacketList* packetList) override;
 
 private:

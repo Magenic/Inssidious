@@ -8,11 +8,6 @@ TamperDamage::TamperDamage(void** ppTamperConfig)
 	this->ppDamageConfig = (TamperDamageConfig**)ppTamperConfig;
 }
 
-TamperDamage::~TamperDamage()
-{
-
-}
-
 
 short TamperDamage::process(PacketList* packetList)
 {

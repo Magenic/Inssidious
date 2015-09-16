@@ -36,10 +36,7 @@ UiTamperNoWebContent::UiTamperNoWebContent(QWidget *parent, TamperType tamperTyp
 	moduleLayout->addLayout(noWebContentLayout);
 }
 
-UiTamperNoWebContent::~UiTamperNoWebContent()
-{
 
-}
 void UiTamperNoWebContent::setActive(bool active)
 {
 	if (active)

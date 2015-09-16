@@ -80,10 +80,7 @@ UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	moduleLayout->addLayout(conditionsLayout);
 }
 
-UiTamperConditions::~UiTamperConditions()
-{
 
-}
 void UiTamperConditions::setActive(bool active)
 {
 	if (active)
