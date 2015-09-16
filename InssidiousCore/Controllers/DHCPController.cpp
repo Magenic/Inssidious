@@ -1,8 +1,9 @@
 #include "DHCPController.h"
 
-#include "C:\temp\clumsy-master\external\WinDivert-1.1.7-MSVC\include\windivert.h"
-#pragma comment(lib, "C:\\temp\\clumsy-master\\external\\WinDivert-1.1.7-MSVC\\x86\\windivert.lib")
+#include <WinDivert/include/windivert.h>
 #include <comdef.h>
+
+#pragma comment(lib, "..\\WinDivert\\x86\\WinDivert.lib")
 
 DHCPController::DHCPController(QObject *parent)
 	: QThread(parent)

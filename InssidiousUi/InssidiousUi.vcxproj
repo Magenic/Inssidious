@@ -43,6 +43,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\Builds\$(Configuration)\</OutDir>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -60,6 +61,28 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(QTDIR)\bin\Qt5Core.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5Cored.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5Gui.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5Guid.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5Widgets.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5Widgetsd.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5WinExtras.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5WinExtrasd.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\libEGL.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\libEGLd.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\libGLESv2.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\libGLESv2d.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\plugins\platforms\QWindows.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\plugins\platforms\QWindowsd.dll" "$(OutDir)" /Y
+xcopy "$(SolutionDir)\WinDivert\x86\WinDivert.dll" "$(OutDir)" /Y
+xcopy "$(SolutionDir)\WinDivert\x86\WinDivert32.sys" "$(OutDir)" /Y
+xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy Additional DLLs</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -68,6 +91,7 @@
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -76,6 +100,21 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(QTDIR)\bin\Qt5Core.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5Gui.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5Widgets.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\Qt5WinExtras.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\libEGL.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\bin\libGLESv2.dll" "$(OutDir)" /Y
+xcopy "$(QTDIR)\plugins\platforms\QWindows.dll" "$(OutDir)" /Y
+xcopy "$(SolutionDir)\WinDivert\x86\WinDivert.dll" "$(OutDir)" /Y
+xcopy "$(SolutionDir)\WinDivert\x86\WinDivert32.sys" "$(OutDir)" /Y
+xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy Additional DLLs</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Controllers\UiDeviceController.cpp" />
@@ -213,6 +252,11 @@
   <ItemGroup>
     <ProjectReference Include="..\InssidiousCore\InssidiousCore.vcxproj">
       <Project>{ba668454-5ee6-4761-a796-cba7fec2460c}</Project>
+      <Private>true</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

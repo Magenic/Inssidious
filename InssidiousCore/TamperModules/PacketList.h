@@ -3,9 +3,9 @@
 
 
 
-#include "C:\temp\clumsy-master\external\WinDivert-1.1.7-MSVC\include\windivert.h"
+#include <WinDivert/include/windivert.h>
 
-#pragma comment(lib, "C:\\temp\\clumsy-master\\external\\WinDivert-1.1.7-MSVC\\x86\\windivert.lib")
+
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "ws2_32.lib")
 
