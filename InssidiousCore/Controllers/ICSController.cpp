@@ -18,7 +18,7 @@ ICSController::ICSController(QObject *parent)
 
 	if (!isICSAllowed())
 	{
-		MessageBox(NULL, 
+		MessageBox(nullptr, 
 			L"ICS has been disabled on this computer.",
 			L"Inssidious failed to start.", MB_OK);
 		ExitProcess(1);
@@ -26,7 +26,7 @@ ICSController::ICSController(QObject *parent)
 
 	/* Prepare for COM */
 
-	::CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	::CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 
 
 	/* Get an instance of the IcsMgr and initialize it */
@@ -37,7 +37,7 @@ ICSController::ICSController(QObject *parent)
 	{
 		/* Something went wrong */
 
-		MessageBox(NULL, (const wchar_t*)QString(
+		MessageBox(nullptr, (const wchar_t*)QString(
 			("Unable to prepare Internet Connection Sharing. Error: \n   ")
 			+ QString::fromWCharArray(_com_error(result).ErrorMessage())
 			).utf16(),
@@ -71,7 +71,7 @@ ICSController::~ICSController()
 {
 	 
 	delete pICSManager;
-	pICSManager = NULL;
+	pICSManager = nullptr;
 
 	::CoUninitialize();
 	NSModDeinit();
@@ -135,13 +135,13 @@ bool ICSController::isICSAllowed()
 {
 	/* Open the Registry key that contains the value we need to check */
 	
-	HKEY  hAllowICSRegKey = NULL;		//Handle to the registry key that contains the value we need to check
+	HKEY  hAllowICSRegKey = nullptr;		//Handle to the registry key that contains the value we need to check
 	DWORD result = ERROR_SUCCESS;		//Result DWORD to check for API call errors
 
 	result = RegOpenKeyEx(
 		HKEY_LOCAL_MACHINE,
 		L"SOFTWARE\\Policies\\Microsoft\\Windows\\Network Connections",
-		NULL,
+		0,
 		KEY_READ,
 		&hAllowICSRegKey
 		);
@@ -160,10 +160,10 @@ bool ICSController::isICSAllowed()
 
 	result = RegGetValue(
 		hAllowICSRegKey,
-		NULL,
+		nullptr,
 		L"NC_ShowSharedAccessUI",
 		RRF_RT_DWORD,
-		NULL,
+		nullptr,
 		&dwAllowIcs,
 		&ValLen
 		);

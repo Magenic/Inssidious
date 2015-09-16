@@ -15,7 +15,7 @@ DHCPController::DHCPController(QObject *parent)
 
 		/* Something went wrong */
 
-		MessageBox(NULL, (const wchar_t*)QString(
+		MessageBox(nullptr, (const wchar_t*)QString(
 			("Unable to load WinDivert. Error: \n   ")
 			+ QString::fromWCharArray(_com_error(result).ErrorMessage())
 			).utf16(),

@@ -48,7 +48,7 @@ AssertFunc
     if (_x)                 \
     {                       \
         (_x)->Release();    \
-        (_x) = NULL;        \
+        (_x) = nullptr;        \
     }                       \
 }                           \
 
@@ -57,7 +57,7 @@ AssertFunc
     if (_x)                 \
     {                       \
         SysFreeString(_x);  \
-        (_x) = NULL;        \
+        (_x) = nullptr;        \
     }                       \
 }                           \
 
@@ -66,7 +66,7 @@ AssertFunc
     if (_x)                             \
     {                                   \
         NSModFreeNetConProperties(_x);  \
-        (_x) = NULL;                    \
+        (_x) = nullptr;                    \
     }                                   \
 }                                       \
 
@@ -75,7 +75,7 @@ AssertFunc
     if (_x)                             \
     {                                   \
         delete [] (_x);                 \
-        (_x) = NULL;                    \
+        (_x) = nullptr;                    \
     }                                   \
 }                                       \
 
@@ -87,7 +87,7 @@ AssertFunc
     if (_x)                             \
     {                                   \
         CoTaskMemFree(_x);              \
-        (_x) = NULL;                    \
+        (_x) = nullptr;                    \
     }                                   \
 }                                       \
 

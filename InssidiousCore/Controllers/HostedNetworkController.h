@@ -24,7 +24,7 @@
 #pragma comment(lib, "iphlpapi.lib")		//Networking Helper API library
 
 
-typedef enum HostedNetworkReason
+enum HostedNetworkReason
 {
 	HOSTED_NETWORK_STARTING,
 	HOSTED_NETWORK_STARTING_FAILED,

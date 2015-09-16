@@ -132,7 +132,7 @@ public:
         while ( 0 != GetCount() )
         {
             cTemp = RemoveTail();
-            if ( NULL != cTemp )
+            if ( nullptr != cTemp )
             {
                 cTemp->Release();
             }
@@ -153,12 +153,12 @@ public:
             }
         }
 
-        return NULL;
+        return nullptr;
     }
     
     BOOL IsInArray(T pCheck)
     {
-        return GetElement(pCheck) != NULL;
+        return GetElement(pCheck) != nullptr;
     }
 };
 

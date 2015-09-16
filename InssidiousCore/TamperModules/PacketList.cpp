@@ -4,7 +4,7 @@
 
 PacketList::PacketList() 
 {
-	if (head->next == NULL && tail->prev == NULL) {
+	if (head->next == nullptr && tail->prev == nullptr) {
 		// first time initializing
 		head->next = tail;
 		tail->prev = head;
@@ -23,7 +23,7 @@ Packet* PacketList::createNode(char* buf, UINT len, WINDIVERT_ADDRESS *addr) {
 	memcpy(newNode->packet, buf, len);
 	newNode->packetLen = len;
 	memcpy(&(newNode->addr), addr, sizeof(WINDIVERT_ADDRESS));
-	newNode->next = newNode->prev = NULL;
+	newNode->next = newNode->prev = nullptr;
 	return newNode;
 }
 

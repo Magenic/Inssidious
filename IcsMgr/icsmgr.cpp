@@ -22,8 +22,8 @@ CIcsConnectionInfo::CIcsConnectionInfo(
 
 CIcsManager::CIcsManager( )
 {
-    m_pNSMgr                 =   NULL;
-    m_pList                  =   NULL;
+    m_pNSMgr                 =   nullptr;
+    m_pList                  =   nullptr;
     m_lNumConns              =   0;
     m_bInstalled             =   false;
     m_lPublicICSIntfIndex    =   -1;
@@ -53,10 +53,10 @@ CIcsManager::InitIcsManager
 )
 {
     HRESULT                                 hr                  =   S_OK;
-    IUnknown*                               pUnkEnum            =   NULL;
-    IEnumNetSharingEveryConnection*         pNSEConn            =   NULL;
-    INetSharingEveryConnectionCollection*   pConnectionsList    =   NULL;
-    INetConnection*                         pNetConnection      =   NULL;
+    IUnknown*                               pUnkEnum            =   nullptr;
+    IEnumNetSharingEveryConnection*         pNSEConn            =   nullptr;
+    INetSharingEveryConnectionCollection*   pConnectionsList    =   nullptr;
+    INetConnection*                         pNetConnection      =   nullptr;
     LONG                                    lIndex              =   0;
     VARIANT_BOOL                            bSharingEnabled     =   VARIANT_FALSE;
     VARIANT                                 varItem;
@@ -74,7 +74,7 @@ CIcsManager::InitIcsManager
     CoCreateInstance
     (
         __uuidof(NetSharingManager),
-        NULL,
+        nullptr,
         CLSCTX_ALL,
         __uuidof(INetSharingManager),
         (void**) &m_pNSMgr
@@ -395,11 +395,11 @@ CIcsManager::GetIcsConnections(
 
     for (long i = 0; i < m_lNumConns; i++)
     {
-        CIcsConnectionInfo * pConnInfo = NULL;
+        CIcsConnectionInfo * pConnInfo = nullptr;
 
         pConnInfo = new(std::nothrow) CIcsConnectionInfo(m_pList[i]);
 
-        if (NULL == pConnInfo)
+        if (nullptr == pConnInfo)
         {
             break;
         }

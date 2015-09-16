@@ -12,9 +12,9 @@
 
 CIcsConnection::CIcsConnection( )
 {
-    m_pIcsMgr           =   NULL;
-    m_pNetConnection    =   NULL;
-    m_pNSConfig         =   NULL;
+    m_pIcsMgr           =   nullptr;
+    m_pNetConnection    =   nullptr;
+    m_pNSConfig         =   nullptr;
     m_lIndex            =   0;
     m_bSharingEnabled   =   false;
     m_bPublic           =   false;
@@ -49,7 +49,7 @@ CIcsConnection::InitIcsConnection
 )
 {
     HRESULT             hr          =   S_OK;
-    NETCON_PROPERTIES*  pNCProps    =   NULL;
+    NETCON_PROPERTIES*  pNCProps    =   nullptr;
 
     if (m_pIcsMgr)
     {

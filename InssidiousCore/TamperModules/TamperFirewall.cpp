@@ -29,8 +29,8 @@ short TamperFirewall::process(PacketList* packetList)
 	{
 
 		WINDIVERT_IPHDR *iphdr;
-		WINDIVERT_TCPHDR *tcphdr = NULL;
-		WINDIVERT_UDPHDR *udphdr = NULL;
+		WINDIVERT_TCPHDR *tcphdr = nullptr;
+		WINDIVERT_UDPHDR *udphdr = nullptr;
 		WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen, &iphdr, 0, 0, 0, &tcphdr, &udphdr, 0, 0);
 
 		if (tcphdr)

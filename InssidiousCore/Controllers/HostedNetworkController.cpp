@@ -29,14 +29,14 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 	/* Create variables to receive the result of Wlan API calls */
 
 	HRESULT result;													//HRESULT to store the return value 
-	PWLAN_HOSTED_NETWORK_REASON pHostedNetworkFailReason = NULL;	//Pointer to the specific call failure reason
+	PWLAN_HOSTED_NETWORK_REASON pHostedNetworkFailReason = nullptr;	//Pointer to the specific call failure reason
 	DWORD negotiatedVersion = 0;									//DWORD for the Wlan API to store the negotiated API version in
 	HANDLE wlanHandle;												//Handle to call WlanQueryInterface to check interface capabilities
 
 	/* Open a handle to the Wlan API */
 	result = WlanOpenHandle(
 		WLAN_API_VERSION_2_0,						//Request API version 2.0
-		NULL,										//Reserved
+		nullptr,										//Reserved
 		&negotiatedVersion,							//Address of the DWORD to store the negotiated version
 		&wlanHandle									//Address of the HANDLE to store the Wlan handle
 		);
@@ -53,7 +53,7 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 	result = WlanHostedNetworkForceStop(
 		wlanHandle,									//Wlan handle
 		pHostedNetworkFailReason,					//Pointer to where the API can store a failure reason in
-		NULL										//Reserved
+		nullptr										//Reserved
 		);
 	if (result != NO_ERROR)
 	{
@@ -68,7 +68,7 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 	result = WlanHostedNetworkInitSettings(
 		wlanHandle,									//Wlan handle
 		pHostedNetworkFailReason,					//Pointer to where the API can store a failure reason in
-		NULL										//Reserved
+		nullptr										//Reserved
 		);
 	if (result != NO_ERROR)
 	{
@@ -84,7 +84,7 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 	for (int i = 0; i < networkName.count(); i++)		//Fill the ucSSID array
 	{
 		hostedNetworkSSID.ucSSID[i] = networkName.at(i).unicode();
-		hostedNetworkSSID.ucSSID[i + 1] = '\0';			//Null the next character to ensure we have a null at the end of the loop
+		hostedNetworkSSID.ucSSID[i + 1] = '\0';			//nullptr the next character to ensure we have a nullptr at the end of the loop
 	}
 	
 
@@ -99,7 +99,7 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 		sizeof(hostedNetworkConnectionSettings),		//Size of the data at the pointer to hosted network connection settings
 		(PVOID)&hostedNetworkConnectionSettings,		//Pointer to the hosted network connection settings we are setting
 		pHostedNetworkFailReason,						//Pointer to where the API can store a failure reason in
-		NULL											//Reserved
+		nullptr											//Reserved
 		);
 	if (result != NO_ERROR)
 	{
@@ -110,12 +110,12 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 
 	/* Prepare the network password in the appropriate UCHAR format */
 
-	DWORD dwKeyLength = networkPassword.count() + 1;	//Length of the network password, needed for the API call, +1 for the null
+	DWORD dwKeyLength = networkPassword.count() + 1;	//Length of the network password, needed for the API call, +1 for the nullptr
 	PUCHAR pucKeyData = new UCHAR[dwKeyLength];			//Initialize our UCHAR variable
 	for (int i = 0; i < networkPassword.count(); i++)	//Fill the array
 	{
 		pucKeyData[i] = networkPassword.at(i).unicode();
-		pucKeyData[i + 1] = '\0';						//Null the next character to ensure we have a null at the end of the loop
+		pucKeyData[i + 1] = '\0';						//nullptr the next character to ensure we have a nullptr at the end of the loop
 	}
 
 
@@ -123,12 +123,12 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 
 	result = WlanHostedNetworkSetSecondaryKey(
 		wlanHandle,										//Wlan handle
-		dwKeyLength,									//Length of the network password array including the null character
+		dwKeyLength,									//Length of the network password array including the nullptr character
 		pucKeyData,										//Pointer to a UCHAR array with the network password
 		TRUE,											//Is a pass phrase
 		TRUE,											//Do not persist this key for future hosted network sessions
 		pHostedNetworkFailReason,						//Pointer to where the API can store a failure reason in
-		NULL											//Reserved
+		nullptr											//Reserved
 		);
 	if (result != NO_ERROR)
 	{
@@ -143,7 +143,7 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 	result = WlanHostedNetworkStartUsing(
 		wlanHandle,										//Wlan handle
 		pHostedNetworkFailReason,						//Pointer to where the API can store a failure reason in
-		NULL											//Reserved
+		nullptr											//Reserved
 		);
 	if (result != NO_ERROR)
 	{
@@ -160,8 +160,8 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 		TRUE,										//Don't send duplicate notifications
 		&WlanNotificationCallback,					//WLAN_NOTIFICATION_CALLBACK function to call with notifactions
 		this,										//Context to pass along with the notification
-		NULL,										//Reserved
-		NULL										//Previously registered notification sources
+		nullptr,										//Reserved
+		nullptr										//Previously registered notification sources
 		);
 	if (result != NO_ERROR)
 	{
@@ -172,11 +172,11 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 
 	/* Check the hosted network status */
 
-	PWLAN_HOSTED_NETWORK_STATUS pHostedNetworkStatus = NULL;
+	PWLAN_HOSTED_NETWORK_STATUS pHostedNetworkStatus = nullptr;
 	result = WlanHostedNetworkQueryStatus(
 		wlanHandle,										//Wlan handle
 		&pHostedNetworkStatus,							//Pointer to a pointer for HOSTED_NETWORK_STATUS
-		NULL											//Reserved
+		nullptr											//Reserved
 		);
 	if (result != NO_ERROR)
 	{
@@ -189,10 +189,10 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 
 	hostedNetworkGUID = pHostedNetworkStatus->IPDeviceID;
 
-	if (pHostedNetworkStatus != NULL)
+	if (pHostedNetworkStatus != nullptr)
 	{
 		WlanFreeMemory(pHostedNetworkStatus);
-		pHostedNetworkStatus = NULL;
+		pHostedNetworkStatus = nullptr;
 	}
 
 	emit hostedNetworkMessage("Hosted Network started successfully.", HOSTED_NETWORK_STARTED);
@@ -208,7 +208,7 @@ QString get_mac_id(DOT11_MAC_ADDRESS &_in)
 
 	QString addr;
 
-	if (_in == NULL)
+	if (_in == nullptr)
 	{
 		return false;
 	}
@@ -232,7 +232,7 @@ void __stdcall HostedNetworkController::WlanNotificationCallback(PWLAN_NOTIFICAT
 
 	/* If the notification data is empty or from a source other than Hosted Networks, we don't want to touch it */
 
-	if (pNotifData == NULL || pNotifData->pData == NULL || pContext == NULL || WLAN_NOTIFICATION_SOURCE_HNWK != pNotifData->NotificationSource)
+	if (pNotifData == nullptr || pNotifData->pData == nullptr || pContext == nullptr || WLAN_NOTIFICATION_SOURCE_HNWK != pNotifData->NotificationSource)
 	{
 		return;
 	}
@@ -284,7 +284,7 @@ void HostedNetworkController::isHostedNetworkCapable()
 	DWORD negotiatedVersion = 0;					//DWORD for the Wlan API to store the negotiated API version in
 	result = WlanOpenHandle(
 		WLAN_API_VERSION_2_0,						//Request API version 2.0
-		NULL,										//Reserved
+		nullptr,										//Reserved
 		&negotiatedVersion,							//Address of the DWORD to store the negotiated version
 		&wlanHandle									//Address of the HANDLE to store the Wlan handle
 		);
@@ -293,7 +293,7 @@ void HostedNetworkController::isHostedNetworkCapable()
 	{
 		/* Something went wrong */
 
-		MessageBox(NULL, (const wchar_t*)QString(
+		MessageBox(nullptr, (const wchar_t*)QString(
 			("Unable to open a handle to the Wlan API. Error: \n   ")
 			+ QString::fromWCharArray(_com_error(result).ErrorMessage())
 			).utf16(),
@@ -304,7 +304,7 @@ void HostedNetworkController::isHostedNetworkCapable()
 
 	/* Get a list of all network adapters on the system */
 
-	PIP_ADAPTER_ADDRESSES pAddresses = NULL;		//Pointer to store information from GetAdaptersAddresses in
+	PIP_ADAPTER_ADDRESSES pAddresses = nullptr;		//Pointer to store information from GetAdaptersAddresses in
 	ULONG ulOutBufLen = 0;							//Buffer for PIP_ADAPTER_ADDRESSES information
 	int remainingRetries = 20;						//Number of times to try increasing buffer to accomodate data
 	while (remainingRetries > 0)						//Loop to repeatedly try to populate PIP_ADAPTER_ADDRESSES buffer
@@ -316,11 +316,11 @@ void HostedNetworkController::isHostedNetworkCapable()
 
 		pAddresses = (IP_ADAPTER_ADDRESSES *)HeapAlloc(GetProcessHeap(), 0, (ulOutBufLen));
 
-		if (pAddresses == NULL)
+		if (pAddresses == nullptr)
 		{
 			/* Something went wrong */
 
-			MessageBox(NULL, L"Unable to allocate memory needed to call GetAdapterInfo.\
+			MessageBox(nullptr, L"Unable to allocate memory needed to call GetAdapterInfo.\
 							  				\nPlease restart Inssidious and try again.",
 											L"Inssidious failed to start.", MB_OK);
 			ExitProcess(1);
@@ -329,22 +329,22 @@ void HostedNetworkController::isHostedNetworkCapable()
 
 		/* Try to get network adapter information */
 
-		result = GetAdaptersAddresses(AF_INET, 0, NULL, pAddresses, &ulOutBufLen);
+		result = GetAdaptersAddresses(AF_INET, 0, nullptr, pAddresses, &ulOutBufLen);
 
 		if (result == ERROR_BUFFER_OVERFLOW)
 		{
 			/* We need more memory. ulOutBufLen now has the size needed */
-			/* Free what we allocated, null pAddresses, and continue. */
+			/* Free what we allocated, nullptr pAddresses, and continue. */
 
 			HeapFree(GetProcessHeap(), 0, (pAddresses));
-			pAddresses = NULL;
+			pAddresses = nullptr;
 			continue;
 		}
 		else if (result == ERROR_NO_DATA)
 		{
 			/* The system has no network adapters. */
 
-			MessageBox(NULL, L"No network adapters found. Please enable or connect network\
+			MessageBox(nullptr, L"No network adapters found. Please enable or connect network\
 							  				\nadapters to the system and restart Inssidious.",
 											L"Inssidious failed to start.", MB_OK);
 			ExitProcess(1);
@@ -353,7 +353,7 @@ void HostedNetworkController::isHostedNetworkCapable()
 		{
 			/* Something went wrong */
 
-			MessageBox(NULL, (const wchar_t*)QString(
+			MessageBox(nullptr, (const wchar_t*)QString(
 				("Unable to get network adapter information. Error: \n   ")
 				+ QString::fromWCharArray(_com_error(result).ErrorMessage())
 				).utf16(),
@@ -380,16 +380,16 @@ void HostedNetworkController::isHostedNetworkCapable()
 			/* Check whether the adapter supports running a wireless hosted network */
 			/* Support for this is required by all wireless cards certified for Windows 7 or newer */
 
-			DWORD responseSize = NULL;									//DWORD for the Wlan API to store the size of its reply in
-			PBOOL pHostedNetworkCapable = NULL;							//Pointer to a bool for hosted network capabilities
+			DWORD responseSize = 0;										//DWORD for the Wlan API to store the size of its reply in
+			PBOOL pHostedNetworkCapable = nullptr;						//Pointer to a bool for hosted network capabilities
 			result = WlanQueryInterface(
 				wlanHandle,												//Handle to the WLAN API opened earlier
 				&(GUID(QUuid(pCurrAddresses->AdapterName))),			//Char Array to Qt Uuid to GUID of the adapter ID
 				wlan_intf_opcode_hosted_network_capable,				//Asking specifically on hosted network support
-				NULL,													//Reserved
+				nullptr,												//Reserved
 				&responseSize,											//Size of the response received
 				(PVOID *)&pHostedNetworkCapable,						//Bool for whether adapter supports hosted network
-				NULL													//Optional return data type value
+				nullptr													//Optional return data type value
 				);
 
 			if (result == S_OK && *pHostedNetworkCapable)
@@ -403,10 +403,10 @@ void HostedNetworkController::isHostedNetworkCapable()
 
 			/* Free the memory the Wlan API allocated for us */
 
-			if (pHostedNetworkCapable != NULL)
+			if (pHostedNetworkCapable != nullptr)
 			{
 				WlanFreeMemory(pHostedNetworkCapable);
-				pHostedNetworkCapable = NULL;
+				pHostedNetworkCapable = nullptr;
 			}
 		}
 
@@ -426,7 +426,7 @@ void HostedNetworkController::isHostedNetworkCapable()
 
 	if (!atLeastOneHostedNetworkSupport)
 	{
-		MessageBox(NULL, L"No wireless network adapters with Hosted Network Support were\
+		MessageBox(nullptr, L"No wireless network adapters with Hosted Network Support were\
 						  			\n found. Please insert or enable another wireless adapter and restart Inssidious.",
 									L"Inssidious failed to start.", MB_OK);
 		ExitProcess(1);

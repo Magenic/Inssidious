@@ -36,8 +36,8 @@ DivertController::DivertController(QString MAC, void* tamperModulesConfig[NUM_TA
 
 	packetList = new PacketList();
 	divertActive = 0;
-	mutex = CreateMutex(NULL, FALSE, NULL);
-	if (mutex == NULL)
+	mutex = CreateMutex(nullptr, FALSE, nullptr);
+	if (mutex == nullptr)
 	{
 		HRESULT result = GetLastError();
 
@@ -405,8 +405,8 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 
 	InterlockedIncrement16(&this->divertActive);
 
-	readLoop1 = CreateThread(NULL, 1, (LPTHREAD_START_ROUTINE)DivertReadLoop1, this, 0, NULL);
-	if (readLoop1 == NULL)
+	readLoop1 = CreateThread(nullptr, 1, (LPTHREAD_START_ROUTINE)DivertReadLoop1, this, 0, nullptr);
+	if (readLoop1 == nullptr)
 	{
 		HRESULT result = GetLastError();
 		InterlockedDecrement16(&this->divertActive);
@@ -415,8 +415,8 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 		return;
 	}
 
-	readLoop2 = CreateThread(NULL, 1, (LPTHREAD_START_ROUTINE)DivertReadLoop2, this, 0, NULL);
-	if (readLoop2 == NULL)
+	readLoop2 = CreateThread(nullptr, 1, (LPTHREAD_START_ROUTINE)DivertReadLoop2, this, 0, nullptr);
+	if (readLoop2 == nullptr)
 	{
 		HRESULT result = GetLastError();
 		InterlockedDecrement16(&this->divertActive);
@@ -426,8 +426,8 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 	}
 	
 
-	clockThread = CreateThread(NULL, 1, (LPTHREAD_START_ROUTINE)DivertClockLoop, this, 0, NULL);
-	if (clockThread == NULL)
+	clockThread = CreateThread(nullptr, 1, (LPTHREAD_START_ROUTINE)DivertClockLoop, this, 0, nullptr);
+	if (clockThread == nullptr)
 	{
 		HRESULT result = GetLastError();
 		InterlockedDecrement16(&this->divertActive);

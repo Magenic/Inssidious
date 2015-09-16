@@ -80,7 +80,7 @@ NSModInit
     ZeroMemory( &g_NsMod, sizeof(g_NsMod) );
 
     g_NsMod.hNetshModule = LoadLibraryW( L"netshell.dll" );
-    if (NULL == g_NsMod.hNetshModule)
+    if (nullptr == g_NsMod.hNetshModule)
     {
         dwError = GetLastError( );
         hr = __HRESULT_FROM_WIN32(dwError);
@@ -95,7 +95,7 @@ NSModInit
         g_NsMod.hNetshModule,
         "NcFreeNetconProperties"
     );
-    if (NULL == g_NsMod.lpfnFreeNetConProperties)
+    if (nullptr == g_NsMod.lpfnFreeNetConProperties)
     {
         dwError = GetLastError( );
         hr = __HRESULT_FROM_WIN32(dwError);
@@ -123,11 +123,11 @@ NSModDeinit
 {
     if (g_NsMod.bNSModInited)
     {
-        g_NsMod.lpfnFreeNetConProperties = NULL;
+        g_NsMod.lpfnFreeNetConProperties = nullptr;
 
         FreeLibrary(g_NsMod.hNetshModule);
 
-        g_NsMod.hNetshModule = NULL;
+        g_NsMod.hNetshModule = nullptr;
 
         g_NsMod.bNSModInited = FALSE;
     }
@@ -160,7 +160,7 @@ CopyString
     ULONG       i           =   0;
 
     ASSERT(ppszDst);
-    ASSERT(NULL == (*ppszDst));
+    ASSERT(nullptr == (*ppszDst));
 
     if (!pszSrc)
     {
@@ -170,7 +170,7 @@ CopyString
     ulLen = (ULONG) (1 + wcslen( pszSrc ));
 
     (*ppszDst) = new WCHAR [ ulLen + 1 ];
-    if (NULL == (*ppszDst))
+    if (nullptr == (*ppszDst))
     {
         hr = E_OUTOFMEMORY;
         BAIL_ON_HRESULT_ERROR(hr);
@@ -199,8 +199,8 @@ NSModDuplicateNetconProperties
 
     CopyMemory( pDst, pSrc, sizeof(NETCON_PROPERTIES) );
 
-    pDst->pszwName          =   NULL;
-    pDst->pszwDeviceName    =   NULL;
+    pDst->pszwName          =   nullptr;
+    pDst->pszwDeviceName    =   nullptr;
 
     hr = CopyString( pSrc->pszwName, &(pDst->pszwName) );
     BAIL_ON_HRESULT_ERROR(hr);
