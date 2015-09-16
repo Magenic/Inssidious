@@ -5,7 +5,7 @@
 
 TamperNoWebContent::TamperNoWebContent(void** ppTamperConfig)
 {
-	this->ppNoWebContentConfig = (TamperNoWebContentConfig**)ppTamperConfig;
+	this->ppNoWebContentConfig = reinterpret_cast<TamperNoWebContentConfig**>(ppTamperConfig);
 }
 
 

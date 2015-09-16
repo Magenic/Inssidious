@@ -5,7 +5,7 @@
 
 TamperNoInternet::TamperNoInternet(void** ppTamperConfig)
 {
-	this->ppNoInternetConfig = (TamperNoInternetConfig**)ppTamperConfig;
+	this->ppNoInternetConfig = reinterpret_cast<TamperNoInternetConfig**>(ppTamperConfig);
 }
 
 

@@ -15,10 +15,10 @@ DHCPController::DHCPController(QObject *parent)
 
 		/* Something went wrong */
 
-		MessageBox(nullptr, (const wchar_t*)QString(
-			("Unable to load WinDivert. Error: \n   ")
-			+ QString::fromWCharArray(_com_error(result).ErrorMessage())
-			).utf16(),
+		MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(
+			           ("Unable to load WinDivert. Error: \n   ")
+			           + QString::fromWCharArray(_com_error(result).ErrorMessage())
+		           ).utf16()),
 			L"Inssidious failed to start.", MB_OK);
 		ExitProcess(1);
 
@@ -54,7 +54,7 @@ void DHCPController::run()
 
 		/* Grab the DHCP data from the packet */
 
-		if(!WinDivertHelperParsePacket(packet, packet_len, 0, 0, 0, 0, 0, 0, (void**)&data, &data_len))
+		if(!WinDivertHelperParsePacket(packet, packet_len, 0, 0, 0, 0, 0, 0, reinterpret_cast<void**>(&data), &data_len))
 		{			
 			/* Something went wrong; malformed packet maybe? 
 			   We should be able to continue without concern */
@@ -65,7 +65,7 @@ void DHCPController::run()
 
 		/* Confirm we have a DHCP packet */
 
-		if (dhcpMagicCookie != QByteArray((const char*)&data[236], 4).toHex())
+		if (dhcpMagicCookie != QByteArray(reinterpret_cast<const char*>(&data[236]), 4).toHex())
 		{
 			/* Not sure what kind of packet this is but we don't want it */
 
@@ -98,7 +98,7 @@ void DHCPController::run()
 			/* This is a DHCP ACK message, grab the IP and MAC Addresses */
 
 			QString yourIPAddress = QString::number(data[16]) + "." + QString::number(data[17]) + "." + QString::number(data[18]) + "." + QString::number(data[19]);
-			QString clientHardwareAddress = QByteArray((const char*)&data[28], 6).toHex();
+			QString clientHardwareAddress = QByteArray(reinterpret_cast<const char*>(&data[28]), 6).toHex();
 			
 			for (int i = 2; i < clientHardwareAddress.size(); i += 3)
 			{

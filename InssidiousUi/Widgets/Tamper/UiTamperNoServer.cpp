@@ -5,7 +5,7 @@
 UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
-	pTamperConfig = (void*)new TamperNoServerConfig{ false };
+	pTamperConfig = static_cast<void*>(new TamperNoServerConfig{ false });
 
 	configServersButton = new QPushButton();
 	configServersButton->setStyleSheet(buttonStyleSheet);
@@ -51,7 +51,7 @@ void UiTamperNoServer::setActive(bool active)
 		
 		/* Set the config value to true and the block button to checked */
 
-		((TamperNoServerConfig*)pTamperConfig)->blockServers = true;
+		static_cast<TamperNoServerConfig*>(pTamperConfig)->blockServers = true;
 
 
 		/* Notify Core */
@@ -73,7 +73,7 @@ void UiTamperNoServer::setActive(bool active)
 
 		/* Set the config value to false */
 
-		((TamperNoServerConfig*)pTamperConfig)->blockServers = false;
+		static_cast<TamperNoServerConfig*>(pTamperConfig)->blockServers = false;
 
 
 		/* Notify Core */

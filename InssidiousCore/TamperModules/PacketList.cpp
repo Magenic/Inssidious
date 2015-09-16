@@ -18,7 +18,7 @@ PacketList::PacketList()
 
 
 Packet* PacketList::createNode(char* buf, UINT len, WINDIVERT_ADDRESS *addr) {
-	Packet *newNode = (Packet*)malloc(sizeof(Packet));
+	Packet *newNode = static_cast<Packet*>(malloc(sizeof(Packet)));
 	newNode->packet = (char*)malloc(len);
 	memcpy(newNode->packet, buf, len);
 	newNode->packetLen = len;

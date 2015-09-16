@@ -89,12 +89,11 @@ NSModInit
     g_NsMod.bNSModInited    =   TRUE;
 
     g_NsMod.lpfnFreeNetConProperties = 
-    (FREE_NETCON_PROPERTIES_HANDLER)
-    GetProcAddress
-    (
-        g_NsMod.hNetshModule,
-        "NcFreeNetconProperties"
-    );
+    reinterpret_cast<FREE_NETCON_PROPERTIES_HANDLER>(GetProcAddress
+	    (
+		    g_NsMod.hNetshModule,
+		    "NcFreeNetconProperties"
+	    ));
     if (nullptr == g_NsMod.lpfnFreeNetConProperties)
     {
         dwError = GetLastError( );
@@ -167,7 +166,7 @@ CopyString
         BAIL( );
     }
 
-    ulLen = (ULONG) (1 + wcslen( pszSrc ));
+    ulLen = static_cast<ULONG>(1 + wcslen( pszSrc ));
 
     (*ppszDst) = new WCHAR [ ulLen + 1 ];
     if (nullptr == (*ppszDst))

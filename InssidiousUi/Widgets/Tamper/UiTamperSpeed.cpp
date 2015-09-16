@@ -3,7 +3,7 @@
 UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
-	pTamperConfig = (void*)new TamperSpeedConfig{SPEED_MAX};
+	pTamperConfig = static_cast<void*>(new TamperSpeedConfig{SPEED_MAX});
 
 	buttonGroup = new QButtonGroup();
 	buttonLeft = new QPushButton();
@@ -118,7 +118,7 @@ void UiTamperSpeed::setActive(bool active)
 
 		/* Set the speed back to MAX */
 
-		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_MAX;
+		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_MAX;
 
 
 		/* Notify core to stop */
@@ -134,23 +134,23 @@ void UiTamperSpeed::onButtonClicked(int button)
 	{
 	case -1:
 		/* No Button Checked */
-		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_MAX;
+		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_MAX;
 		break;
 	case SPEED_EDGE:
-		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_EDGE;
+		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_EDGE;
 		break;
 	case SPEED_3G:
-		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_3G;
+		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_3G;
 		break;
 	case SPEED_4G:
-		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_4G;
+		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_4G;
 		break;
 	case SPEED_LTE:
-		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_LTE;
+		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_LTE;
 		break;
 	case SPEED_MAX:
 	default:
-		((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_MAX;
+		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_MAX;
 		break;
 	}
 }

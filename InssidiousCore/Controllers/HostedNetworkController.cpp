@@ -97,7 +97,7 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 		wlanHandle,										//Wlan handle
 		wlan_hosted_network_opcode_connection_settings, //Type of data being passed to the API
 		sizeof(hostedNetworkConnectionSettings),		//Size of the data at the pointer to hosted network connection settings
-		(PVOID)&hostedNetworkConnectionSettings,		//Pointer to the hosted network connection settings we are setting
+		static_cast<PVOID>(&hostedNetworkConnectionSettings),		//Pointer to the hosted network connection settings we are setting
 		pHostedNetworkFailReason,						//Pointer to where the API can store a failure reason in
 		nullptr											//Reserved
 		);
@@ -215,8 +215,8 @@ QString get_mac_id(DOT11_MAC_ADDRESS &_in)
 	addr.clear();
 	for (uint k = 0; k < 6; k++)
 	{
-		char lowbit = digits[(int)_in[k] & 0xf];
-		char highbit = digits[(int)((_in[k] & 0xf0) >> 4)];
+		char lowbit = digits[static_cast<int>(_in[k]) & 0xf];
+		char highbit = digits[static_cast<int>((_in[k] & 0xf0) >> 4)];
 		addr.push_back(highbit);
 		addr.push_back(lowbit);
 		if (k != 5)
@@ -239,7 +239,7 @@ void __stdcall HostedNetworkController::WlanNotificationCallback(PWLAN_NOTIFICAT
 
 
 	/* pContext is a pointer to our HostedNetwork class instance we can use to emit signals */ 
-	HostedNetworkController* hostedNetwork = (HostedNetworkController*)pContext;
+	HostedNetworkController* hostedNetwork = static_cast<HostedNetworkController*>(pContext);
 
 
 	/* React to Network State or Network Peer changes */
@@ -248,7 +248,7 @@ void __stdcall HostedNetworkController::WlanNotificationCallback(PWLAN_NOTIFICAT
 	{
 		/* A change in state to idle or unavailable is a critical failure */
 		
-		PWLAN_HOSTED_NETWORK_STATE_CHANGE pStateChange = (PWLAN_HOSTED_NETWORK_STATE_CHANGE)pNotifData->pData;
+		PWLAN_HOSTED_NETWORK_STATE_CHANGE pStateChange = static_cast<PWLAN_HOSTED_NETWORK_STATE_CHANGE>(pNotifData->pData);
 		if (pStateChange->NewState == wlan_hosted_network_idle || pStateChange->NewState == wlan_hosted_network_unavailable)
 		{
 			emit hostedNetwork->hostedNetworkMessage("The wireless hosted network has stopped unexpectedly.", HOSTED_NETWORK_STOPPED);
@@ -258,7 +258,7 @@ void __stdcall HostedNetworkController::WlanNotificationCallback(PWLAN_NOTIFICAT
 	{
 		/* A device has joined or left the network */
 
-		PWLAN_HOSTED_NETWORK_DATA_PEER_STATE_CHANGE pPeerStateChange = (PWLAN_HOSTED_NETWORK_DATA_PEER_STATE_CHANGE)pNotifData->pData;
+		PWLAN_HOSTED_NETWORK_DATA_PEER_STATE_CHANGE pPeerStateChange = static_cast<PWLAN_HOSTED_NETWORK_DATA_PEER_STATE_CHANGE>(pNotifData->pData);
 		if (wlan_hosted_network_peer_state_authenticated == pPeerStateChange->NewState.PeerAuthState)
 		{
 			emit hostedNetwork->hostedNetworkMessage(get_mac_id(pPeerStateChange->NewState.PeerMacAddress), DEVICE_CONNECTED);
@@ -293,10 +293,10 @@ void HostedNetworkController::isHostedNetworkCapable()
 	{
 		/* Something went wrong */
 
-		MessageBox(nullptr, (const wchar_t*)QString(
-			("Unable to open a handle to the Wlan API. Error: \n   ")
-			+ QString::fromWCharArray(_com_error(result).ErrorMessage())
-			).utf16(),
+		MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(
+			           ("Unable to open a handle to the Wlan API. Error: \n   ")
+			           + QString::fromWCharArray(_com_error(result).ErrorMessage())
+		           ).utf16()),
 			L"Inssidious failed to start.", MB_OK);
 		ExitProcess(1);
 	}
@@ -314,7 +314,7 @@ void HostedNetworkController::isHostedNetworkCapable()
 
 		/* Allocate memory */
 
-		pAddresses = (IP_ADAPTER_ADDRESSES *)HeapAlloc(GetProcessHeap(), 0, (ulOutBufLen));
+		pAddresses = static_cast<IP_ADAPTER_ADDRESSES *>(HeapAlloc(GetProcessHeap(), 0, (ulOutBufLen)));
 
 		if (pAddresses == nullptr)
 		{
@@ -353,10 +353,10 @@ void HostedNetworkController::isHostedNetworkCapable()
 		{
 			/* Something went wrong */
 
-			MessageBox(nullptr, (const wchar_t*)QString(
-				("Unable to get network adapter information. Error: \n   ")
-				+ QString::fromWCharArray(_com_error(result).ErrorMessage())
-				).utf16(),
+			MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(
+				           ("Unable to get network adapter information. Error: \n   ")
+				           + QString::fromWCharArray(_com_error(result).ErrorMessage())
+			           ).utf16()),
 				L"Inssidious failed to start.", MB_OK);
 			ExitProcess(1);
 		}
@@ -388,7 +388,7 @@ void HostedNetworkController::isHostedNetworkCapable()
 				wlan_intf_opcode_hosted_network_capable,				//Asking specifically on hosted network support
 				nullptr,												//Reserved
 				&responseSize,											//Size of the response received
-				(PVOID *)&pHostedNetworkCapable,						//Bool for whether adapter supports hosted network
+				reinterpret_cast<PVOID *>(&pHostedNetworkCapable),		//Bool for whether adapter supports hosted network
 				nullptr													//Optional return data type value
 				);
 

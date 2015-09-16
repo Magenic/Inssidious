@@ -4,7 +4,7 @@
 
 TamperConditions::TamperConditions(void** ppTamperConfig)
 {
-	this->ppConditionsConfig = (TamperConditionsConfig**)ppTamperConfig;
+	this->ppConditionsConfig = reinterpret_cast<TamperConditionsConfig**>(ppTamperConfig);
 	
 	
 	/* Start a linked list to buffer packets in before re-injecting at a later time */
@@ -74,7 +74,7 @@ short TamperConditions::process(PacketList* packetList)
 
 			/* Parse the packet for any data */
 
-			if (WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen, 0, 0, 0, 0, 0, 0, (PVOID*)&data, &dataLen)
+			if (WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen, 0, 0, 0, 0, 0, 0, reinterpret_cast<PVOID*>(&data), &dataLen)
 				&& data != nullptr && dataLen != 0)
 			{
 				/* Tamper all of a short packet */

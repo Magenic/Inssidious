@@ -4,7 +4,7 @@
 UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
-	pTamperConfig = (void*)new TamperConditionsConfig{0, 0, 0, 0};
+	pTamperConfig = static_cast<void*>(new TamperConditionsConfig{0, 0, 0, 0});
 
 
 	lossSpinBox = new QSpinBox();
@@ -145,20 +145,20 @@ void UiTamperConditions::onRandomizeConditionsClicked()
 
 void UiTamperConditions::onLossSpinBoxChange(int value)
 {
-	((TamperConditionsConfig*)pTamperConfig)->chanceLoss = value;
+	static_cast<TamperConditionsConfig*>(pTamperConfig)->chanceLoss = value;
 }
 
 void UiTamperConditions::onJunkSpinBoxChange(int value)
 {
-	((TamperConditionsConfig*)pTamperConfig)->chanceCorrupt = value;
+	static_cast<TamperConditionsConfig*>(pTamperConfig)->chanceCorrupt = value;
 }
 
 void UiTamperConditions::onDelaySpinBoxChange(int value)
 {
-	((TamperConditionsConfig*)pTamperConfig)->chanceDelay = value;
+	static_cast<TamperConditionsConfig*>(pTamperConfig)->chanceDelay = value;
 }
 
 void UiTamperConditions::onResetSpinBoxChange(int value)
 {
-	((TamperConditionsConfig*)pTamperConfig)->chanceReset = value;
+	static_cast<TamperConditionsConfig*>(pTamperConfig)->chanceReset = value;
 }

@@ -149,7 +149,7 @@ NewDeviceWidget::NewDeviceWidget(QWidget *parent, QString MACAddress)
 				DWORD valueNameCount = MAX_PATH;
 				DWORD valueDataCount = MAX_PATH;
 
-				HRESULT result = RegEnumValue(inssidiousDevicePairsHKCU, i, valueName, &valueNameCount, 0, 0, (LPBYTE)valueData, &valueDataCount);
+				HRESULT result = RegEnumValue(inssidiousDevicePairsHKCU, i, valueName, &valueNameCount, 0, 0, reinterpret_cast<LPBYTE>(valueData), &valueDataCount);
 
 				if (result == ERROR_SUCCESS || result == ERROR_MORE_DATA)
 				{
@@ -205,7 +205,7 @@ void NewDeviceWidget::onSetButtonClicked()
 				QString(MAC + "-Name").toStdWString().c_str(),
 				0,
 				REG_SZ,
-				(LPBYTE)deviceNameInput->text().utf16(),
+				LPBYTE(deviceNameInput->text().utf16()),
 				deviceNameInput->text().size() * sizeof(wchar_t)
 			);
 
@@ -215,7 +215,7 @@ void NewDeviceWidget::onSetButtonClicked()
 				QString(MAC + "-Type").toStdWString().c_str(),
 				0,
 				REG_SZ,
-				(LPBYTE)deviceTypeComboBox->currentText().utf16(),
+				LPBYTE(deviceTypeComboBox->currentText().utf16()),
 				deviceTypeComboBox->currentText().size() * sizeof(wchar_t)
 				);
 		}

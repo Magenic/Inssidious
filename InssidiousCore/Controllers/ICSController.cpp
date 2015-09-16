@@ -37,10 +37,10 @@ ICSController::ICSController(QObject *parent)
 	{
 		/* Something went wrong */
 
-		MessageBox(nullptr, (const wchar_t*)QString(
-			("Unable to prepare Internet Connection Sharing. Error: \n   ")
-			+ QString::fromWCharArray(_com_error(result).ErrorMessage())
-			).utf16(),
+		MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(
+			           ("Unable to prepare Internet Connection Sharing. Error: \n   ")
+			           + QString::fromWCharArray(_com_error(result).ErrorMessage())
+		           ).utf16()),
 			L"Inssidious failed to start.", MB_OK);
 		ExitProcess(1);
 	}
@@ -58,9 +58,9 @@ ICSController::ICSController(QObject *parent)
 		if (connection->m_Supported)
 		{
 			networkConnectionNames.append(
-				QString::fromWCharArray((LPCWSTR)connection->m_Name));
+				QString::fromWCharArray(static_cast<LPCWSTR>(connection->m_Name)));
 			icsNetworkConnectionList.append({
-				QString::fromWCharArray((LPCWSTR)connection->m_Name),
+				QString::fromWCharArray(static_cast<LPCWSTR>(connection->m_Name)),
 				connection->m_Guid});
 		}
 	}

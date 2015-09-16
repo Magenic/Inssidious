@@ -5,7 +5,7 @@ UiTamperDamage::UiTamperDamage(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
 
-	pTamperConfig = (void*)new TamperDamageConfig{ false };
+	pTamperConfig = static_cast<void*>(new TamperDamageConfig{ false });
 
 
 	damageSpinBox = new QSpinBox();
@@ -114,10 +114,10 @@ void UiTamperDamage::onRandomizeConditionsClicked()
 
 void UiTamperDamage::onDamageSpinBoxChange(int value)
 {
-	((TamperDamageConfig*)pTamperConfig)->chanceDamage = value;
+	static_cast<TamperDamageConfig*>(pTamperConfig)->chanceDamage = value;
 }
 
 void UiTamperDamage::onTCPCloseSpinBoxChange(int value)
 {
-	((TamperDamageConfig*)pTamperConfig)->chanceClose = value;
+	static_cast<TamperDamageConfig*>(pTamperConfig)->chanceClose = value;
 }

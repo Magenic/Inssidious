@@ -5,7 +5,7 @@
 
 TamperDamage::TamperDamage(void** ppTamperConfig)
 {
-	this->ppDamageConfig = (TamperDamageConfig**)ppTamperConfig;
+	this->ppDamageConfig = reinterpret_cast<TamperDamageConfig**>(ppTamperConfig);
 }
 
 

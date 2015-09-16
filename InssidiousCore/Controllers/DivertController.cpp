@@ -55,7 +55,7 @@ void DivertController::run()
 
 DWORD DivertController::DivertReadLoop1(void* pDivertControllerInstance)
 {
-	DivertController* This = (DivertController*)pDivertControllerInstance;
+	DivertController* This = static_cast<DivertController*>(pDivertControllerInstance);
 
 	return This->divertReadLoop(This->divertHandleLayerNetwork);
 
@@ -63,7 +63,7 @@ DWORD DivertController::DivertReadLoop1(void* pDivertControllerInstance)
 
 DWORD DivertController::DivertReadLoop2(void* pDivertControllerInstance)
 {
-	DivertController* This = (DivertController*)pDivertControllerInstance;
+	DivertController* This = static_cast<DivertController*>(pDivertControllerInstance);
 
 	return This->divertReadLoop(This->divertHandleLayerNetworkForward);
 
@@ -71,7 +71,7 @@ DWORD DivertController::DivertReadLoop2(void* pDivertControllerInstance)
 
 DWORD DivertController::DivertClockLoop(void* pDivertControllerInstance)
 {
-	DivertController* This = (DivertController*)pDivertControllerInstance;
+	DivertController* This = static_cast<DivertController*>(pDivertControllerInstance);
 	return This->divertClockLoop();
 }
 
@@ -405,7 +405,7 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 
 	InterlockedIncrement16(&this->divertActive);
 
-	readLoop1 = CreateThread(nullptr, 1, (LPTHREAD_START_ROUTINE)DivertReadLoop1, this, 0, nullptr);
+	readLoop1 = CreateThread(nullptr, 1, reinterpret_cast<LPTHREAD_START_ROUTINE>(DivertReadLoop1), this, 0, nullptr);
 	if (readLoop1 == nullptr)
 	{
 		HRESULT result = GetLastError();
@@ -415,7 +415,7 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 		return;
 	}
 
-	readLoop2 = CreateThread(nullptr, 1, (LPTHREAD_START_ROUTINE)DivertReadLoop2, this, 0, nullptr);
+	readLoop2 = CreateThread(nullptr, 1, reinterpret_cast<LPTHREAD_START_ROUTINE>(DivertReadLoop2), this, 0, nullptr);
 	if (readLoop2 == nullptr)
 	{
 		HRESULT result = GetLastError();
@@ -426,7 +426,7 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 	}
 	
 
-	clockThread = CreateThread(nullptr, 1, (LPTHREAD_START_ROUTINE)DivertClockLoop, this, 0, nullptr);
+	clockThread = CreateThread(nullptr, 1, reinterpret_cast<LPTHREAD_START_ROUTINE>(DivertClockLoop), this, 0, nullptr);
 	if (clockThread == nullptr)
 	{
 		HRESULT result = GetLastError();

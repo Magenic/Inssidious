@@ -4,7 +4,7 @@ UiTamperNoInternet::UiTamperNoInternet(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
 	
-	pTamperConfig = (void*)new TamperNoInternetConfig{ false, false };
+	pTamperConfig = static_cast<void*>(new TamperNoInternetConfig{ false, false });
 
 
 	noInternetLayout = new QGridLayout();
@@ -40,7 +40,7 @@ void UiTamperNoInternet::setActive(bool active)
 
 		/* Set the config value to true */
 
-		((TamperNoInternetConfig*)pTamperConfig)->localNetwork = true;
+		static_cast<TamperNoInternetConfig*>(pTamperConfig)->localNetwork = true;
 
 
 		/* Notify Core */
@@ -57,7 +57,7 @@ void UiTamperNoInternet::setActive(bool active)
 
 		/* Set the config value to false */
 
-		((TamperNoInternetConfig*)pTamperConfig)->localNetwork = false;
+		static_cast<TamperNoInternetConfig*>(pTamperConfig)->localNetwork = false;
 
 
 		/* Notify Core */

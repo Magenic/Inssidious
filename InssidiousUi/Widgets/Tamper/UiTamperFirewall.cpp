@@ -4,7 +4,7 @@
 UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
-	pTamperConfig = (void*)new TamperFirewallConfig{ true, true, false };
+	pTamperConfig = static_cast<void*>(new TamperFirewallConfig{ true, true, false });
 
 	buttonGroup = new QButtonGroup();
 	buttonLeft = new QPushButton();

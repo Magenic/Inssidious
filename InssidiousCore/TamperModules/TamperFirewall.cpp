@@ -4,7 +4,7 @@
 
 TamperFirewall::TamperFirewall(void** ppTamperConfig)
 {
-	this->ppFirewallConfig = (TamperFirewallConfig**)ppTamperConfig;
+	this->ppFirewallConfig = reinterpret_cast<TamperFirewallConfig**>(ppTamperConfig);
 
 	port80 = htons(80);
 	port443 = htons(443);

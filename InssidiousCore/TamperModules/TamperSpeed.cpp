@@ -4,7 +4,7 @@
 TamperSpeed::TamperSpeed(void** ppTamperConfig)
 {
 
-	this->ppTamperSpeedConfig = (TamperSpeedConfig**)ppTamperConfig;
+	this->ppTamperSpeedConfig = reinterpret_cast<TamperSpeedConfig**>(ppTamperConfig);
 
 
 	/* Start a linked list to buffer packets in before re-injecting at a later time */

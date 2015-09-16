@@ -77,7 +77,7 @@ CIcsManager::InitIcsManager
         nullptr,
         CLSCTX_ALL,
         __uuidof(INetSharingManager),
-        (void**) &m_pNSMgr
+        reinterpret_cast<void**>(&m_pNSMgr)
     );
     BAIL_ON_HRESULT_ERROR(hr);
     ASSERT(m_pNSMgr);
@@ -115,7 +115,7 @@ CIcsManager::InitIcsManager
     pUnkEnum->QueryInterface
     (
         __uuidof(IEnumNetSharingEveryConnection),
-        (void**) &pNSEConn
+        reinterpret_cast<void**>(&pNSEConn)
     );
     BAIL_ON_HRESULT_ERROR(hr);
     ASSERT(pNSEConn);
@@ -198,7 +198,7 @@ CIcsManager::InitIcsManager
         V_UNKNOWN(&varItem)->QueryInterface
         (
             __uuidof(INetConnection),
-            (void**) &pNetConnection
+            reinterpret_cast<void**>(&pNetConnection)
         );
         BAIL_ON_HRESULT_ERROR(hr);
         ASSERT(pNetConnection);

@@ -9,5 +9,5 @@ short TamperNoServer::process(PacketList* packetList)
 
 TamperNoServer::TamperNoServer(void** ppTamperConfig)
 {
-	this->ppTamperConfig = (TamperNoServerConfig**)ppTamperConfig;
+	this->ppTamperConfig = reinterpret_cast<TamperNoServerConfig**>(ppTamperConfig);
 }

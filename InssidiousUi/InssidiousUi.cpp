@@ -165,7 +165,7 @@ void InssidiousUi::onCoreStopped()
 {
 	/* TODO: Draw a nicer error screen and handle error message text */
 
-	MessageBoxW((HWND)this->winId(), L"Inssidious stopped unexpectedly. Error: TODO", L"An error occured.", MB_OK);
+	MessageBoxW(reinterpret_cast<HWND>(this->winId()), L"Inssidious stopped unexpectedly. Error: TODO", L"An error occured.", MB_OK);
 	ExitProcess(1);
 }
 
@@ -197,7 +197,7 @@ bool InssidiousUi::nativeEvent(const QByteArray& eventType, void* message, long*
 	MSG *msg = static_cast<MSG *>(message);
 
 	//Check if DWM handled the message; if it did, it wasn't in our client area and we can ignore it 
-	if (DwmDefWindowProc(msg->hwnd, msg->message, msg->wParam, msg->lParam, (LRESULT*)result))
+	if (DwmDefWindowProc(msg->hwnd, msg->message, msg->wParam, msg->lParam, static_cast<LRESULT*>(result)))
 		return true;
 
 	//Get the window rectangle 

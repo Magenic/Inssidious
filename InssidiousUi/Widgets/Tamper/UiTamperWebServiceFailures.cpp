@@ -3,7 +3,7 @@
 UiTamperWebServiceFailures::UiTamperWebServiceFailures(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
-	pTamperConfig = (void*)new TamperWebServiceFailuresConfig{ false };
+	pTamperConfig = static_cast<void*>(new TamperWebServiceFailuresConfig{ false });
 
 	configWebServicesButton = new QPushButton();
 	configWebServicesButton->setStyleSheet(buttonStyleSheet);
@@ -94,7 +94,7 @@ void UiTamperWebServiceFailures::setActive(bool active)
 
 		/* Set the config value to true and the block button to checked */
 
-		((TamperWebServiceFailuresConfig*)pTamperConfig)->blockWebService = true;
+		static_cast<TamperWebServiceFailuresConfig*>(pTamperConfig)->blockWebService = true;
 		//if (buttonGroup->checkedId() == -1)
 		//{
 		//	buttonRight->setChecked(true);
@@ -138,7 +138,7 @@ void UiTamperWebServiceFailures::setActive(bool active)
 		
 		/* Set the config value to false */
 
-		((TamperWebServiceFailuresConfig*)pTamperConfig)->blockWebService = false;
+		static_cast<TamperWebServiceFailuresConfig*>(pTamperConfig)->blockWebService = false;
 		//((TamperSpeedConfig*)pTamperConfig)->speedType = SPEED_MAX;
 
 

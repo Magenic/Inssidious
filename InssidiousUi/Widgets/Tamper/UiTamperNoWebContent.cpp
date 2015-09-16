@@ -4,7 +4,7 @@ UiTamperNoWebContent::UiTamperNoWebContent(QWidget *parent, TamperType tamperTyp
 	: UiTamperModule(parent, tamperType)
 {
 
-	pTamperConfig = (void*)new TamperNoWebContentConfig{ false };
+	pTamperConfig = static_cast<void*>(new TamperNoWebContentConfig{ false });
 
 	noWebContentButton = new QPushButton();
 	noWebContentButton->setCheckable(true);
@@ -55,7 +55,7 @@ void UiTamperNoWebContent::setActive(bool active)
 
 		/* Set the config value to true */
 
-		((TamperNoWebContentConfig*)pTamperConfig)->something = true;
+		static_cast<TamperNoWebContentConfig*>(pTamperConfig)->something = true;
 
 
 		/* Notify Core */
@@ -78,7 +78,7 @@ void UiTamperNoWebContent::setActive(bool active)
 
 		/* Set the config value to false */
 
-		((TamperNoWebContentConfig*)pTamperConfig)->something = false;
+		static_cast<TamperNoWebContentConfig*>(pTamperConfig)->something = false;
 
 
 		/* Notify Core */

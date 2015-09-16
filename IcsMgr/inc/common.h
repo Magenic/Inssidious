@@ -89,14 +89,14 @@ public:
     {
         if ( 0 != m_RefCount )
         {
-            return InterlockedIncrement((volatile LONG *)&m_RefCount);
+            return InterlockedIncrement(reinterpret_cast<volatile LONG *>(&m_RefCount));
         }
         return 0;
     }
 
     ULONG Release()
     {
-        const LONG l = InterlockedDecrement((volatile LONG *)&m_RefCount);
+        const LONG l = InterlockedDecrement(reinterpret_cast<volatile LONG *>(&m_RefCount));
         if (0 == l)
         {
             delete this;
