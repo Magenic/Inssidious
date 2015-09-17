@@ -99,6 +99,10 @@ void UiDeviceController::onUiAddDevice(QString MACAddress)
 		
 		deviceList.last()->named = true;
 	}
+	else /* Set the tab name to New Device */
+	{
+		deviceList.last()->tab->setText("New Device");
+	}
 
 
 	/* If this is the first tab we've added, select it to default it to active */

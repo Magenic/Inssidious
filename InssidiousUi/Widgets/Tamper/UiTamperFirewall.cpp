@@ -19,8 +19,8 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	buttonRight->setStyleSheet(buttonRightStyleSheet88);
 
 	buttonLeft->setText("Block Email");
-	buttonMiddle1->setText("Block HTTP");
-	buttonMiddle2->setText("Block UDP");
+	buttonMiddle1->setText("Block UDP");
+	buttonMiddle2->setText("Block VPN");
 	buttonRight->setText("Custom Rules");
 
 	buttonLeft->setFixedSize(88, 30);
@@ -139,10 +139,10 @@ void UiTamperFirewall::onButtonClicked(int index)
 	case 0 /* Block Email */:
 		//((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_EDGE;
 		break;
-	case 1 /* Block HTTP */:
+	case 1 /* Block UDP */:
 		//((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_3G;
 		break;
-	case 2 /* Block UDP */:
+	case 2 /* Block VPN */:
 		//((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_4G;
 		break;
 	case 3 /* Custom Rules */:

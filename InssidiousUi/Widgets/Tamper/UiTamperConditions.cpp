@@ -5,8 +5,9 @@
 UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
+	srand(time(nullptr));
 	pTamperConfig = static_cast<void*>(new TamperConditionsConfig{0, 0, 0, 0});
-
+	
 
 	lossSpinBox = new QSpinBox();
 	lossSpinBox->setRange(0, 100);
@@ -137,7 +138,6 @@ void UiTamperConditions::setActive(bool active)
 
 void UiTamperConditions::onRandomizeConditionsClicked()
 {
-	srand(time(nullptr));
 	lossSpinBox->setValue(rand() % 30);
 	junkSpinBox->setValue(rand() % 30);
 	delaySpinBox->setValue(rand() % 100);

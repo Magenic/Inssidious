@@ -4,7 +4,7 @@
 UiTamperDamage::UiTamperDamage(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
-
+	srand(time(nullptr));
 	pTamperConfig = static_cast<void*>(new TamperDamageConfig{ false });
 
 
@@ -107,7 +107,6 @@ void UiTamperDamage::setActive(bool active)
 
 void UiTamperDamage::onRandomizeConditionsClicked()
 {
-	srand(time(nullptr));
 	damageSpinBox->setValue(rand() % 30);
 	tcpCloseSpinBox->setValue(rand() % 15);
 }

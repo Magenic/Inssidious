@@ -50,8 +50,8 @@ NewDeviceWidget::NewDeviceWidget(QWidget *parent, QString MACAddress)
 {
 
 	MAC = MACAddress;
-	backgroundPalette.setBrush(QPalette::Background, QColor(255, 255, 255));
-	descriptionTextPalette.setColor(QPalette::WindowText, QColor(230, 230, 230));
+	backgroundPalette.setBrush(QPalette::Background, QColor(234, 237, 242));
+	descriptionTextPalette.setColor(QPalette::WindowText, QColor(51, 51, 51));
 	errorTextPalette.setColor(QPalette::WindowText,	QColor(255, 150, 0, 255));
 
 
