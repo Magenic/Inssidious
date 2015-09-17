@@ -17,6 +17,8 @@ private:
 
 	QButtonGroup* buttonGroup;
 	QPushButton* buttonLeft;
+	QPushButton* buttonMiddle1;
+	QPushButton* buttonMiddle2;
 	QPushButton* buttonRight;
 
 

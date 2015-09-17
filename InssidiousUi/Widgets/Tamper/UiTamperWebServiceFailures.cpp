@@ -16,20 +16,20 @@ UiTamperWebServiceFailures::UiTamperWebServiceFailures(QWidget *parent, TamperTy
 	buttonMiddle2 = new QPushButton();
 	buttonRight = new QPushButton();
 
-	buttonLeft->setStyleSheet(buttonLeftStyleSheet90);
-	buttonMiddle1->setStyleSheet(buttonMiddleStyleSheet90);
-	buttonMiddle2->setStyleSheet(buttonMiddleStyleSheet90);
-	buttonRight->setStyleSheet(buttonRightStyleSheet90);
+	buttonLeft->setStyleSheet(buttonLeftStyleSheet88);
+	buttonMiddle1->setStyleSheet(buttonMiddleStyleSheet88);
+	buttonMiddle2->setStyleSheet(buttonMiddleStyleSheet88);
+	buttonRight->setStyleSheet(buttonRightStyleSheet88);
 
 	buttonLeft->setText("HTTP 200");
 	buttonMiddle1->setText("HTTP 300");
 	buttonMiddle2->setText("HTTP 400");
 	buttonRight->setText("HTTP 500");
 
-	buttonLeft->setFixedSize(90, 30);
-	buttonMiddle1->setFixedSize(90, 30);
-	buttonMiddle2->setFixedSize(90, 30);
-	buttonRight->setFixedSize(90, 30);
+	buttonLeft->setFixedSize(88, 30);
+	buttonMiddle1->setFixedSize(88, 30);
+	buttonMiddle2->setFixedSize(88, 30);
+	buttonRight->setFixedSize(88, 30);
 
 	buttonLeft->setFont(moduleTextFont);
 	buttonMiddle1->setFont(moduleTextFont);

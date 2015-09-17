@@ -2,9 +2,6 @@
 #define TAMPERTYPES_H
 
 
-#include <QString>
-
-
 enum TamperType
 {
 	/* scenarios */
@@ -23,30 +20,6 @@ enum TamperType
 	NUM_TAMPER_TYPES
 };
 
-
-static QString TamperTypeName[NUM_TAMPER_TYPES]
-{
-	QString("Network Speed"),
-	QString("Network Conditions"),
-	QString("Network Firewall"),
-	QString("Network Damage"),
-	QString("No Internet"),
-	QString("Block Servers"),
-	QString("Block Web Content (Coming Soon)"),
-	QString("Web Service Failures (Coming Soon)")
-};
-
-static QString TamperTypeDescription[NUM_TAMPER_TYPES]
-{
-	QString("Cap the speed of the network connection."),
-	QString("Introduce intermittent problems with the network connection."),
-	QString("Replicate restrictive network connections."),
-	QString("Intentionally damage traffic to generate interesting errors."),
-	QString("Test functionality without internet access."),
-	QString("Test functionality when servers are unreachable."),
-	QString("Test functionality when web requests time out."),
-	QString("Reply to web requests with specific errors.")
-};
 
 enum TamperSpeedType
 {

@@ -13,7 +13,7 @@ UiTamperDamage::UiTamperDamage(QWidget *parent, TamperType tamperType)
 	damageSpinBox->setPrefix(damageText);
 	damageSpinBox->setSuffix("%");
 	damageSpinBox->setSingleStep(5);
-	damageSpinBox->setFixedSize(100, 22);
+	damageSpinBox->setFixedSize(108, 22);
 	damageSpinBox->setStyleSheet(spinBoxStyleSheet);
 	damageSpinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
@@ -22,7 +22,7 @@ UiTamperDamage::UiTamperDamage(QWidget *parent, TamperType tamperType)
 	tcpCloseSpinBox->setPrefix(tcpCloseText);
 	tcpCloseSpinBox->setSuffix("%");
 	tcpCloseSpinBox->setSingleStep(5);
-	tcpCloseSpinBox->setFixedSize(100, 22);
+	tcpCloseSpinBox->setFixedSize(108, 22);
 	tcpCloseSpinBox->setStyleSheet(spinBoxStyleSheet);
 	tcpCloseSpinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
 

@@ -1,5 +1,6 @@
 #include "UiTamperConditions.h"
 #include <ctime>
+#include <QtWidgets/qapplication.h>
 
 UiTamperConditions::UiTamperConditions(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
@@ -141,6 +142,7 @@ void UiTamperConditions::onRandomizeConditionsClicked()
 	junkSpinBox->setValue(rand() % 30);
 	delaySpinBox->setValue(rand() % 100);
 	tcpResetSpinBox->setValue(rand() % 20);
+
 }
 
 void UiTamperConditions::onLossSpinBoxChange(int value)

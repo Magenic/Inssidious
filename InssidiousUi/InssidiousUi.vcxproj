@@ -48,7 +48,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;..;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtWidgets;.\Controllers;.\Widgets;.\Widgets\Tamper;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;..;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtWidgets;.\Controllers;.\Widgets;.\Widgets\Tamper;.\Widgets\Tamper\Dialog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -62,25 +62,10 @@
       <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(QTDIR)\bin\Qt5Core.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5Cored.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5Gui.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5Guid.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5Network.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5Networkd.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5Widgets.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5Widgetsd.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5WinExtras.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5WinExtrasd.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\libEGL.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\libEGLd.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\libGLESv2.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\libGLESv2d.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\plugins\platforms\QWindows.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\plugins\platforms\QWindowsd.dll" "$(OutDir)" /Y /Q
-xcopy "$(SolutionDir)\WinDivert\x86\WinDivert.dll" "$(OutDir)" /Y /Q
-xcopy "$(SolutionDir)\WinDivert\x86\WinDivert32.sys" "$(OutDir)" /Y /Q
-xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Command>
+      <Command>robocopy "$(QTDIR)\bin" "$(OutDir)\" Qt5Core.dll Qt5Cored.dll Qt5Gui.dll Qt5Guid.dll Qt5Network.dll Qt5Networkd.dll Qt5Widgets.dll Qt5Widgetsd.dll Qt5WinExtras.dll Qt5WinExtrasd.dll libEGL.dll libEGLd.dll libGLESv2.dll libGLESv2d.dll /NJH /NJS
+robocopy "$(QTDIR)\plugins\platforms" "$(OutDir)\" QWindows.dll QWindowsd.dll /NJH /NJS
+robocopy "$(SolutionDir)\WinDivert\x86" "$(OutDir)\" WinDivert.dll WinDivert32.sys /NJH /NJS
+robocopy "$(SolutionDir)\WinDivert\amd64" "$(OutDir)\" WinDivert64.sys /NJH /NJS</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy Additional DLLs</Message>
@@ -89,7 +74,7 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;..;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtWidgets;.\Controllers;.\Widgets;.\Widgets\Tamper;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;..;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtWidgets;.\Controllers;.\Widgets;.\Widgets\Tamper;.\Widgets\Tamper\Dialog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -121,6 +106,9 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Controllers\UiDeviceController.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigureFirewallDialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ConfigureServersDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -154,6 +142,9 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperWebServiceFailures.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ConfigureFirewallDialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_ConfigureServersDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -189,7 +180,8 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Widgets\NewDeviceWidget.cpp" />
-    <ClCompile Include="Widgets\Tamper\ConfigureServersDialog.cpp" />
+    <ClCompile Include="Widgets\Tamper\Dialog\ConfigureFirewallDialog.cpp" />
+    <ClCompile Include="Widgets\Tamper\Dialog\ConfigureServersDialog.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperFirewall.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperConditions.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperModule.cpp" />
@@ -450,6 +442,16 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <CustomBuild Include="Widgets\Tamper\Dialog\ConfigureFirewallDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ConfigureFirewallDialog.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I.\.." "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I.\Controllers" "-I.\Widgets" "-I.\Widgets\Tamper"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing ConfigureFirewallDialog.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I.\.." "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I.\Controllers" "-I.\Widgets" "-I.\Widgets\Tamper"</Command>
+    </CustomBuild>
     <CustomBuild Include="Widgets\Tamper\UiTamperNoWebContent.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing UiTamperNoWebContent.h...</Message>
@@ -470,7 +472,7 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I.\.." "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets" "-I.\Controllers" "-I.\Widgets" "-I.\Widgets\Tamper"</Command>
     </CustomBuild>
-    <CustomBuild Include="Widgets\Tamper\ConfigureServersDialog.h">
+    <CustomBuild Include="Widgets\Tamper\Dialog\ConfigureServersDialog.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ConfigureServersDialog.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>

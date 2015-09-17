@@ -1,4 +1,5 @@
 #include "UiTamperFirewall.h"
+#include "Dialog/ConfigureFirewallDialog.h"
 
 
 UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
@@ -8,38 +9,53 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 
 	buttonGroup = new QButtonGroup();
 	buttonLeft = new QPushButton();
+	buttonMiddle1 = new QPushButton();
+	buttonMiddle2 = new QPushButton();
 	buttonRight = new QPushButton();
 
-	buttonLeft->setStyleSheet(buttonLeftStyleSheet90);
-	buttonRight->setStyleSheet(buttonRightStyleSheet90);
+	buttonLeft->setStyleSheet(buttonLeftStyleSheet88);
+	buttonMiddle1->setStyleSheet(buttonMiddleStyleSheet88);
+	buttonMiddle2->setStyleSheet(buttonMiddleStyleSheet88);
+	buttonRight->setStyleSheet(buttonRightStyleSheet88);
 
-	buttonLeft->setText("HTTP(S) Only");
+	buttonLeft->setText("Block Email");
+	buttonMiddle1->setText("Block HTTP");
+	buttonMiddle2->setText("Block UDP");
 	buttonRight->setText("Custom Rules");
 
-	buttonLeft->setFixedSize(90, 30);
-	buttonRight->setFixedSize(90, 30);
-
-	buttonLeft->setFont(moduleTextFont);
-	buttonRight->setFont(moduleTextFont);
+	buttonLeft->setFixedSize(88, 30);
+	buttonMiddle1->setFixedSize(88, 30);
+	buttonMiddle2->setFixedSize(88, 30);
+	buttonRight->setFixedSize(88, 30);
 
 	buttonLeft->setCheckable(true);
+	buttonMiddle1->setCheckable(true);
+	buttonMiddle2->setCheckable(true);
 	buttonRight->setCheckable(true);
+
+	buttonLeft->setDisabled(true);
+	buttonMiddle1->setDisabled(true);
+	buttonMiddle2->setDisabled(true);
+	buttonRight->setDisabled(true);
+
+	buttonGroup->setExclusive(true);
+	buttonGroup->addButton(buttonLeft, 0);
+	buttonGroup->addButton(buttonMiddle1, 1);
+	buttonGroup->addButton(buttonMiddle2, 2);
+	buttonGroup->addButton(buttonRight, 3);
+
+
 
 	firewallLayout = new QGridLayout();
 	firewallLayout->setSpacing(0);
 	firewallLayout->setMargin(0);
-	firewallLayout->addWidget(buttonLeft, 0, 0, Qt::AlignRight);
-	firewallLayout->addWidget(buttonRight, 0, 1, Qt::AlignLeft);
-
-	buttonGroup->setExclusive(true);
-	buttonGroup->addButton(buttonLeft, 0);
-	buttonGroup->addButton(buttonRight, 1);
-
-	buttonLeft->setDisabled(true);
-	buttonRight->setDisabled(true);
+	firewallLayout->setAlignment(Qt::AlignHCenter);
+	firewallLayout->addWidget(buttonLeft, 0, 0);
+	firewallLayout->addWidget(buttonMiddle1, 0, 1);
+	firewallLayout->addWidget(buttonMiddle2, 0, 2);
+	firewallLayout->addWidget(buttonRight, 0, 3);
 
 	connect(buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &UiTamperFirewall::onButtonClicked);
-
 
 	moduleLayout->addLayout(firewallLayout);
 }
@@ -57,16 +73,18 @@ void UiTamperFirewall::setActive(bool active)
 		/* Enable the buttons */
 
 		buttonLeft->setEnabled(true);
+		buttonMiddle1->setEnabled(true);
+		buttonMiddle2->setEnabled(true);
 		buttonRight->setEnabled(true);
 
 
-		/* Set the speed to SPEED_LTE & check the button */
+		/* Set Block Email to Checked */
 
-		//if (buttonGroup->checkedId() == -1)
-		//{
-		//	buttonRight->setChecked(true);
-		//	onButtonClicked(SPEED_LTE);
-		//}
+		if (buttonGroup->checkedId() == -1)
+		{
+			buttonLeft->setChecked(true);
+			onButtonClicked(0);
+		}
 
 
 		/* Notify Core */
@@ -85,17 +103,21 @@ void UiTamperFirewall::setActive(bool active)
 		buttonGroup->setExclusive(false);
 
 		buttonLeft->setChecked(false);
+		buttonMiddle1->setChecked(false);
+		buttonMiddle2->setChecked(false);
 		buttonRight->setChecked(false);
 
 		buttonLeft->setDisabled(true);
+		buttonMiddle1->setDisabled(true);
+		buttonMiddle2->setDisabled(true);
 		buttonRight->setDisabled(true);
 
 		buttonGroup->setExclusive(true);
 
 
-		/* Set the speed back to MAX */
+		/* Clear the button settings */
 
-		//((TamperFirewallConfig*)pTamperConfig)->speedType = SPEED_MAX;
+		onButtonClicked(-1);
 
 
 		/* Notify core to stop */
@@ -107,13 +129,35 @@ void UiTamperFirewall::setActive(bool active)
 
 void UiTamperFirewall::onButtonClicked(int index)
 {
-	//if (filterButton->isChecked())
-	//{
-	//	((TamperFirewallConfig*)pTamperConfig)->contentBlocked = true;
-	//}
-	//else
-	//{
-	//	((TamperFirewallConfig*)pTamperConfig)->contentBlocked = false;
-	//}
+	switch (buttonGroup->checkedId())
+	{
+	case -1:
+		/* No Button Checked */
+		//TODO
+		//((TamperFirewallConfig*)pTamperConfig)-> = SPEED_MAX;
+		break;
+	case 0 /* Block Email */:
+		//((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_EDGE;
+		break;
+	case 1 /* Block HTTP */:
+		//((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_3G;
+		break;
+	case 2 /* Block UDP */:
+		//((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_4G;
+		break;
+	case 3 /* Custom Rules */:
+	{
+		QList<QString> stringList;
+		ConfigureFirewallDialog* dialog = new ConfigureFirewallDialog(this->parentWidget(), &stringList);
+		dialog->exec();
+		delete dialog;
+		//((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_LTE;
+		break;
+	}
+	default:
+		//	((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_MAX;
+		break;
+	}
+
 }
 

@@ -1,6 +1,6 @@
 #include "UiTamperNoServer.h"
 
-#include "ConfigureServersDialog.h"
+#include "Dialog\ConfigureServersDialog.h"
 
 UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)

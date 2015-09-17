@@ -89,9 +89,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_NewDeviceWidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\Tamper\ConfigureServersDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ConfigureServersDialog.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -124,6 +121,18 @@
     </ClCompile>
     <ClCompile Include="Widgets\Tamper\UiTamperNoWebContent.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\Tamper\Dialog\ConfigureServersDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\Tamper\Dialog\ConfigureFirewallDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigureFirewallDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ConfigureFirewallDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -160,9 +169,6 @@
     <CustomBuild Include="GeneratedFiles\Debug\StartWidget.moc">
       <Filter>Generated Files\Debug</Filter>
     </CustomBuild>
-    <CustomBuild Include="Widgets\Tamper\ConfigureServersDialog.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="Widgets\Tamper\UiTamperDamage.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -170,6 +176,12 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="Widgets\Tamper\UiTamperNoWebContent.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\Tamper\Dialog\ConfigureServersDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Widgets\Tamper\Dialog\ConfigureFirewallDialog.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
