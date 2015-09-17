@@ -13,5 +13,9 @@ private:
 
 	u_short port80;
 	u_short port443;
+
+
+	PSLIST_HEADER privateListHead;
+	int privateListVersion = 0;
 };
 

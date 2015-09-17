@@ -14,15 +14,16 @@ class ConfigureFirewallDialog : public QDialog
 	Q_OBJECT
 
 public:
-	ConfigureFirewallDialog(QWidget* parent, QList<QString> *ipList);
+	ConfigureFirewallDialog(QWidget* parent, QList<int> *portList);
 
 private:
-	QList<QString> *saveList;
+	QList<int> *saveList;
 
 
 	QGridLayout* dialogGridLayout;
 	QFont dialogFont;
 	QPalette dialogPalette;
+	QPalette dialogErrorPalette;
 	QString dialogStyleSheet =
 		"QDialog{ margin: 0px; padding: 0px; border: none; background-color: #F0F0F0;}";
 
@@ -51,7 +52,7 @@ private:
 	QPushButton* buttonSave;
 	QPushButton* buttonCancel;
 
-	private slots:
+private slots:
 	void onAddCustom();
 	void onAddPreset();
 	void onRemove();

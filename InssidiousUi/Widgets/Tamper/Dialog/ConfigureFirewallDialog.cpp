@@ -1,14 +1,14 @@
 #include "ConfigureFirewallDialog.h"
 
-ConfigureFirewallDialog::ConfigureFirewallDialog(QWidget* parent, QList<QString> *ipList)
+ConfigureFirewallDialog::ConfigureFirewallDialog(QWidget* parent, QList<int> *portList)
 	: QDialog(parent)
 {
-	saveList = ipList;
+	saveList = portList;
 
 	this->setWindowTitle("Configure Firewall");
 	this->setWindowIcon(QIcon(":/InssidiousUi/Inssidious.ico"));
 	this->setStyleSheet(dialogStyleSheet);
-	this->setFixedSize(400, 300);
+	this->setFixedSize(390, 290);
 
 
 	/* Center the dialog over the Inssidious window */
@@ -19,6 +19,7 @@ ConfigureFirewallDialog::ConfigureFirewallDialog(QWidget* parent, QList<QString>
 
 
 	dialogPalette.setColor(QPalette::WindowText, QColor(51, 51, 51));
+	dialogErrorPalette.setColor(QPalette::WindowText, QColor(255, 150, 0, 255));
 	dialogPalette.setColor(QPalette::ButtonText, QColor(51, 51, 51));
 
 	dialogFont.setFamily("Segoe UI Semibold");
@@ -39,7 +40,7 @@ ConfigureFirewallDialog::ConfigureFirewallDialog(QWidget* parent, QList<QString>
 	inputInstructions->setPalette(dialogPalette);
 
 	input = new QLineEdit();
-	input->setPlaceholderText("22, 23, 80");
+	input->setPlaceholderText("22, 81, 589");
 
 	presetOptions = new QComboBox();
 	presetOptions->addItem("Email");
@@ -73,6 +74,7 @@ ConfigureFirewallDialog::ConfigureFirewallDialog(QWidget* parent, QList<QString>
 	connect(buttonAddCustom, &QPushButton::clicked, this, &ConfigureFirewallDialog::onAddCustom);
 	connect(buttonAddPreset, &QPushButton::clicked, this, &ConfigureFirewallDialog::onAddPreset);
 	connect(buttonRemove, &QPushButton::clicked, this, &ConfigureFirewallDialog::onRemove);
+	connect(buttonClear, &QPushButton::clicked, this, &ConfigureFirewallDialog::onClear);
 	connect(buttonSave, &QPushButton::clicked, this, &ConfigureFirewallDialog::onSave);
 	connect(buttonCancel, &QPushButton::clicked, this, &ConfigureFirewallDialog::close);
 
@@ -87,7 +89,7 @@ ConfigureFirewallDialog::ConfigureFirewallDialog(QWidget* parent, QList<QString>
 	dialogGridLayout->addWidget(presetOptions, 3, 0, 1, 2);
 	dialogGridLayout->addWidget(buttonAddPreset, 3, 2, 1, 1, Qt::AlignHCenter);
 	dialogGridLayout->addWidget(listWidgetDescription, 4, 0, 1, 3);
-	dialogGridLayout->addWidget(listWidget, 5, 0, 4, 2);
+	dialogGridLayout->addWidget(listWidget, 5, 0, 4, 2, Qt::AlignTop | Qt::AlignHCenter);
 	dialogGridLayout->addWidget(buttonRemove, 5, 2, 1, 1, Qt::AlignTop | Qt::AlignHCenter);
 	dialogGridLayout->addWidget(buttonClear, 6, 2, 1, 1, Qt::AlignTop | Qt::AlignHCenter);
 	dialogGridLayout->addItem(new QSpacerItem(10, 10), 8, 0);
@@ -100,6 +102,11 @@ ConfigureFirewallDialog::ConfigureFirewallDialog(QWidget* parent, QList<QString>
 
 void ConfigureFirewallDialog::onAddCustom()
 {
+	if (this->input->text().isEmpty())
+	{
+		return;
+	}
+
 	input->setDisabled(true);
 	buttonAddCustom->setDisabled(true);
 	buttonAddPreset->setDisabled(true);
@@ -109,27 +116,50 @@ void ConfigureFirewallDialog::onAddCustom()
 	this->repaint();
 
 
-	/* Resolve name to an IP Address */
+	/* Confirm the input is valid */
 
-	//QHostInfo host = QHostInfo::fromName(this->input->text());
+	if(this->input->text().contains(QRegExp("[^0-9,^,,^ ]")))
+	{
+		inputInstructions->setText("Please use a numeric, comma separated list:");
+		inputInstructions->setPalette(dialogErrorPalette);
+	}
+	else
+	{
+		inputInstructions->setText(inputInstructionsText);
+		inputInstructions->setPalette(dialogPalette);
 
-	//if (host.error())
-	//{
-	//	input->setText("Could not resolve: " + input->text());
-	//}
-	//else
-	//{
-	//	QList<QHostAddress> addressList = host.addresses();
+		listWidget->addItems(input->text().remove(" ").split(","));
 
-	//	for (QHostAddress addr : addressList)
-	//	{
-	//		_Uint32t addrAsUint32 = addr.toIPv4Address();
-	//		wchar_t strbuff[512];
-	//		InetNtop(AF_INET, &addrAsUint32, strbuff, sizeof(strbuff));
 
-	//		listWidget->addItem(QString::fromWCharArray(strbuff) + QString(" - ") + input->text());
-	//	}
-	//}
+		/* Remove invalid port numbers and empty rows */
+
+		for (int i = listWidget->count() - 1; i >= 0; i--)
+		{
+			if (listWidget->item(i)->text().isEmpty())
+			{
+				delete listWidget->item(i);
+			}
+			else if (listWidget->item(i)->text().toInt() > 65535 /* max port number */)
+			{
+				delete listWidget->item(i);
+			}
+		}
+
+		/* Remove any duplicate port numbers */
+
+		for (int i = 0; i < listWidget->count(); i++)
+		{
+			for (int j = listWidget->count() - 1; j > i; j--)
+			{
+				if (listWidget->item(j)->text() == listWidget->item(i)->text())
+				{
+					delete listWidget->item(j);
+				}
+			}
+		}
+
+		input->clear();
+	}
 
 	input->setEnabled(true);
 	buttonAddCustom->setEnabled(true);
@@ -143,8 +173,39 @@ void ConfigureFirewallDialog::onAddPreset()
 	switch (presetOptions->currentIndex())
 	{
 	default:
-		listWidget->addItem("combo");
+		listWidget->addItem("80");
+		listWidget->addItem("443");
 		break;
+	}
+
+
+
+
+	/* Remove invalid port numbers and empty rows */
+
+	for (int i = listWidget->count() - 1; i >= 0; i--)
+	{
+		if (listWidget->item(i)->text().isEmpty())
+		{
+			delete listWidget->item(i);
+		}
+		else if (listWidget->item(i)->text().toInt() > 65535 /* max port number */)
+		{
+			delete listWidget->item(i);
+		}
+	}
+
+	/* Remove any duplicate port numbers */
+
+	for (int i = 0; i < listWidget->count(); i++)
+	{
+		for (int j = listWidget->count() - 1; j > i; j--)
+		{
+			if (listWidget->item(j)->text() == listWidget->item(i)->text())
+			{
+				delete listWidget->item(j);
+			}
+		}
 	}
 }
 
@@ -158,7 +219,7 @@ void ConfigureFirewallDialog::onRemove()
 
 void ConfigureFirewallDialog::onClear()
 {
-	for (int i = 0; i < listWidget->count(); i++)
+	for (int i = listWidget->count() - 1; i >= 0; i--)
 	{
 		QListWidgetItem* item = listWidget->item(i);
 		delete item;
@@ -169,12 +230,12 @@ void ConfigureFirewallDialog::onSave()
 {
 	saveList->clear();
 
-	for (int i = 0; i < listWidget->count(); i++)
+	for (int i = listWidget->count() - 1; i >= 0; i--)
 	{
 		QListWidgetItem* item = listWidget->item(i);
-		saveList->append(item->text());
+		saveList->append(item->text().toInt());
 		delete item;
 	}
 
-	emit close();
+	emit accept();
 }

@@ -1,11 +1,14 @@
 #include "UiTamperFirewall.h"
 #include "Dialog/ConfigureFirewallDialog.h"
 
+#pragma comment(lib, "ntdll.lib")
 
 UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
-	pTamperConfig = static_cast<void*>(new TamperFirewallConfig{ true, true, false });
+	pTamperConfig = static_cast<void*>(new TamperFirewallConfig{ FIREWALL_OFF, static_cast<PSLIST_HEADER>(_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT)) });
+
+	InitializeSListHead(static_cast<TamperFirewallConfig*>(pTamperConfig)->customPortList);
 
 	buttonGroup = new QButtonGroup();
 	buttonLeft = new QPushButton();
@@ -131,31 +134,73 @@ void UiTamperFirewall::onButtonClicked(int index)
 {
 	switch (buttonGroup->checkedId())
 	{
-	case -1:
-		/* No Button Checked */
-		//TODO
-		//((TamperFirewallConfig*)pTamperConfig)-> = SPEED_MAX;
+	case -1 /* No Button Checked */:
+		static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_OFF;
 		break;
 	case 0 /* Block Email */:
-		//((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_EDGE;
+		static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_EMAIL;
 		break;
 	case 1 /* Block UDP */:
-		//((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_3G;
+		static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_UDP;
 		break;
 	case 2 /* Block VPN */:
-		//((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_4G;
+		static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_VPN;
 		break;
 	case 3 /* Custom Rules */:
 	{
-		QList<QString> stringList;
-		ConfigureFirewallDialog* dialog = new ConfigureFirewallDialog(this->parentWidget(), &stringList);
-		dialog->exec();
+		QList<int> intList;
+		ConfigureFirewallDialog* dialog = new ConfigureFirewallDialog(this->parentWidget(), &intList);
+		if (dialog->exec() == QDialog::Accepted)
+		{
+			PSLIST_HEADER newListHead = static_cast<PSLIST_HEADER>(_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT));
+			InitializeSListHead(newListHead);
+			
+			PSLIST_ENTRY entryLast = nullptr;
+			PSLIST_ENTRY entryFirst = nullptr;
+
+			for (int port : intList)
+			{
+				TamperFirewallEntry* pTamperFirewallEntry = static_cast<TamperFirewallEntry*>(_aligned_malloc(sizeof(TamperFirewallEntry), MEMORY_ALLOCATION_ALIGNMENT));
+				pTamperFirewallEntry->version = 1;
+				pTamperFirewallEntry->portNumber = port;
+
+				InterlockedPushEntrySList(newListHead, &(pTamperFirewallEntry->ItemEntry));
+
+				entryLast = &(pTamperFirewallEntry->ItemEntry);
+			}
+			
+			entryFirst = RtlFirstEntrySList(newListHead);
+
+			if (entryFirst && entryLast)
+			{
+				PSLIST_ENTRY staleItems = InterlockedFlushSList(static_cast<TamperFirewallConfig*>(pTamperConfig)->customPortList);
+				InterlockedPushListSList(static_cast<TamperFirewallConfig*>(pTamperConfig)->customPortList, entryFirst, entryLast, intList.count());
+				static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_CUSTOM;
+
+				while (staleItems != nullptr)
+				{
+					//Free the memory by traversing Next pointers?
+					//InterlockedPopEntrySList()
+					break;
+				}
+			}
+			else
+			{
+				//TODO: 
+			}
+
+		}
+		else
+		{
+			setActive(false);
+		}
 		delete dialog;
-		//((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_LTE;
 		break;
 	}
 	default:
-		//	((TamperWebServiceFailuresConfig*)pTamperConfig)->speedType = SPEED_MAX;
+		/* Should not get here */
+		static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_OFF;
+		__debugbreak();
 		break;
 	}
 

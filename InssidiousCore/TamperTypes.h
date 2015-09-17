@@ -1,6 +1,15 @@
 #ifndef TAMPERTYPES_H
 #define TAMPERTYPES_H
 
+#ifndef _WIN32_WINNT            // Specifies that the minimum required platform is Windows Vista.
+#define _WIN32_WINNT 0x0600     // Change this to the appropriate value to target other versions of Windows.
+#endif
+
+#ifndef NTDDI_VERSION           // Specifies that the minimum required platform is Windows Vista.
+#define NTDDI_VERSION 0x06000000 
+#endif
+
+#include "Windows.h"
 
 enum TamperType
 {
@@ -60,13 +69,27 @@ struct TamperConditionsConfig
 	volatile short chanceReset;
 };
 
+enum TamperFirewallType
+{
+	FIREWALL_EMAIL,
+	FIREWALL_UDP,
+	FIREWALL_VPN,
+	FIREWALL_CUSTOM,
+	FIREWALL_OFF
+};
 
 struct TamperFirewallConfig
 {
-	volatile bool allowHTTP;
-	volatile bool allowHTTPS;
-	volatile bool contentBlocked;
+	volatile TamperFirewallType firewallType;
+	PSLIST_HEADER customPortList;
 };
+
+typedef struct _TamperFirewallEntry 
+{
+	SLIST_ENTRY ItemEntry;
+	int version;
+	int portNumber;
+} TamperFirewallEntry;
 
 
 struct TamperDamageConfig
