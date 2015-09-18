@@ -1,15 +1,16 @@
 #ifndef TAMPERTYPES_H
 #define TAMPERTYPES_H
 
-#ifndef _WIN32_WINNT            // Specifies that the minimum required platform is Windows Vista.
-#define _WIN32_WINNT 0x0600     // Change this to the appropriate value to target other versions of Windows.
-#endif
-
-#ifndef NTDDI_VERSION           // Specifies that the minimum required platform is Windows Vista.
-#define NTDDI_VERSION 0x06000000 
-#endif
-
 #include "Windows.h"
+
+extern "C"
+PSLIST_ENTRY __fastcall InterlockedPushListSList(
+	IN PSLIST_HEADER ListHead,
+	IN PSLIST_ENTRY List,
+	IN PSLIST_ENTRY ListEnd,
+	IN ULONG Count
+	);
+
 
 enum TamperType
 {
