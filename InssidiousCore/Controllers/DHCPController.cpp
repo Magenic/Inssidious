@@ -1,19 +1,20 @@
 #include "DHCPController.h"
 
-#include <WinDivert/include/windivert.h>
+
 #include <comdef.h>
 
-#pragma comment(lib, "..\\WinDivert\\x86\\WinDivert.lib")
+#include <WinDivert/include/windivert.h>
 
-DHCPController::DHCPController(QObject *parent)
-	: QThread(parent)
+
+DHCPController::DHCPController(QObject* parent)
+	: QThread(parent), divertDHCPFilterString("ip.SrcAddr == 192.168.25.1 and udp.SrcPort == 67\0")
 {
 
-	divertDHCPHandle = WinDivertOpen(divertDHCPFilterString.toLocal8Bit(), WINDIVERT_LAYER_NETWORK, divertDHCPPriority, WINDIVERT_FLAG_SNIFF);
+	divertDHCPHandle = WinDivertOpen(divertDHCPFilterString, WINDIVERT_LAYER_NETWORK, divertDHCPPriority, WINDIVERT_FLAG_SNIFF);
 	if (divertDHCPHandle == INVALID_HANDLE_VALUE)
 	{
 		HRESULT result = GetLastError();
-
+		
 		/* Something went wrong */
 
 		MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(

@@ -6,12 +6,10 @@ TamperFirewall::TamperFirewall(void** ppTamperConfig)
 {
 	this->ppFirewallConfig = reinterpret_cast<TamperFirewallConfig**>(ppTamperConfig);
 
-	privateListHead = static_cast<PSLIST_HEADER>(_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT));
-	InitializeSListHead(privateListHead);
-	privateListVersion = 0;
+	activePortList = nullptr;
+	customListVersion = 0;
+	customPortList.clear();
 
-	port80 = htons(80);
-	port443 = htons(443);
 }
 
 
@@ -25,40 +23,64 @@ short TamperFirewall::process(PacketList* packetList)
 		return 0;
 	}
 
-	/* Check for new custom port rules */
 
-	while (true)
+	/* Check the port rules */
+
+	switch ((*ppFirewallConfig)->firewallType)
 	{
-		TamperFirewallEntry* listEntry = reinterpret_cast<TamperFirewallEntry*>(InterlockedPopEntrySList((*ppFirewallConfig)->customPortList));
-		if (listEntry == nullptr)
+	case FIREWALL_EMAIL:
+		activePortList = &emailPortList;
+		break;
+	case FIREWALL_UDP:
+		activePortList = nullptr;
+		break;
+	case FIREWALL_VPN:
+		activePortList = &vpnPortList;
+		break;
+	case FIREWALL_CUSTOM:
+	{
+		activePortList = &customPortList;
+		while (true)
 		{
-			/* No more items */
-			break;
-		}
+			/* Pull an entry off of the list */
 
-		if (listEntry->version != privateListVersion)
-		{
-			/* We have old data, flush the private list and start over */
+			TamperFirewallEntry* listEntry = reinterpret_cast<TamperFirewallEntry*>(InterlockedPopEntrySList((*ppFirewallConfig)->customPortList));
 
-			PSLIST_ENTRY staleItems = InterlockedFlushSList(static_cast<TamperFirewallConfig*>(*ppFirewallConfig)->customPortList);
 
-			while (staleItems != nullptr)
+			/* If it is null, we've reached the end of the list and should leave the loop */
+
+			if (listEntry == nullptr)
 			{
-				//Free the memory by traversing Next pointers?
-				//InterlockedPopEntrySList()
 				break;
 			}
 
-			privateListVersion = listEntry->version;
+
+			/* If our version doesn't match the entry version, we have old data and need to clear our list */
+
+			if (customListVersion != listEntry->version)
+			{
+				customPortList.clear();
+				customListVersion = listEntry->version;
+			}
+
+
+			/* Add the port to the list and then free the list entry memory */
+
+			customPortList.push_back(reinterpret_cast<TamperFirewallEntry*>(listEntry)->portNumber);
+			_aligned_free(listEntry);
+
+
+			/* Loop continues until we get a null pop entry */
+
 		}
 
-
-		/* Add the new port to the list */
-
-		InterlockedPushEntrySList(privateListHead, reinterpret_cast<PSLIST_ENTRY>(listEntry));
-
-		/* Loop continues until we get a null pop entry */
+		break;
 	}
+	case FIREWALL_OFF:
+	default:
+		return 0;
+	}
+
 
 
 	/* Loop and drop any packets traveling over blocked ports */
@@ -66,59 +88,69 @@ short TamperFirewall::process(PacketList* packetList)
 	Packet *pDivertPacket = packetList->head->next;
 	while (pDivertPacket != packetList->tail)
 	{
-		return 0;
 		WINDIVERT_IPHDR *iphdr;
 		WINDIVERT_TCPHDR *tcphdr = nullptr;
 		WINDIVERT_UDPHDR *udphdr = nullptr;
 		WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen, &iphdr, 0, 0, 0, &tcphdr, &udphdr, 0, 0);
 
-		switch ((*ppFirewallConfig)->firewallType)
+		if (!activePortList)
 		{
-		case FIREWALL_EMAIL:
-			break;
-		case FIREWALL_UDP:
-			break;
-		case FIREWALL_VPN:
-			break;
-		case FIREWALL_CUSTOM:
-			break;
-		case FIREWALL_OFF:
-		default:
-			return 0;
+			/* Block UDP is enabled. Drop any UDP packets */
+
+			if (udphdr)
+			{
+				/* Drop packet */
+				pDivertPacket = pDivertPacket->next;
+				packetList->freeNode(packetList->popNode(pDivertPacket->prev));
+				continue;
+			}
+			else
+			{
+				/* Skip packet */
+				pDivertPacket = pDivertPacket->next;
+				continue;
+			}
 		}
-		//if (tcphdr)
-		//{
-		//	if ((tcphdr->DstPort == port80 || tcphdr->SrcPort == port80) && (*ppFirewallConfig)->allowHTTP)
-		//	{
-		//		pDivertPacket = pDivertPacket->next;
-		//		continue;
-		//	}
 
-		//	if ((tcphdr->DstPort == port443 || tcphdr->SrcPort == port443) && (*ppFirewallConfig)->allowHTTPS)
-		//	{
-		//		pDivertPacket = pDivertPacket->next;
-		//		continue;
-		//	}
-		//}
 
-		//if (udphdr)
-		//{
-		//	if ((udphdr->DstPort == port80 || udphdr->SrcPort == port80) && (*ppFirewallConfig)->allowHTTP)
-		//	{
-		//		pDivertPacket = pDivertPacket->next;
-		//		continue;
-		//	}
+		/* Block Email, VPN, or Custom is enabled. Drop packets travelling over blocked ports */
 
-		//	if ((udphdr->DstPort == port443 || udphdr->SrcPort == port443) && (*ppFirewallConfig)->allowHTTPS)
-		//	{
-		//		pDivertPacket = pDivertPacket->next;
-		//		continue;
-		//	}
-		//}
-		///* Drop the packet */
-		//pDivertPacket = pDivertPacket->next;
-		//packetList->freeNode(packetList->popNode(pDivertPacket->prev));
+		if (tcphdr)
+		{
+			for (u_short port : *activePortList)
+			{
+				if (tcphdr->DstPort == port || tcphdr->SrcPort == port)
+				{
+					/* Drop packet */
+					pDivertPacket = pDivertPacket->next;
+					packetList->freeNode(packetList->popNode(pDivertPacket->prev));
+					break;
+				}
+			}
+			continue;
+		}
+		else if (udphdr)
+		{
+			for (u_short port : *activePortList)
+			{
+				if (udphdr->DstPort == port || udphdr->SrcPort == port)
+				{
+					/* Drop packet */
+					pDivertPacket = pDivertPacket->next;
+					packetList->freeNode(packetList->popNode(pDivertPacket->prev));
+					break;
+				}
+			}
+			continue;
+		}
+
+
+		/* No TCP or UDP header. Skip this packet */
+
+		pDivertPacket = pDivertPacket->next;
 	}
+
+
 
 	return 0;
 }

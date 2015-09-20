@@ -1,6 +1,7 @@
 #include "ConfigureFirewallDialog.h"
+#include <InssidiousCore/TamperTypes.h>
 
-ConfigureFirewallDialog::ConfigureFirewallDialog(QWidget* parent, QList<int> *portList)
+ConfigureFirewallDialog::ConfigureFirewallDialog(QWidget* parent, QList<unsigned short> *portList)
 	: QDialog(parent)
 {
 	saveList = portList;
@@ -172,13 +173,39 @@ void ConfigureFirewallDialog::onAddPreset()
 {
 	switch (presetOptions->currentIndex())
 	{
+	case 0: /* email */
+		for (auto i : emailPortList)
+		{
+			listWidget->addItem(QString::number(i));
+		}
+		break;
+	case 1: /* HTTP */
+		for (auto i : httpPortList)
+		{
+			listWidget->addItem(QString::number(i));
+		}
+		break;
+	case 2: /* HTTPS */
+		for (auto i : httpsPortList)
+		{
+			listWidget->addItem(QString::number(i));
+		}
+		break;
+	case 3: /* SSH */
+		for (auto i : sshPortList)
+		{
+			listWidget->addItem(QString::number(i));
+		}
+		break;
+	case 4: /* VPN */
+		for (auto i : vpnPortList)
+		{
+			listWidget->addItem(QString::number(i));
+		}
+		break;
 	default:
-		listWidget->addItem("80");
-		listWidget->addItem("443");
 		break;
 	}
-
-
 
 
 	/* Remove invalid port numbers and empty rows */
@@ -194,6 +221,7 @@ void ConfigureFirewallDialog::onAddPreset()
 			delete listWidget->item(i);
 		}
 	}
+
 
 	/* Remove any duplicate port numbers */
 
@@ -230,10 +258,20 @@ void ConfigureFirewallDialog::onSave()
 {
 	saveList->clear();
 
+	if (listWidget->count() == 0)
+	{
+		/* No custom ports */
+		emit reject();
+		return;
+	}
+
+
+	/* Save the ports to the list */
+
 	for (int i = listWidget->count() - 1; i >= 0; i--)
 	{
 		QListWidgetItem* item = listWidget->item(i);
-		saveList->append(item->text().toInt());
+		saveList->append(item->text().toUShort());
 		delete item;
 	}
 

@@ -9,6 +9,8 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	pTamperConfig = static_cast<void*>(new TamperFirewallConfig{ FIREWALL_OFF, static_cast<PSLIST_HEADER>(_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT)) });
 
 	InitializeSListHead(static_cast<TamperFirewallConfig*>(pTamperConfig)->customPortList);
+	dialogPortList.clear();
+	portListVersion = 0;
 
 	buttonGroup = new QButtonGroup();
 	buttonLeft = new QPushButton();
@@ -148,52 +150,82 @@ void UiTamperFirewall::onButtonClicked(int index)
 		break;
 	case 3 /* Custom Rules */:
 	{
-		QList<int> intList;
-		ConfigureFirewallDialog* dialog = new ConfigureFirewallDialog(this->parentWidget(), &intList);
+		/* Throw up the Custom Ports dialog */
+
+		ConfigureFirewallDialog* dialog = new ConfigureFirewallDialog(this->parentWidget(), &dialogPortList);
 		if (dialog->exec() == QDialog::Accepted)
 		{
+			/* The User clicked Save. Process the new port list */
+
+			/* Create a new SList */
+			
 			PSLIST_HEADER newListHead = static_cast<PSLIST_HEADER>(_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT));
 			InitializeSListHead(newListHead);
-			
+			portListVersion++;
+
+
+			/* Add the new ports to the list */
+
 			PSLIST_ENTRY entryLast = nullptr;
 			PSLIST_ENTRY entryFirst = nullptr;
-
-			for (int port : intList)
+			for (unsigned short port : dialogPortList)
 			{
+				/* Allocate memory for the list entry */
+				
 				TamperFirewallEntry* pTamperFirewallEntry = static_cast<TamperFirewallEntry*>(_aligned_malloc(sizeof(TamperFirewallEntry), MEMORY_ALLOCATION_ALIGNMENT));
-				pTamperFirewallEntry->version = 1;
-				pTamperFirewallEntry->portNumber = port;
+
+				/* Save the version and port number */
+
+				pTamperFirewallEntry->version = portListVersion;
+				pTamperFirewallEntry->portNumber = htons(port);
+
+
+				/* Add the entry to the list */
 
 				InterlockedPushEntrySList(newListHead, &(pTamperFirewallEntry->ItemEntry));
-
 				entryLast = &(pTamperFirewallEntry->ItemEntry);
 			}
 			
-			entryFirst = RtlFirstEntrySList(newListHead);
 
+			/* If we have valid first and last entries, push in the new list */
+
+			entryFirst = RtlFirstEntrySList(newListHead);
 			if (entryFirst && entryLast)
 			{
+				/* Clear any existing items in the port list */
+
 				PSLIST_ENTRY staleItems = InterlockedFlushSList(static_cast<TamperFirewallConfig*>(pTamperConfig)->customPortList);
-				InterlockedPushListSList(static_cast<TamperFirewallConfig*>(pTamperConfig)->customPortList, entryFirst, entryLast, intList.count());
+				
+
+				/* Push the new list and set the type to FIREWALL_CUSTOM */
+
+				InterlockedPushListSList(static_cast<TamperFirewallConfig*>(pTamperConfig)->customPortList, entryFirst, entryLast, dialogPortList.count());
 				static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_CUSTOM;
+
+
+				/* Free memory left over from any old existing items */
 
 				while (staleItems != nullptr)
 				{
-					//Free the memory by traversing Next pointers?
-					//InterlockedPopEntrySList()
+					PSLIST_ENTRY tmp = staleItems;
+					staleItems = staleItems->Next;
+					_aligned_free(tmp);
 					break;
 				}
 			}
 			else
 			{
-				//TODO: 
+				/* Should not get here */
+				static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_OFF;
+				__debugbreak();
 			}
-
 		}
 		else
 		{
+			/* The user clicked Close or Cancel. Turn off the tamper module */
 			setActive(false);
 		}
+
 		delete dialog;
 		break;
 	}

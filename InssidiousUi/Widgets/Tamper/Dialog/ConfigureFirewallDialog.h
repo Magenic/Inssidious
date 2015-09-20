@@ -14,10 +14,10 @@ class ConfigureFirewallDialog : public QDialog
 	Q_OBJECT
 
 public:
-	ConfigureFirewallDialog(QWidget* parent, QList<int> *portList);
+	ConfigureFirewallDialog(QWidget* parent, QList<unsigned short> *portList);
 
 private:
-	QList<int> *saveList;
+	QList<unsigned short> *saveList;
 
 
 	QGridLayout* dialogGridLayout;
@@ -41,8 +41,6 @@ private:
 	QListWidget* listWidget;
 	QString listWidgetStyleSheet =
 		"QListWidget{ border-style: solid; border-width:1px; border-radius: 0px; border-color: #828790; background-color: #FDFDFD;}";
-	//QListWidget::item { border-style: solid; border-width:1px;	border-color:black; background-color: green; }\
-			//QListWidget::item:selected { background-color: red; }\
 
 
 	QPushButton* buttonAddCustom;

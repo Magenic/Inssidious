@@ -83,15 +83,15 @@ int DivertController::sendAllListPackets()
 	UINT sendLen;
 	Packet *pnode;
 
-#ifdef _DEBUG
-	// check the list is good
-	// might go into dead loop but it's better for debugging
-	Packet *p = packetList->head;
-	do {
-		p = p->next;
-	} while (p->next);
-	assert(p == packetList->tail);
-#endif
+//#ifdef _DEBUG
+//	// check the list is good
+//	// might go into dead loop but it's better for debugging
+//	Packet *p = packetList->head;
+//	do {
+//		p = p->next;
+//	} while (p->next);
+//	assert(p == packetList->tail);
+//#endif
 
 	while (!packetList->isListEmpty()) 
 	{
@@ -100,18 +100,21 @@ int DivertController::sendAllListPackets()
 		assert(pnode != packetList->head);
 		// FIXME inbound injection on any kind of packet is failing with a very high percentage
 		//       need to contact windivert auther and wait for next release
-		if (!WinDivertSend(divertHandleLayerNetwork, pnode->packet, pnode->packetLen, &(pnode->addr), &sendLen)) {
-			//LOG("Failed to send a packet. (%lu)", GetLastError());
+		if (!WinDivertSend(divertHandleLayerNetwork, pnode->packet, pnode->packetLen, &(pnode->addr), &sendLen)) 
+		{
+			OutputDebugStringW(L"Failed to send a packet. \n"/* + GetLastError()*/);
 			assert(true);
 		}
 		else {
-			if (sendLen < pnode->packetLen) {
+			if (sendLen < pnode->packetLen) 
+			{
 				// TODO don't know how this can happen, or it needs to be resent like good old UDP packet
-				//LOG("Internal Error: DivertSend truncated send packet.");
+				OutputDebugStringW(L"Internal Error: DivertSend truncated send packet.\n");
 				assert(true);
 				//InterlockedExchange16(&sendState, SEND_STATUS_FAIL);
 			}
-			else {
+			else 
+			{
 				//InterlockedExchange16(&sendState, SEND_STATUS_SEND);
 			}
 		}
@@ -133,9 +136,9 @@ void DivertController::divertConsumeStep()
 		return;
 	}
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	ULONGLONG startTick = GetTickCount64(), dt;
-#endif
+//#endif
 
 	for (int i = 0; i < NUM_TAMPER_TYPES - 1; i++)
 	{
@@ -148,19 +151,19 @@ void DivertController::divertConsumeStep()
 
 	int cnt = sendAllListPackets();
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	dt = GetTickCount64() - startTick;
 	if (dt > DIVERT_CLOCK_WAIT_MS / 2) 
 	{
-		//LOG("Costy consume step: %lu ms, sent %d packets", GetTickCount() - startTick, cnt);
+		OutputDebugStringW(std::wstring(L"Costly consume step: " + std::to_wstring(GetTickCount64() - startTick) + std::wstring(L" ") + std::to_wstring(cnt) + std::wstring(L"\n")).c_str());
 	}
-#endif
+//#endif
 }
 
 // periodically try to consume packets to keep the network responsive and not blocked by recv
 DWORD DivertController::divertClockLoop() {
 	DWORD startTick, stepTick, waitResult;
-	int ix;
+	//int ix;
 
 	for (;;) 
 	{
@@ -176,7 +179,7 @@ DWORD DivertController::divertClockLoop() {
 			if (!ReleaseMutex(mutex)) 
 			{
 				InterlockedDecrement16(&this->divertActive);
-				//LOG("Fatal: Failed to release mutex (%lu)", GetLastError());
+				OutputDebugStringW(L"Fatal: Failed to release mutex\n" /*(%lu) + GetLastError()*/);
 				assert(true);
 				//ABORT();
 			}
@@ -188,15 +191,15 @@ DWORD DivertController::divertClockLoop() {
 			break;
 		case WAIT_TIMEOUT:
 			// read loop is processing, so we can skip this run
-			//LOG("!!! Skipping one run");
+			OutputDebugStringW(L"!!! Skipping one run\n");
 			Sleep(DIVERT_CLOCK_WAIT_MS);
 			break;
 		case WAIT_ABANDONED:
-			//LOG("Acquired abandoned mutex");
+			OutputDebugStringW(L"Acquired abandoned mutex\n");
 			InterlockedDecrement16(&this->divertActive);
 			break;
 		case WAIT_FAILED:
-			//LOG("Acquire failed (%lu)", GetLastError());
+			OutputDebugStringW(L"Acquire failed\n" /* (%lu)", GetLastError()*/);
 			InterlockedDecrement16(&this->divertActive);
 			break;
 		}
@@ -212,7 +215,7 @@ DWORD DivertController::divertClockLoop() {
 			{
 			case WAIT_ABANDONED:
 			case WAIT_FAILED:
-				//LOG("Acquire failed/abandoned mutex (%lu), will still try closing and return", GetLastError());
+				OutputDebugStringW(L"Acquire failed/abandoned mutex\n" /* (%lu), will still try closing and return", GetLastError()*/);
 			case WAIT_OBJECT_0:
 				/***************** enter critical region ************************/
 				//LOG("Read stopLooping, stopping...");
@@ -223,9 +226,10 @@ DWORD DivertController::divertClockLoop() {
 				//		module->closeDown(head, tail);
 				//	}
 				//}
-				//LOG("Send all packets upon closing");
-				//lastSendCount = sendAllListPackets();
-				//LOG("Lastly sent %d packets. Closing...", lastSendCount);
+
+				OutputDebugStringW(L"Send all packets upon closing\n");
+				lastSendCount = sendAllListPackets();
+				OutputDebugStringW(L"Lastly sent %d packets. Closing...\n"/*, lastSendCount*/);
 
 				// terminate recv loop by closing handler. handle related error in recv loop to quit
 				closed = WinDivertClose(divertHandleLayerNetwork);
@@ -237,7 +241,7 @@ DWORD DivertController::divertClockLoop() {
 				/***************** leave critical region ************************/
 				if (!ReleaseMutex(mutex)) 
 				{
-					//LOG("Fatal: Failed to release mutex (%lu)", GetLastError());
+					OutputDebugStringW(L"Fatal: Failed to release mutex\n"/*, GetLastError()*/);
 					assert(true);
 					//ABORT();
 				}
@@ -260,26 +264,24 @@ DWORD DivertController::divertReadLoop(HANDLE divertHandle)
 
 	for (;;) 
 	{
-		// each step must fully consume the list
-		//assert(packetList->isListEmpty()); // FIXME has failed this assert before. don't know why
 		if (!WinDivertRecv(divertHandle, packetBuf, DIVERT_MAX_PACKETSIZE, &addrBuf, &readLen)) 
 		{
 			DWORD lastError = GetLastError();
 			if (lastError == ERROR_INVALID_HANDLE || lastError == ERROR_OPERATION_ABORTED) 
 			{
 				// treat closing handle as quit
-				//LOG("Handle died or operation aborted. Exit loop.");
+				OutputDebugStringW(L"Handle died or operation aborted. Exit loop.\n");
 				assert(true);
 				return 0;
 			}
-			//LOG("Failed to recv a packet. (%lu)", GetLastError());
+			OutputDebugStringW(L"Failed to recv a packet. \n"/*, GetLastError()*/);
 			assert(true);
 			continue;
 		}
 		if (readLen > DIVERT_MAX_PACKETSIZE) 
 		{
 			// don't know how this can happen
-			//LOG("Internal Error: DivertRecv truncated recv packet.");
+			OutputDebugStringW(L"Internal Error: DivertRecv truncated recv packet.\n");
 			assert(true);
 		}
 
@@ -290,11 +292,11 @@ DWORD DivertController::divertReadLoop(HANDLE divertHandle)
 			/***************** enter critical region ************************/
 			if (!this->divertActive) 
 			{
-				//LOG("Lost last recved packet but user stopped. Stop read loop.");
+				OutputDebugStringW(L"Lost last recved packet but user stopped. Stop read loop.\n");
 				/***************** leave critical region ************************/
 				if (!ReleaseMutex(mutex)) 
 				{
-					//LOG("Fatal: Failed to release mutex on stopping (%lu). Will stop anyway.", GetLastError());
+					OutputDebugStringW(L"Fatal: Failed to release mutex on stopping. Will stop anyway.\n"/*, GetLastError()*/);
 					assert(true);
 				}
 				return 0;
@@ -305,19 +307,19 @@ DWORD DivertController::divertReadLoop(HANDLE divertHandle)
 			//divertConsumeStep();
 			/***************** leave critical region ************************/
 			if (!ReleaseMutex(mutex)) {
-				//LOG("Fatal: Failed to release mutex (%lu)", GetLastError());
+				OutputDebugStringW(L"Fatal: Failed to release mutex\n"/*, GetLastError()*/);
 				assert(true);
 				//ABORT();
 			}
 			break;
 		case WAIT_TIMEOUT:
-			//LOG("Acquire timeout, dropping one read packet");
+			OutputDebugStringW(L"Acquire timeout, dropping one read packet\n");
 			continue;
 		case WAIT_ABANDONED:
-			//LOG("Acquire abandoned.");
+			OutputDebugStringW(L"Acquire abandoned.\n");
 			return 0;
 		case WAIT_FAILED:
-			//LOG("Acquire failed.");
+			OutputDebugStringW(L"Acquire failed.\n");
 			return 0;
 		}
 	}

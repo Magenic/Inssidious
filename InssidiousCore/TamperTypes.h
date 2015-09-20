@@ -2,6 +2,7 @@
 #define TAMPERTYPES_H
 
 #include "Windows.h"
+#include <list>
 
 extern "C"
 PSLIST_ENTRY __fastcall InterlockedPushListSList(
@@ -88,9 +89,17 @@ struct TamperFirewallConfig
 typedef struct _TamperFirewallEntry 
 {
 	SLIST_ENTRY ItemEntry;
-	int version;
-	int portNumber;
+	u_short version;
+	u_short portNumber;
 } TamperFirewallEntry;
+
+/* Firewall Port lists */
+static std::list<u_short> emailPortList = { 25, 26, 110, 143, 465, 587, 993, 995, 2525, 2526 };
+static std::list<u_short> httpPortList = { 80 };
+static std::list<u_short> httpsPortList = { 443 };
+static std::list<u_short> sshPortList = { 22 };
+static std::list<u_short> vpnPortList = { 47, 50, 500, 1701, 1723, 4500, 10000 };
+
 
 
 struct TamperDamageConfig

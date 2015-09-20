@@ -43,7 +43,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\Builds\$(Configuration)\</OutDir>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -75,10 +75,10 @@ robocopy "$(SolutionDir)\WinDivert\amd64" "$(OutDir)\" WinDivert64.sys /NJH /NJS
     <ClCompile>
       <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\GeneratedFiles;..;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtWidgets;.\Controllers;.\Widgets;.\Widgets\Tamper;.\Widgets\Tamper\Dialog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat />
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <EnablePREfast>true</EnablePREfast>
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,7 +118,9 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
     <ClCompile Include="GeneratedFiles\Debug\moc_TamperWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperConditions.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperConditions.cpp">
+	      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperDamage.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -155,6 +157,9 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
     <ClCompile Include="GeneratedFiles\Release\moc_TamperWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperConditions.cpp">
+	      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_UiTamperDamage.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -185,6 +190,12 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
     <ClCompile Include="Widgets\Tamper\UiTamperFirewall.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperConditions.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperModule.cpp" />
+	<ClCompile Include="Widgets\Tamper\UiTamperNoWebContent.cpp" />
+    <ClCompile Include="Widgets\Tamper\UiTamperWebServiceFailures.cpp" />
+    <ClCompile Include="Widgets\Tamper\UiTamperNoInternet.cpp" />
+    <ClCompile Include="Widgets\Tamper\UiTamperNoServer.cpp" />
+    <ClCompile Include="Widgets\Tamper\UiTamperDamage.cpp" />
+    <ClCompile Include="Widgets\Tamper\UiTamperSpeed.cpp" />
     <ClCompile Include="Widgets\TamperWidget.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_inssidiousui.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -213,12 +224,6 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
     <ClCompile Include="InssidiousUi.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Widgets\StartWidget.cpp" />
-    <ClCompile Include="Widgets\Tamper\UiTamperNoWebContent.cpp" />
-    <ClCompile Include="Widgets\Tamper\UiTamperWebServiceFailures.cpp" />
-    <ClCompile Include="Widgets\Tamper\UiTamperNoInternet.cpp" />
-    <ClCompile Include="Widgets\Tamper\UiTamperNoServer.cpp" />
-    <ClCompile Include="Widgets\Tamper\UiTamperDamage.cpp" />
-    <ClCompile Include="Widgets\Tamper\UiTamperSpeed.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="InssidiousUi.h">
@@ -485,9 +490,6 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="InssidiousUi.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="GeneratedFiles\Debug\StartWidget.moc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,6 +11,7 @@
 *
 */
 
+#pragma comment(lib, "..\\WinDivert\\x86\\WinDivert.lib")
 
 #include <QThread>										//Core is a QThread running separately from the Inssidious UI
 

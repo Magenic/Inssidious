@@ -21,7 +21,9 @@ private:
 	QPushButton* buttonMiddle2;
 	QPushButton* buttonRight;
 
-
+	QList<unsigned short> dialogPortList;
+	unsigned short portListVersion;
+	
 	void setActive(bool) override;
 
 
