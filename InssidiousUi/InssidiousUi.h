@@ -24,10 +24,19 @@
 
 #include "Controllers\UiDeviceController.h"		//Inssidious creates and draws the tab controller on the main window
 
+#ifdef _DEBUG
 #pragma comment(lib, "Qt5Cored.lib")		//QT Core libary
 #pragma comment(lib, "Qt5Guid.lib")			//QApplication library
 #pragma comment(lib, "Qt5Widgetsd.lib")		//QWidgets library
+#pragma comment(lib, "Qt5WinExtrasd.lib")	//QtWin library
+#endif
+#ifndef _DEBUG
+#pragma comment(lib, "Qt5Core.lib")			//QT Core libary
+#pragma comment(lib, "Qt5Gui.lib")			//QApplication library
+#pragma comment(lib, "Qt5Widgets.lib")		//QWidgets library
 #pragma comment(lib, "Qt5WinExtras.lib")	//QtWin library
+#endif
+
 #pragma comment(lib, "dwmapi.lib")			//DWM library
 
 

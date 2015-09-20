@@ -24,7 +24,7 @@ InssidiousCore::InssidiousCore()
 	hostedNetwork = new HostedNetworkController(this);
 	ics = new ICSController(this);
 	deviceController = new DeviceController();
-	dhcpController = new DHCPController(this);
+	dhcpController = new DHCPController();
 
 	/* Grab a pointer to the list of network connection names for use by Inssidious */
 

@@ -9,7 +9,7 @@ class DHCPController : public QThread
 	Q_OBJECT
 
 public:
-	DHCPController(QObject* parent);
+	DHCPController();
 
 
 signals: 

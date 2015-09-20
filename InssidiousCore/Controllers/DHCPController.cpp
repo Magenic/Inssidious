@@ -6,8 +6,8 @@
 #include <WinDivert/include/windivert.h>
 
 
-DHCPController::DHCPController(QObject* parent)
-	: QThread(parent), divertDHCPFilterString("ip.SrcAddr == 192.168.25.1 and udp.SrcPort == 67\0")
+DHCPController::DHCPController()
+	: divertDHCPFilterString("ip.SrcAddr == 192.168.25.1 and udp.SrcPort == 67\0")
 {
 
 	divertDHCPHandle = WinDivertOpen(divertDHCPFilterString, WINDIVERT_LAYER_NETWORK, divertDHCPPriority, WINDIVERT_FLAG_SNIFF);
