@@ -60,6 +60,7 @@
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <Profile>true</Profile>
     </Link>
     <PostBuildEvent>
       <Command>robocopy "$(QTDIR)\bin" "$(OutDir)\" Qt5Core.dll Qt5Cored.dll Qt5Gui.dll Qt5Guid.dll Qt5Network.dll Qt5Networkd.dll Qt5Widgets.dll Qt5Widgetsd.dll Qt5WinExtras.dll Qt5WinExtrasd.dll libEGL.dll libEGLd.dll libGLESv2.dll libGLESv2d.dll /NJH /NJS
@@ -86,6 +87,7 @@ robocopy "$(SolutionDir)\WinDivert\amd64" "$(OutDir)\" WinDivert64.sys /NJH /NJS
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <Profile>true</Profile>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(QTDIR)\bin\Qt5Core.dll" "$(OutDir)" /Y /Q
@@ -119,7 +121,7 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperConditions.cpp">
-	      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_UiTamperDamage.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -158,7 +160,7 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_UiTamperConditions.cpp">
-	      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_UiTamperDamage.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -190,7 +192,7 @@ xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Comman
     <ClCompile Include="Widgets\Tamper\UiTamperFirewall.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperConditions.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperModule.cpp" />
-	<ClCompile Include="Widgets\Tamper\UiTamperNoWebContent.cpp" />
+    <ClCompile Include="Widgets\Tamper\UiTamperNoWebContent.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperWebServiceFailures.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperNoInternet.cpp" />
     <ClCompile Include="Widgets\Tamper\UiTamperNoServer.cpp" />

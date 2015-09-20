@@ -76,56 +76,30 @@ DWORD DivertController::DivertClockLoop(void* pDivertControllerInstance)
 }
 
 
-int DivertController::sendAllListPackets() 
+void DivertController::sendAllListPackets() 
 {
-	// send packet from tail to head and remove sent ones
-	int sendCount = 0;
-	UINT sendLen;
 	Packet *pnode;
-
-//#ifdef _DEBUG
-//	// check the list is good
-//	// might go into dead loop but it's better for debugging
-//	Packet *p = packetList->head;
-//	do {
-//		p = p->next;
-//	} while (p->next);
-//	assert(p == packetList->tail);
-//#endif
 
 	while (!packetList->isListEmpty()) 
 	{
 		pnode = packetList->popNode(packetList->tail->prev);
-		sendLen = 0;
 		assert(pnode != packetList->head);
-		// FIXME inbound injection on any kind of packet is failing with a very high percentage
-		//       need to contact windivert auther and wait for next release
-		if (!WinDivertSend(divertHandleLayerNetwork, pnode->packet, pnode->packetLen, &(pnode->addr), &sendLen)) 
-		{
-			OutputDebugStringW(L"Failed to send a packet. \n"/* + GetLastError()*/);
-			assert(true);
-		}
-		else {
-			if (sendLen < pnode->packetLen) 
-			{
-				// TODO don't know how this can happen, or it needs to be resent like good old UDP packet
-				OutputDebugStringW(L"Internal Error: DivertSend truncated send packet.\n");
-				assert(true);
-				//InterlockedExchange16(&sendState, SEND_STATUS_FAIL);
-			}
-			else 
-			{
-				//InterlockedExchange16(&sendState, SEND_STATUS_SEND);
-			}
-		}
 
+		WinDivertHelperCalcChecksums(pnode->packet, pnode->packetLen, WINDIVERT_HELPER_NO_REPLACE);
+		WinDivertSendEx(divertHandleLayerNetwork, pnode->packet, pnode->packetLen, 0, &(pnode->addr), nullptr, nullptr);
+
+		//if (!WinDivertSend(divertHandleLayerNetwork, pnode->packet, pnode->packetLen, &(pnode->addr), nullptr)) 
+		//{
+		//	OutputDebugStringW(L"Failed to send a packet. \n"/* + GetLastError()*/);
+		//	assert(true);
+		//}
 
 		packetList->freeNode(pnode);
-		++sendCount;
 	}
+
 	assert(packetList->isListEmpty()); // all packets should be sent by now
 
-	return sendCount;
+	return;
 }
 
 // step function to let module process and consume all packets on the list
@@ -145,24 +119,23 @@ void DivertController::divertConsumeStep()
 		if (pTamperModulesActive[i] == true)
 		{
 			ppTamperModules[i]->process(packetList);
-			//InterlockedIncrement16(&(module->processTriggered));
 		}
 	}
 
-	int cnt = sendAllListPackets();
+	sendAllListPackets();
 
 //#ifdef _DEBUG
 	dt = GetTickCount64() - startTick;
 	if (dt > DIVERT_CLOCK_WAIT_MS / 2) 
 	{
-		OutputDebugStringW(std::wstring(L"Costly consume step: " + std::to_wstring(GetTickCount64() - startTick) + std::wstring(L" ") + std::to_wstring(cnt) + std::wstring(L"\n")).c_str());
+		OutputDebugStringW(std::wstring(std::to_wstring(dt) + std::wstring(L"\n")).c_str());
 	}
 //#endif
 }
 
 // periodically try to consume packets to keep the network responsive and not blocked by recv
 DWORD DivertController::divertClockLoop() {
-	DWORD startTick, stepTick, waitResult;
+	DWORD startTick, stepTick, consumeTick, waitResult;
 	//int ix;
 
 	for (;;) 
@@ -170,11 +143,14 @@ DWORD DivertController::divertClockLoop() {
 		// use acquire as wait for yielding thread
 		startTick = GetTickCount();
 		waitResult = WaitForSingleObject(mutex, DIVERT_CLOCK_WAIT_MS);
+
 		switch (waitResult) 
 		{
 		case WAIT_OBJECT_0:
 			/***************** enter critical region ************************/
+			
 			divertConsumeStep();
+			
 			/***************** leave critical region ************************/
 			if (!ReleaseMutex(mutex)) 
 			{
@@ -185,7 +161,8 @@ DWORD DivertController::divertClockLoop() {
 			}
 			// if didn't spent enough time, we sleep on it
 			stepTick = GetTickCount() - startTick;
-			if (stepTick < DIVERT_CLOCK_WAIT_MS) {
+			if (stepTick < DIVERT_CLOCK_WAIT_MS) 
+			{
 				Sleep(DIVERT_CLOCK_WAIT_MS - stepTick);
 			}
 			break;
@@ -228,8 +205,8 @@ DWORD DivertController::divertClockLoop() {
 				//}
 
 				OutputDebugStringW(L"Send all packets upon closing\n");
-				lastSendCount = sendAllListPackets();
-				OutputDebugStringW(L"Lastly sent %d packets. Closing...\n"/*, lastSendCount*/);
+				sendAllListPackets();
+				
 
 				// terminate recv loop by closing handler. handle related error in recv loop to quit
 				closed = WinDivertClose(divertHandleLayerNetwork);
@@ -278,12 +255,6 @@ DWORD DivertController::divertReadLoop(HANDLE divertHandle)
 			assert(true);
 			continue;
 		}
-		if (readLen > DIVERT_MAX_PACKETSIZE) 
-		{
-			// don't know how this can happen
-			OutputDebugStringW(L"Internal Error: DivertRecv truncated recv packet.\n");
-			assert(true);
-		}
 
 		waitResult = WaitForSingleObject(mutex, INFINITE);
 		switch (waitResult) 
@@ -301,12 +272,14 @@ DWORD DivertController::divertReadLoop(HANDLE divertHandle)
 				}
 				return 0;
 			}
+
 			// create node and put it into the list
 			pnode = packetList->createNode(packetBuf, readLen, &addrBuf);
 			packetList->appendNode(pnode);
 			//divertConsumeStep();
 			/***************** leave critical region ************************/
-			if (!ReleaseMutex(mutex)) {
+			if (!ReleaseMutex(mutex)) 
+			{
 				OutputDebugStringW(L"Fatal: Failed to release mutex\n"/*, GetLastError()*/);
 				assert(true);
 				//ABORT();

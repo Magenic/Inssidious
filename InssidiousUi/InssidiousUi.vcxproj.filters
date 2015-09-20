@@ -134,6 +134,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ConfigureFirewallDialog.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UiTamperConditions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="InssidiousUi.h" />
@@ -165,9 +168,6 @@
     </CustomBuild>
     <CustomBuild Include="Widgets\NewDeviceWidget.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="GeneratedFiles\Debug\StartWidget.moc">
-      <Filter>Generated Files\Debug</Filter>
     </CustomBuild>
     <CustomBuild Include="Widgets\Tamper\UiTamperDamage.h">
       <Filter>Header Files</Filter>

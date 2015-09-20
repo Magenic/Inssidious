@@ -51,7 +51,7 @@ private:
 	/* Handles to the WinDivert instance, the divert threads, and the associated filter strings */
 
 	HANDLE divertHandleLayerNetwork, divertHandleLayerNetworkForward = 0;
-	HANDLE readLoop1, readLoop2, clockThread = 0;
+	HANDLE readLoop1, readLoop2, readLoop3, readLoop4, readLoop5, readLoop6, clockThread = 0;
 	QString inboundFilterString;
 	QString outboundFilterString;
 
@@ -71,7 +71,7 @@ private:
 
 
 	// sends all packets on the list
-	int sendAllListPackets();
+	void sendAllListPackets();
 
 };
 
