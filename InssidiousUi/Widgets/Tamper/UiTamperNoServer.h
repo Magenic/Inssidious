@@ -2,7 +2,6 @@
 #define UITAMPERNOSERVER_H
 
 #include "UiTamperModule.h"
-#include <QtWidgets/QPushButton>
 
 
 class UiTamperNoServer : public UiTamperModule
@@ -21,12 +20,11 @@ private:
 	QPalette buttonImagePaletteActive;
 	QPalette buttonImagePaletteInactive;
 
-	QPushButton* configServersButton;
+	QList<unsigned int> dialogServerList;
+	unsigned int serverListVersion;
 
 	void setActive(bool) override;
 
-private slots:
-	void onConfigureServers();
 };
 
 #endif // UITAMPERNOSERVER_H

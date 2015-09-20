@@ -9,6 +9,9 @@ public:
 	short process(PacketList* packetList) override;
 
 private:
-	TamperNoServerConfig** ppTamperConfig;
+	TamperNoServerConfig** ppNoServerConfig;
+
+	std::list<UINT32> serverList;
+	UINT32 serverListVersion;
 };
 

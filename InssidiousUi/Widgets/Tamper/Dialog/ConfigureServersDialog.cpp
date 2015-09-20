@@ -5,7 +5,7 @@
 #pragma comment(lib, "Qt5Network.lib")	
 
 
-ConfigureServersDialog::ConfigureServersDialog(QWidget* parent, QList<QString> *ipList)
+ConfigureServersDialog::ConfigureServersDialog(QWidget* parent, QList<unsigned int> *ipList)
 	: QDialog(parent)
 {
 	saveList = ipList;
@@ -174,7 +174,7 @@ void ConfigureServersDialog::onSave()
 	for (int i = 0; i < listWidget->count(); i++)
 	{
 		QListWidgetItem* item = listWidget->item(i);
-		saveList->append(item->text());
+		saveList->append(inet_addr(item->text().toLocal8Bit()));
 		delete item;
 	}
 

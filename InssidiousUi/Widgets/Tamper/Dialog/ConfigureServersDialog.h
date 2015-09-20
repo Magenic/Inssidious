@@ -14,10 +14,10 @@ class ConfigureServersDialog : public QDialog
 	Q_OBJECT
 
 public:
-	ConfigureServersDialog(QWidget* parent, QList<QString> *ipList);
+	ConfigureServersDialog(QWidget* parent, QList<unsigned int> *ipList);
 
 private:
-	QList<QString> *saveList;
+	QList<unsigned int> *saveList;
 
 
 	QGridLayout* dialogGridLayout;

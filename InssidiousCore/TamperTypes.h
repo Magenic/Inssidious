@@ -111,15 +111,28 @@ struct TamperDamageConfig
 
 struct TamperNoInternetConfig
 {
-	volatile bool localNetwork;
-	volatile bool redirToPortal;
+	volatile bool noInternet;
 };
 
+enum TamperNoServersType
+{
+	NO_SERVERS_CUSTOM,
+	NO_SERVERS_OFF
+};
 
 struct TamperNoServerConfig
 {
-	volatile bool blockServers;
+	volatile TamperNoServersType noServersType;
+	PSLIST_HEADER noServersList;
 };
+
+typedef struct _TamperNoServerEntry
+{
+	SLIST_ENTRY ItemEntry;
+	UINT32 version;
+	UINT32 server;
+} TamperNoServerEntry;
+
 
 struct TamperNoWebContentConfig
 {

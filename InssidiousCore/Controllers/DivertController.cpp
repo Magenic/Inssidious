@@ -110,9 +110,9 @@ void DivertController::divertConsumeStep()
 		return;
 	}
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	ULONGLONG startTick = GetTickCount64(), dt;
-//#endif
+#endif
 
 	for (int i = 0; i < NUM_TAMPER_TYPES - 1; i++)
 	{
@@ -124,13 +124,13 @@ void DivertController::divertConsumeStep()
 
 	sendAllListPackets();
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	dt = GetTickCount64() - startTick;
 	if (dt > DIVERT_CLOCK_WAIT_MS / 2) 
 	{
 		OutputDebugStringW(std::wstring(std::to_wstring(dt) + std::wstring(L"\n")).c_str());
 	}
-//#endif
+#endif
 }
 
 // periodically try to consume packets to keep the network responsive and not blocked by recv

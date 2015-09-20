@@ -5,7 +5,12 @@
 UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
-	pTamperConfig = static_cast<void*>(new TamperNoServerConfig{ false });
+	pTamperConfig = static_cast<void*>(new TamperNoServerConfig{ NO_SERVERS_OFF, static_cast<PSLIST_HEADER>(_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT)) });
+
+	InitializeSListHead(static_cast<TamperNoServerConfig*>(pTamperConfig)->noServersList);
+	dialogServerList.clear();
+	serverListVersion = 0;
+
 
 	noServerLayout = new QGridLayout();
 	noServerLayout->setSpacing(0);
@@ -36,20 +41,86 @@ void UiTamperNoServer::setActive(bool active)
 		this->buttonImage->setPalette(buttonImagePaletteActive);
 		
 
-		QList<QString> stringList;
-		ConfigureServersDialog* dialog = new ConfigureServersDialog(this->parentWidget(), &stringList);
-		dialog->exec();
+		ConfigureServersDialog* dialog = new ConfigureServersDialog(this->parentWidget(), &dialogServerList);
+		if (dialog->exec() == QDialog::Accepted)
+		{
+			/* The User clicked Save. Process the new port list */
+
+			/* Create a new SList */
+
+			PSLIST_HEADER newListHead = static_cast<PSLIST_HEADER>(_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT));
+			InitializeSListHead(newListHead);
+			serverListVersion++;
+
+
+			/* Add the new ports to the list */
+
+			PSLIST_ENTRY entryLast = nullptr;
+			PSLIST_ENTRY entryFirst = nullptr;
+			for (unsigned int server : dialogServerList)
+			{
+				/* Allocate memory for the list entry */
+
+				TamperNoServerEntry* pNoServerEntry = static_cast<TamperNoServerEntry*>(_aligned_malloc(sizeof(TamperNoServerEntry), MEMORY_ALLOCATION_ALIGNMENT));
+
+				/* Save the version and port number */
+
+				pNoServerEntry->version = serverListVersion;
+				pNoServerEntry->server = server;
+				
+
+				/* Add the entry to the list */
+
+				InterlockedPushEntrySList(newListHead, &(pNoServerEntry->ItemEntry));
+				entryLast = &(pNoServerEntry->ItemEntry);
+			}
+
+
+			/* If we have valid first and last entries, push in the new list */
+
+			entryFirst = RtlFirstEntrySList(newListHead);
+			if (entryFirst && entryLast)
+			{
+				/* Clear any existing items in the port list */
+
+				PSLIST_ENTRY staleItems = InterlockedFlushSList(static_cast<TamperNoServerConfig*>(pTamperConfig)->noServersList);
+
+
+				/* Push the new list and set the type to FIREWALL_CUSTOM */
+
+				InterlockedPushListSList(static_cast<TamperNoServerConfig*>(pTamperConfig)->noServersList, entryFirst, entryLast, dialogServerList.count());
+				static_cast<TamperNoServerConfig*>(pTamperConfig)->noServersType = NO_SERVERS_CUSTOM;
+
+
+				/* Notify Core */
+
+				emit tamperStart(this, pTamperConfig);
+
+
+				/* Free memory left over from any old existing items */
+
+				while (staleItems != nullptr)
+				{
+					PSLIST_ENTRY tmp = staleItems;
+					staleItems = staleItems->Next;
+					_aligned_free(tmp);
+					break;
+				}
+			}
+			else
+			{
+				/* Should not get here */
+				static_cast<TamperNoServerConfig*>(pTamperConfig)->noServersType = NO_SERVERS_OFF;
+				__debugbreak();
+			}
+		}
+		else
+		{
+			/* The user clicked Close or Cancel. Turn off the tamper module */
+			setActive(false);
+		}
+
 		delete dialog;
-		
-
-		/* Set the config value to true and the block button to checked */
-
-		static_cast<TamperNoServerConfig*>(pTamperConfig)->blockServers = true;
-
-
-		/* Notify Core */
-
-		emit tamperStart(this, pTamperConfig);
 
 	}
 	else
@@ -62,44 +133,11 @@ void UiTamperNoServer::setActive(bool active)
 
 		/* Set the config value to false */
 
-		static_cast<TamperNoServerConfig*>(pTamperConfig)->blockServers = false;
+		static_cast<TamperNoServerConfig*>(pTamperConfig)->noServersType = NO_SERVERS_OFF;
 
 
 		/* Notify Core */
 
 		emit tamperStop(this);
 	}
-}
-
-
-void UiTamperNoServer::onConfigureServers()
-{
-	
-	//QList<QString> stringList;
-	//QPoint global = this->mapToGlobal(rect().center());
-	//ConfigureServersDialog* dialog = new ConfigureServersDialog(&stringList);
-	//dialog->exec();
-	//delete dialog;
-	//if (stringList.count() > 0)
-	//{
-	//	//TODO: get this to the tamper module	
-
-	//	blockedServersCount = stringList.count();
-	//	blockedServersComboBox->clear();
-	//	blockedServersComboBox->addItem(blockedServerFirstItemText + QString::number(blockedServersCount));
-
-	//	QList<_Uint32t> ipList;
-
-	//	for (int i = 0; i < stringList.count(); i++)
-	//	{
-
-	//		blockedServersComboBox->addItem(stringList[i]);
-
-	//		_Uint32t ipAsInt = 0;
-	//		InetPton(AF_INET, (const wchar_t*)stringList[i].split(" ").first().utf16(), &ipAsInt);
-
-	//		ipList.append(ipAsInt);
-	//	}
-
-	//}
 }
