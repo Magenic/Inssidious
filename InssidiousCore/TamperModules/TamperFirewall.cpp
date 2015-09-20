@@ -117,30 +117,34 @@ short TamperFirewall::process(PacketList* packetList)
 
 		if (tcphdr)
 		{
+			pDivertPacket = pDivertPacket->next;
+
 			for (u_short port : *activePortList)
 			{
 				if (tcphdr->DstPort == port || tcphdr->SrcPort == port)
 				{
 					/* Drop packet */
-					pDivertPacket = pDivertPacket->next;
 					packetList->freeNode(packetList->popNode(pDivertPacket->prev));
 					break;
 				}
 			}
+
 			continue;
 		}
 		else if (udphdr)
 		{
+			pDivertPacket = pDivertPacket->next;
+
 			for (u_short port : *activePortList)
 			{
 				if (udphdr->DstPort == port || udphdr->SrcPort == port)
 				{
 					/* Drop packet */
-					pDivertPacket = pDivertPacket->next;
 					packetList->freeNode(packetList->popNode(pDivertPacket->prev));
 					break;
 				}
 			}
+
 			continue;
 		}
 
