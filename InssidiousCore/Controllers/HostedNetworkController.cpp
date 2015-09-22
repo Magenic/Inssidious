@@ -426,8 +426,8 @@ void HostedNetworkController::isHostedNetworkCapable()
 
 	if (!atLeastOneHostedNetworkSupport)
 	{
-		MessageBox(nullptr, L"No wireless network adapters with Hosted Network Support were\
-						  			\n found. Please insert or enable another wireless adapter and restart Inssidious.",
+		MessageBox(nullptr, L"No wireless network adapters with Hosted Network Support were found.\n\
+						  	Please insert or enable another wireless adapter and restart Inssidious.",
 									L"Inssidious failed to start.", MB_OK);
 		ExitProcess(1);
 	}
