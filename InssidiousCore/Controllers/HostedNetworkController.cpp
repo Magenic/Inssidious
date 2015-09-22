@@ -438,3 +438,42 @@ void HostedNetworkController::isHostedNetworkCapable()
 }
 
 
+bool HostedNetworkController::stop()
+{
+	/* Create variables to receive the result of Wlan API calls */
+
+	HRESULT result;													//HRESULT to store the return value 
+	PWLAN_HOSTED_NETWORK_REASON pHostedNetworkFailReason = nullptr;	//Pointer to the specific call failure reason
+	DWORD negotiatedVersion = 0;									//DWORD for the Wlan API to store the negotiated API version in
+	HANDLE wlanHandle;												//Handle to call WlanQueryInterface to check interface capabilities
+
+	/* Open a handle to the Wlan API */
+	result = WlanOpenHandle(
+		WLAN_API_VERSION_2_0,						//Request API version 2.0
+		nullptr,									//Reserved
+		&negotiatedVersion,							//Address of the DWORD to store the negotiated version
+		&wlanHandle									//Address of the HANDLE to store the Wlan handle
+		);
+	if (result != NO_ERROR)
+	{
+		emit hostedNetworkMessage("Unable to open a handle to the Wlan API. Error: \n   " + QString::fromWCharArray(_com_error(result).ErrorMessage()), HOSTED_NETWORK_STARTING_FAILED);
+		return false;
+	}
+
+
+	/* Stop any existing running Hosted Network */
+
+	emit hostedNetworkMessage("Stopping any currently running Hosted Networks.", HOSTED_NETWORK_STARTING);
+	result = WlanHostedNetworkForceStop(
+		wlanHandle,									//Wlan handle
+		pHostedNetworkFailReason,					//Pointer to where the API can store a failure reason in
+		nullptr										//Reserved
+		);
+	if (result != NO_ERROR)
+	{
+		emit hostedNetworkMessage("Unable to stop an existing, running Hosted Network. Error: \n   " + QString::fromWCharArray(_com_error(result).ErrorMessage()), HOSTED_NETWORK_STARTING_FAILED);
+		return false;
+	}
+
+	return true;
+}

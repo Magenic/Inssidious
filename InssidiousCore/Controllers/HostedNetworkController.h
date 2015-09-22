@@ -43,7 +43,7 @@ public:
 
 	//Performs legwork of configuring and starting the wireless hosted network
 	bool initialize(QString networkName, QString networkPassword);
-
+	bool stop();
 
 	//Callback that fires on HostedNetwork notifications from Windows, signals Core as appropriate
 	static void __stdcall WlanNotificationCallback(PWLAN_NOTIFICATION_DATA, PVOID);

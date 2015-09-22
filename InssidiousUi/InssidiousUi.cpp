@@ -46,7 +46,7 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	pushButtonClose->setGeometry(753, 1, 46, 31);
 	pushButtonMinimize->setGeometry(706, 1, 46, 31);
 
-	connect(pushButtonClose, &QPushButton::clicked, this, &InssidiousUi::close);
+	connect(pushButtonClose, &QPushButton::clicked, this, &InssidiousUi::onCloseClicked);
 	connect(pushButtonMinimize, &QPushButton::clicked, this, &InssidiousUi::onMinimizeClicked);
 
 
@@ -97,6 +97,7 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	
 	connect(startWidget, &StartWidget::uiStartCore, this, &InssidiousUi::onUiStartCore);
 	connect(this, &InssidiousUi::coreStart, inssidiousCore, &InssidiousCore::onUiCoreStart, Qt::QueuedConnection);
+	connect(this, &InssidiousUi::coreStop, inssidiousCore, &InssidiousCore::onUiCoreStop, Qt::QueuedConnection);
 
 	connect(inssidiousCore, &InssidiousCore::coreStarting, this, &InssidiousUi::onCoreStarting, Qt::QueuedConnection);
 	connect(this, &InssidiousUi::uiUpdateStartingText, startWidget, &StartWidget::onUiUpdateStartingText);
@@ -251,9 +252,10 @@ void InssidiousUi::onMinimizeClicked()
 	this->setWindowState(Qt::WindowMinimized);
 }
 
-void InssidiousUi::onSettingsClicked()
+void InssidiousUi::onCloseClicked()
 {
-	
+	emit coreStop();
+	this->close();
 }
 
 

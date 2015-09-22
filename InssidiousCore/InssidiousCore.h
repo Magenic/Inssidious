@@ -35,6 +35,7 @@ public:
 
 public slots:
 	void onUiCoreStart(QString networkName, QString networkPassword, QString networkAdapter);									
+	void onUiCoreStop();									
 	void onUiTamperStart(QString MACAddress, int tamperType, void* pTamperConfig);
 	void onUiTamperStop(QString MACAddress, int tamperType);
 

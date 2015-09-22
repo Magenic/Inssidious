@@ -86,8 +86,12 @@ void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword,
 	{
 		/* Something went wrong, display a message and stop initialization. */
 
-		emit coreStarting("Unable to start Internet Connection Sharing. Error:\n"
-			+ QString::fromWCharArray(_com_error(ics->result).ErrorMessage()), true);
+		MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(
+			("Unable to start Internet Connection Sharing. Error:\n")
+			+ QString::fromWCharArray(_com_error(ics->result).ErrorMessage())
+			).utf16()),
+			L"Inssidious failed to start.", MB_OK);
+		ExitProcess(1);
 
 		return;
 	}
@@ -100,6 +104,12 @@ void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword,
 	emit coreStarted();
 
 }
+
+void InssidiousCore::onUiCoreStop()
+{
+	hostedNetwork->stop();
+}
+
 
 void InssidiousCore::onUiTamperStart(QString MACAddress, int tamperType, void* pTamperConfig)
 {
@@ -122,6 +132,8 @@ void InssidiousCore::onCoreHostedNetworkMessage(QString message, HostedNetworkRe
 		break;
 	case HOSTED_NETWORK_STARTING_FAILED:
 		emit coreStarting(message, true /* an error occured */);
+		MessageBox(nullptr, L"The Hosted Network failed to start.", L"Inssidious failed to start.", MB_OK);
+		ExitProcess(1);
 		break;
 	case HOSTED_NETWORK_STARTED:
 		emit coreStarting(message, false /* not an error */);
@@ -129,6 +141,10 @@ void InssidiousCore::onCoreHostedNetworkMessage(QString message, HostedNetworkRe
 	case HOSTED_NETWORK_STOPPED:
 		/* The Hosted Network stopped unexpectedly */
 		/* TODO: cleanup and critical error */
+
+		MessageBox(nullptr, L"The Hosted Network stopped unexpectedly.", L"Inssidious was forced to stop.", MB_OK);
+		ExitProcess(1);
+
 		break;
 	case DEVICE_CONNECTED:
 		emit coreAddDevice(message /* device MAC address */);

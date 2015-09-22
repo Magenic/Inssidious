@@ -1,19 +1,15 @@
 #include "ConfigureServersDialog.h"
 
-#include <WS2tcpip.h>
-#include <QtNetwork/QHostInfo>
-#pragma comment(lib, "Qt5Network.lib")	
 
-
-ConfigureServersDialog::ConfigureServersDialog(QWidget* parent, QList<unsigned int> *ipList)
+ConfigureServersDialog::ConfigureServersDialog(QWidget* parent, QList<QString> *serversList)
 	: QDialog(parent)
 {
-	saveList = ipList;
+	saveList = serversList;
 
 	this->setWindowTitle("Configure Servers");
 	this->setWindowIcon(QIcon(":/InssidiousUi/Inssidious.ico"));
 	this->setStyleSheet(dialogStyleSheet);
-	this->setFixedSize(400, 300);
+	this->setFixedSize(390, 290);
 
 
 	/* Center the dialog over the Inssidious window */
@@ -24,6 +20,7 @@ ConfigureServersDialog::ConfigureServersDialog(QWidget* parent, QList<unsigned i
 
 
 	dialogPalette.setColor(QPalette::WindowText, QColor(51, 51, 51));
+	dialogErrorPalette.setColor(QPalette::WindowText, QColor(255, 150, 0, 255));
 	dialogPalette.setColor(QPalette::ButtonText, QColor(51, 51, 51));
 
 	dialogFont.setFamily("Segoe UI Semibold");
@@ -47,9 +44,8 @@ ConfigureServersDialog::ConfigureServersDialog(QWidget* parent, QList<unsigned i
 	input->setPlaceholderText("server.example.com");
 
 	presetOptions = new QComboBox();
-	presetOptions->addItem("Apple iCloud");
-	presetOptions->addItem("Google Play");
-	presetOptions->addItem("???");
+	presetOptions->addItem("(Coming Soon)");
+
 
 	listWidgetDescription = new QLabel("Blocked Servers:");
 	listWidgetDescription->setPalette(dialogPalette);
@@ -61,6 +57,10 @@ ConfigureServersDialog::ConfigureServersDialog(QWidget* parent, QList<unsigned i
 	listWidget->setStyleSheet(listWidgetStyleSheet);
 	listWidget->setFixedHeight(82);
 
+	for (auto i : *saveList)
+	{
+		listWidget->addItem(i);
+	}
 
 
 	buttonAddCustom = new QPushButton("Add");
@@ -74,6 +74,7 @@ ConfigureServersDialog::ConfigureServersDialog(QWidget* parent, QList<unsigned i
 	connect(buttonAddCustom, &QPushButton::clicked, this, &ConfigureServersDialog::onAddCustom);
 	connect(buttonAddPreset, &QPushButton::clicked, this, &ConfigureServersDialog::onAddPreset);
 	connect(buttonRemove, &QPushButton::clicked, this, &ConfigureServersDialog::onRemove);
+	connect(buttonClear, &QPushButton::clicked, this, &ConfigureServersDialog::onClear);
 	connect(buttonSave, &QPushButton::clicked, this, &ConfigureServersDialog::onSave);
 	connect(buttonCancel, &QPushButton::clicked, this, &ConfigureServersDialog::close);
 
@@ -88,7 +89,7 @@ ConfigureServersDialog::ConfigureServersDialog(QWidget* parent, QList<unsigned i
 	dialogGridLayout->addWidget(presetOptions, 3, 0, 1, 2);
 	dialogGridLayout->addWidget(buttonAddPreset, 3, 2, 1, 1, Qt::AlignHCenter);
 	dialogGridLayout->addWidget(listWidgetDescription, 4, 0, 1, 3);
-	dialogGridLayout->addWidget(listWidget, 5, 0, 4, 2);
+	dialogGridLayout->addWidget(listWidget, 5, 0, 4, 2, Qt::AlignTop | Qt::AlignHCenter);
 	dialogGridLayout->addWidget(buttonRemove, 5, 2, 1, 1, Qt::AlignTop | Qt::AlignHCenter);
 	dialogGridLayout->addWidget(buttonClear, 6, 2, 1, 1, Qt::AlignTop | Qt::AlignHCenter);
 	dialogGridLayout->addItem(new QSpacerItem(10, 10), 8, 0);
@@ -97,11 +98,15 @@ ConfigureServersDialog::ConfigureServersDialog(QWidget* parent, QList<unsigned i
 
 
 	setLayout(dialogGridLayout);
-
 }
 
 void ConfigureServersDialog::onAddCustom()
 {
+	if (this->input->text().isEmpty())
+	{
+		return;
+	}
+
 	input->setDisabled(true);
 	buttonAddCustom->setDisabled(true);
 	buttonAddPreset->setDisabled(true);
@@ -111,16 +116,19 @@ void ConfigureServersDialog::onAddCustom()
 	this->repaint();
 
 
-	/* Resolve name to an IP Address */
+	/* Confirm the input is valid */
 
 	QHostInfo host = QHostInfo::fromName(this->input->text());
-
 	if (host.error())
 	{
-		input->setText("Could not resolve: " + input->text());
+		inputInstructions->setText("Could not resolve: " + input->text());
+		inputInstructions->setPalette(dialogErrorPalette);
 	}
 	else
 	{
+		inputInstructions->setText(inputInstructionsText);
+		inputInstructions->setPalette(dialogPalette);
+
 		QList<QHostAddress> addressList = host.addresses();
 
 		for (QHostAddress addr : addressList)
@@ -133,6 +141,23 @@ void ConfigureServersDialog::onAddCustom()
 		}
 	}
 
+
+	/* Remove any duplicate entries */
+
+	for (int i = 0; i < listWidget->count(); i++)
+	{
+		for (int j = listWidget->count() - 1; j > i; j--)
+		{
+			if (listWidget->item(j)->text() == listWidget->item(i)->text())
+			{
+				delete listWidget->item(j);
+			}
+		}
+	}
+
+	input->clear();
+	
+
 	input->setEnabled(true);
 	buttonAddCustom->setEnabled(true);
 	buttonAddPreset->setEnabled(true);
@@ -144,9 +169,28 @@ void ConfigureServersDialog::onAddPreset()
 {
 	switch (presetOptions->currentIndex())
 	{
+	//case 0: 
+	//	for (auto i : list)
+	//	{
+	//		listWidget->addItem(i);
+	//	}
+	//	break;
 	default:
-		listWidget->addItem("combo");
 		break;
+	}
+
+
+	/* Remove any duplicate entries */
+
+	for (int i = 0; i < listWidget->count(); i++)
+	{
+		for (int j = listWidget->count() - 1; j > i; j--)
+		{
+			if (listWidget->item(j)->text() == listWidget->item(i)->text())
+			{
+				delete listWidget->item(j);
+			}
+		}
 	}
 }
 
@@ -160,7 +204,7 @@ void ConfigureServersDialog::onRemove()
 
 void ConfigureServersDialog::onClear()
 {
-	for (int i = 0; i < listWidget->count(); i++)
+	for (int i = listWidget->count() - 1; i >= 0; i--)
 	{
 		QListWidgetItem* item = listWidget->item(i);
 		delete item;
@@ -171,12 +215,22 @@ void ConfigureServersDialog::onSave()
 {
 	saveList->clear();
 
-	for (int i = 0; i < listWidget->count(); i++)
+	if (listWidget->count() == 0)
+	{
+		/* No custom ports */
+		emit reject();
+		return;
+	}
+
+
+	/* Save the servers to the list */
+
+	for (int i = listWidget->count() - 1; i >= 0; i--)
 	{
 		QListWidgetItem* item = listWidget->item(i);
-		saveList->append(inet_addr(item->text().toLocal8Bit()));
+		saveList->append(item->text());
 		delete item;
 	}
 
-	emit close();
+	emit accept();
 }

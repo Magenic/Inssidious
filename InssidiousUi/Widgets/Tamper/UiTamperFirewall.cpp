@@ -1,6 +1,7 @@
 #include "UiTamperFirewall.h"
 #include "Dialog/ConfigureFirewallDialog.h"
 
+#include "Winsock2.h"
 #pragma comment(lib, "ntdll.lib")
 
 UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
@@ -183,7 +184,11 @@ void UiTamperFirewall::onButtonClicked(int index)
 				/* Add the entry to the list */
 
 				InterlockedPushEntrySList(newListHead, &(pTamperFirewallEntry->ItemEntry));
-				entryLast = &(pTamperFirewallEntry->ItemEntry);
+				
+				if (entryLast == nullptr)
+				{
+					entryLast = &(pTamperFirewallEntry->ItemEntry);
+				}
 			}
 			
 

@@ -20,7 +20,7 @@ private:
 	QPalette buttonImagePaletteActive;
 	QPalette buttonImagePaletteInactive;
 
-	QList<unsigned int> dialogServerList;
+	QList<QString> dialogServerList;
 	unsigned int serverListVersion;
 
 	void setActive(bool) override;

@@ -101,10 +101,11 @@ private slots:
 	void onUiTamperStop(QString MACAddress, TamperType tamperType);
 
 	void onMinimizeClicked();
-	void onSettingsClicked();
+	void onCloseClicked();
 
 signals:
 	void coreStart(QString networkName, QString networkPassword, QString networkAdapter);
+	void coreStop();
 	void uiUpdateStartingText(QString messageText, bool isErrorMessage = false);
 
 	void uiAddDevice(QString MACAddress);

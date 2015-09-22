@@ -8,21 +8,25 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLayout>
 #include <QtWidgets/QComboBox>
+#include <WS2tcpip.h>
+#include <QtNetwork/QHostInfo>
+#pragma comment(lib, "Qt5Network.lib")
 
 class ConfigureServersDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	ConfigureServersDialog(QWidget* parent, QList<unsigned int> *ipList);
+	ConfigureServersDialog(QWidget* parent, QList<QString> *ipList);
 
 private:
-	QList<unsigned int> *saveList;
+	QList<QString> *saveList;
 
 
 	QGridLayout* dialogGridLayout;
 	QFont dialogFont;
 	QPalette dialogPalette;
+	QPalette dialogErrorPalette;
 	QString dialogStyleSheet =
 		"QDialog{ margin: 0px; padding: 0px; border: none; background-color: #F0F0F0;}";
 

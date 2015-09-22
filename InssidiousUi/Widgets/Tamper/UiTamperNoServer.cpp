@@ -2,6 +2,9 @@
 
 #include "Dialog\ConfigureServersDialog.h"
 
+
+#include "Mstcpip.h"
+
 UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)
 {
@@ -57,8 +60,9 @@ void UiTamperNoServer::setActive(bool active)
 
 			PSLIST_ENTRY entryLast = nullptr;
 			PSLIST_ENTRY entryFirst = nullptr;
-			for (unsigned int server : dialogServerList)
+			for (auto server : dialogServerList)
 			{
+
 				/* Allocate memory for the list entry */
 
 				TamperNoServerEntry* pNoServerEntry = static_cast<TamperNoServerEntry*>(_aligned_malloc(sizeof(TamperNoServerEntry), MEMORY_ALLOCATION_ALIGNMENT));
@@ -66,13 +70,17 @@ void UiTamperNoServer::setActive(bool active)
 				/* Save the version and port number */
 
 				pNoServerEntry->version = serverListVersion;
-				pNoServerEntry->server = server;
+				pNoServerEntry->server = inet_addr(server.split(" - ").first().toLocal8Bit());
 				
 
 				/* Add the entry to the list */
 
 				InterlockedPushEntrySList(newListHead, &(pNoServerEntry->ItemEntry));
-				entryLast = &(pNoServerEntry->ItemEntry);
+
+				if (entryLast == nullptr)
+				{
+					entryLast = &(pNoServerEntry->ItemEntry);
+				}
 			}
 
 

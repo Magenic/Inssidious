@@ -62,6 +62,11 @@ ConfigureFirewallDialog::ConfigureFirewallDialog(QWidget* parent, QList<unsigned
 	listWidget->setStyleSheet(listWidgetStyleSheet);
 	listWidget->setFixedHeight(82);
 
+	
+	for (auto i : *saveList)
+	{
+		listWidget->addItem(QString::number(i));
+	}
 
 
 	buttonAddCustom = new QPushButton("Add");
