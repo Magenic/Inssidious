@@ -71,21 +71,6 @@
   <ItemGroup>
     <ClInclude Include="include\windivert.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="amd64\WinDivert.dll" />
-    <None Include="amd64\WinDivert64.sys" />
-    <None Include="CHANGELOG" />
-    <None Include="doc\WinDivert.html" />
-    <None Include="LICENSE" />
-    <None Include="README" />
-    <None Include="VERSION" />
-    <None Include="x86\WinDivert.dll" />
-    <None Include="x86\WinDivert32.sys" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="amd64\WinDivert.lib" />
-    <Library Include="x86\WinDivert.lib" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
