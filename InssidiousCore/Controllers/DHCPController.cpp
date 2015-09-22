@@ -7,7 +7,7 @@
 
 
 DHCPController::DHCPController()
-	: divertDHCPFilterString("ip.SrcAddr == 192.168.25.1 and udp.SrcPort == 67\0")
+	: divertDHCPFilterString("ip.SrcAddr == 192.168.137.1 and udp.SrcPort == 67\0")
 {
 
 	divertDHCPHandle = WinDivertOpen(divertDHCPFilterString, WINDIVERT_LAYER_NETWORK, divertDHCPPriority, WINDIVERT_FLAG_SNIFF);

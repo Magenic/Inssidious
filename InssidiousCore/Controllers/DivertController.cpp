@@ -349,8 +349,8 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 
 	/* Update the filter strings with the new IP address */
 
-	inboundFilterString = QString("ip.DstAddr == " + IPAddress + " and ip.SrcAddr != 192.168.25.1");
-	outboundFilterString = QString("ip.SrcAddr == " + IPAddress + " and ip.DstAddr != 192.168.25.1");
+	inboundFilterString = QString("ip.DstAddr == " + IPAddress + " and ip.SrcAddr != 192.168.137.1");
+	outboundFilterString = QString("ip.SrcAddr == " + IPAddress + " and ip.DstAddr != 192.168.137.1");
 
 
 	/* Open WinDivert handles */

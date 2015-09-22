@@ -135,8 +135,6 @@ void ConfigureServersDialog::onAddCustom()
 	if (status)
 	{
 		inputInstructions->setText("Could not resolve: " + input->text());
-		inputInstructions->setText(input->text() + " . Error: ");
-		inputInstructions->setText(input->text() + QString::number(status));
 		inputInstructions->setPalette(dialogErrorPalette);
 	}
 	else
@@ -161,30 +159,6 @@ void ConfigureServersDialog::onAddCustom()
 		DnsRecordListFree(pDnsRecord, DnsFreeRecordListDeep);
 
 	}
-	//QHostInfo host = QHostInfo::fromName(this->input->text());
-	//if (host.error())
-	//{
-	//	inputInstructions->setText("Could not resolve: " + input->text());
-	//	inputInstructions->setPalette(dialogErrorPalette);
-	//}
-	//else
-	//{
-	//	inputInstructions->setText(inputInstructionsText);
-	//	inputInstructions->setPalette(dialogPalette);
-
-	//	QList<QHostAddress> addressList = host.addresses();
-
-	//	for (QHostAddress addr : addressList)
-	//	{
-	//		QHostAddress dumb = QHostAddress(addr.toIPv4Address());
-	//		//_Uint32t addrAsUint32 = addr.toIPv4Address();
-	//		//wchar_t strbuff[512];
-	//		//InetNtop(AF_INET, &addrAsUint32, strbuff, sizeof(strbuff));
-
-	//		//listWidget->addItem(QString::fromWCharArray(strbuff) + QString(" - ") + input->text());
-	//		listWidget->addItem(QString::fromWCharArray(dumb.toString().utf16()) + QString(" - ") + input->text());
-	//	}
-	//}
 
 
 	/* Remove any duplicate entries */
