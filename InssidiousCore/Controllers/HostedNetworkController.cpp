@@ -320,8 +320,7 @@ void HostedNetworkController::isHostedNetworkCapable()
 		{
 			/* Something went wrong */
 
-			MessageBox(nullptr, L"Unable to allocate memory needed to call GetAdapterInfo.\
-							  				\nPlease restart Inssidious and try again.",
+			MessageBox(nullptr, L"Unable to allocate memory needed to call GetAdapterInfo.\nPlease restart Inssidious and try again.",
 											L"Inssidious failed to start.", MB_OK);
 			ExitProcess(1);
 		}
@@ -329,7 +328,7 @@ void HostedNetworkController::isHostedNetworkCapable()
 
 		/* Try to get network adapter information */
 
-		result = GetAdaptersAddresses(AF_INET, 0, nullptr, pAddresses, &ulOutBufLen);
+		result = GetAdaptersAddresses(AF_INET, GAA_FLAG_INCLUDE_ALL_INTERFACES, nullptr, pAddresses, &ulOutBufLen);
 
 		if (result == ERROR_BUFFER_OVERFLOW)
 		{
@@ -344,8 +343,7 @@ void HostedNetworkController::isHostedNetworkCapable()
 		{
 			/* The system has no network adapters. */
 
-			MessageBox(nullptr, L"No network adapters found. Please enable or connect network\
-							  				\nadapters to the system and restart Inssidious.",
+			MessageBox(nullptr, L"No network adapters found. Please enable or connect network \n adapters to the system and restart Inssidious.",
 											L"Inssidious failed to start.", MB_OK);
 			ExitProcess(1);
 		}
@@ -380,11 +378,12 @@ void HostedNetworkController::isHostedNetworkCapable()
 			/* Check whether the adapter supports running a wireless hosted network */
 			/* Support for this is required by all wireless cards certified for Windows 7 or newer */
 
+			GUID adapterAsGuid = QUuid(pCurrAddresses->AdapterName);
 			DWORD responseSize = 0;										//DWORD for the Wlan API to store the size of its reply in
 			PBOOL pHostedNetworkCapable = nullptr;						//Pointer to a bool for hosted network capabilities
 			result = WlanQueryInterface(
 				wlanHandle,												//Handle to the WLAN API opened earlier
-				&(GUID(QUuid(pCurrAddresses->AdapterName))),			//Char Array to Qt Uuid to GUID of the adapter ID
+				&adapterAsGuid,											//Char Array to Qt Uuid to GUID of the adapter ID
 				wlan_intf_opcode_hosted_network_capable,				//Asking specifically on hosted network support
 				nullptr,												//Reserved
 				&responseSize,											//Size of the response received
@@ -426,8 +425,7 @@ void HostedNetworkController::isHostedNetworkCapable()
 
 	if (!atLeastOneHostedNetworkSupport)
 	{
-		MessageBox(nullptr, L"No wireless network adapters with Hosted Network Support were found.\n\
-						  	Please insert or enable another wireless adapter and restart Inssidious.",
+		MessageBox(nullptr, L"No wireless network adapters with Hosted Network Support were found.\nPlease insert or enable another wireless adapter and restart Inssidious.",
 									L"Inssidious failed to start.", MB_OK);
 		ExitProcess(1);
 	}
