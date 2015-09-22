@@ -2,8 +2,8 @@
 
 #include "Dialog\ConfigureServersDialog.h"
 
+#include <WS2tcpip.h>
 
-#include "Mstcpip.h"
 
 UiTamperNoServer::UiTamperNoServer(QWidget *parent, TamperType tamperType)
 	: UiTamperModule(parent, tamperType)

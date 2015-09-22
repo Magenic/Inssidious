@@ -1,5 +1,8 @@
 #include "ConfigureServersDialog.h"
 
+#include "winsock2.h"
+#include "windns.h"
+#pragma comment (lib, "Dnsapi.lib")
 
 ConfigureServersDialog::ConfigureServersDialog(QWidget* parent, QList<QString> *serversList)
 	: QDialog(parent)
@@ -118,10 +121,22 @@ void ConfigureServersDialog::onAddCustom()
 
 	/* Confirm the input is valid */
 
-	QHostInfo host = QHostInfo::fromName(this->input->text());
-	if (host.error())
+	// Calling function DnsQuery to query Host or PTR records   
+
+	PDNS_RECORD pDnsRecord;          //Pointer to DNS_RECORD structure.
+	DNS_STATUS status = DnsQuery(PCTSTR(input->text().utf16()),     //Pointer to domain name. 
+		DNS_TYPE_A,													//Type of the record to be queried.
+		DNS_QUERY_BYPASS_CACHE | DNS_QUERY_NO_HOSTS_FILE,			// Bypasses the resolver cache on the lookup. 
+		nullptr,													//Optional DNS server IP address.
+		&pDnsRecord,												//Resource record that contains the response.
+		nullptr);													//Reserved for future use.
+
+
+	if (status)
 	{
 		inputInstructions->setText("Could not resolve: " + input->text());
+		inputInstructions->setText(input->text() + " . Error: ");
+		inputInstructions->setText(input->text() + QString::number(status));
 		inputInstructions->setPalette(dialogErrorPalette);
 	}
 	else
@@ -129,17 +144,47 @@ void ConfigureServersDialog::onAddCustom()
 		inputInstructions->setText(inputInstructionsText);
 		inputInstructions->setPalette(dialogPalette);
 
-		QList<QHostAddress> addressList = host.addresses();
+		PDNS_RECORD copyOfpDnsRecord = pDnsRecord;
 
-		for (QHostAddress addr : addressList)
+		do
 		{
-			_Uint32t addrAsUint32 = addr.toIPv4Address();
-			wchar_t strbuff[512];
-			InetNtop(AF_INET, &addrAsUint32, strbuff, sizeof(strbuff));
+			IN_ADDR ipaddr;
+			ipaddr.S_un.S_addr = (copyOfpDnsRecord->Data.A.IpAddress);
+			listWidget->addItem(QString::fromLocal8Bit(inet_ntoa(ipaddr)) + QString(" - ") + input->text());
 
-			listWidget->addItem(QString::fromWCharArray(strbuff) + QString(" - ") + input->text());
-		}
+			copyOfpDnsRecord = copyOfpDnsRecord->pNext;
+
+		} while (copyOfpDnsRecord != nullptr);
+
+
+		// Free memory allocated for DNS records. 
+		DnsRecordListFree(pDnsRecord, DnsFreeRecordListDeep);
+
 	}
+	//QHostInfo host = QHostInfo::fromName(this->input->text());
+	//if (host.error())
+	//{
+	//	inputInstructions->setText("Could not resolve: " + input->text());
+	//	inputInstructions->setPalette(dialogErrorPalette);
+	//}
+	//else
+	//{
+	//	inputInstructions->setText(inputInstructionsText);
+	//	inputInstructions->setPalette(dialogPalette);
+
+	//	QList<QHostAddress> addressList = host.addresses();
+
+	//	for (QHostAddress addr : addressList)
+	//	{
+	//		QHostAddress dumb = QHostAddress(addr.toIPv4Address());
+	//		//_Uint32t addrAsUint32 = addr.toIPv4Address();
+	//		//wchar_t strbuff[512];
+	//		//InetNtop(AF_INET, &addrAsUint32, strbuff, sizeof(strbuff));
+
+	//		//listWidget->addItem(QString::fromWCharArray(strbuff) + QString(" - ") + input->text());
+	//		listWidget->addItem(QString::fromWCharArray(dumb.toString().utf16()) + QString(" - ") + input->text());
+	//	}
+	//}
 
 
 	/* Remove any duplicate entries */

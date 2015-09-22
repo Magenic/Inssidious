@@ -8,9 +8,6 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLayout>
 #include <QtWidgets/QComboBox>
-#include <WS2tcpip.h>
-#include <QtNetwork/QHostInfo>
-#pragma comment(lib, "Qt5Network.lib")
 
 class ConfigureServersDialog : public QDialog
 {
