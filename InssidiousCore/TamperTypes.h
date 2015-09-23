@@ -1,17 +1,10 @@
 #ifndef TAMPERTYPES_H
 #define TAMPERTYPES_H
 
+
 #define WIN32_LEAN_AND_MEAN
 #include "Windows.h"
 #include <list>
-
-extern "C"
-PSLIST_ENTRY __fastcall InterlockedPushListSList(
-	IN PSLIST_HEADER ListHead,
-	IN PSLIST_ENTRY List,
-	IN PSLIST_ENTRY ListEnd,
-	IN ULONG Count
-	);
 
 
 enum TamperType

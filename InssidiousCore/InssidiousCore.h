@@ -11,6 +11,23 @@
 *
 */
 
+
+/* To use the InterlockedPushListSList API with a Windows 8+ SDK, NTDDI & WIN32_WINNT must be Win7 or earlier */
+/* And _CONTRACT_GEN must be defined, and APISET_INTERLOCKE_VER must be 0x0100 or lower */
+/* Defining those allows the use of the InterlockedPushListSList. */
+
+#define NTDDI_VERSION NTDDI_WIN7
+#define _WIN32_WINNT _WIN32_WINNT_WIN7
+#define _CONTRACT_GEN
+#define _APISET_INTERLOCKED_VER 0x0100
+
+/* Though that also stops synchapi.h from defining the Sleep api, so that's here manually now */
+
+#define WIN32_LEAN_AND_MEAN
+#include "Windows.h"
+WINBASEAPI VOID WINAPI Sleep( _In_ DWORD dwMilliseconds );
+
+
 #pragma comment(lib, "..\\WinDivert\\x86\\WinDivert.lib")
 
 #include <QThread>										//Core is a QThread running separately from the Inssidious UI
