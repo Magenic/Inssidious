@@ -65,6 +65,9 @@ private:
 
 	//Restrict the number of devices connected to the hosted network to five for UI (space) and performance (untested)
 	const DWORD maxNumberOfPeers = 5;
+
+
+	HANDLE wlanHandle = 0;
 };
 
 #endif // HOSTEDNETWORK_H

@@ -31,21 +31,31 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 	HRESULT result;													//HRESULT to store the return value 
 	PWLAN_HOSTED_NETWORK_REASON pHostedNetworkFailReason = nullptr;	//Pointer to the specific call failure reason
 	DWORD negotiatedVersion = 0;									//DWORD for the Wlan API to store the negotiated API version in
-	HANDLE wlanHandle;												//Handle to call WlanQueryInterface to check interface capabilities
 
-	/* Open a handle to the Wlan API */
-	result = WlanOpenHandle(
-		WLAN_API_VERSION_2_0,						//Request API version 2.0
-		nullptr,										//Reserved
-		&negotiatedVersion,							//Address of the DWORD to store the negotiated version
-		&wlanHandle									//Address of the HANDLE to store the Wlan handle
-		);
-	if (result != NO_ERROR)
+	if (wlanHandle == 0)
 	{
-		emit hostedNetworkMessage("Unable to open a handle to the Wlan API. Error: \n   " + QString::fromWCharArray(_com_error(result).ErrorMessage()), HOSTED_NETWORK_STARTING_FAILED);
-		return false;
-	}
+		/* Open a handle to the Wlan API */
 
+		DWORD negotiatedVersion = 0;					//DWORD for the Wlan API to store the negotiated API version in
+		result = WlanOpenHandle(
+			WLAN_API_VERSION_2_0,						//Request API version 2.0
+			nullptr,									//Reserved
+			&negotiatedVersion,							//Address of the DWORD to store the negotiated version
+			&wlanHandle									//Address of the HANDLE to store the Wlan handle
+			);
+
+		if (result != NO_ERROR)
+		{
+			/* Something went wrong */
+
+			MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(
+				("Unable to open a handle to the Wlan API. Error: \n   ")
+				+ QString::fromWCharArray(_com_error(result).ErrorMessage())
+				).utf16()),
+				L"Inssidious failed to start.", MB_OK);
+			ExitProcess(1);
+		}
+	}
 
 	/* Stop any existing running Hosted Network */
 	
@@ -274,32 +284,35 @@ void __stdcall HostedNetworkController::WlanNotificationCallback(PWLAN_NOTIFICAT
 //Called on HostedNetwork instantiation, message boxes if hosted network is not enabled
 void HostedNetworkController::isHostedNetworkCapable()
 {
-	HANDLE wlanHandle;								//Handle to use with Wlan API calls
 	HRESULT result;									//HRESULT to store the return value from IP Helper API calls
 	bool atLeastOneHostedNetworkSupport = false;	//Inssidious requires at least one wireless adapter with hosted network support
 
 
-	/* Open a handle to the Wlan API */
-
-	DWORD negotiatedVersion = 0;					//DWORD for the Wlan API to store the negotiated API version in
-	result = WlanOpenHandle(
-		WLAN_API_VERSION_2_0,						//Request API version 2.0
-		nullptr,										//Reserved
-		&negotiatedVersion,							//Address of the DWORD to store the negotiated version
-		&wlanHandle									//Address of the HANDLE to store the Wlan handle
-		);
-
-	if (result != NO_ERROR)
+	if (wlanHandle == 0)
 	{
-		/* Something went wrong */
+		/* Open a handle to the Wlan API */
 
-		MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(
-			           ("Unable to open a handle to the Wlan API. Error: \n   ")
-			           + QString::fromWCharArray(_com_error(result).ErrorMessage())
-		           ).utf16()),
-			L"Inssidious failed to start.", MB_OK);
-		ExitProcess(1);
+		DWORD negotiatedVersion = 0;					//DWORD for the Wlan API to store the negotiated API version in
+		result = WlanOpenHandle(
+			WLAN_API_VERSION_2_0,						//Request API version 2.0
+			nullptr,									//Reserved
+			&negotiatedVersion,							//Address of the DWORD to store the negotiated version
+			&wlanHandle									//Address of the HANDLE to store the Wlan handle
+			);
+
+		if (result != NO_ERROR)
+		{
+			/* Something went wrong */
+
+			MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(
+				("Unable to open a handle to the Wlan API. Error: \n   ")
+				+ QString::fromWCharArray(_com_error(result).ErrorMessage())
+				).utf16()),
+				L"Inssidious failed to start.", MB_OK);
+			ExitProcess(1);
+		}
 	}
+
 
 
 	/* Get a list of all network adapters on the system */
@@ -445,23 +458,47 @@ bool HostedNetworkController::stop()
 	DWORD negotiatedVersion = 0;									//DWORD for the Wlan API to store the negotiated API version in
 	HANDLE wlanHandle;												//Handle to call WlanQueryInterface to check interface capabilities
 
-	/* Open a handle to the Wlan API */
-	result = WlanOpenHandle(
-		WLAN_API_VERSION_2_0,						//Request API version 2.0
-		nullptr,									//Reserved
-		&negotiatedVersion,							//Address of the DWORD to store the negotiated version
-		&wlanHandle									//Address of the HANDLE to store the Wlan handle
-		);
-	if (result != NO_ERROR)
+	if (wlanHandle == 0)
 	{
-		emit hostedNetworkMessage("Unable to open a handle to the Wlan API. Error: \n   " + QString::fromWCharArray(_com_error(result).ErrorMessage()), HOSTED_NETWORK_STARTING_FAILED);
-		return false;
+		/* Open a handle to the Wlan API */
+
+		DWORD negotiatedVersion = 0;					//DWORD for the Wlan API to store the negotiated API version in
+		result = WlanOpenHandle(
+			WLAN_API_VERSION_2_0,						//Request API version 2.0
+			nullptr,									//Reserved
+			&negotiatedVersion,							//Address of the DWORD to store the negotiated version
+			&wlanHandle									//Address of the HANDLE to store the Wlan handle
+			);
+
+		if (result != NO_ERROR)
+		{
+			/* Something went wrong */
+
+			MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(
+				("Unable to open a handle to the Wlan API. Error: \n   ")
+				+ QString::fromWCharArray(_com_error(result).ErrorMessage())
+				).utf16()),
+				L"Inssidious failed to start.", MB_OK);
+			ExitProcess(1);
+		}
 	}
+
+
+	/* Unregister for notifications */
+
+	result = WlanRegisterNotification(
+		wlanHandle,									//Wlan handle
+		WLAN_NOTIFICATION_SOURCE_NONE,				//Specifically receive Hosted Network notifications
+		TRUE,										//Don't send duplicate notifications
+		nullptr,									//WLAN_NOTIFICATION_CALLBACK function to call with notifactions
+		nullptr,										//Context to pass along with the notification
+		nullptr,									//Reserved
+		nullptr										//Previously registered notification sources
+		);
 
 
 	/* Stop any existing running Hosted Network */
 
-	emit hostedNetworkMessage("Stopping any currently running Hosted Networks.", HOSTED_NETWORK_STARTING);
 	result = WlanHostedNetworkForceStop(
 		wlanHandle,									//Wlan handle
 		pHostedNetworkFailReason,					//Pointer to where the API can store a failure reason in
@@ -469,7 +506,7 @@ bool HostedNetworkController::stop()
 		);
 	if (result != NO_ERROR)
 	{
-		emit hostedNetworkMessage("Unable to stop an existing, running Hosted Network. Error: \n   " + QString::fromWCharArray(_com_error(result).ErrorMessage()), HOSTED_NETWORK_STARTING_FAILED);
+		//emit hostedNetworkMessage("Unable to stop an existing, running Hosted Network. Error: \n   " + QString::fromWCharArray(_com_error(result).ErrorMessage()), HOSTED_NETWORK_STARTING_FAILED);
 		return false;
 	}
 

@@ -86,6 +86,8 @@ void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword,
 	{
 		/* Something went wrong, display a message and stop initialization. */
 
+		hostedNetwork->stop();
+
 		MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(
 			("Unable to start Internet Connection Sharing. Error:\n")
 			+ QString::fromWCharArray(_com_error(ics->result).ErrorMessage())
@@ -108,6 +110,7 @@ void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword,
 void InssidiousCore::onUiCoreStop()
 {
 	hostedNetwork->stop();
+
 }
 
 
