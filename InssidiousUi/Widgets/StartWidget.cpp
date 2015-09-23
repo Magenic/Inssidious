@@ -66,7 +66,7 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 	networkNameLabel->setContentsMargins(0, 60, 0, 6);			//Pad the label down 40 from the logo and up 4 from the next object
 	networkNameLabel->setAlignment(Qt::AlignCenter);			//Center the text within the QLabel
 	networkNameInput = new QLineEdit();							//Initialize the QLineEdit pointer
-	networkNameInput->setText("Inssidious - Ian");				//Set the text
+	networkNameInput->setText("Inssidious");					//Set the default text
 	networkNameInput->setFont(QFont("Segoe UI", 10));
 	networkNameInput->setFixedWidth(300);						//Set a fixed size for the field
 	networkNameInput->setAlignment(Qt::AlignCenter);			//Center the text within the field
