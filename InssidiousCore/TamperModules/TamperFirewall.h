@@ -1,6 +1,5 @@
 #include "TamperModule.h"
-#include "TamperTypes.h"
-#include <list>
+
 
 class TamperFirewall : public TamperModule
 {
@@ -12,9 +11,9 @@ public:
 private:
 	TamperFirewallConfig** ppFirewallConfig;
 
-	std::list<u_short>* activePortList;
-	std::list<u_short> customPortList;
-	u_short customListVersion;
+	std::list<unsigned short>* activePortList;
+	std::list<unsigned short> customPortList;
+	unsigned short customListVersion;
 
 };
 

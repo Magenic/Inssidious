@@ -1,4 +1,5 @@
 #include "TamperSpeed.h"
+#include <timeapi.h>
 
 
 TamperSpeed::TamperSpeed(void** ppTamperConfig)

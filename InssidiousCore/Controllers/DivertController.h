@@ -1,8 +1,8 @@
 #ifndef DIVERTCONTROLLER_H
 #define DIVERTCONTROLLER_H
 
-#include <QThread>						//Base of DivertController
 
+#include <QThread>						//Base of DivertController
 #include <InssidiousCore/TamperModules/PacketList.h>
 
 

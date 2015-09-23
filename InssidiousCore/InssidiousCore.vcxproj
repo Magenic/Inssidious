@@ -214,6 +214,7 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DINSSIDIOUSCORE_LIB "-I.\GeneratedFiles" "-I.\.." "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I.\Controllers" "-I.\Tamper"</Command>
     </CustomBuild>
+    <ClInclude Include="InterlockedPushListSList.h" />
     <ClInclude Include="TamperModules\PacketList.h" />
     <ClInclude Include="TamperModules\TamperModule.h" />
     <ClInclude Include="TamperModules\TamperFirewall.h" />

@@ -1,11 +1,8 @@
 #ifndef TAMPERTYPES_H
 #define TAMPERTYPES_H
 
-
-#define WIN32_LEAN_AND_MEAN
-#include "Windows.h"
+#include "InterlockedPushListSList.h"
 #include <list>
-
 
 enum TamperType
 {

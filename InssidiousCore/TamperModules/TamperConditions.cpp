@@ -1,5 +1,6 @@
 
 #include "TamperConditions.h"
+#include <timeapi.h>
 
 
 TamperConditions::TamperConditions(void** ppTamperConfig)

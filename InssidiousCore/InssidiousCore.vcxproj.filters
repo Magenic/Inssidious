@@ -143,5 +143,8 @@
     <ClInclude Include="TamperModules\TamperNoWebContent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InterlockedPushListSList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

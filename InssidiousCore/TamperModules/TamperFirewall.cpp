@@ -1,6 +1,6 @@
 
 #include "TamperFirewall.h"
-
+#include "winsock2.h"
 
 TamperFirewall::TamperFirewall(void** ppTamperConfig)
 {

@@ -1,9 +1,8 @@
 
-
-#include "DivertController.h"
-
-#include <InssidiousCore/TamperModules/TamperModule.h>
 #include <InssidiousCore/TamperTypes.h>
+#include "DivertController.h"
+#include <InssidiousCore/TamperModules/TamperModule.h>
+
 
 #define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
 #define DIVERT_MAX_PACKETSIZE 0xFFFF
