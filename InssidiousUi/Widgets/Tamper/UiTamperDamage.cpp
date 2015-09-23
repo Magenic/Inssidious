@@ -71,7 +71,7 @@ void UiTamperDamage::setActive(bool active)
 		/* Enable the buttons */
 
 		damageSpinBox->setEnabled(true);
-		tcpCloseSpinBox->setEnabled(true);
+		//tcpCloseSpinBox->setEnabled(true);
 
 		randomizeConditions->setEnabled(true);
 		onRandomizeConditionsClicked();
@@ -108,7 +108,7 @@ void UiTamperDamage::setActive(bool active)
 void UiTamperDamage::onRandomizeConditionsClicked()
 {
 	damageSpinBox->setValue(rand() % 30);
-	tcpCloseSpinBox->setValue(rand() % 15);
+	//tcpCloseSpinBox->setValue(rand() % 15);
 }
 
 void UiTamperDamage::onDamageSpinBoxChange(int value)

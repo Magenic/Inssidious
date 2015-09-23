@@ -78,6 +78,11 @@ short TamperConditions::process(PacketList* packetList)
 			if (WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen, 0, 0, 0, 0, 0, 0, reinterpret_cast<PVOID*>(&data), &dataLen)
 				&& data != nullptr && dataLen != 0)
 			{
+				/* Ensure the packet has a checksum */
+				
+				WinDivertHelperCalcChecksums(pDivertPacket->packet, pDivertPacket->packetLen, WINDIVERT_HELPER_NO_REPLACE);
+
+
 				/* Tamper all of a short packet */
 	
 				if (dataLen <= 4)
@@ -93,10 +98,13 @@ short TamperConditions::process(PacketList* packetList)
 				}
 
 				/* Do not recalculate the packet checksum so the receiver knows it is bad */
-
-				//Perhaps offer the evil version, recalculating this, this one day
-				//WinDivertHelperCalcChecksums(pDivertPacket->packet, pDivertPacket->packetLen, 0);
 				
+				pDivertPacket = pDivertPacket->next;
+			}
+			else
+			{
+				/* No packet data or a problem parsing it. Skip this packet */
+
 				pDivertPacket = pDivertPacket->next;
 			}
 		}
