@@ -72,21 +72,6 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 	}
 
 
-	/* Initialize the hosted network as a precursor to setting specific settings */
-	
-	emit hostedNetworkMessage("Preparing to initialize settings.", HOSTED_NETWORK_STARTING);
-	result = WlanHostedNetworkInitSettings(
-		wlanHandle,									//Wlan handle
-		pHostedNetworkFailReason,					//Pointer to where the API can store a failure reason in
-		nullptr										//Reserved
-		);
-	if (result != NO_ERROR)
-	{
-		emit hostedNetworkMessage("Unable to initialize hosted network settings. Error: \n   " + QString::fromWCharArray(_com_error(result).ErrorMessage()), HOSTED_NETWORK_STARTING_FAILED);
-		return false;
-	}
-
-
 	/* Prepare the network name in the appropriate SSID format */
 
 	DOT11_SSID hostedNetworkSSID;						//DOT11_SSID struct to use later with WLAN_HOSTED_NETWORK_CONNECTION_SETTINGS
@@ -147,6 +132,20 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 	}
 
 
+	/* Save the hosted network settings */
+
+	emit hostedNetworkMessage("Saving the hosted network settings.", HOSTED_NETWORK_STARTING);
+	result = WlanHostedNetworkInitSettings(
+		wlanHandle,									//Wlan handle
+		pHostedNetworkFailReason,					//Pointer to where the API can store a failure reason in
+		nullptr										//Reserved
+		);
+	if (result != NO_ERROR)
+	{
+		emit hostedNetworkMessage("Unable to save hosted network settings. Error: \n   " + QString::fromWCharArray(_com_error(result).ErrorMessage()), HOSTED_NETWORK_STARTING_FAILED);
+		return false;
+	}
+
 	/* Start the Hosted Network */
 
 	emit hostedNetworkMessage("Starting the Hosted Network.", HOSTED_NETWORK_STARTING);
@@ -182,13 +181,31 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 
 	/* Check the hosted network status */
 
+	int loop30 = 0;
 	PWLAN_HOSTED_NETWORK_STATUS pHostedNetworkStatus = nullptr;
-	result = WlanHostedNetworkQueryStatus(
-		wlanHandle,										//Wlan handle
-		&pHostedNetworkStatus,							//Pointer to a pointer for HOSTED_NETWORK_STATUS
-		nullptr											//Reserved
-		);
-	if (result != NO_ERROR)
+	while (loop30 < 30)
+	{
+		loop30++;
+		pHostedNetworkStatus = nullptr;
+		result = WlanHostedNetworkQueryStatus(
+			wlanHandle,										//Wlan handle
+			&pHostedNetworkStatus,							//Pointer to a pointer for HOSTED_NETWORK_STATUS
+			nullptr											//Reserved
+			);
+		if (result != NO_ERROR)
+		{
+			Sleep(500);
+			continue;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	/* Left the loop */
+
+	if (result != NO_ERROR || !pHostedNetworkStatus)
 	{
 		emit hostedNetworkMessage("Unable to query hosted network status. Error: \n   " + QString::fromWCharArray(_com_error(result).ErrorMessage()), HOSTED_NETWORK_STARTING_FAILED);
 		return false;
@@ -198,12 +215,9 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 	/* The Hosted Network started. Free memory, emit the status, save the network GUID, and return true */
 
 	hostedNetworkGUID = pHostedNetworkStatus->IPDeviceID;
+	WlanFreeMemory(pHostedNetworkStatus);
+	pHostedNetworkStatus = nullptr;
 
-	if (pHostedNetworkStatus != nullptr)
-	{
-		WlanFreeMemory(pHostedNetworkStatus);
-		pHostedNetworkStatus = nullptr;
-	}
 
 	emit hostedNetworkMessage("Hosted Network started successfully.", HOSTED_NETWORK_STARTED);
 
