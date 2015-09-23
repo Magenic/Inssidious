@@ -346,15 +346,14 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 
 	}
 
-	/* Update the filter strings with the new IP address */
+	/* Update the filter string with the new IP address */
 
-	inboundFilterString = QString("ip.DstAddr == " + IPAddress + " and ip.SrcAddr != 192.168.137.1");
-	outboundFilterString = QString("ip.SrcAddr == " + IPAddress + " and ip.DstAddr != 192.168.137.1");
+	filterString = QString("(ip.DstAddr == " + IPAddress + " or ip.SrcAddr == " + IPAddress + ") and (ip.SrcAddr != 192.168.137.1 and ip.DstAddr != 192.168.137.1)");
 
 
 	/* Open WinDivert handles */
 
-	divertHandleLayerNetwork = WinDivertOpen(inboundFilterString.toLocal8Bit(), WINDIVERT_LAYER_NETWORK, 0, 0);
+	divertHandleLayerNetwork = WinDivertOpen(filterString.toLocal8Bit(), WINDIVERT_LAYER_NETWORK, 0, 0);
 	if (divertHandleLayerNetwork == INVALID_HANDLE_VALUE)
 	{
 		HRESULT result = GetLastError();
@@ -363,7 +362,7 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 		return;
 	}
 
-	divertHandleLayerNetworkForward = WinDivertOpen(outboundFilterString.toLocal8Bit(), WINDIVERT_LAYER_NETWORK_FORWARD, 1, 0);
+	divertHandleLayerNetworkForward = WinDivertOpen(filterString.toLocal8Bit(), WINDIVERT_LAYER_NETWORK_FORWARD, 1, 0);
 	if (divertHandleLayerNetworkForward == INVALID_HANDLE_VALUE)
 	{
 		HRESULT result = GetLastError();

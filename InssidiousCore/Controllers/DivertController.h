@@ -52,8 +52,7 @@ private:
 
 	HANDLE divertHandleLayerNetwork, divertHandleLayerNetworkForward = 0;
 	HANDLE readLoop1, readLoop2, readLoop3, readLoop4, readLoop5, readLoop6, clockThread = 0;
-	QString inboundFilterString;
-	QString outboundFilterString;
+	QString filterString;
 
 
 	/* Functions to create threads to process packets captured by WinDivert */
