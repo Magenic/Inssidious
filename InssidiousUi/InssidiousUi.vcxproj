@@ -38,12 +38,14 @@
     <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\Builds\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Builds\$(Configuration)\</OutDir>
     <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\Builds\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Builds\$(Configuration)\</OutDir>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -60,13 +62,15 @@
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <Profile>true</Profile>
+      <Profile>false</Profile>
     </Link>
     <PostBuildEvent>
-      <Command>robocopy "$(QTDIR)\bin" "$(OutDir)\" Qt5Core.dll Qt5Cored.dll Qt5Gui.dll Qt5Guid.dll Qt5Network.dll Qt5Networkd.dll Qt5Widgets.dll Qt5Widgetsd.dll Qt5WinExtras.dll Qt5WinExtrasd.dll libEGL.dll libEGLd.dll libGLESv2.dll libGLESv2d.dll /NJH /NJS
-robocopy "$(QTDIR)\plugins\platforms" "$(OutDir)\" QWindows.dll QWindowsd.dll /NJH /NJS
-robocopy "$(SolutionDir)\WinDivert\x86" "$(OutDir)\" WinDivert.dll WinDivert32.sys /NJH /NJS
-robocopy "$(SolutionDir)\WinDivert\amd64" "$(OutDir)\" WinDivert64.sys /NJH /NJS</Command>
+      <Command>mkdir "$(OUTDIR)platforms" 2&gt;NUL
+robocopy "$(QTDIR)\bin" "$(OutDir)." Qt5Core.dll Qt5Cored.dll Qt5Gui.dll Qt5Guid.dll Qt5Widgets.dll Qt5Widgetsd.dll Qt5WinExtras.dll Qt5WinExtrasd.dll libEGL.dll libEGLd.dll libGLESv2.dll libGLESv2d.dll /NJH /NJS /NP /IS
+robocopy "$(QTDIR)\plugins\platforms" "$(OutDir)platforms" QWindows.dll QWindowsd.dll /NJH /NJS /NP /IS
+robocopy "$(SolutionDir)WinDivert\x86" "$(OutDir)." WinDivert.dll WinDivert32.sys /NJH /NJS /NP /IS
+robocopy "$(SolutionDir)WinDivert\amd64" "$(OutDir)." WinDivert64.sys /NJH /NJS /NP /IS
+exit 0</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy Additional DLLs</Message>
@@ -90,17 +94,12 @@ robocopy "$(SolutionDir)\WinDivert\amd64" "$(OutDir)\" WinDivert64.sys /NJH /NJS
       <Profile>true</Profile>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(QTDIR)\bin\Qt5Core.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5Gui.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5Network.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5Widgets.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\Qt5WinExtras.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\libEGL.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\bin\libGLESv2.dll" "$(OutDir)" /Y /Q
-xcopy "$(QTDIR)\plugins\platforms\QWindows.dll" "$(OutDir)" /Y /Q
-xcopy "$(SolutionDir)\WinDivert\x86\WinDivert.dll" "$(OutDir)" /Y /Q
-xcopy "$(SolutionDir)\WinDivert\x86\WinDivert32.sys" "$(OutDir)" /Y /Q
-xcopy "$(SolutionDir)\WinDivert\amd64\WinDivert64.sys" "$(OutDir)" /Y /Q</Command>
+      <Command>mkdir "$(OUTDIR)platforms" 2&gt;NUL
+robocopy "$(QTDIR)\bin" "$(OutDir)." Qt5Core.dll Qt5Gui.dll Qt5Widgets.dll Qt5WinExtras.dll libEGL.dll libGLESv2.dll /NJH /NJS /NP /IS
+robocopy "$(QTDIR)\plugins\platforms" "$(OutDir)platforms" QWindows.dll /NJH /NJS /NP /IS
+robocopy "$(SolutionDir)WinDivert\x86" "$(OutDir)." WinDivert.dll WinDivert32.sys /NJH /NJS /NP /IS
+robocopy "$(SolutionDir)WinDivert\amd64" "$(OutDir)." WinDivert64.sys /NJH /NJS /NP /IS
+exit 0</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy Additional DLLs</Message>
