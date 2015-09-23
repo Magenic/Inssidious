@@ -99,34 +99,39 @@ bool ICSController::initialize(QString networkConnectionName, GUID hostedNetwork
 		{ 
 			/* Found the connection in icsNetworkConnectionList, now have the GUID */
 
-			result = pICSManager->EnableIcs(networkConnection.networkConnectionGUID, hostedNetworkGUID);
-			if (result != S_OK)
-			{
-				/* Something went wrong. Try one more time because ICS is buggy */
+			/* Try starting ICS a few times.. */
 
+			int loop30 = 0;
+			while (loop30 < 30)
+			{
+				loop30++;
 				result = pICSManager->EnableIcs(networkConnection.networkConnectionGUID, hostedNetworkGUID);
 				if (result != S_OK)
 				{
-					/* We can't start ICS */
-					
-					return false;
+					Sleep(500);
+					continue;
 				}
 				else
 				{
-					/* ICS started successfully */
-
-					return true;
+					break;
 				}
+			}
+
+			if (result != S_OK)
+			{
+				/* We can't start ICS */
+					
+				return false;
 			}
 			else
 			{
-
 				/* ICS started successfully */
 
 				return true;
 			}
 		}
 	}
+	
 
 	/* We should never end up here */
 
