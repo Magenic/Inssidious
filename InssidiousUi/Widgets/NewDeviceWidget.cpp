@@ -187,7 +187,7 @@ void NewDeviceWidget::onSetButtonClicked()
 
 
 	//Check whether the Device Name is of appropriate length
-	if (deviceNameInput->text().count() < 1 || deviceNameInput->text().count() > 12) //1 - 12 is the valid length range
+	if (deviceNameInput->text().count() < 1 || deviceNameInput->text().count() > 16) //1 - 16 is the valid length range
 	{
 		deviceNameLabel->setText("The device name must be between 1-12 characters:");
 		deviceNameLabel->setPalette(errorTextPalette);

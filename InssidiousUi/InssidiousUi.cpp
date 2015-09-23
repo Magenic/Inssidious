@@ -59,7 +59,7 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 
 	this->networkNameIcon.setGeometry(8, 8, 16, 16);
 	this->networkPasswordIcon.setGeometry(8, 32, 16, 16);
-	this->networkName.setGeometry(32, 8, 100, 16);
+	this->networkName.setGeometry(32, 8, 250, 16);
 	this->networkPassword.setGeometry(32, 32, 100, 16);
 
 	textPalette.setColor(QPalette::WindowText, QColor(39, 49, 39));
