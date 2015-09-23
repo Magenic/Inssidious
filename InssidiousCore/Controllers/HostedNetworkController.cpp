@@ -456,7 +456,6 @@ bool HostedNetworkController::stop()
 	HRESULT result;													//HRESULT to store the return value 
 	PWLAN_HOSTED_NETWORK_REASON pHostedNetworkFailReason = nullptr;	//Pointer to the specific call failure reason
 	DWORD negotiatedVersion = 0;									//DWORD for the Wlan API to store the negotiated API version in
-	HANDLE wlanHandle;												//Handle to call WlanQueryInterface to check interface capabilities
 
 	if (wlanHandle == 0)
 	{
@@ -504,6 +503,25 @@ bool HostedNetworkController::stop()
 		pHostedNetworkFailReason,					//Pointer to where the API can store a failure reason in
 		nullptr										//Reserved
 		);
+
+
+	/* Delete the Hosted Network Settings */
+
+	HKEY  hHostedNetworkRegSettings = nullptr;		//Handle to the registry key that contains the value we need to check
+	HRESULT openResult = RegOpenKeyEx(
+		HKEY_LOCAL_MACHINE,
+		L"System\\CurrentControlSet\\Services\\WlanSvc\\Parameters\\HostedNetworkSettings",
+		0,
+		KEY_SET_VALUE,
+		&hHostedNetworkRegSettings
+		);
+	if (openResult == ERROR_SUCCESS && hHostedNetworkRegSettings)
+	{
+		RegDeleteValue(hHostedNetworkRegSettings, L"EncryptedSettings");
+		RegDeleteValue(hHostedNetworkRegSettings, L"HostedNetworkSettings");
+	}
+
+
 	if (result != NO_ERROR)
 	{
 		//emit hostedNetworkMessage("Unable to stop an existing, running Hosted Network. Error: \n   " + QString::fromWCharArray(_com_error(result).ErrorMessage()), HOSTED_NETWORK_STARTING_FAILED);
