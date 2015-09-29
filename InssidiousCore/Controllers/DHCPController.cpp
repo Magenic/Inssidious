@@ -77,7 +77,7 @@ DHCPController::DHCPController()
 
 	/* Open another WinDivert handle with the lowest possible priority to reinject captured packets with */
 
-	divertDHCPSendHandle = WinDivertOpen(divertDHCPFilterString.toLocal8Bit(), WINDIVERT_LAYER_NETWORK, DIVERT_HIGHEST_PRIORITY, WINDIVERT_FLAG_NO_CHECKSUM);
+	divertDHCPSendHandle = WinDivertOpen("icmpv6" /* for this handle, we do not care about the packets */, WINDIVERT_LAYER_NETWORK, DIVERT_LOWEST_PRIORITY, WINDIVERT_FLAG_SNIFF);
 	if (divertDHCPSendHandle == INVALID_HANDLE_VALUE)
 	{
 		HRESULT result = GetLastError();

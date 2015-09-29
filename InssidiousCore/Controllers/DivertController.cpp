@@ -148,6 +148,15 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 		return;
 	}
 
+	clockLoopDivertHandle = WinDivertOpen("icmpv6" /* for this handle, we do not care about the packets */, WINDIVERT_LAYER_NETWORK, 0, WINDIVERT_FLAG_SNIFF);
+	if (clockLoopDivertHandle == INVALID_HANDLE_VALUE)
+	{
+		HRESULT result = GetLastError();
+
+		//TODO: Handle this error
+		return;
+	}
+
 	/* Max the WinDivert queue length and time */
 
 	WinDivertSetParam(srcAddrDivertHandleLayerNetwork, WINDIVERT_PARAM_QUEUE_LEN, DIVERT_QUEUE_LEN_MAX);
@@ -158,6 +167,12 @@ void DivertController::onDivertUpdateIPAddress(QString MACAddress, QString IPAdd
 	WinDivertSetParam(dstAddrDivertHandleLayerNetwork, WINDIVERT_PARAM_QUEUE_TIME, DIVERT_QUEUE_TIME_MAX);
 	WinDivertSetParam(dstAddrDivertHandleLayerNetworkForward, WINDIVERT_PARAM_QUEUE_LEN, DIVERT_QUEUE_LEN_MAX);
 	WinDivertSetParam(dstAddrDivertHandleLayerNetworkForward, WINDIVERT_PARAM_QUEUE_TIME, DIVERT_QUEUE_TIME_MAX);
+
+
+	/* Minimize the clockLoop send handle */
+
+	WinDivertSetParam(clockLoopDivertHandle, WINDIVERT_PARAM_QUEUE_LEN, 1 /*minimum queue length*/);
+	WinDivertSetParam(clockLoopDivertHandle, WINDIVERT_PARAM_QUEUE_TIME, 128 /*minimum queue time*/);
 
 
 	/* Start the Read and Tamper threads */
