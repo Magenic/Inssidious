@@ -3,7 +3,7 @@
 
 
 #include <QThread>						//Base of DivertController
-#include <InssidiousCore/TamperModules/PacketList.h>
+#include <InssidiousCore/TamperTypes.h>
 
 
 class TamperModule;
@@ -41,10 +41,6 @@ private:
 
 	TamperModule** ppTamperModules;
 	PSLIST_HEADER packetSList;
-
-	/* Lagged Packets are inserted into a list  */
-
-	//SLIST PacketList* laggedPackets;
 
 
 	/* Volatile short checked by all active threads to know when to stop */

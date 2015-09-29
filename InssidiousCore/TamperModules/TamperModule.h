@@ -2,7 +2,6 @@
 #define TAMPERMODULE_H
 
 #include "TamperTypes.h"
-#include "PacketList.h"
 
 class TamperModule
 {
