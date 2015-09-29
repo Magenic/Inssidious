@@ -329,48 +329,81 @@ DWORD DivertController::DivertClockLoop(void* pDivertControllerInstance)
 
 DWORD DivertController::divertClockLoop() 
 {
+	PSLIST_HEADER clockLoopSList = static_cast<PSLIST_HEADER>(_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT));
+	InitializeSListHead(clockLoopSList);
 
-	for (;;) 
+	while (true)
 	{
-
-		//Pop all objects off list
-
-			//If this is null, sleep
-			//Sleep(DIVERT_CLOCK_WAIT_MS);
-
-			//Else, loop over all objects, check their time, try to send
-
-		
-		//Reinject list of packets into list that were not ready for release
-
-
-		/*
-		//Send any packets that are overdue to go out from the delay chance 
-
-		DWORD currentTime = timeGetTime();
-		while (!isBufEmpty())
+		if (!this->divertActive)
 		{
-			if (currentTime > bufferTail->prev->timestamp)
+			WinDivertClose(clockLoopDivertHandle);
+			return 0;
+		}
+
+		/* Check for a packet on the list */
+
+		PacketListEntry* pPacketEntry = reinterpret_cast<PacketListEntry*>(InterlockedPopEntrySList(packetSList));
+
+		if (pPacketEntry == nullptr)
+		{
+			/* No packets on the list. Sleep, then continue looping */
+
+			Sleep(DIVERT_CLOCK_WAIT_MS);
+			continue;
+		}
+
+
+		/* At least one packet in the list */
+
+		PSLIST_ENTRY entryFirst = nullptr;
+		PSLIST_ENTRY entryLast = nullptr;
+		int listCount = 0;
+
+		do
+		{
+			if (pPacketEntry->releaseTimestamp > timeGetTime())
 			{
-				packetList->insertAfter(packetList->popNode(bufferTail->prev), packetList->head);
-				--bufferSize;
+				/* This packet is ready to be sent */
+
+				WinDivertSendEx(clockLoopDivertHandle, pPacketEntry->packet, pPacketEntry->packetLength, 0, &(pPacketEntry->addr), nullptr, nullptr);
+				_aligned_free(pPacketEntry);
+				pPacketEntry = nullptr;
 			}
 			else
 			{
-				//Leave the loop, remaining packets are not ready to go
-				break;
+				/* This packet needs to sit around for a bit longer. Add it to the clock loop slist */
+
+				InterlockedPushEntrySList(clockLoopSList, &pPacketEntry->ItemEntry);
+				listCount++;
+
+				if (entryLast == nullptr)
+				{
+					entryLast = &pPacketEntry->ItemEntry;
+				}
+
+				pPacketEntry = nullptr;
+			}
+
+			/* Try to get another packet */
+
+			pPacketEntry = reinterpret_cast<PacketListEntry*>(InterlockedPopEntrySList(packetSList));
+
+		} while (pPacketEntry != nullptr);
+
+
+		/* Push the list of packets that weren't yet ready for release back into the main packetSlist*/
+		
+		if (listCount > 0)
+		{
+			entryFirst = RtlFirstEntrySList(clockLoopSList);
+
+			if (entryFirst && entryLast)
+			{
+				InterlockedPushListSList(clockLoopSList, entryFirst, entryLast, listCount);
 			}
 		}
-		
-		*/
 
-
-
-		if (!this->divertActive) 
-		{
-			WinDivertClose(clockLoopDivertHandle);			
-			return 0;
-		}
+		/* Loop again */
 	}
 }
 

@@ -60,10 +60,10 @@ short TamperFirewall::process(DivertPacket *& dPacket)
 
 			customPortList.push_back(reinterpret_cast<TamperFirewallEntry*>(listEntry)->portNumber);
 			_aligned_free(listEntry);
+			listEntry = nullptr;
 
 
 			/* Loop continues until we get a null pop entry */
-
 		}
 
 		break;

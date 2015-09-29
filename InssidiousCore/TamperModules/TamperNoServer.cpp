@@ -45,10 +45,10 @@ short TamperNoServer::process(DivertPacket *& dPacket)
 
 			serverList.push_back(reinterpret_cast<TamperNoServerEntry*>(listEntry)->server);
 			_aligned_free(listEntry);
+			listEntry = nullptr;
 
 
 			/* Loop continues until we get a null pop entry */
-
 		}
 
 		break;

@@ -57,7 +57,7 @@ short TamperConditions::process(DivertPacket *& dPacket)
 
 		/* Add the entry to the list */
 
-		InterlockedPushEntrySList(packetSList, &(pPacketListEntry->ItemEntry));
+		InterlockedPushEntrySList(packetSList, &pPacketListEntry->ItemEntry);
 
 
 		/* Drop the dPacket */
