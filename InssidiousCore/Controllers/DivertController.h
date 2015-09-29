@@ -16,7 +16,6 @@ class DivertController : public QThread
 public:
 	DivertController(QString, void*[], volatile bool[]);	
 
-
 signals:
 	void divertStopped(QString MACAddress);
 
@@ -39,20 +38,31 @@ private:
 	volatile bool* pTamperModulesActive;
 
 
+
 	TamperModule** ppTamperModules;
+	PSLIST_HEADER packetSList;
+
+	/* Lagged Packets are inserted into a list  */
+
+	//SLIST PacketList* laggedPackets;
 
 
-	/* PacketList to hold all diverted packets, mutex to sychnronize read & tamper threads */
+	/* Volatile short checked by all active threads to know when to stop */
 
-	PacketList* packetList;
-	HANDLE mutex;
 	volatile short divertActive = 0;
 
-	/* Handles to the WinDivert instance, the divert threads, and the associated filter strings */
 
-	HANDLE divertHandleLayerNetwork, divertHandleLayerNetworkForward = 0;
-	HANDLE readLoop1, readLoop2, readLoop3, readLoop4, readLoop5, readLoop6, clockThread = 0;
-	QString filterString;
+	/* The divert filter strings, handles to the WinDivert instances, and handles to the divert threads */
+
+	QString srcAddrFilterString;
+	QString dstAddrFilterString;
+	HANDLE srcAddrDivertHandleLayerNetwork = 0;
+	HANDLE srcAddrDivertHandleLayerNetworkForward = 0;
+	HANDLE dstAddrDivertHandleLayerNetwork = 0;
+	HANDLE dstAddrDivertHandleLayerNetworkForward = 0;
+	HANDLE clockLoopDivertHandle = 0;
+
+	HANDLE readLoop1, readLoop2, readLoop3, readLoop4, clockThread = 0;
 
 
 	/* Functions to create threads to process packets captured by WinDivert */
@@ -60,18 +70,15 @@ private:
 
 	static DWORD DivertReadLoop1(void* pDivertControllerInstance);
 	static DWORD DivertReadLoop2(void* pDivertControllerInstance);
+	static DWORD DivertReadLoop3(void* pDivertControllerInstance);
+	static DWORD DivertReadLoop4(void* pDivertControllerInstance);
 	static DWORD DivertClockLoop(void* pDivertControllerInstance);
+
 	DWORD divertReadLoop(HANDLE divertHandle);
 	DWORD divertClockLoop();
 
 
-	// step function to let module process and consume all packets on the list
-	void divertConsumeStep();
-
-
-	// sends all packets on the list
-	void sendAllListPackets();
-
+	UINT timerResolution = 4;
 };
 
 #endif // DIVERTCONTROLLER_H

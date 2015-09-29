@@ -3,18 +3,10 @@
 #include <timeapi.h>
 
 
-TamperConditions::TamperConditions(void** ppTamperConfig)
+TamperConditions::TamperConditions(void** ppTamperConfig, PSLIST_HEADER packetSList)
 {
 	this->ppConditionsConfig = reinterpret_cast<TamperConditionsConfig**>(ppTamperConfig);
-	
-	
-	/* Start a linked list to buffer packets in before re-injecting at a later time */
-
-	this->conditionsHeadNode = Packet{ 0 };
-	this->conditionsTailNode = Packet{ 0 };
-	bufferHead->next = bufferTail;
-	bufferTail->prev = bufferHead;
-	bufferSize = 0;
+	this->packetSList = packetSList;
 
 
 	/* Fill the packet tamper patterns array */
@@ -36,120 +28,87 @@ TamperConditions::TamperConditions(void** ppTamperConfig)
 }
 
 
-short TamperConditions::process(PacketList* packetList)
+short TamperConditions::process(DivertPacket *& dPacket)
 {
 
-	if (packetList->head->next == packetList->tail)
+	if (calcChance((*ppConditionsConfig)->chanceLoss))
 	{
-		/* No packets */
-
+		/* Drop this packet and return */
+		
+		free(dPacket);
+		dPacket = nullptr;
 		return 0;
 	}
-
-	/* Loop through all packets in the list */
-
-	Packet* pDivertPacket = packetList->head->next;
-	while (pDivertPacket != packetList->tail)
+	else if (calcChance((*ppConditionsConfig)->chanceDelay))
 	{
-		if (calcChance((*ppConditionsConfig)->chanceLoss))
-		{
-			/* Drop this packet */
-			pDivertPacket = pDivertPacket->next;
-			packetList->freeNode(packetList->popNode(pDivertPacket->prev));
-		}
-		else if (calcChance((*ppConditionsConfig)->chanceDelay))
-		{
-			/* Pull this packet into the delay buffer */
-			pDivertPacket = pDivertPacket->next;
-			packetList->insertAfter(packetList->popNode(pDivertPacket->prev), bufferHead)->timestamp = timeGetTime() + delayTime;
-			
-
-			/* Increment the buffer size and the next packet's release time */
-
-			++bufferSize;
-		}
-		else if (calcChance((*ppConditionsConfig)->chanceCorrupt))
-		{
-			char *data = nullptr;
-			UINT dataLen = 0;
-
-			/* Parse the packet for any data */
-
-			if (WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen, 0, 0, 0, 0, 0, 0, reinterpret_cast<PVOID*>(&data), &dataLen)
-				&& data != nullptr && dataLen != 0)
-			{
-				/* Ensure the packet has a checksum */
-				
-				WinDivertHelperCalcChecksums(pDivertPacket->packet, pDivertPacket->packetLen, WINDIVERT_HELPER_NO_REPLACE);
-
-
-				/* Tamper all of a short packet */
 	
-				if (dataLen <= 4)
-				{
-					corruptPacket(data, dataLen);
-				}
-				else
-				{
-					/* Tamper somewhere near the middle */
-					UINT len = dataLen;
-					UINT len_d4 = len / 4;
-					corruptPacket(data + len / 2 - len_d4 / 2 + 1, len_d4);
-				}
+		/* Allocate memory for the packet list entry */
 
-				/* Do not recalculate the packet checksum so the receiver knows it is bad */
-				
-				pDivertPacket = pDivertPacket->next;
+		PacketListEntry* pPacketListEntry = static_cast<PacketListEntry*>(_aligned_malloc(sizeof(PacketListEntry), MEMORY_ALLOCATION_ALIGNMENT));
+
+
+		/* Copy the dPacket values and set the packet release time */
+
+		memcpy(pPacketListEntry->packet, dPacket->packet, dPacket->packetLength);
+		pPacketListEntry->packetLength = dPacket->packetLength;
+		memcpy(&(pPacketListEntry->addr), &dPacket->addr, sizeof(WINDIVERT_ADDRESS));
+		pPacketListEntry->releaseTimestamp = timeGetTime() + delayTime;
+
+
+		/* Add the entry to the list */
+
+		InterlockedPushEntrySList(packetSList, &(pPacketListEntry->ItemEntry));
+
+
+		/* Drop the dPacket */
+
+		free(dPacket);
+		dPacket = nullptr;
+		return 0;
+	}
+	else if (calcChance((*ppConditionsConfig)->chanceCorrupt))
+	{
+		char *data = nullptr;
+		UINT dataLen = 0;
+
+		/* Parse the packet for data */
+
+		if (WinDivertHelperParsePacket(dPacket->packet, dPacket->packetLength, 0, 0, 0, 0, 0, 0, reinterpret_cast<PVOID*>(&data), &dataLen)
+			&& data != nullptr && dataLen != 0)
+		{
+
+			/* Tamper all of a short packet */
+	
+			if (dataLen <= 4)
+			{
+				corruptPacket(data, dataLen);
 			}
 			else
 			{
-				/* No packet data or a problem parsing it. Skip this packet */
-
-				pDivertPacket = pDivertPacket->next;
+				/* Tamper somewhere near the middle */
+				UINT len = dataLen;
+				UINT len_d4 = len / 4;
+				corruptPacket(data + len / 2 - len_d4 / 2 + 1, len_d4);
 			}
-		}
-		else if (pDivertPacket->packetLen > TCP_MIN_SIZE && calcChance((*ppConditionsConfig)->chanceReset))
-		{
-			/* Set the TCP RESET flag on this packet */
+
+			/* Do not recalculate the packet checksum so the receiver knows it is bad */
 			
-			PWINDIVERT_TCPHDR pTcpHdr;
-			WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen,	0, 0, 0, 0,	&pTcpHdr, 0, 0, 0);
-
-			if (pTcpHdr) /* tcp header pointer is valid */
-			{
-				pTcpHdr->Rst = 1;
-				WinDivertHelperCalcChecksums(pDivertPacket->packet, pDivertPacket->packetLen, 0);
-			}
-
-			pDivertPacket = pDivertPacket->next;
-		}
-		else
-		{
-			/* This packet survives */
-
-			pDivertPacket = pDivertPacket->next;
 		}
 	}
-
-
-	/* Send any packets that are overdue to go out from the delay chance */
-
-	DWORD currentTime = timeGetTime();
-	while (!isBufEmpty())
+	else if (dPacket->packetLength > TCP_MIN_SIZE && calcChance((*ppConditionsConfig)->chanceReset))
 	{
-		if (currentTime > bufferTail->prev->timestamp)
+		/* Set the TCP RESET flag on this packet */
+		
+		PWINDIVERT_TCPHDR pTcpHdr;
+		WinDivertHelperParsePacket(dPacket->packet, dPacket->packetLength, 0, 0, 0, 0, &pTcpHdr, 0, 0, 0);
+
+		if (pTcpHdr) /* tcp header pointer is valid */
 		{
-			packetList->insertAfter(packetList->popNode(bufferTail->prev), packetList->head);
-			--bufferSize;
-		}
-		else
-		{
-			/* Leave the loop, remaining packets are not ready to go */
-			break;
+			pTcpHdr->Rst = 1;
+			WinDivertHelperCalcChecksums(dPacket->packet, dPacket->packetLength, 0);
 		}
 	}
 
 
 	return 0;
-
 }

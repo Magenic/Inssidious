@@ -4,9 +4,9 @@
 class TamperFirewall : public TamperModule
 {
 public:
-	TamperFirewall(void** ppTamperConfig);
+	TamperFirewall(void** ppTamperConfig, PSLIST_HEADER packetSList);
 
-	short process(PacketList* packetList) override;
+	short process(DivertPacket *& dPacket) override;
 
 private:
 	TamperFirewallConfig** ppFirewallConfig;

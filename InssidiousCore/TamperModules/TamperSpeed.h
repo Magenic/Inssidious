@@ -8,9 +8,9 @@ class TamperSpeed : public TamperModule
 {
 
 public:
-	TamperSpeed(void** ppTamperConfig);
+	TamperSpeed(void** ppTamperConfig, PSLIST_HEADER packetSList);
 
-	short process(PacketList* packetList) override;
+	short process(DivertPacket *& dPacket) override;
 
 
 private:
@@ -18,40 +18,10 @@ private:
 	/* UI configuration received in ppSpeedTime */
 
 	TamperSpeedConfig** ppTamperSpeedConfig;
+	PSLIST_HEADER packetSList;
 
 
-	/* Timer Resolution in milliseconds for timeGetTime calls */
-
-	UINT timerResolution = 4;
 	DWORD lastReleaseTime = 0;
-
-
-	/* Keep track of how many packets we have in the buffer */
-
-	unsigned __int64 bufferSize = 0;
-	const unsigned __int64 numMaxBufferPackets = ULLONG_MAX;
-
-
-	/* Variables for a linked list to buffer packets in before re-injecting at a later time */
-
-	Packet speedHeadNode;
-	Packet speedTailNode;
-	Packet* bufferHead = &speedHeadNode;
-	Packet* bufferTail = &speedTailNode;
-
-
-	/* Assert if we've lost track of packets somehow */
-
-	inline short isBufEmpty()
-	{
-		short ret = bufferHead->next == bufferTail;
-		if (ret && !(bufferSize == 0))
-		{
-			/* We have packets that bufSize isn't accouting for */
-			DebugBreak();
-		}
-		return ret;
-	}
 
 };
 

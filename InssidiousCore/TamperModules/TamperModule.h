@@ -8,7 +8,7 @@ class TamperModule
 {
 
 public:
-	virtual short process(PacketList* packetList) = 0;
+	virtual short process(DivertPacket *& dPacket) = 0;
 	virtual ~TamperModule() {}
 
 	short calcChance(short chance)
@@ -17,7 +17,7 @@ public:
 	}
 
 
-	static TamperModule* makeTamperModule(int tamperType, void**);
+	static TamperModule* makeTamperModule(int tamperType, void**, PSLIST_HEADER packetSList);
 
 };
 

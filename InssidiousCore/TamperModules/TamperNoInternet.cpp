@@ -3,7 +3,7 @@
 
 
 
-TamperNoInternet::TamperNoInternet(void** ppTamperConfig)
+TamperNoInternet::TamperNoInternet(void** ppTamperConfig, PSLIST_HEADER packetSList)
 {
 	this->ppNoInternetConfig = reinterpret_cast<TamperNoInternetConfig**>(ppTamperConfig);
 }
@@ -11,25 +11,15 @@ TamperNoInternet::TamperNoInternet(void** ppTamperConfig)
 
 
 
-short TamperNoInternet::process(PacketList* packetList)
+short TamperNoInternet::process(DivertPacket *& dPacket)
 {
-
-	if (packetList->head->next == packetList->tail)
-	{
-		/* No packets */
-
-		return 0;
-	}
 
 	if ((*ppNoInternetConfig)->noInternet)
 	{
-		while (packetList->head->next != packetList->tail)
-		{
-			packetList->freeNode(packetList->popNode(packetList->head->next));
-		}
+		free(dPacket);
+		dPacket = nullptr;
 	}	
 
 	return 0;
-
 }
 

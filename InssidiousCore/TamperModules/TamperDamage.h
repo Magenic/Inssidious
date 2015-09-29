@@ -4,9 +4,9 @@
 class TamperDamage : public TamperModule
 {
 public:
-	TamperDamage(void** ppTamperConfig);
+	TamperDamage(void** ppTamperConfig, PSLIST_HEADER packetSList);
 
-	short process(PacketList* packetList) override;
+	short process(DivertPacket *& dPacket) override;
 
 private:
 	TamperDamageConfig** ppDamageConfig;

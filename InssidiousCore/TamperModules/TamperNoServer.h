@@ -4,9 +4,9 @@
 class TamperNoServer : public TamperModule
 {
 public:
-	TamperNoServer(void** ppTamperConfig);
+	TamperNoServer(void** ppTamperConfig, PSLIST_HEADER packetSList);
 
-	short process(PacketList* packetList) override;
+	short process(DivertPacket *& dPacket) override;
 
 private:
 	TamperNoServerConfig** ppNoServerConfig;

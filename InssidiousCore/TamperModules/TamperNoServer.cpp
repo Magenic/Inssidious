@@ -1,24 +1,18 @@
 
 #include "TamperNoServer.h"
 
-TamperNoServer::TamperNoServer(void** ppTamperConfig)
+TamperNoServer::TamperNoServer(void** ppTamperConfig, PSLIST_HEADER packetSList)
 {
 	this->ppNoServerConfig = reinterpret_cast<TamperNoServerConfig**>(ppTamperConfig);
 	serverListVersion = 0;
 	serverList.clear();
 }
 
-short TamperNoServer::process(PacketList* packetList)
+short TamperNoServer::process(DivertPacket *& dPacket)
 {
-	if (packetList->head->next == packetList->tail)
-	{
-		/* No packets */
-
-		return 0;
-	}
-
 
 	/* Check the server rules */
+
 	switch ((*ppNoServerConfig)->noServersType)
 	{
 	case NO_SERVERS_CUSTOM:
@@ -66,42 +60,32 @@ short TamperNoServer::process(PacketList* packetList)
 
 
 
-	/* Loop and drop any packets traveling over blocked ports */
+	/* Drop any packets traveling over blocked ports */
 
-	Packet *pDivertPacket = packetList->head->next;
-	while (pDivertPacket != packetList->tail)
+	WINDIVERT_IPHDR *iphdr = nullptr;
+	WINDIVERT_TCPHDR *tcphdr = nullptr;
+	WINDIVERT_UDPHDR *udphdr = nullptr;
+	WinDivertHelperParsePacket(dPacket->packet, dPacket->packetLength, &iphdr, 0, 0, 0, &tcphdr, &udphdr, 0, 0);
+
+	if (iphdr)
 	{
-		WINDIVERT_IPHDR *iphdr = nullptr;
-		WINDIVERT_TCPHDR *tcphdr = nullptr;
-		WINDIVERT_UDPHDR *udphdr = nullptr;
-		WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen, &iphdr, 0, 0, 0, &tcphdr, &udphdr, 0, 0);
-
-		/* Drop packets travelling to/from blocked servers */
-
-		if (iphdr)
+		for (UINT32 server : serverList)
 		{
-			pDivertPacket = pDivertPacket->next;
-
-			for (UINT32 server : serverList)
+			if (iphdr->DstAddr == server || iphdr->SrcAddr == server)
 			{
-				if (iphdr->DstAddr == server || iphdr->SrcAddr == server)
-				{
-					/* Drop packet */
-					packetList->freeNode(packetList->popNode(pDivertPacket->prev));
-					break;
-				}
+				/* Drop packet */
+				
+				free(dPacket);
+				dPacket = nullptr;
+				break;
 			}
-
-			continue;
 		}
 
-
-		/* No IP header. Skip this packet */
-
-		pDivertPacket = pDivertPacket->next;
+		return 0;
 	}
 
 
+	/* No IP header. Skip this packet */
 
 	return 0;
 }
