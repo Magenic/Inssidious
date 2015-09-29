@@ -7,11 +7,13 @@
 
 
 DHCPController::DHCPController()
-	: divertDHCPFilterString("ip.SrcAddr == 192.168.137.1 and udp.SrcPort == 67\0")
+	: divertDHCPFilterString("ip.SrcAddr == 192.168.137.1 or ip.DstAddr == 192.168.137.1\0")
 {
 
-	divertDHCPHandle = WinDivertOpen(divertDHCPFilterString, WINDIVERT_LAYER_NETWORK, divertDHCPPriority, WINDIVERT_FLAG_SNIFF);
-	if (divertDHCPHandle == INVALID_HANDLE_VALUE)
+	/* Open a WinDivert handle to capture all traffic to and from the DHCP server */
+
+	divertDHCPRecvHandle = WinDivertOpen(divertDHCPFilterString, WINDIVERT_LAYER_NETWORK, DIVERT_HIGHEST_PRIORITY, WINDIVERT_FLAG_NO_CHECKSUM);
+	if (divertDHCPRecvHandle == INVALID_HANDLE_VALUE)
 	{
 		HRESULT result = GetLastError();
 		
@@ -27,19 +29,52 @@ DHCPController::DHCPController()
 		return;
 	}
 
+	/* Maximize the WinDivert Queue time and length for these packets */
+
+	WinDivertSetParam(divertDHCPRecvHandle, WINDIVERT_PARAM_QUEUE_LEN, DIVERT_QUEUE_LEN_MAX);
+	WinDivertSetParam(divertDHCPRecvHandle, WINDIVERT_PARAM_QUEUE_TIME, DIVERT_QUEUE_TIME_MAX);
+
+
+	/* Open another WinDivert handle with the lowest possible priority to reinject captured packets with */
+
+	divertDHCPSendHandle = WinDivertOpen(divertDHCPFilterString, WINDIVERT_LAYER_NETWORK, DIVERT_HIGHEST_PRIORITY, WINDIVERT_FLAG_NO_CHECKSUM);
+	if (divertDHCPSendHandle == INVALID_HANDLE_VALUE)
+	{
+		HRESULT result = GetLastError();
+
+		/* Something went wrong */
+
+		MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(
+			("Unable to load WinDivert. Error: \n   ")
+			+ QString::fromWCharArray(_com_error(result).ErrorMessage())
+			).utf16()),
+			L"Inssidious failed to start.", MB_OK);
+		ExitProcess(1);
+
+		return;
+	}
+
+	/* DHCP Send Handle should never see packets, and we do not have a WinDivertRecv waiting on it. */
+	/* Lower the WinDivert Queue time and length to drop anything that does end up there. */
+
+	WinDivertSetParam(divertDHCPSendHandle, WINDIVERT_PARAM_QUEUE_LEN, 1 /*minimum queue length*/);
+	WinDivertSetParam(divertDHCPSendHandle, WINDIVERT_PARAM_QUEUE_TIME, 128 /*minimum queue time*/);
 }
 
 
 void DHCPController::run()
 {
 	WINDIVERT_ADDRESS addr;
+	PWINDIVERT_IPHDR pIPHdr;
+	PWINDIVERT_UDPHDR pUDPHdr;
+	unsigned int dhcpServerIP = inet_addr("192.168.137.1");
 
 	while (true)
 	{
 
 		/* Wait for a DHCP packet */
 
-		if (!WinDivertRecv(divertDHCPHandle, packet, sizeof(packet), &addr, &packet_len))
+		if (!WinDivertRecv(divertDHCPRecvHandle, packet, sizeof(packet), &addr, &packet_len))
 		{
 			/* Something went wrong */
 
@@ -51,7 +86,7 @@ void DHCPController::run()
 
 		/* Grab the DHCP data from the packet */
 
-		if(!WinDivertHelperParsePacket(packet, packet_len, 0, 0, 0, 0, 0, 0, reinterpret_cast<void**>(&data), &data_len))
+		if(!WinDivertHelperParsePacket(packet, packet_len, &pIPHdr, 0, 0, 0, 0, &pUDPHdr, reinterpret_cast<void**>(&data), &data_len))
 		{			
 			/* Something went wrong; malformed packet maybe? 
 			   We should be able to continue without concern */
@@ -60,9 +95,35 @@ void DHCPController::run()
 		}
 
 
-		/* Confirm we have a DHCP packet */
+		/* Send the packet on its way */
 
-		if (dhcpMagicCookie != QByteArray(reinterpret_cast<const char*>(&data[236]), 4).toHex())
+		WinDivertHelperCalcChecksums(packet, packet_len, WINDIVERT_HELPER_NO_REPLACE);
+		WinDivertSendEx(divertDHCPSendHandle, packet, packet_len, 0 /* reserved */, &addr, nullptr, nullptr);
+
+
+		/* Check if either pIPHdr or pUDPHdr are null */
+
+		if (!pIPHdr || !pUDPHdr)
+		{
+			/* We don't want to parse this packet */
+
+			continue;
+		}
+
+
+		/* Check if this is a UDP packet from the DHCP Server on the right port */
+
+		if (pIPHdr->SrcAddr != dhcpServerIP || pUDPHdr->SrcPort != dhcpUDPSrcPort)
+		{
+			/* We don't want to parse this packet */
+
+			continue;
+		}
+
+
+		/* Check if we have a DHCP packet */
+
+		if (data_len < 240 || dhcpMagicCookie != QByteArray(reinterpret_cast<const char*>(&data[236]), 4).toHex())
 		{
 			/* Not sure what kind of packet this is but we don't want it */
 

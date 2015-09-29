@@ -21,12 +21,18 @@ private:
 	void run() override;
 
 
-	HANDLE divertDHCPHandle;
-
 	char* divertDHCPFilterString;
-	const INT16 divertDHCPPriority = -100; /* higher priority than the default 0 */
 
+	HANDLE divertDHCPRecvHandle;
+	HANDLE divertDHCPSendHandle;
 
+	const INT16 DIVERT_HIGHEST_PRIORITY = -1000; /* higher priority than the default 0 */
+	const INT16 DIVERT_LOWEST_PRIORITY = 1000; /* higher priority than the default 0 */
+
+	const short DIVERT_QUEUE_LEN_MAX = 8192;
+	const short DIVERT_QUEUE_TIME_MAX = 2048;
+
+	const unsigned short dhcpUDPSrcPort = 17152; //htons(67);
 	const int DHCPOptionsOffset = 240;
 	const int DHCPMessageTypeOption = 53;
 	const int DHCPACK = 5;
