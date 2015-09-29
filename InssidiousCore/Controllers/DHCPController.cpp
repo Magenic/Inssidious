@@ -2,27 +2,67 @@
 
 
 #include <comdef.h>
-
 #include <WinDivert/include/windivert.h>
 
 
 DHCPController::DHCPController()
-	: divertDHCPFilterString("ip.SrcAddr == 192.168.137.1 or ip.DstAddr == 192.168.137.1\0")
 {
+
+	/* Query the ScopeAddress value in the SharedAccess Registry key for the DHCP Server IP */
+
+	wchar_t valueData[MAX_PATH];
+	DWORD valueDataCount = MAX_PATH;
+	divertDHCPFilterString.clear();
+
+	if (ERROR_SUCCESS == RegGetValueW(HKEY_LOCAL_MACHINE, L"System\\CurrentControlSet\\services\\SharedAccess\\Parameters",
+		L"ScopeAddress", RRF_RT_REG_SZ | RRF_ZEROONFAILURE, nullptr, reinterpret_cast<LPVOID>(valueData), &valueDataCount))
+	{
+		QString dhcpServerIP = QString::fromWCharArray(valueData);
+
+		if (dhcpServerIP.contains(QRegExp("(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})")))
+		{
+			QStringList match = dhcpServerIP.split(".");
+
+			if (match[0].toInt() <= 255 && match[1].toInt() <= 255 &&
+				match[2].toInt() <= 255 && match[3].toInt() <= 255)
+			{
+				/* We have a valid IP Address */
+
+				divertDHCPFilterString = QString("ip.DstAddr == " + dhcpServerIP + " or ip.SrcAddr == " + dhcpServerIP);
+				ipFirstOctect = match[0];
+				uintDHCPServerIP = inet_addr(dhcpServerIP.toLocal8Bit());
+			}
+		}
+	}
+
+
+	/* Check if we now have a DHCP Filter String and uint representation of the server IP Address */
+
+	if (divertDHCPFilterString.isEmpty() || uintDHCPServerIP == 0)
+	{
+		/* Something went wrong */
+
+		MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString("Unable to read DHCP Server IP Address from the registry.").utf16()),
+			L"Inssidious failed to start.", MB_OK);
+		ExitProcess(1);
+
+		return;
+	}
+
 
 	/* Open a WinDivert handle to capture all traffic to and from the DHCP server */
 
-	divertDHCPRecvHandle = WinDivertOpen(divertDHCPFilterString, WINDIVERT_LAYER_NETWORK, DIVERT_HIGHEST_PRIORITY, WINDIVERT_FLAG_NO_CHECKSUM);
+	divertDHCPRecvHandle = WinDivertOpen(divertDHCPFilterString.toLocal8Bit(), WINDIVERT_LAYER_NETWORK, DIVERT_HIGHEST_PRIORITY, WINDIVERT_FLAG_NO_CHECKSUM);
 	if (divertDHCPRecvHandle == INVALID_HANDLE_VALUE)
 	{
 		HRESULT result = GetLastError();
-		
+
 		/* Something went wrong */
 
 		MessageBox(nullptr, reinterpret_cast<const wchar_t*>(QString(
-			           ("Unable to load WinDivert. Error: \n   ")
-			           + QString::fromWCharArray(_com_error(result).ErrorMessage())
-		           ).utf16()),
+			("Unable to load WinDivert. Error: \n   ")
+			+ QString::fromWCharArray(_com_error(result).ErrorMessage())
+			).utf16()),
 			L"Inssidious failed to start.", MB_OK);
 		ExitProcess(1);
 
@@ -37,7 +77,7 @@ DHCPController::DHCPController()
 
 	/* Open another WinDivert handle with the lowest possible priority to reinject captured packets with */
 
-	divertDHCPSendHandle = WinDivertOpen(divertDHCPFilterString, WINDIVERT_LAYER_NETWORK, DIVERT_HIGHEST_PRIORITY, WINDIVERT_FLAG_NO_CHECKSUM);
+	divertDHCPSendHandle = WinDivertOpen(divertDHCPFilterString.toLocal8Bit(), WINDIVERT_LAYER_NETWORK, DIVERT_HIGHEST_PRIORITY, WINDIVERT_FLAG_NO_CHECKSUM);
 	if (divertDHCPSendHandle == INVALID_HANDLE_VALUE)
 	{
 		HRESULT result = GetLastError();
@@ -67,7 +107,6 @@ void DHCPController::run()
 	WINDIVERT_ADDRESS addr;
 	PWINDIVERT_IPHDR pIPHdr;
 	PWINDIVERT_UDPHDR pUDPHdr;
-	unsigned int dhcpServerIP = inet_addr("192.168.137.1");
 
 	while (true)
 	{
@@ -86,10 +125,10 @@ void DHCPController::run()
 
 		/* Grab the DHCP data from the packet */
 
-		if(!WinDivertHelperParsePacket(packet, packet_len, &pIPHdr, 0, 0, 0, 0, &pUDPHdr, reinterpret_cast<void**>(&data), &data_len))
-		{			
-			/* Something went wrong; malformed packet maybe? 
-			   We should be able to continue without concern */
+		if (!WinDivertHelperParsePacket(packet, packet_len, &pIPHdr, 0, 0, 0, 0, &pUDPHdr, reinterpret_cast<void**>(&data), &data_len))
+		{
+			/* Something went wrong; malformed packet maybe?
+			We should be able to continue without concern */
 
 			continue;
 		}
@@ -113,7 +152,7 @@ void DHCPController::run()
 
 		/* Check if this is a UDP packet from the DHCP Server on the right port */
 
-		if (pIPHdr->SrcAddr != dhcpServerIP || pUDPHdr->SrcPort != dhcpUDPSrcPort)
+		if (pIPHdr->SrcAddr != uintDHCPServerIP || pUDPHdr->SrcPort != dhcpUDPSrcPort)
 		{
 			/* We don't want to parse this packet */
 
@@ -133,8 +172,8 @@ void DHCPController::run()
 
 		/* Find the DHCP Message Type option to test if this is a DHCP ACK message */
 
-		int offset = DHCPOptionsOffset; 
-		while (offset < data_len && offset != 255 /* DHCP Options End*/ )
+		int offset = DHCPOptionsOffset;
+		while (offset < data_len && offset != 255 /* DHCP Options End*/)
 		{
 
 			if (data[offset] != DHCPMessageTypeOption)
@@ -148,7 +187,7 @@ void DHCPController::run()
 			if (data[offset + 2] != DHCPACK)
 			{
 				/* Found a Message Type but it wasn't an DHCP ACK message. Leave the option-parsing loop */
-				
+
 				break;
 			}
 
@@ -157,7 +196,7 @@ void DHCPController::run()
 
 			QString yourIPAddress = QString::number(data[16]) + "." + QString::number(data[17]) + "." + QString::number(data[18]) + "." + QString::number(data[19]);
 			QString clientHardwareAddress = QByteArray(reinterpret_cast<const char*>(&data[28]), 6).toHex();
-			
+
 			for (int i = 2; i < clientHardwareAddress.size(); i += 3)
 			{
 				/* Insert hyphens into the MAC address string */
@@ -167,7 +206,7 @@ void DHCPController::run()
 
 			/* If we read valid IP and MAC Addresses, notify Core */
 
-			if (yourIPAddress.startsWith("192")	&& !clientHardwareAddress.contains("00:00:00:00:00:00"))
+			if (yourIPAddress.startsWith(ipFirstOctect) && !clientHardwareAddress.contains("00:00:00:00:00:00"))
 			{
 				emit ipAddressAssigned(clientHardwareAddress.toUpper(), yourIPAddress);
 			}

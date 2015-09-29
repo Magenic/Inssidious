@@ -21,7 +21,10 @@ private:
 	void run() override;
 
 
-	char* divertDHCPFilterString;
+	QString divertDHCPFilterString;
+	QString ipFirstOctect;
+	unsigned int uintDHCPServerIP = 0;
+
 
 	HANDLE divertDHCPRecvHandle;
 	HANDLE divertDHCPSendHandle;
@@ -32,6 +35,7 @@ private:
 	const short DIVERT_QUEUE_LEN_MAX = 8192;
 	const short DIVERT_QUEUE_TIME_MAX = 2048;
 
+	
 	const unsigned short dhcpUDPSrcPort = 17152; //htons(67);
 	const int DHCPOptionsOffset = 240;
 	const int DHCPMessageTypeOption = 53;
