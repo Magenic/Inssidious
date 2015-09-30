@@ -8,7 +8,7 @@
 
 #define assert(x) do {if (!(x)) {DebugBreak();} } while(0)
 #define DIVERT_MAX_PACKETSIZE 0xFFFF
-#define DIVERT_CLOCK_WAIT_MS 40
+#define DIVERT_CLOCK_WAIT_MS 10
 #define DIVERT_QUEUE_LEN_MAX 8192
 #define DIVERT_QUEUE_TIME_MAX 2048
 
@@ -270,7 +270,10 @@ DWORD DivertController::divertReadLoop(HANDLE divertHandle)
 	for (;;)
 	{
 		DivertPacket* dPacket = static_cast<DivertPacket*>(malloc(sizeof(DivertPacket)));
-
+		if (!dPacket)
+		{
+			__debugbreak();
+		}
 
 		/* Wait for WinDivert to give us a packet */
 
@@ -294,7 +297,6 @@ DWORD DivertController::divertReadLoop(HANDLE divertHandle)
 
 		if (!this->divertActive)
 		{
-			WinDivertClose(divertHandle);
 			return 0;
 		}
 		
@@ -344,14 +346,39 @@ DWORD DivertController::DivertClockLoop(void* pDivertControllerInstance)
 
 DWORD DivertController::divertClockLoop() 
 {
-	PSLIST_HEADER clockLoopSList = static_cast<PSLIST_HEADER>(_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT));
-	InitializeSListHead(clockLoopSList);
-
 	while (true)
 	{
 		if (!this->divertActive)
 		{
 			WinDivertClose(clockLoopDivertHandle);
+			clockLoopDivertHandle = nullptr;
+
+
+			/* Sleep for a bit and close any other still-open handles */
+
+			Sleep(DIVERT_CLOCK_WAIT_MS);
+
+			if (srcAddrDivertHandleLayerNetwork)
+			{
+				WinDivertClose(srcAddrDivertHandleLayerNetwork);
+				srcAddrDivertHandleLayerNetwork = nullptr;
+			}
+			if (srcAddrDivertHandleLayerNetworkForward)
+			{
+				WinDivertClose(srcAddrDivertHandleLayerNetworkForward);
+				srcAddrDivertHandleLayerNetworkForward = nullptr;
+			}
+			if (dstAddrDivertHandleLayerNetwork)
+			{
+				WinDivertClose(dstAddrDivertHandleLayerNetwork);
+				dstAddrDivertHandleLayerNetwork = nullptr;
+			}
+			if (dstAddrDivertHandleLayerNetworkForward)
+			{
+				WinDivertClose(dstAddrDivertHandleLayerNetworkForward);
+				dstAddrDivertHandleLayerNetworkForward = nullptr;
+			}
+
 			return 0;
 		}
 
@@ -370,13 +397,16 @@ DWORD DivertController::divertClockLoop()
 
 		/* At least one packet in the list */
 
+		PSLIST_HEADER clockLoopSList = static_cast<PSLIST_HEADER>(_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT));
+		InitializeSListHead(clockLoopSList);
+
 		PSLIST_ENTRY entryFirst = nullptr;
 		PSLIST_ENTRY entryLast = nullptr;
 		int listCount = 0;
 
 		do
 		{
-			if (pPacketEntry->releaseTimestamp > timeGetTime())
+			if (pPacketEntry->releaseTimestamp < timeGetTime())
 			{
 				/* This packet is ready to be sent */
 
@@ -414,9 +444,13 @@ DWORD DivertController::divertClockLoop()
 
 			if (entryFirst && entryLast)
 			{
-				InterlockedPushListSList(clockLoopSList, entryFirst, entryLast, listCount);
+				InterlockedPushListSList(packetSList, entryFirst, entryLast, listCount);
 			}
 		}
+
+
+		_aligned_free(clockLoopSList);
+
 
 		/* Loop again */
 	}

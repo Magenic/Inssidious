@@ -45,6 +45,10 @@ short TamperConditions::process(DivertPacket *& dPacket)
 		/* Allocate memory for the packet list entry */
 
 		PacketListEntry* pPacketListEntry = static_cast<PacketListEntry*>(_aligned_malloc(sizeof(PacketListEntry), MEMORY_ALLOCATION_ALIGNMENT));
+		if (!pPacketListEntry)
+		{
+			__debugbreak();
+		}
 
 
 		/* Copy the dPacket values and set the packet release time */
