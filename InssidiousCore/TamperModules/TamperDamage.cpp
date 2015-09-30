@@ -3,7 +3,7 @@
 
 
 
-TamperDamage::TamperDamage(void** ppTamperConfig)
+TamperDamage::TamperDamage(void** ppTamperConfig, PSLIST_HEADER packetSList)
 {
 	this->ppDamageConfig = reinterpret_cast<TamperDamageConfig**>(ppTamperConfig);
 
@@ -21,71 +21,45 @@ TamperDamage::TamperDamage(void** ppTamperConfig)
 }
 
 
-short TamperDamage::process(PacketList* packetList)
+short TamperDamage::process(DivertPacket *& dPacket)
 {
 
-	if (packetList->head->next == packetList->tail)
+	if (calcChance((*ppDamageConfig)->chanceDamage))
 	{
-		/* No packets */
+		char *data = nullptr;
+		UINT dataLen = 0;
 
-		return 0;
-	}
+		/* Parse the packet for any data */
 
-
-	Packet* pDivertPacket = packetList->head->next;
-	while (pDivertPacket != packetList->tail)
-	{
-		if (calcChance((*ppDamageConfig)->chanceDamage))
+		if (WinDivertHelperParsePacket(dPacket->packet, dPacket->packetLength, 0, 0, 0, 0, 0, 0, reinterpret_cast<PVOID*>(&data), &dataLen)
+			&& data != nullptr && dataLen != 0)
 		{
-			char *data = nullptr;
-			UINT dataLen = 0;
+			/* Tamper all of a short packet */
 
-			/* Parse the packet for any data */
-
-			if (WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen, 0, 0, 0, 0, 0, 0, reinterpret_cast<PVOID*>(&data), &dataLen)
-				&& data != nullptr && dataLen != 0)
+			if (dataLen <= 4)
 			{
-				/* Tamper all of a short packet */
-
-				if (dataLen <= 4)
-				{
-					corruptPacket(data, dataLen);
-				}
-				else
-				{
-					/* Tamper somewhere near the middle of larger packets */
-
-					UINT len = dataLen;
-					UINT len_d4 = len / 4;
-					corruptPacket(data + len / 2 - len_d4 / 2 + 1, len_d4);
-				}
-
-
-				/* Recalculate the packet checksum so the receiver doesn't know it is bad */
-
-				WinDivertHelperCalcChecksums(pDivertPacket->packet, pDivertPacket->packetLen, WINDIVERT_HELPER_NO_IP_CHECKSUM);
-				pDivertPacket = pDivertPacket->next;
+				corruptPacket(data, dataLen);
 			}
 			else
 			{
-				/* No packet data or a problem parsing it. Skip this packet */
+				/* Tamper somewhere near the middle of larger packets */
 
-				pDivertPacket = pDivertPacket->next;
+				UINT len = dataLen;
+				UINT len_d4 = len / 4;
+				corruptPacket(data + len / 2 - len_d4 / 2 + 1, len_d4);
 			}
-		}
-		//else if ((*ppDamageConfig)->something)
-		//{
-		//	//TODO: Redirect to Portal
-		//}
-		else
-		{
-			/* This packet survives */
 
-			pDivertPacket = pDivertPacket->next;
+
+			/* Recalculate the packet checksum so the receiver doesn't know it is bad */
+
+			WinDivertHelperCalcChecksums(dPacket->packet, dPacket->packetLength, WINDIVERT_HELPER_NO_IP_CHECKSUM);
+			
 		}
 	}
-
-
+	//else if ((*ppDamageConfig)->something)
+	//{
+	//	//TODO: Redirect to Portal
+	//}
 
 	return 0;
 

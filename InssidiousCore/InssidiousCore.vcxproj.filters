@@ -31,9 +31,6 @@
     <ClCompile Include="TamperModules\TamperNoServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TamperModules\PacketList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Controllers\DHCPController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -120,9 +117,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TamperModules\TamperSpeed.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TamperModules\PacketList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TamperModules\TamperModule.h">

@@ -2,30 +2,17 @@
 #include <timeapi.h>
 
 
-TamperSpeed::TamperSpeed(void** ppTamperConfig)
+TamperSpeed::TamperSpeed(void** ppTamperConfig, PSLIST_HEADER packetSList)
 {
 
 	this->ppTamperSpeedConfig = reinterpret_cast<TamperSpeedConfig**>(ppTamperConfig);
-
-
-	/* Start a linked list to buffer packets in before re-injecting at a later time */
-
-	this->speedHeadNode = Packet{ 0 };
-	this->speedTailNode = Packet{ 0 };
-	bufferHead->next = bufferTail;
-	bufferTail->prev = bufferHead;
-	bufferSize = 0;
-
-
-	/* Set a four second timer resolution for future timeGetTime calls */
-
-	timeBeginPeriod(timerResolution);
+	this->packetSList = packetSList;
 
 
 }
 
 
-short TamperSpeed::process(PacketList* packetList)
+short TamperSpeed::process(DivertPacket *& dPacket)
 {
 
 	if ((*ppTamperSpeedConfig)->speedType == SPEED_MAX)
@@ -35,15 +22,8 @@ short TamperSpeed::process(PacketList* packetList)
 		return 0;
 	}
 
-	if (packetList->head->next == packetList->tail)
-	{
-		/* No packets */
 
-		return 0;
-	}
-
-
-	/* Get the current time to log with the packets */
+	/* Get the current time to log with the packet */
 	
 	DWORD releaseTime;
 	DWORD currentTime = timeGetTime();
@@ -58,53 +38,40 @@ short TamperSpeed::process(PacketList* packetList)
 	}
 
 
-	/* Loop through and acquire as many packets in the divert list as we can hold */
-	
-	Packet *pDivertPacket = packetList->tail->prev;	
-	while (bufferSize < numMaxBufferPackets && pDivertPacket != packetList->head)
-	{
-		packetList->insertAfter(packetList->popNode(pDivertPacket), bufferHead)->timestamp = releaseTime;
-		pDivertPacket = packetList->tail->prev;
+	/* Allocate memory for the packet list entry */
 
-		/* Increment the buffer size and the next packet's release time */
-		++bufferSize;
-		releaseTime += TamperSpeedPacketDelay[(*ppTamperSpeedConfig)->speedType]; /* enum defining millisecond values for different speed */
-		
+	PacketListEntry* pPacketListEntry = static_cast<PacketListEntry*>(_aligned_malloc(sizeof(PacketListEntry), MEMORY_ALLOCATION_ALIGNMENT));
+	if (!pPacketListEntry)
+	{
+		__debugbreak();
 	}
 
+	/* Copy the dPacket values and set the packet release time */
 
-	/* Send any packets that are overdue to go out */
-
-	while (!isBufEmpty()) 
-	{
-		if (currentTime > bufferTail->prev->timestamp)
-		{
-			packetList->insertAfter(packetList->popNode(bufferTail->prev), packetList->head);
-			--bufferSize;
-		}
-		else
-		{
-			/* Leave the loop, remaining packets are not ready to go */
-			break;
-		}
-	}
+	memcpy(pPacketListEntry->packet, dPacket->packet, dPacket->packetLength);
+	pPacketListEntry->packetLength = dPacket->packetLength;
+	memcpy(&(pPacketListEntry->addr), &dPacket->addr, sizeof(WINDIVERT_ADDRESS));
+	pPacketListEntry->releaseTimestamp = releaseTime;
 
 
+	/* Add the entry to the list */
 
-	//TODO: 
-	// if buffer is full just flush things out
-	if (bufferSize >= numMaxBufferPackets) 
-	{
-		while (bufferSize-- > 0) 
-		{
-			//TODO: Do we just reinsert packets or can I safely drop them?
-			DebugBreak();
-			packetList->insertAfter(packetList->popNode(bufferTail->prev), packetList->head);
-		}
-	}
+	InterlockedPushEntrySList(packetSList, &(pPacketListEntry->ItemEntry));
 
 
+	/* Increment the next packet's release time */
+
+	releaseTime += TamperSpeedPacketDelay[(*ppTamperSpeedConfig)->speedType]; /* enum defining millisecond values for different speed */
 	lastReleaseTime = releaseTime;
 
-	return bufferSize > 0;
+
+	/* Drop the dPacket */
+
+	free(dPacket);
+	dPacket = nullptr;
+
+
+
+	return 0;
+	
 };

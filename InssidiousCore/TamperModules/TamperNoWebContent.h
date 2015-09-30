@@ -4,9 +4,9 @@
 class TamperNoWebContent : public TamperModule
 {
 public:
-	TamperNoWebContent(void** ppTamperConfig);
+	TamperNoWebContent(void** ppTamperConfig, PSLIST_HEADER packetSList);
 
-	short process(PacketList* packetList) override;
+	short process(DivertPacket *& dPacket) override;
 
 private:
 	TamperNoWebContentConfig** ppNoWebContentConfig;

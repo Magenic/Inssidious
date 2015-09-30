@@ -2,7 +2,7 @@
 #include "TamperFirewall.h"
 #include "winsock2.h"
 
-TamperFirewall::TamperFirewall(void** ppTamperConfig)
+TamperFirewall::TamperFirewall(void** ppTamperConfig, PSLIST_HEADER packetSList)
 {
 	this->ppFirewallConfig = reinterpret_cast<TamperFirewallConfig**>(ppTamperConfig);
 
@@ -13,16 +13,8 @@ TamperFirewall::TamperFirewall(void** ppTamperConfig)
 }
 
 
-short TamperFirewall::process(PacketList* packetList)
+short TamperFirewall::process(DivertPacket *& dPacket)
 {
-
-	if (packetList->head->next == packetList->tail)
-	{
-		/* No packets */
-
-		return 0;
-	}
-
 
 	/* Check the port rules */
 
@@ -68,10 +60,10 @@ short TamperFirewall::process(PacketList* packetList)
 
 			customPortList.push_back(reinterpret_cast<TamperFirewallEntry*>(listEntry)->portNumber);
 			_aligned_free(listEntry);
+			listEntry = nullptr;
 
 
 			/* Loop continues until we get a null pop entry */
-
 		}
 
 		break;
@@ -83,78 +75,66 @@ short TamperFirewall::process(PacketList* packetList)
 
 
 
-	/* Loop and drop any packets traveling over blocked ports */
+	/* Drop any packets traveling over blocked ports */
 
-	Packet *pDivertPacket = packetList->head->next;
-	while (pDivertPacket != packetList->tail)
+	WINDIVERT_IPHDR *iphdr;
+	WINDIVERT_TCPHDR *tcphdr = nullptr;
+	WINDIVERT_UDPHDR *udphdr = nullptr;
+	WinDivertHelperParsePacket(dPacket->packet, dPacket->packetLength, &iphdr, 0, 0, 0, &tcphdr, &udphdr, 0, 0);
+
+	if (!activePortList)
 	{
-		WINDIVERT_IPHDR *iphdr;
-		WINDIVERT_TCPHDR *tcphdr = nullptr;
-		WINDIVERT_UDPHDR *udphdr = nullptr;
-		WinDivertHelperParsePacket(pDivertPacket->packet, pDivertPacket->packetLen, &iphdr, 0, 0, 0, &tcphdr, &udphdr, 0, 0);
+		/* Block UDP is enabled. Drop any UDP packets */
 
-		if (!activePortList)
+		if (udphdr)
 		{
-			/* Block UDP is enabled. Drop any UDP packets */
+			/* Drop packet */
 
-			if (udphdr)
-			{
-				/* Drop packet */
-				pDivertPacket = pDivertPacket->next;
-				packetList->freeNode(packetList->popNode(pDivertPacket->prev));
-				continue;
-			}
-			else
-			{
-				/* Skip packet */
-				pDivertPacket = pDivertPacket->next;
-				continue;
-			}
+			free(dPacket);
+			dPacket = nullptr;
 		}
 
-
-		/* Block Email, VPN, or Custom is enabled. Drop packets travelling over blocked ports */
-
-		if (tcphdr)
-		{
-			pDivertPacket = pDivertPacket->next;
-
-			for (u_short port : *activePortList)
-			{
-				if (tcphdr->DstPort == port || tcphdr->SrcPort == port)
-				{
-					/* Drop packet */
-					packetList->freeNode(packetList->popNode(pDivertPacket->prev));
-					break;
-				}
-			}
-
-			continue;
-		}
-		else if (udphdr)
-		{
-			pDivertPacket = pDivertPacket->next;
-
-			for (u_short port : *activePortList)
-			{
-				if (udphdr->DstPort == port || udphdr->SrcPort == port)
-				{
-					/* Drop packet */
-					packetList->freeNode(packetList->popNode(pDivertPacket->prev));
-					break;
-				}
-			}
-
-			continue;
-		}
-
-
-		/* No TCP or UDP header. Skip this packet */
-
-		pDivertPacket = pDivertPacket->next;
+		return 0;
 	}
 
 
+	/* Block Email, VPN, or Custom is enabled. Drop packets travelling over blocked ports */
+
+	if (tcphdr)
+	{
+		for (u_short port : *activePortList)
+		{
+			if (tcphdr->DstPort == port || tcphdr->SrcPort == port)
+			{
+				/* Drop packet */
+
+				free(dPacket);
+				dPacket = nullptr;
+				break;
+			}
+		}
+
+		return 0;
+	}
+	else if (udphdr)
+	{
+		for (u_short port : *activePortList)
+		{
+			if (udphdr->DstPort == port || udphdr->SrcPort == port)
+			{
+				/* Drop packet */
+				
+				free(dPacket);
+				dPacket = nullptr;
+				break;
+			}
+		}
+
+		return 0;
+	}
+
+
+	/* No TCP or UDP header. Skip this packet */
 
 	return 0;
 }

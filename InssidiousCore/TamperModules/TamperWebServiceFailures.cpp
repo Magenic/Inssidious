@@ -2,7 +2,7 @@
 #include "TamperWebServiceFailures.h"
 
 
-TamperWebServiceFailures::TamperWebServiceFailures(void** ppTamperConfig)
+TamperWebServiceFailures::TamperWebServiceFailures(void** ppTamperConfig, PSLIST_HEADER packetSList)
 {
 
 	this->ppTamperConfig = reinterpret_cast<TamperWebServiceFailuresConfig**>(ppTamperConfig);
@@ -12,7 +12,7 @@ TamperWebServiceFailures::TamperWebServiceFailures(void** ppTamperConfig)
 
 
 
-short TamperWebServiceFailures::process(PacketList* packetList)
+short TamperWebServiceFailures::process(DivertPacket *& dPacket)
 {
 	return 0;
 }

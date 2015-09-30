@@ -3,6 +3,11 @@
 
 #include "InterlockedPushListSList.h"
 #include <list>
+#include <WinDivert/include/windivert.h>
+
+
+#pragma comment(lib, "winmm.lib")
+#pragma comment(lib, "ws2_32.lib")
 
 enum TamperType
 {
@@ -21,6 +26,24 @@ enum TamperType
 	/* total*/
 	NUM_TAMPER_TYPES
 };
+
+
+struct DivertPacket
+{
+	char packet[0xFFFF];
+	UINT packetLength;
+	WINDIVERT_ADDRESS addr;
+};
+
+typedef struct _PacketListEntry
+{
+	SLIST_ENTRY ItemEntry;
+	char packet[0xFFFF];
+	UINT packetLength;
+	WINDIVERT_ADDRESS addr;
+	DWORD releaseTimestamp = 0;
+	HANDLE divertHandle = 0;
+} PacketListEntry;
 
 
 enum TamperSpeedType

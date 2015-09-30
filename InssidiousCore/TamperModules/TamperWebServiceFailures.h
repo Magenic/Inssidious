@@ -4,9 +4,9 @@
 class TamperWebServiceFailures : public TamperModule
 {
 public:
-	TamperWebServiceFailures(void** ppTamperConfig);
+	TamperWebServiceFailures(void** ppTamperConfig, PSLIST_HEADER packetSList);
 
-	short process(PacketList* packetList) override;
+	short process(DivertPacket *& dPacket) override;
 
 private:
 	TamperWebServiceFailuresConfig** ppTamperConfig;

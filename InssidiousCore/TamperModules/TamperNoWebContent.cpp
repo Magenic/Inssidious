@@ -3,21 +3,15 @@
 
 
 
-TamperNoWebContent::TamperNoWebContent(void** ppTamperConfig)
+TamperNoWebContent::TamperNoWebContent(void** ppTamperConfig, PSLIST_HEADER packetSList)
 {
 	this->ppNoWebContentConfig = reinterpret_cast<TamperNoWebContentConfig**>(ppTamperConfig);
 }
 
 
-short TamperNoWebContent::process(PacketList* packetList)
+short TamperNoWebContent::process(DivertPacket *& dPacket)
 {
 
-	if (packetList->head->next == packetList->tail)
-	{
-		/* No packets */
-
-		return 0;
-	}
 
 	//if ((*ppNoWebContentConfig)->something)
 	//{

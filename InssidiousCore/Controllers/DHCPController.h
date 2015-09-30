@@ -29,8 +29,8 @@ private:
 	HANDLE divertDHCPRecvHandle;
 	HANDLE divertDHCPSendHandle;
 
-	const INT16 DIVERT_HIGHEST_PRIORITY = -1000; /* higher priority than the default 0 */
-	const INT16 DIVERT_LOWEST_PRIORITY = 1000; /* higher priority than the default 0 */
+	const INT16 DIVERT_HIGHEST_PRIORITY = -1000;
+	const INT16 DIVERT_LOWEST_PRIORITY = 1000; 
 
 	const short DIVERT_QUEUE_LEN_MAX = 8192;
 	const short DIVERT_QUEUE_TIME_MAX = 2048;
