@@ -12,7 +12,7 @@ public:
 
 	short calcChance(short chance)
 	{
-		return (chance == 100) || ((rand() % 100) < chance);
+		return (chance == 100) || ((rand() % 100) < chance / 2);
 	}
 
 

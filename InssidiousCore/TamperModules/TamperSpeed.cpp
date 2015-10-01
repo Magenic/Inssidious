@@ -61,7 +61,7 @@ short TamperSpeed::process(DivertPacket *& dPacket)
 
 	/* Increment the next packet's release time */
 
-	releaseTime += TamperSpeedPacketDelay[(*ppTamperSpeedConfig)->speedType]; /* enum defining millisecond values for different speed */
+	releaseTime += TamperSpeedPacketDelay[(*ppTamperSpeedConfig)->speedType] / 2; /* enum defining millisecond values for different speed */
 	lastReleaseTime = releaseTime;
 
 
