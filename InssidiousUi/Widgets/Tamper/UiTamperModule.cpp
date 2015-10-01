@@ -143,12 +143,10 @@ void UiTamperModule::mouseReleaseEvent(QMouseEvent *e)
 	if (this->palette().background() == moduleBackgroundPaletteActivePressed.background())
 	{
 		this->setActive(false);
-		this->setPalette(moduleBackgroundPaletteActiveHover);
 	}
 	else if (this->palette().background() == moduleBackgroundPaletteInactivePressed.background())
 	{
 		this->setActive(true);
-		this->setPalette(moduleBackgroundPaletteInactiveHover);
 	}
 }
 
