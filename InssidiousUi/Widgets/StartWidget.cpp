@@ -12,6 +12,13 @@
 
 
 #include "StartWidget.h"
+#include "Windows.h"
+
+#ifndef SECURITY_WIN32
+#define SECURITY_WIN32
+#include "Security.h"
+#pragma comment(lib, "Secur32.lib")
+#endif
 
 class IComboBox : public QComboBox
 {
@@ -66,7 +73,6 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 	networkNameLabel->setContentsMargins(0, 60, 0, 6);			//Pad the label down 40 from the logo and up 4 from the next object
 	networkNameLabel->setAlignment(Qt::AlignCenter);			//Center the text within the QLabel
 	networkNameInput = new QLineEdit();							//Initialize the QLineEdit pointer
-	networkNameInput->setText("Inssidious");					//Set the default text
 	networkNameInput->setFont(QFont("Segoe UI", 10));
 	networkNameInput->setFixedWidth(300);						//Set a fixed size for the field
 	networkNameInput->setAlignment(Qt::AlignCenter);			//Center the text within the field
@@ -74,6 +80,20 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 	this->layout()->addWidget(networkNameInput);				//Add it to the Start widget layout
 	this->layout()->setAlignment(networkNameLabel, Qt::AlignHCenter);	//And align it in the center of the widget
 	this->layout()->setAlignment(networkNameInput, Qt::AlignHCenter);	//And align it in the center of the widget
+
+
+	/* Try to set the Network Name field to the current user's display name */
+
+	wchar_t userName[50] = { 0 };
+	DWORD bufferSize = 50;
+	if (GetUserNameEx(NameDisplay, reinterpret_cast<LPWSTR>(userName), &bufferSize))
+	{
+		networkNameInput->setText("Inssidious - " + QString::fromWCharArray(userName));
+	}
+	else
+	{
+		networkNameInput->setText("Inssidious");
+	}
 
 
 	/* Draw the Network Password text label and input field */
@@ -93,6 +113,30 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 	this->layout()->addWidget(networkPasswordInput);			//Add it to the Start widget layout
 	this->layout()->setAlignment(networkPasswordLabel, Qt::AlignHCenter);	//And align it in the center of the widget
 	this->layout()->setAlignment(networkPasswordInput, Qt::AlignHCenter);	//And align it in the center of the widget
+
+
+	/* Check for a saved Network Name and Password in the Registry */
+
+	HKEY inssidiousHKCU;
+	if (ERROR_SUCCESS == RegCreateKeyEx(HKEY_CURRENT_USER, L"Software\\Inssidious", 0, 0, 0, KEY_WRITE | KEY_QUERY_VALUE, 0, &inssidiousHKCU, 0))
+	{
+
+		wchar_t valueData[MAX_PATH];
+		DWORD valueDataCount = MAX_PATH;
+
+		if (ERROR_SUCCESS == RegGetValueW(HKEY_CURRENT_USER, L"Software\\Inssidious", L"LastNetworkName",
+			RRF_RT_REG_SZ | RRF_ZEROONFAILURE, nullptr, reinterpret_cast<LPVOID>(valueData), &valueDataCount))
+		{
+			networkNameInput->setText(QString::fromWCharArray(valueData));
+		}
+
+		if (ERROR_SUCCESS == RegGetValueW(HKEY_CURRENT_USER, L"Software\\Inssidious", L"LastNetworkPassword",
+			RRF_RT_REG_SZ | RRF_ZEROONFAILURE, nullptr, reinterpret_cast<LPVOID>(valueData), &valueDataCount))
+		{
+			networkPasswordInput->setText(QString::fromWCharArray(valueData));
+		}
+
+	}
 
 
 	/* Draw the Internet Connection text label and combo box */
@@ -266,6 +310,32 @@ void StartWidget::onStartButtonClicked()
 	this->layout()->addWidget(statusMessage);					//Add it to the Start widget layout
 	this->layout()->setAlignment(statusEventClass, Qt::AlignHCenter);	//And align it in the center of the widget
 	this->layout()->setAlignment(statusMessage, Qt::AlignHCenter);		//And align it in the center of the widget
+
+
+	/* Save this Network Name and Password in the Registry */
+
+	HKEY inssidiousHKCU;
+	if (ERROR_SUCCESS == RegCreateKeyEx(HKEY_CURRENT_USER, L"Software\\Inssidious", 0, 0, 0, KEY_WRITE, 0, &inssidiousHKCU, 0))
+	{
+		RegSetValueEx(
+			inssidiousHKCU,
+			L"LastNetworkName",
+			0,
+			REG_SZ,
+			LPBYTE(networkNameInput->text().utf16()),
+			networkNameInput->text().size() * sizeof(wchar_t)
+			);
+
+
+		RegSetValueEx(
+			inssidiousHKCU,
+			L"LastNetworkPassword",
+			0,
+			REG_SZ,
+			LPBYTE(networkPasswordInput->text().utf16()),
+			networkPasswordInput->text().size() * sizeof(wchar_t)
+			);
+	}
 
 
 	/* Notify Inssidious */
