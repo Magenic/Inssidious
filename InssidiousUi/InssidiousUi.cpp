@@ -80,8 +80,13 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 
 	/* Initialize the core backend and start the thread */
 
-	inssidiousCore = new InssidiousCore();
-	inssidiousCore->start();				
+	coreQThread = new QThread();
+	connect(coreQThread, &QThread::started, this, &InssidiousUi::onCoreThreadReady);
+	coreQThread->start();
+
+
+
+	startWidget = new StartWidget(this);
 
 
 	/* Initialize and hide the tab controller for now */
@@ -90,31 +95,17 @@ InssidiousUi::InssidiousUi(QWidget *parent)
 	uiDeviceController->hide();
 
 
-	startWidget = new StartWidget(this, *inssidiousCore->pNetworkConnectionNames);
-
-
 	/* Connect Signals and Slots */
 	
 	connect(startWidget, &StartWidget::uiStartCore, this, &InssidiousUi::onUiStartCore);
-	connect(this, &InssidiousUi::coreStart, inssidiousCore, &InssidiousCore::onUiCoreStart, Qt::QueuedConnection);
-	connect(this, &InssidiousUi::coreStop, inssidiousCore, &InssidiousCore::onUiCoreStop, Qt::QueuedConnection);
-
-	connect(inssidiousCore, &InssidiousCore::coreStarting, this, &InssidiousUi::onCoreStarting, Qt::QueuedConnection);
 	connect(this, &InssidiousUi::uiUpdateStartingText, startWidget, &StartWidget::onUiUpdateStartingText);
-	connect(inssidiousCore, &InssidiousCore::coreStarted, this, &InssidiousUi::onCoreStarted, Qt::QueuedConnection);
-	connect(inssidiousCore, &InssidiousCore::coreStopped, this, &InssidiousUi::onCoreStopped, Qt::QueuedConnection);
 
-
-	connect(inssidiousCore, &InssidiousCore::coreAddDevice, this, &InssidiousUi::onCoreAddDevice, Qt::QueuedConnection);
-	connect(inssidiousCore, &InssidiousCore::coreDropDevice, this, &InssidiousUi::onCoreDropDevice, Qt::QueuedConnection);
 	connect(this, &InssidiousUi::uiAddDevice, uiDeviceController, &UiDeviceController::onUiAddDevice);
 	connect(this, &InssidiousUi::uiDropDevice, uiDeviceController, &UiDeviceController::onUiDropDevice);
 
-
 	connect(uiDeviceController, &UiDeviceController::uiTamperStart, this, &InssidiousUi::onUiTamperStart);
 	connect(uiDeviceController, &UiDeviceController::uiTamperStop, this, &InssidiousUi::onUiTamperStop);
-	connect(this, &InssidiousUi::coreStartTamper, inssidiousCore, &InssidiousCore::onUiTamperStart, Qt::QueuedConnection);
-	connect(this, &InssidiousUi::coreStopTamper, inssidiousCore, &InssidiousCore::onUiTamperStop, Qt::QueuedConnection);
+
 
 	
 	/* No further work until we receive signals */
@@ -161,6 +152,25 @@ void InssidiousUi::onCoreStarted()
 
 }
 
+void InssidiousUi::onCoreThreadReady()
+{
+	inssidiousCore = new InssidiousCore();
+	inssidiousCore->moveToThread(coreQThread);
+	connect(inssidiousCore, &InssidiousCore::coreVisibleNetworkConnections, startWidget, &StartWidget::onCoreVisibleNetworkConnections, Qt::QueuedConnection);
+	connect(this, &InssidiousUi::coreInitialize, inssidiousCore, &InssidiousCore::onCoreInitialize, Qt::QueuedConnection);
+
+	connect(inssidiousCore, &InssidiousCore::coreStarting, this, &InssidiousUi::onCoreStarting, Qt::QueuedConnection);
+	connect(inssidiousCore, &InssidiousCore::coreStarted, this, &InssidiousUi::onCoreStarted, Qt::QueuedConnection);
+	connect(inssidiousCore, &InssidiousCore::coreStopped, this, &InssidiousUi::onCoreStopped, Qt::QueuedConnection);
+	connect(inssidiousCore, &InssidiousCore::coreAddDevice, this, &InssidiousUi::onCoreAddDevice, Qt::QueuedConnection);
+	connect(inssidiousCore, &InssidiousCore::coreDropDevice, this, &InssidiousUi::onCoreDropDevice, Qt::QueuedConnection);
+	connect(this, &InssidiousUi::coreStartTamper, inssidiousCore, &InssidiousCore::onUiTamperStart, Qt::QueuedConnection);
+	connect(this, &InssidiousUi::coreStopTamper, inssidiousCore, &InssidiousCore::onUiTamperStop, Qt::QueuedConnection);
+	connect(this, &InssidiousUi::coreStart, inssidiousCore, &InssidiousCore::onUiCoreStart, Qt::QueuedConnection);
+	connect(this, &InssidiousUi::coreStop, inssidiousCore, &InssidiousCore::onUiCoreStop, Qt::QueuedConnection);
+
+	emit coreInitialize();
+}
 
 void InssidiousUi::onCoreStopped()
 {

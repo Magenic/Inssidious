@@ -77,6 +77,7 @@ private:
 
 	/* Inssidious creates instances of the core backend, Start Widget, and Tab Controller */
 
+	QThread* coreQThread;
 	InssidiousCore* inssidiousCore;
 	StartWidget* startWidget;
 	UiDeviceController* uiDeviceController;
@@ -89,6 +90,7 @@ private:
 
 private slots:
 	
+	void onCoreThreadReady();
 	void onUiStartCore(QString networkName, QString networkPassword, QString networkAdapter);
 	void onCoreStarting(QString messageText, bool isErrorMessage = false);
 	void onCoreStarted();
@@ -104,6 +106,7 @@ private slots:
 	void onCloseClicked();
 
 signals:
+	void coreInitialize();
 	void coreStart(QString networkName, QString networkPassword, QString networkAdapter);
 	void coreStop();
 	void uiUpdateStartingText(QString messageText, bool isErrorMessage = false);

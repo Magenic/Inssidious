@@ -24,7 +24,7 @@ class DHCPController;
 enum HostedNetworkReason;
 enum TamperType;
 
-class InssidiousCore : public QThread
+class InssidiousCore : public QObject
 {
 	Q_OBJECT
 
@@ -32,14 +32,19 @@ public:
 	InssidiousCore();
 
 
-	QList<QString>* pNetworkConnectionNames;						//Public list of network connection names to share with Startup widget
-
-
 public slots:
+	void onCoreInitialize();
 	void onUiCoreStart(QString networkName, QString networkPassword, QString networkAdapter);									
 	void onUiCoreStop();									
 	void onUiTamperStart(QString MACAddress, int tamperType, void* pTamperConfig);
 	void onUiTamperStop(QString MACAddress, int tamperType);
+
+
+private:
+	HostedNetworkController* hostedNetwork;
+	ICSController* ics;
+	DeviceController* deviceController;
+	DHCPController* dhcpController;
 
 
 private slots:
@@ -49,6 +54,8 @@ private slots:
 
 
 signals:
+	void coreVisibleNetworkConnections(QList<QString> visibleNetworkConnections);
+
 	void coreStarting(QString statusMessage, bool error = false);
 	void coreStarted();
 	void coreStopped();
@@ -60,16 +67,6 @@ signals:
 	void coreTamperStart(QString MACAddress, TamperType tamperType, void* pTamperConfig);
 	void coreTamperStop(QString MACAddress, TamperType tamperType);
 
-
-
-private:
-	void run() override;											//Calls QThread exec() to start the thread's event loop
-
-
-	HostedNetworkController* hostedNetwork;	
-	ICSController* ics;	
-	DeviceController* deviceController;
-	DHCPController* dhcpController;
 };
 
 #endif // INSSIDIOUSCORE_H

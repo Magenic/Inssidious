@@ -29,7 +29,7 @@ class ICSController : public QObject
 	Q_OBJECT
 
 public:
-	ICSController(QObject *parent);
+	ICSController();
 	~ICSController();
 
 	//Public list of network connection names used by UI and passed back in to identify connection to use
@@ -38,6 +38,8 @@ public:
 
 	//Performs legwork of configuring and starting Internet Connection Sharing
 	bool initialize(QString networkConnectionName, GUID hostedNetworkGUID);
+
+	void stop();
 
 
 	//Stores the error HRESULT on initialize failure

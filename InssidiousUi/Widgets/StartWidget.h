@@ -28,7 +28,7 @@ class StartWidget : public QWidget
 	Q_OBJECT
 
 public:
-	StartWidget(QWidget *parent, QList<QString> networkAdapterDescriptions);
+	StartWidget(QWidget *parent);
 
 
 signals:
@@ -40,6 +40,7 @@ public slots:
 	//Receive and display new status messages when signaled
 	void onUiUpdateStartingText(QString messageText, bool isErrorMessage = false);
 
+	void onCoreVisibleNetworkConnections(QList<QString> visibleNetworkConnections);
 
 private:
 

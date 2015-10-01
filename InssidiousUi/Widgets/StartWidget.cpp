@@ -34,7 +34,7 @@ public:
 
 };
 
-StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescriptions)
+StartWidget::StartWidget(QWidget *parent)
 	: QWidget(parent)
 {
 
@@ -150,6 +150,8 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 	internetConnectionComboBox = new IComboBox();				//Initialize the QComboBox pointer
 	internetConnectionComboBox->setFont(QFont("Segoe UI", 10));
 	internetConnectionComboBox->setFixedWidth(300);				//Set a fixed size for the field
+	internetConnectionComboBox->addItem("Waiting for list of internet connections..");
+	internetConnectionComboBox->setItemData(0, Qt::AlignCenter, Qt::TextAlignmentRole);	//Center the text
 	this->layout()->addWidget(internetConnectionLabel);			//Add it to the Start widget layout
 	this->layout()->addWidget(internetConnectionComboBox);		//Add it to the Start widget layout
 	this->layout()->setAlignment(internetConnectionLabel, Qt::AlignHCenter);	//And align it in the center of the widget
@@ -163,15 +165,6 @@ StartWidget::StartWidget(QWidget *parent, QList<QString> networkConnectionDescri
 	internetConnectionComboBox->lineEdit()->setContentsMargins(18, 0, 0, 0);
 	internetConnectionComboBox->lineEdit()->setAlignment(Qt::AlignCenter);					//Only possible when LineEdit is editable
 	internetConnectionComboBox->lineEdit()->setAttribute(Qt::WA_TransparentForMouseEvents);	//Allows QComboBox to still display dropdown on click
-
-
-	/* Populate the QComboBox with the network adapter friendly names */
-
-	for (int i = 0; i < networkConnectionDescriptions.count(); i++)
-	{
-		internetConnectionComboBox->addItem(networkConnectionDescriptions[i]);					//Add the friendly name from the QList
-		internetConnectionComboBox->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);	//Center the text
-	}
 	
 
 	/* Draw the Start button */
@@ -371,4 +364,18 @@ void StartWidget::onUiUpdateStartingText(QString messageText, bool isErrorMessag
 	this->statusMessage->repaint();
 	this->repaint();
 	this->parentWidget()->repaint();
+}
+
+
+void StartWidget::onCoreVisibleNetworkConnections(QList<QString> visibleNetworkConnections)
+{
+
+	/* Populate the QComboBox with the network adapter friendly names */
+
+	internetConnectionComboBox->clear();
+	for (int i = 0; i < visibleNetworkConnections.count(); i++)
+	{
+		internetConnectionComboBox->addItem(visibleNetworkConnections[i]);					//Add the friendly name from the QList
+		internetConnectionComboBox->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);	//Center the text
+	}
 }

@@ -18,17 +18,21 @@
 InssidiousCore::InssidiousCore()
 {
 
+}
+
+
+
+
+//Calls QThread exec() to start the thread's event loop
+void InssidiousCore::onCoreInitialize()
+{
 	/* Initialize instances of the Hosted Network, ICS, and DeviceController classes */
 	/* Error conditions such as no wireless card will trigger a Messagebox & quit the app */
 
-	hostedNetwork = new HostedNetworkController(this);
-	ics = new ICSController(this);
+	hostedNetwork = new HostedNetworkController();
+	ics = new ICSController();
 	deviceController = new DeviceController();
 	dhcpController = new DHCPController();
-
-	/* Grab a pointer to the list of network connection names for use by Inssidious */
-
-	pNetworkConnectionNames = &ics->networkConnectionNames;
 
 
 	/* Connect Signals and Slots */
@@ -47,15 +51,8 @@ InssidiousCore::InssidiousCore()
 
 	/* No further work until we receive signals */
 
-}
+	emit coreVisibleNetworkConnections(ics->networkConnectionNames);
 
-
-
-
-//Calls QThread exec() to start the thread's event loop
-void InssidiousCore::run()
-{
-	QThread::exec();
 }
 
 
@@ -109,8 +106,9 @@ void InssidiousCore::onUiCoreStart(QString networkName, QString networkPassword,
 
 void InssidiousCore::onUiCoreStop()
 {
+	ics->stop();
 	hostedNetwork->stop();
-
+	ics->stop();
 }
 
 

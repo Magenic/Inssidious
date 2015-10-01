@@ -11,8 +11,7 @@
 #include "HostedNetworkController.h"
 
 
-HostedNetworkController::HostedNetworkController(QObject *parent)
-	: QObject(parent)
+HostedNetworkController::HostedNetworkController()
 {
 
 	isHostedNetworkCapable();

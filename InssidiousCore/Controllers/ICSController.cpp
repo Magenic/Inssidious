@@ -11,8 +11,7 @@
 
 #include "ICSController.h"
 
-ICSController::ICSController(QObject *parent)
-	: QObject(parent)
+ICSController::ICSController()
 {
 	/* Check if ICS is disabled */
 
@@ -77,6 +76,18 @@ ICSController::~ICSController()
 	NSModDeinit();
 }
 
+void ICSController::stop()
+{
+	/* The list of available connections can change after the hosted network starts. Reset the ICS Manager */
+
+	pICSManager->ResetIcsManager();
+
+
+	/* Disable all existing ICS configurations */
+
+	pICSManager->DisableIcsOnAll();
+
+}
 
 //Performs legwork of configuring and starting Internet Connection Sharing
 bool ICSController::initialize(QString networkConnectionName, GUID hostedNetworkGUID)
