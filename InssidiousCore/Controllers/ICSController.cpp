@@ -102,6 +102,11 @@ bool ICSController::initialize(QString networkConnectionName, GUID hostedNetwork
 	pICSManager->DisableIcsOnAll();
 
 
+	/* And Reset the ICS Manager Again */
+
+	pICSManager->ResetIcsManager();
+
+
 	/* Start ICS between the network connection the user selected and the hosted network */
 
 	for (ICSNetworkConnections networkConnection : icsNetworkConnectionList)
