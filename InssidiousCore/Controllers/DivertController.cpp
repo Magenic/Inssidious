@@ -310,14 +310,14 @@ DWORD DivertController::divertReadLoop(HANDLE divertHandle)
 
 		for (int i = 0; i < NUM_TAMPER_TYPES - 1; i++)
 		{
-			if (dPacket && pTamperModulesActive[i] == true)
-			{
-				ppTamperModules[i]->process(dPacket);
-			}
-			else
+			if (!dPacket)
 			{
 				/* Packet was dropped or moved onto the SLIST */
 				break;
+			}
+			if (pTamperModulesActive[i] == true)
+			{
+				ppTamperModules[i]->process(dPacket);
 			}
 		}
 		
