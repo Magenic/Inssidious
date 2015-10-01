@@ -53,6 +53,10 @@ UiTamperWebServiceFailures::UiTamperWebServiceFailures(QWidget *parent, TamperTy
 	buttonMiddle2->setDisabled(true);
 	buttonRight->setDisabled(true);
 
+	buttonLeft->setAttribute(Qt::WA_TransparentForMouseEvents);
+	buttonMiddle1->setAttribute(Qt::WA_TransparentForMouseEvents);
+	buttonMiddle2->setAttribute(Qt::WA_TransparentForMouseEvents);
+	buttonRight->setAttribute(Qt::WA_TransparentForMouseEvents);
 
 	connect(buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &UiTamperWebServiceFailures::onButtonClicked);
 
@@ -97,7 +101,10 @@ void UiTamperWebServiceFailures::setActive(bool active)
 		buttonMiddle2->setEnabled(true);
 		buttonRight->setEnabled(true);
 
-
+		buttonLeft->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+		buttonMiddle1->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+		buttonMiddle2->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+		buttonRight->setAttribute(Qt::WA_TransparentForMouseEvents, false);
 
 		/* Set the config value to true and the block button to checked */
 
@@ -141,7 +148,10 @@ void UiTamperWebServiceFailures::setActive(bool active)
 
 		buttonGroup->setExclusive(true);
 
-		
+		buttonLeft->setAttribute(Qt::WA_TransparentForMouseEvents);
+		buttonMiddle1->setAttribute(Qt::WA_TransparentForMouseEvents);
+		buttonMiddle2->setAttribute(Qt::WA_TransparentForMouseEvents);
+		buttonRight->setAttribute(Qt::WA_TransparentForMouseEvents);
 		
 		/* Set the config value to false */
 

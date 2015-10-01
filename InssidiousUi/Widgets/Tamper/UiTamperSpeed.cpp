@@ -55,6 +55,11 @@ UiTamperSpeed::UiTamperSpeed(QWidget *parent, TamperType tamperType)
 	buttonMiddle2->setDisabled(true);
 	buttonRight->setDisabled(true);
 
+	buttonLeft->setAttribute(Qt::WA_TransparentForMouseEvents);
+	buttonMiddle1->setAttribute(Qt::WA_TransparentForMouseEvents);
+	buttonMiddle2->setAttribute(Qt::WA_TransparentForMouseEvents);
+	buttonRight->setAttribute(Qt::WA_TransparentForMouseEvents);
+
 	connect(buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &UiTamperSpeed::onButtonClicked);
 
 	moduleLayout->addLayout(speedLayout);
@@ -78,6 +83,10 @@ void UiTamperSpeed::setActive(bool active)
 		buttonMiddle2->setEnabled(true);
 		buttonRight->setEnabled(true);
 		
+		buttonLeft->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+		buttonMiddle1->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+		buttonMiddle2->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+		buttonRight->setAttribute(Qt::WA_TransparentForMouseEvents, false);
 
 		/* Set the speed to SPEED_LTE & check the button */
 
@@ -115,6 +124,10 @@ void UiTamperSpeed::setActive(bool active)
 
 		buttonGroup->setExclusive(true);
 
+		buttonLeft->setAttribute(Qt::WA_TransparentForMouseEvents);
+		buttonMiddle1->setAttribute(Qt::WA_TransparentForMouseEvents);
+		buttonMiddle2->setAttribute(Qt::WA_TransparentForMouseEvents);
+		buttonRight->setAttribute(Qt::WA_TransparentForMouseEvents);
 
 		/* Set the speed back to MAX */
 

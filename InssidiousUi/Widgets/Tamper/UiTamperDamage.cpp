@@ -48,6 +48,10 @@ UiTamperDamage::UiTamperDamage(QWidget *parent, TamperType tamperType)
 	tcpCloseSpinBox->setDisabled(true);
 	randomizeConditions->setDisabled(true);
 
+	damageSpinBox->setAttribute(Qt::WA_TransparentForMouseEvents);
+	tcpCloseSpinBox->setAttribute(Qt::WA_TransparentForMouseEvents);
+	randomizeConditions->setAttribute(Qt::WA_TransparentForMouseEvents);
+
 
 	connect(randomizeConditions, &QPushButton::clicked, this, &UiTamperDamage::onRandomizeConditionsClicked);
 	connect(damageSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &UiTamperDamage::onDamageSpinBoxChange);
@@ -77,6 +81,11 @@ void UiTamperDamage::setActive(bool active)
 		onRandomizeConditionsClicked();
 
 
+		damageSpinBox->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+		tcpCloseSpinBox->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+		randomizeConditions->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+
+
 		/* Notify Core */
 
 		emit tamperStart(this, pTamperConfig);
@@ -96,6 +105,11 @@ void UiTamperDamage::setActive(bool active)
 		damageSpinBox->setDisabled(true);
 		tcpCloseSpinBox->setDisabled(true);
 		randomizeConditions->setDisabled(true);
+
+		damageSpinBox->setAttribute(Qt::WA_TransparentForMouseEvents);
+		tcpCloseSpinBox->setAttribute(Qt::WA_TransparentForMouseEvents);
+		randomizeConditions->setAttribute(Qt::WA_TransparentForMouseEvents);
+
 
 		/* Notify core to stop */
 

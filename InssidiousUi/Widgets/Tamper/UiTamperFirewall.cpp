@@ -44,6 +44,11 @@ UiTamperFirewall::UiTamperFirewall(QWidget *parent, TamperType tamperType)
 	buttonMiddle2->setDisabled(true);
 	buttonRight->setDisabled(true);
 
+	buttonLeft->setAttribute(Qt::WA_TransparentForMouseEvents);
+	buttonMiddle1->setAttribute(Qt::WA_TransparentForMouseEvents);
+	buttonMiddle2->setAttribute(Qt::WA_TransparentForMouseEvents);
+	buttonRight->setAttribute(Qt::WA_TransparentForMouseEvents);
+
 	buttonGroup->setExclusive(true);
 	buttonGroup->addButton(buttonLeft, 0);
 	buttonGroup->addButton(buttonMiddle1, 1);
@@ -83,6 +88,11 @@ void UiTamperFirewall::setActive(bool active)
 		buttonMiddle2->setEnabled(true);
 		buttonRight->setEnabled(true);
 
+		buttonLeft->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+		buttonMiddle1->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+		buttonMiddle2->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+		buttonRight->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+
 
 		/* Set Block Email to Checked */
 
@@ -120,6 +130,10 @@ void UiTamperFirewall::setActive(bool active)
 
 		buttonGroup->setExclusive(true);
 
+		buttonLeft->setAttribute(Qt::WA_TransparentForMouseEvents);
+		buttonMiddle1->setAttribute(Qt::WA_TransparentForMouseEvents);
+		buttonMiddle2->setAttribute(Qt::WA_TransparentForMouseEvents);
+		buttonRight->setAttribute(Qt::WA_TransparentForMouseEvents);
 
 		/* Clear the button settings */
 
