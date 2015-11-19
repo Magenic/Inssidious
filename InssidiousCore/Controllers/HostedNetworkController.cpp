@@ -78,7 +78,6 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 	for (int i = 0; i < networkName.count(); i++)		//Fill the ucSSID array
 	{
 		hostedNetworkSSID.ucSSID[i] = networkName.at(i).unicode();
-		hostedNetworkSSID.ucSSID[i + 1] = '\0';			//nullptr the next character to ensure we have a nullptr at the end of the loop
 	}
 	
 
@@ -104,12 +103,12 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 
 	/* Prepare the network password in the appropriate UCHAR format */
 
-	DWORD dwKeyLength = networkPassword.count() + 1;	//Length of the network password, needed for the API call, +1 for the nullptr
+	DWORD dwKeyLength = networkPassword.count() + 1;	//Length of the network password, needed for the API call, +1 for the null
 	PUCHAR pucKeyData = new UCHAR[dwKeyLength];			//Initialize our UCHAR variable
 	for (int i = 0; i < networkPassword.count(); i++)	//Fill the array
 	{
 		pucKeyData[i] = networkPassword.at(i).unicode();
-		pucKeyData[i + 1] = '\0';						//nullptr the next character to ensure we have a nullptr at the end of the loop
+		pucKeyData[i + 1] = '\0';						//null the next character to ensure we have a null at the end of the loop
 	}
 
 
@@ -117,7 +116,7 @@ bool HostedNetworkController::initialize(QString networkName, QString networkPas
 
 	result = WlanHostedNetworkSetSecondaryKey(
 		wlanHandle,										//Wlan handle
-		dwKeyLength,									//Length of the network password array including the nullptr character
+		dwKeyLength,									//Length of the network password array including the null character
 		pucKeyData,										//Pointer to a UCHAR array with the network password
 		TRUE,											//Is a pass phrase
 		TRUE,											//Do not persist this key for future hosted network sessions
