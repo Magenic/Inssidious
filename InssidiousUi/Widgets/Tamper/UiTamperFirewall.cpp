@@ -116,6 +116,7 @@ void UiTamperFirewall::setActive(bool active)
 
 		/* Uncheck and disable all buttons */
 
+		lastChecked = FIREWALL_OFF;
 		buttonGroup->setExclusive(false);
 
 		buttonLeft->setChecked(false);
@@ -149,21 +150,31 @@ void UiTamperFirewall::setActive(bool active)
 
 void UiTamperFirewall::onButtonClicked(int index)
 {
+	if (buttonGroup->checkedId() == lastChecked && buttonGroup->checkedId() != FIREWALL_CUSTOM)
+	{
+		/* The enabled button was clicked; disable the whole widget */
+		setActive(false);
+	}
+
 	switch (buttonGroup->checkedId())
 	{
 	case -1 /* No Button Checked */:
 		static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_OFF;
+		lastChecked = FIREWALL_OFF;
 		break;
-	case 0 /* Block Email */:
+	case FIREWALL_EMAIL /* Block Email */:
 		static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_EMAIL;
+		lastChecked = FIREWALL_EMAIL;
 		break;
-	case 1 /* Block UDP */:
+	case FIREWALL_UDP /* Block UDP */:
 		static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_UDP;
+		lastChecked = FIREWALL_UDP;
 		break;
-	case 2 /* Block VPN */:
+	case FIREWALL_VPN /* Block VPN */:
 		static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_VPN;
+		lastChecked = FIREWALL_VPN;
 		break;
-	case 3 /* Custom Rules */:
+	case FIREWALL_CUSTOM /* Custom Rules */:
 	{
 		/* Throw up the Custom Ports dialog */
 
@@ -220,7 +231,7 @@ void UiTamperFirewall::onButtonClicked(int index)
 
 				InterlockedPushListSList(static_cast<TamperFirewallConfig*>(pTamperConfig)->customPortList, entryFirst, entryLast, dialogPortList.count());
 				static_cast<TamperFirewallConfig*>(pTamperConfig)->firewallType = FIREWALL_CUSTOM;
-
+				lastChecked = FIREWALL_CUSTOM;
 
 				/* Free memory left over from any old existing items */
 
@@ -241,7 +252,7 @@ void UiTamperFirewall::onButtonClicked(int index)
 		}
 		else
 		{
-			/* The user clicked Close or Cancel. Turn off the tamper module */
+			/* The user clicked Close, Save with no entries, or Cancel. Turn off the tamper module */
 			setActive(false);
 		}
 

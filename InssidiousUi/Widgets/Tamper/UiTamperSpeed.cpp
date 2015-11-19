@@ -110,6 +110,7 @@ void UiTamperSpeed::setActive(bool active)
 		
 		/* Uncheck and disable all buttons */
 
+		lastChecked = SPEED_MAX;
 		buttonGroup->setExclusive(false);
 
 		buttonLeft->setChecked(false);
@@ -143,27 +144,39 @@ void UiTamperSpeed::setActive(bool active)
 
 void UiTamperSpeed::onButtonClicked(int button)
 {
+	if (buttonGroup->checkedId() == lastChecked)
+	{
+		/* The enabled button was clicked; disable the whole widget */
+		setActive(false);
+	}
+
 	switch (buttonGroup->checkedId())
 	{
 	case -1:
 		/* No Button Checked */
 		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_MAX;
+		lastChecked = SPEED_MAX;
 		break;
 	case SPEED_EDGE:
 		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_EDGE;
+		lastChecked = SPEED_EDGE;
 		break;
 	case SPEED_3G:
 		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_3G;
+		lastChecked = SPEED_3G;
 		break;
 	case SPEED_4G:
 		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_4G;
+		lastChecked = SPEED_4G;
 		break;
 	case SPEED_LTE:
 		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_LTE;
+		lastChecked = SPEED_LTE;
 		break;
 	case SPEED_MAX:
 	default:
 		static_cast<TamperSpeedConfig*>(pTamperConfig)->speedType = SPEED_MAX;
+		lastChecked = SPEED_MAX;
 		break;
 	}
 }

@@ -28,6 +28,8 @@ private:
 
 	void setActive(bool) override;
 
+	int lastChecked = -1;
+
 private slots:
 	void onButtonClicked(int);
 };
