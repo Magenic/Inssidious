@@ -56,10 +56,26 @@ short TamperDamage::process(DivertPacket *& dPacket)
 			
 		}
 	}
-	//else if ((*ppDamageConfig)->something)
-	//{
-	//	//TODO: Redirect to Portal
-	//}
+	else if (calcChance((*ppDamageConfig)->chanceClose))
+	{
+		WINDIVERT_IPHDR *iphdr;
+		WINDIVERT_TCPHDR *tcphdr = nullptr;
+
+		WinDivertHelperParsePacket(dPacket->packet, dPacket->packetLength, &iphdr, 0, 0, 0, &tcphdr, 0, 0, 0);
+
+		if (iphdr)
+		{
+			if (tcphdr)
+			{
+				/* Set the fin & ack flags to signal to close the connection */
+
+				tcphdr->Fin = 1;
+				tcphdr->Ack = 1;
+				WinDivertHelperCalcChecksums(dPacket->packet, dPacket->packetLength, WINDIVERT_HELPER_NO_IP_CHECKSUM);
+			}
+		}
+
+	}
 
 	return 0;
 
